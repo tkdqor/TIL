@@ -38,3 +38,4 @@
 ### 기타 : 개발과 관련된 모든 것들의 모음집
 
 - [Ubuntu](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Linux.md)
+- [Web](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Web%EC%9D%B4%EB%9E%80.md)
