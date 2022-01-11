@@ -42,5 +42,7 @@ git push -u origin master
 ```
 Branch 'master' set up to track remote branch 'master' from 'origin'.
 ```
-다음과 같은 내용이 뜨면서 local 컴퓨터의 master branch가 origin이라는 원격 저장소의 master branch를 추적한다고 나온다.
+다음과 같은 내용이 뜨면서 local 컴퓨터의 master branch가 origin이라는 원격 저장소의 master branch를 추적한다고 나온다.  
+그리고나서 github에 가보면 -> local로부터 push한 파일들이 올라와 있고 / 각 파일들이 어떤 commit에서 마지막으로 생성되었거나 변경되었는지 나와있다.  
+파일명을 클릭하면, 파일의 내용을 볼 수 있고 / commit 메시지를 클릭하면, 해당 commit에서 어떤 변화들이 있었던건지 확인할 수도 있다.
 
