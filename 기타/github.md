@@ -90,4 +90,9 @@ git commit -m "gitignore사용"
 ```
 git push origin master
 ```
-github에 push까지 해주면 우리가 .gitignore파일에 적어두었던 python 파일은 github에 push가 되지 않는다는 것을 확인할 수 있다.
+github에 push까지 해주면 우리가 .gitignore파일에 적어두었던 python 파일은 github에 push가 되지 않는다는 것을 확인할 수 있다.  
+안드로이드나 스프링 등 처음부터 골격이 세팅된 프로그래밍 프로젝트를 생성하면, 이 .gitignore파일을 확인해볼 수 있다. 그래서 해당 내용은 github에 올릴 필요가 없는 내용들이고 빌드하면 만들어지는 것이거나 컴퓨터 IDE 세팅이라는 것 등을 파악할 수 있다.
+
+
+**4. Github 소스 내려받기**
+
