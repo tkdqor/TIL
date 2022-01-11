@@ -12,7 +12,7 @@
 
 ### HTML
 
-- dd
+- [HTML 기초](https://github.com/tkdqor/TIL/blob/main/HTML/HTML%20%EA%B8%B0%EC%B4%88.md)
 
 
 
