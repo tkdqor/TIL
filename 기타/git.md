@@ -126,3 +126,24 @@ git commit -m "새로운 branch 작업"
 git checkout 이동할branch이름   ->  여기서는 git checkout master
 ```
 이렇게 입력해주면 원래 branch로 돌아갈 수 있다.
+
+
+**5-1. 다른 branch에서 가져오기**
+- 다른 branch에서 작업한 내용들을 기존의 master branch로 가져와보자.
+```
+git checkout master
+```
+먼저 master branch로 돌아온다.
+```
+git merge 가져올branch이름   ex.) git merge my-idea
+```
+이렇게 입력해서 변화를 가져올 branch이름을 입력해주고 vi화면에서
+```
+:wq
+```
+맨 위에 적힌 것을 그대로 쓰도록 :wq를 입력해준다.  
+이렇게하면 master branch에 다른 branch에서 작업한 내용이 덮어쓰여져서 보여지게 된다. 이 상태에서
+```
+git log --graph --all --decorate
+```
+이 명령어를 입력하면 시각화된 작업내역을 확인할 수 있다.
