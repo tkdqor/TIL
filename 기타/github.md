@@ -161,3 +161,23 @@ remotes/origin/my-idea
 git checkout -b my-idea(새롭게만들branch이름) origin /my-idea(원격에있는branch이름)
 ```
 해당 명령어를 입력하면, local에 my-idea라는 이름으로 branch를 새롭게 만들고, 원격의 my-idea라는 branch의 내용을 받아와서 새롭게 만든 my-idea branch로 들어간다는 의미이다.
+```
+git branch
+```
+이 명령어로 local에서도 my-idea라는 branch가 생성된 걸 확인할 수 있다.
+
+* * *
+
+**7. 충돌 해결하기**
+- Gitf를 사용하면서 익혀나갈 때, 많은 사람들이 어려워하고 부딪치기 싫어하는 이유가 충돌이 발생하는 경우 때문이다.
+- branch간에도 발생할 수 있지만, 같은 branch에서 같은 파일의 같은 부분을 원격의 두 컴퓨터가 같이 건드린 상황에서도 발생할 수 있다. 
+  - push 하기 전에 먼저 github의 내용을 pull 하려고 하는데 내가 똑같은 파일을 수정했다면, 해당 파일을 충돌하지 않도록 수정한 다음 저장해주고 다시 진행하면 된다.
+
+* * *
+
+**8. 원격의 branch를 지우는 경우**
+```
+git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
+```
+이렇게 입력해주면 삭제가 된다.
+
