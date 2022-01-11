@@ -20,4 +20,27 @@
 ```
 git status
 ```
-해당 명령어로 현재까지의 사항들이 모두 모두 commit 되어있는지 확인하기.
+해당 명령어로 현재까지의 사항들이 모두 commit 되어있는지 확인하기. 여기서 빠진 게 있다면 전부 add해서 commit을 먼저 진행하자.
+```
+git remote
+```
+이 상태에서 위의 명령어를 입력하면 현 폴더의 원격 레파지토리를 확인할 수 있는데, 아직 설정한 게 없다면 아무것도 뜨지 않을 것이다.  
+이제 github에서 만든 새로운 레파지토리를 원격 저장소로 추가해보자.
+- https://www.yalco.kr/_02_github_token/  
+
+해당 내용을 통해 먼저 Personal access token를 생성해주자. 그 이후에는
+```
+git remote add origin 새로만든github주소
+```
+이 명령어는 새로 만든 github 레파지토리를 본인의 local 프로젝트의 'origin'이란 이름의 원격 저장소로 설정하겠다는 의미이다.  
+이 'origin'은 원하는 다른 이름으로 수정해도 되나 Git 초기화 시 기본 브랜치명이 master인 것처럼 흔히 기본값으로 사용되는 이름이라고 생각하면 된다.
+```
+git push -u origin master
+```
+이 push 명령어는 프로젝트 폴더의 현 브랜치에 commit된 내용들을 origin이라는 이름의 원격 레파지토리에 master라는 이름의 브랜치에 올리겠다는 의미이다.  
+해당 명령어를 다 입력하고 나면
+```
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+```
+다음과 같은 내용이 뜨면서 local 컴퓨터의 master branch가 origin이라는 원격 저장소의 master branch를  
+
