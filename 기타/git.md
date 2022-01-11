@@ -155,4 +155,22 @@ git log --graph --all --decorate
 
 
 **5-2. 다른 branch에서 가져오기 - Rebase**
-- ddd
+- 실제 프로젝트에서는 branch의 생성 및 변경이 굉장히 복잡하게 구성되어 있다. 
+- 이럴 때, 모든 변경 내용들이 한줄로 딱 깔끔하게 정리됐으면 좋겠다 싶을 때는 -> merge 대신 rebase를 사용하자.
+```
+git rebase 가져올branch이름    ex.) git rebase my-idea
+```
+이렇게 기존의 master branch에서 '병합' 대신 '재배치'를 선택하면 가지들이 깔끔하게 한 줄로 보여지게 된다.  
+프로젝트나 팀의 성격에 따라 merge나 rebase를 선택하면 된다.
+
+
+**6. 다 사용한 branch 삭제하기**
+- 다 사용한 branch를 삭제하고 싶을 때는 
+```
+git branch -D 브랜치이름
+```
+해당 명령어를 입력하면 된다.
+
+
+## 참고자료
+- https://git-scm.com/book/ko/v2
