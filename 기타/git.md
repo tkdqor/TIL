@@ -86,7 +86,7 @@ git log
 입력해서 기록을 보면, 우리가 선택한 취소할 시점 이후 -> Revert "ddd" 이렇게 뜨면서 새로운 캡슐이 묻힌 것을 볼 수 있다. 즉, 시점을 취소하기 위해 그 내역과 반대되는 새로운 캡슐을 묻은 것이라고 볼 수 있고 다시 원하는 과거로 다시 돌아갈 수 있다.
 
 
-**4. branch 사용해보기**
+**4-1. branch 사용해보기**
 - 현재 진행하고 있는 프로젝트가 있지만, 뭔가 다른 시도를 해보고 싶을 경우가 있을 것이다. 그렇다고 기존의 프로젝트 파일들을 함부로 변경할 수는 없다.  
 - 그럴 때는 다른 평행우주를 만들어서 사용해보자.
 ```
@@ -105,10 +105,24 @@ git branch
 다음과 같이 기본 branch인 master와 새로 만든 branch인 my-idea를 나타내준다.  
 그래서 새로 만든 branch로 넘어가려면 
 ```
-git checkout 새로만든branch이름    ex).git checkout my-idea
+git checkout 새로만든branch이름    ex.) git checkout my-idea
 ```
 이렇게 입력하면
 ```
 Switched to branch 'my-idea'
 ```
-이렇게 터미널에 뜨게 된다.
+이렇게 터미널에 뜨게 된다.  
+그리고 새로 만들어지는 branch는 원 branch의 현 상태를 그대로 가져오게 된다. 새로 만든 branch에서 작업을 진행해보고 
+```
+git add .   or    git add -A
+git commit -m "새로운 branch 작업"
+```
+이렇게 다시 캡슐에 묻어보자.
+
+
+**4-2. 기존 branch로 돌아가기**
+- 한창 나만의 branch에서 작업하고 있는 도중에, 다시 원래 branch로 돌아가야 한다면
+```
+git checkout 이동할branch이름   ->  여기서는 git checkout master
+```
+이렇게 입력해주면 원래 branch로 돌아갈 수 있다.
