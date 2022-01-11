@@ -96,7 +96,7 @@ git log
 ```
 git branch 이름적기
 ```
-이렇게 입력하면 기존의 master에서 -> branch로 .....?  
+이렇게 입력하면 기존의 master에서 -> 새로운 이름을 가진 branch가 생성된다.
 branch는 가지라는 뜻으로 현 시점에서 두 미래로 분기하겠다는 의미. 가지를 하나 만든 상태에서
 ```
 git branch
