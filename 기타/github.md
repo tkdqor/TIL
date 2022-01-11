@@ -132,4 +132,9 @@ git pull 원격명 브랜치명        ex.) git pull origin master
 - 이렇게, Git과 Github을 사용해서 원격으로 협업할 때는 뭔가 작업하거나 push하기 이전에 먼저 해당 과정을 거쳐서 다운받아야 할 사항이 있는지 확인하고 있으면 pull를 해주고 작업을 하는 게 좋다.  
   - 팀원이 작업한 내용들을 꾸준히 업데이트 받아야 괜한 작업을 하거나 conflict가 나는 일을 방지할 수 있다.
   - 그리고 Github에 다른 누군가가 올린 내역을 pull로 다 업데이트 받기 전까지는 내쪽에서 push를 할 수 없다. / 관련 [오류 링크](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
-  - ㅇㅇ
+
+* * *
+
+**6. branch 주고받기**
+- ㅇㅇ
+
