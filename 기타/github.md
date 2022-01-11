@@ -73,3 +73,17 @@ git push origin master
 
 1. 프로젝트 폴더 바로 안쪽, 최상위에 .gitignore라는 파일을 생성한다. 해당 파일은 숨김파일로 지정된다. 
   - https://www.atlassian.com/git/tutorials/saving-changes/gitignore 여기에서 Git 관리에서 제외시킬 파일이나 폴더, 기타 요소를 지정하는 형식이 나와있다.
+
+2. 새롭게 파일을 추가하고 해당 파일의 이름을 .gitignore라는 파일안에 입력해준다.
+   - ex) .gitignore 파일안에 ajajaja.py 이렇게 입력
+
+3. 그리고나서
+```
+git status
+```
+라고 입력해봤을 때, 해당 파일은 commit 해야할 목록에서 없어진다. 이 상태에서
+```
+git add -A
+git commit -m "gitignore사용"
+```
+이렇게 입력하고 
