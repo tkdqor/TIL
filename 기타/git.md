@@ -147,3 +147,12 @@ git merge 가져올branch이름   ex.) git merge my-idea
 git log --graph --all --decorate
 ```
 이 명령어를 입력하면 시각화된 작업내역을 확인할 수 있다.
+
+
+**merge가 충돌하는 경우**
+- 예시를 들어보면, master branch와 다른 branch에서 모두 같은 파일에 동일한 내용을 수정하는 경우에는 merge를 했을 때 충돌하는 경우가 발생할 수 있다.
+- 따라서, 최대한 다른 branch에서는 같은 파일을 수정하는 일을 피해서 작업할 수 있도록 조심해야한다.
+
+
+**5-2. 다른 branch에서 가져오기 - Rebase**
+- ddd
