@@ -142,3 +142,22 @@ git push origin 새로운branch명     ex.) git push origin my-idea
 ```
 이렇게 입력하고 난 뒤, Github페이지에서 branch를 눌러보면 my-idea라는 새로운 branch가 새로 생겨나게 되고 선택하게 되면, local의 새로운 branch상태가 새롭게 반영이 된다.
 
+- 내가 공동으로 작업하고 있는 하나의 레파지토리의 master가 아닌 다른 branch를 다운받아보자.
+- 먼저
+```
+git fetch
+```
+해당 명령어를 입력해보면, 새로운 branch가 만들어졌다는 메시지가 뜬다.
+- 그리고 원격에 어떤 branch가 있는지 확인해야 한다. **git branch**는 local에서의 branch만 볼 수 있지만, 
+```
+git branch -a
+```
+이렇게 터미널에 입력하면 
+```
+remotes/origin/my-idea
+```
+이런식으로 원격 저장소의 다른 branch를 확인할 수 있다. 이걸 local로 가져오기 위해서는,
+```
+git checkout -b my-idea(새롭게만들branch이름) origin /my-idea(원격에있는branch이름)
+```
+해당 명령어를 입력하면, local에 my-idea라는 이름으로 branch를 새롭게 만들고, 원격의 my-idea라는 branch의 내용을 받아와서 새롭게 만든 my-idea branch로 들어간다는 의미이다.
