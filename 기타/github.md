@@ -15,7 +15,7 @@
 
 * * *
 
-**2. Github에 소스 올리기**
+**2-1. Github에 소스 올리기**
 - 이제 자신의 프로젝트를 새로 생성한 레파지토리에 올려보자.
 ```
 git status
@@ -45,4 +45,20 @@ Branch 'master' set up to track remote branch 'master' from 'origin'.
 다음과 같은 내용이 뜨면서 local 컴퓨터의 master branch가 origin이라는 원격 저장소의 master branch를 추적한다고 나온다.  
 그리고나서 github에 가보면 -> local로부터 push한 파일들이 올라와 있고 / 각 파일들이 어떤 commit에서 마지막으로 생성되었거나 변경되었는지 나와있다.  
 파일명을 클릭하면, 파일의 내용을 볼 수 있고 / commit 메시지를 클릭하면, 해당 commit에서 어떤 변화들이 있었던건지 확인할 수도 있다.
+```
+git remote
+```
+다시 입력해보면, 이제는 origin이라는 추가한 원격 레파지토리의 이름이 나오게 된다.
 
+
+**2-2. 변화된 내용을 다시 push하기**
+- 자신의 프로젝트에서 작업을 하고 변경된 내용을 github에 push해보자.
+```
+git add -A
+git commit -m "새로운 파일 추가"
+```
+이렇게 변경된 파일을 local에서 추가하고 다시 commit한 다음
+```
+git push origin master
+```
+라고 입력해주면 github에 추가된 내용을 확인할 수 있다. 
