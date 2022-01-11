@@ -40,3 +40,8 @@
 - [Ubuntu](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Linux.md)
 - [Web](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Web%EC%9D%B4%EB%9E%80.md)
 - [git](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/git.md)
+
+
+### 오류모음집
+
+- [github push 오류](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
