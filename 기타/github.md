@@ -42,5 +42,5 @@ git push -u origin master
 ```
 Branch 'master' set up to track remote branch 'master' from 'origin'.
 ```
-다음과 같은 내용이 뜨면서 local 컴퓨터의 master branch가 origin이라는 원격 저장소의 master branch를  
+다음과 같은 내용이 뜨면서 local 컴퓨터의 master branch가 origin이라는 원격 저장소의 master branch를 추적한다고 나온다.
 
