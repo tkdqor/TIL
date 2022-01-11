@@ -99,8 +99,28 @@ github에 push까지 해주면 우리가 .gitignore파일에 적어두었던 pyt
 - 이제 Github에 올린 소스들을 내 컴퓨터에 다운받아보자.
 - 레파지토리가 Public이라면 누구나 가능하고, 집에 있는 Mac으로 작업해서 Github에 올린 소스들을 회사의 컴퓨터에서 다운받는다고 가정해보자.
 
-1. 레파지토리 페이지에서 Code 라는 버튼을 클릭하고 -> 해당 레파지토리의 주소를 복사한 다음 
+- 레파지토리 페이지에서 Code 라는 버튼을 클릭하고 -> 해당 레파지토리의 주소를 복사한 다음 
 ```
 git clone 복사한주소     ex.) git clone https://github.com/tkdqor/likelion.git
 ```
 터미널에 입력해보자. 그러면 **해당 레파지토리명의 폴더**가 생긴 것을 볼 수 있다. 
+
+* * *
+
+**5. 작업 주고받기**
+- commit 메시지는 팀원들과 협업할 때, 이번 커밋에서 어떤 변화들이 주어졌는지 간략히 알려주는 역할도 수행한다.  
+  구글에 "commit 메시지 작성법"도 찾아보자.
+
+- 만약, 다른 팀원이 우리가 같이 작업하고 있는 레파지토리에 push를 진행했을 때 -> 우리가 확인하는 방법이 있다.
+```
+git fetch
+```
+이 명령어를 입력한 후에,
+```
+git status
+```
+을 입력해보면
+```
+... Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
+```
+이렇게 이 브랜치가 원격 origin의 master 브랜치에 커밋 하나가 뒤쳐져 있다고 나오게 된다.
