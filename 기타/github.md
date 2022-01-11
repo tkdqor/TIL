@@ -136,5 +136,9 @@ git pull 원격명 브랜치명        ex.) git pull origin master
 * * *
 
 **6. branch 주고받기**
-- ㅇㅇ
+- local 환경에서 다른 branch로 checkout된 상태에서, 작업을 한 뒤 해당 branch에서 github으로 push하는 경우
+```
+git push origin 새로운branch명     ex.) git push origin my-idea
+```
+이렇게 입력하고 난 뒤, Github페이지에서 branch를 눌러보면 my-idea라는 새로운 branch가 새로 생겨나게 되고 선택하게 되면, local의 새로운 branch상태가 새롭게 반영이 된다.
 
