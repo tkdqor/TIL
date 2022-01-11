@@ -93,6 +93,14 @@ git push origin master
 github에 push까지 해주면 우리가 .gitignore파일에 적어두었던 python 파일은 github에 push가 되지 않는다는 것을 확인할 수 있다.  
 안드로이드나 스프링 등 처음부터 골격이 세팅된 프로그래밍 프로젝트를 생성하면, 이 .gitignore파일을 확인해볼 수 있다. 그래서 해당 내용은 github에 올릴 필요가 없는 내용들이고 빌드하면 만들어지는 것이거나 컴퓨터 IDE 세팅이라는 것 등을 파악할 수 있다.
 
+* * *
 
 **4. Github 소스 내려받기**
+- 이제 Github에 올린 소스들을 내 컴퓨터에 다운받아보자.
+- 레파지토리가 Public이라면 누구나 가능하고, 집에 있는 Mac으로 작업해서 Github에 올린 소스들을 회사의 컴퓨터에서 다운받는다고 가정해보자.
 
+1. 레파지토리 페이지에서 Code 라는 버튼을 클릭하고 -> 해당 레파지토리의 주소를 복사한 다음 
+```
+git clone 복사한주소     ex.) git clone https://github.com/tkdqor/likelion.git
+```
+터미널에 입력해보자. 그러면 **해당 레파지토리명의 폴더**가 생긴 것을 볼 수 있다. 
