@@ -139,3 +139,8 @@ ex) 사진에 대한 메타 데이터로는 -> 촬영 시각, 사진 화질, 사
 </body>
 ```
 body element는 실제 사용자 눈에 보여야 하는 콘텐츠를 작성하는 곳이다. 
+
+* * * 
+
+### 참고할만한 자료
+- https://developer.mozilla.org/ko/docs/Web/HTML
