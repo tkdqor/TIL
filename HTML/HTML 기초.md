@@ -85,3 +85,39 @@ HTML 문서가 기본적으로 어떤 언어로 구성되어 있는지 표현해
 <html lang="ko">
 ```
 만약, 기본 언어를 한글로 설정하고 싶다면 다음과 같이 수정해주자.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+...
+</head>
+<body>
+...
+</body>
+</html>
+```
+html element의 content로는 head element와 body element가 들어가게 된다. 
+
+```html
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIKELION</title>
+</head>
+```
+먼저 head element는 HTML 문서의 각종 메타 데이터를 담고 있는 element이다.  
+**메타 데이터**란, 다른 데이터에 대한 정보를 제공하는 데이터, 즉 다른 데이터를 설명하기 위한 데이터라고 보면 된다.  
+ex) 사진에 대한 메타 데이터로는 -> 촬영 시각, 사진 화질, 사진 용량, 촬영 위치 등이 있다. 
+즉, head element는 HTML 문서 자체를 설명하기 위한 데이터르 포함하게 된다. 
+
+```html
+<title>LIKELION</title>
+```
+이 title element는 HTML 문서의 제목을 나타낸다. 브라우저 상단에 제목이 표시된다. 
+
+```html
+<meta charset="UTF-8">
+```
+이 meta element는 charset이라는 attribute를 사용했는데 
