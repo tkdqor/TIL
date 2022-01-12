@@ -37,3 +37,23 @@ p element뿐만 아니라 HTML에서는, 여러 번 띄어쓰거나 줄바꿈을
 <p>lorem</p> -> vs code 자동완성 선택
 ```
 아무런 의미는 없지만 공간을 채워서 레이아웃에 연출하기 위한 용도로 사용되는 lorem ipsum을 사용해서 문단에 공간을 채울 수 있음.
+
+* * * 
+
+## 목록을 구성하기 위한 element
+
+```html
+<ol>
+    <li>11</li>
+    <li>22</li>
+    <li>33</li>
+</ol>
+
+<ul>
+    <li>11</li>
+    <li>22</li>
+    <li>33</li>
+</ul>
+```
+각각 ordered list, unordered list의 약자로 순서가 있는 목록 또는 순서가 없는 목록을 나타낼 수 있다.  
+실제 목록에 추가할 아이템은 list item, li element를 이용해서 하나씩 추가해주면 된다.
