@@ -45,14 +45,14 @@
 라고 적는다. 이 코드는 해당 문서가 HTML5 기반의 문서라는 것을 의미한다. 2014년에 가장 대표적인 이 5버전이 확립되었다. 현재 모든 현업 개발자들은 HTML5 버전을 사용.
 
 - HTML element는 HTML을 구성하는 가장 기본적인 단위이다. 
-```
+```html
 <p>HELLO WORKS!</p>
 ```
 다음과 같은 HTML element가 있을 때 앞,뒤에 있는 것들을 tag라고 부른다. 이 tag의 이름이 HTML element의 이름이 된다. ex.) p element  
 앞에 있는 건 start tag, 뒤에 있는 건 end tag로 구분.  
 그리고 start tag와 end tag 사이에 HTML element가 실제로 나타내고자 하는 데이터를 넣게 되는데, 이를 content라고 한다.  
 그래서 위의 코드를 통틀어서 모든 구성요소를 합쳐 element라고 부르게 된다.
-```
+```html
 <br>
 <img src="sample.jpg">
 <input type="text">
