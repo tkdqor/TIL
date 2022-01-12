@@ -57,3 +57,10 @@ p element뿐만 아니라 HTML에서는, 여러 번 띄어쓰거나 줄바꿈을
 ```
 각각 ordered list, unordered list의 약자로 순서가 있는 목록 또는 순서가 없는 목록을 나타낼 수 있다.  
 실제 목록에 추가할 아이템은 list item, li element를 이용해서 하나씩 추가해주면 된다.
+
+## 이미지 삽입을 위한 element
+```html
+<img src="lion.png" alt="Lion 1">
+```
+이렇게 img element를 사용해주면 된다. 경로를 지정하기 위해 source의 약자인 src attribute를 사용한다. alt attribute는 alternative text의 약자로 이미지 대체 텍스트를 의미.  
+또한, 다운로드에 실패할 경우 화면에 대체 텍스트가 표시된다.
