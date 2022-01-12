@@ -18,3 +18,30 @@
 - 이러한 HTML 코드를 해석해서 웹 페이지로 그려주고 하이퍼링크를 바탕으로 웹 서비스를 이용할 수 있게끔 해주는 프로그램이 바로 **웹 브라우저**이다.
   - 그래서 우리는 웹 서비스를 이용할 때, 항상 웹 브라우저를 통해서 웹 페이지를 우리 눈으로 보게 된다. 
   - HTML 코드가 웹 브라우저에 의해 해석되어 화면상에 그려질 때, 즉 **렌더링(서버로부터 HTML파일을 받아 브라우저에 표시되는 과정)** 이 될 때 웹 페이지가 우리 눈에 보여지게 되는 것이다.  
+
+* * *
+
+## HTML element
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIKELION</title>
+</head>
+<body>
+    HELLO sangbaek!
+</body>
+</html>
+```
+
+- 브라우저가 위와 같은 HTML 코드를 읽는 방식은 사람이 책을 읽는 방식과 동일하다. 왼쪽에서 오른쪽 방향으로 텍스트 한 문장을 읽은 다음에, 아래에 있는 그 다음 문장들을 순서대로 읽게 된다.
+- HTML 파일의 첫 문장은 반드시 
+```html
+<!DOCTYPE html>
+```
+라고 적는다. 이 코드는 해당 문서가 HTML5 기반의 문서라는 것을 의미한다. 2014년에 가장 대표적인 이 5버전이 확립되었다. 현재 모든 현업 개발자들은 HTML5 버전을 사용.
+
+- HTML element는 HTML을 구성하는 가장 기본적인 단위이다. 
