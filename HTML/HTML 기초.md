@@ -59,3 +59,29 @@
 ```
 다만, 이런식으로 content를 가지지 않고 start tag로만 구성된 HTML element도 있다.  
 이러한 element를 **void element 또는 empty element** 라고 부른다. 
+
+## HTML attribute
+```html
+<a href="https://www.google.com">google</a>
+```
+일부 HTML element는 그 기능을 확장하거나 그 기능에 필요한 메타 데이터를 제공하기 위해서 attribute라는 것을 사용한다.  
+반드시 start tag에 위치해야 한다. 이 attribute는 **name="value"** 의 형태로 구성된다.
+```html
+<input type="text" placeholder="아이디를 입력해주세요.">
+```
+다음과 같이 2개 이상의 attribute를 기술할 수도 있다. 이 떄는 각 attribute 사이에 공백을 넣어주면 된다.
+
+## HTML 코드 기본
+```html
+<!DOCTYPE html>
+<html lang="en">
+...
+</html>
+```
+먼저 HTML 코드는 소문자로 html element를 작성하는 것으로 시작한다. html element의 start tag에는 lang attribute가 사용된다.  
+HTML 문서가 기본적으로 어떤 언어로 구성되어 있는지 표현해준다. 지금은 해당 HTML 문서가 영어로 구성되어 있음을 나타낸다. ex.) "이 페이지는 영어로 되어 있습니다. 번역하시겠습니까?"  
+이렇게 뜨는 이유는, 브라우저의 기본 언어는 한글로 설정 되어있는데 HTML 문서의 기본 언어는 영어로 되어있기 때문에 그런 것이다. 
+```html
+<html lang="ko">
+```
+만약, 기본 언어를 한글로 설정하고 싶다면 다음과 같이 수정해주자.
