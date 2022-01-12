@@ -132,3 +132,10 @@ ex) 사진에 대한 메타 데이터로는 -> 촬영 시각, 사진 화질, 사
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 ```
 해당 meta element는 모바일 환경에서의 레이아웃 최적화를 위해서 사용된다. 웹 페이지 레이아웃의 가로 폭을 모바일 장치의 가로 폭에 맞추고 Zoom level를 확대 혹은 축소하지 않은 기본값으로 맞추라는 의미.
+
+```html
+<body>
+  HELLO WORLD!
+</body>
+```
+body element는 실제 사용자 눈에 보여야 하는 콘텐츠를 작성하는 곳이다. 
