@@ -99,8 +99,18 @@ p {
 </p>
 ```
 - id와 class attribute는 모든 HTML element에서 자유롭게 사용할 수 있다. id와 class attribute를 사용하는 이유는 해당 element를 CSS에서 원하는 형태로 지정할 수 있게끔 하기 위함이다.
-- 위의 
+- 위에 코드에서 p를 선택하지 않고, id가 main-article인 것을 선택해달라고 하면 -> 첫번째 p element만 선택이 된다.
+- 만약, class가 article인 것을 선택해달라고 하면 -> class attribute의 value로 article를 지니고 있는 2개의 p element가 모두 선택된다. 
+```css
+#main-article {
+  ...
+}
 
+.article {
+  ...
+}
+```
+그리고 CSS selector로 지정할 때는, class의 경우 .을 사용하고 / id로 지정할 때는 #를 사용하면 된다.
 
 
 ## 단위
