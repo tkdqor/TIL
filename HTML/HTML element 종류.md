@@ -75,3 +75,25 @@ a는 anchor 즉, 닻에 해당하는데 인터넷이라는 바다에서 정박�
 a element의 content는 웹 브라우저 상에서 우리 눈에 보여질 링크의 형태이다. 단순한 텍스트부터 이미지, 다른 html element까지 모두 링크로 만들 수 있다.  
 target attribute를 언더바blank로 지정하면, 링크를 눌렀을 때 이동해야 할 페이지가 새로운 창 혹은 새로운 탭에 뜨게 된다.
 
+## 컨텐츠를 묶여주는 용도인 div element / span element
+- div와 span 모두 본인이 그 자체로 어떤 의미를 지닌다기보다는 다른 element나 콘텐츠를 필요에 따라 그룹으로 묶어주는 용도로 사용됨.
+
+### block-level element / Inline-level element
+- HTML element를 특성에 따라 두 종류로 구분. 보통 block element / inline element라고 부른다.
+
+**1. block element**
+- 항상 새로운 줄을 차지하는데, 가로 폭은 부모 element의 가로 폭만큼을 전부 차지하게 됨. 세로 폭은 자신의 content 높이만큼만 차지.  
+- 그래서 block element를 추가할 때마다, 줄바꿈이 되면서 다음줄에 레이아웃이 생성되고 블록이 차곡차곡 쌓이는 형태가 된다.
+- ex) h1~h6 element, p element, ul/ol/li element
+
+**2. inline element**
+- 본인의 content 사이즈만큼만 공간을 차지하게 된다. 그래서 줄바꿈을 발생시키지 않고 다른 텍스트와 한 줄에 이어지게 된다. 
+- ex) a element, img element
+
+## div element
+- div element는 묶어줌과 동시에 새로운 블록을 형성하는 block element에 해당한다.
+
+
+
+## span element
+- span element는 묶음의 결과가 inline element이기 때문에 다른 내용들과 어우러져서 같은 줄에 위치하게 된다.
