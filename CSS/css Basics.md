@@ -21,3 +21,14 @@ CSS에서 선택하고자 하는, 원하는 element를 어떤 식으로 바꾸�
 
 ## Inline style
 - 스타일을 적용하고자 하는 HTML start tag내부에다가 style attribute를 활용해 스타일을 적용하는 방법.
+
+* * *
+## CSS 실습
+- 외부의 css 파일을 HTML파일내에서 사용할 수 있게끔 연결을 시켜주자.
+```html
+<head>
+...
+<link rel="stylesheet" href="style.css">
+</head>
+```
+다음과 같이 head element 안쪽에 link element를 추가해주면 된다. href attribute에 연결하고자 하는 css 파일의 경로를 적어야 한다.
