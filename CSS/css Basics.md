@@ -40,6 +40,7 @@ ref attribute는 relationship의 약자로 이 HTML문서와 하이퍼링크로 
 h1 {
     font-size: 50px;
     text-align: center;
+    font-family: 'Nanum Myeongjo', serif;
 }
 ```
 다음과 같이 h1를 선택하면, HTML파일 내에서 h1이 사용된 모든 곳에 스타일이 적용된다.
@@ -49,6 +50,8 @@ h1 {
   그런데, 웹상에서 제공하는 폰트를 사용하게 되면 따로 설치할 필요없이 편리하게 적용할 수 있다.
   - 대표적으로 **구글 웹 폰트**가 있다. https://fonts.google.com/ 해당 사이트에 들어가서 마음에 드는 폰트를 클릭하고 -> select this style 클릭해서 사용해보자.
   - 웹에서 사용하는 기본 글씨체는 serif - 글씨 끝을 살짝 멋을 냄 / sans-serif - 멋을 내지 않은 글씨체 / monospace - 자간이 일정한 글씨체 / cursive - 펜글씨같은 글씨체 / fantasy - 주로 제목용으로 사용하는 글씨체
+  - 글씨체를 지정할 때는 사용하고자 하는 폰트만 적어주면 되나, 일반적으로는 예시처럼 콤마를 사용해서 여러 개를 지정하게 된다.  
+    웹 브라우저는 이 font-family의 property를 앞에서부터 순차적으로 사용하게 되는데 그 과정에서 해당 폰트가 사용 불가능한 상황을 대비해서 해당 폰트를 대신할 폰트를 지정하는 것이다.  
 
 
 
