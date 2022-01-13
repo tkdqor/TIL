@@ -101,8 +101,10 @@ target attribute를 언더바blank로 지정하면, 링크를 눌렀을 때 이�
 - div element는 document division의 약자로, 묶어줌과 동시에 새로운 블록을 형성하는 block element에 해당한다.
 - 제목과 문단을 나눌 때 사용해보자.
 - HTML5 이전에는 레이아웃 구성을 위해 정말 많은 div element를 사용하게 되었다. 그러나 너무 많아져서 각 div가 어떤 역할과 기능을 의미하는지 판단하기가 어려워졌다.  
-  - 그래서 HTML5에서는 이러한 문제를 해결하기 위해 div element와 동일하지만 이름만으로도 기능과 역할을 알 수 있게끔 Semantic element라는 게 추가되었다. 
+  - 그래서 HTML5에서는 이러한 문제를 해결하기 위해 div element와 동일하지만 이름만으로도 기능과 역할을 알 수 있게끔 Semantic element라는 게 추가되었다.
 
+<img src="https://user-images.githubusercontent.com/95380638/149259250-d12ccc69-936d-49ca-9621-9ed4606ab233.png" width="200px" height="300px" title="px(픽셀) 크기 설정" alt="RubberDuck"></img>
+- 관련 내용 https://geonlee.tistory.com/96
 
 
 ## span element
