@@ -52,7 +52,9 @@ h1 {
   - 웹에서 사용하는 기본 글씨체는 serif - 글씨 끝을 살짝 멋을 냄 / sans-serif - 멋을 내지 않은 글씨체 / monospace - 자간이 일정한 글씨체 / cursive - 펜글씨같은 글씨체 / fantasy - 주로 제목용으로 사용하는 글씨체
   - 글씨체를 지정할 때는 사용하고자 하는 폰트만 적어주면 되나, 일반적으로는 예시처럼 콤마를 사용해서 여러 개를 지정하게 된다.  
     웹 브라우저는 이 font-family의 property를 앞에서부터 순차적으로 사용하게 되는데 그 과정에서 해당 폰트가 사용 불가능한 상황을 대비해서 해당 폰트를 대신할 폰트를 지정하는 것이다.  
- 
+
+
+## Parent/Children element
  ```css
 body {
     font-family: 'Nanum Myeongjo', serif;
@@ -60,13 +62,10 @@ body {
 ```
 다음과 같이 body element를 설정하게 되면, body element 안쪽에 있는 모든 요소들에 글씨체가 바뀌게 된다.
 
-
-## Parent/Children element
 - HTML에서 각 element는 content로 다른 element를 가질 수가 있는데, 이것을 상대적으로 표현하기 위해서 부모/자식 element라고 얘기한다.
 - 즉, 특정 element를 기준으로 감싸고 있는 element를 부모 element, 감싸져 있는 element를 자식 element라고 한다.
 => CSS는 이 부모 element에 스타일을 주었을 때, 이 스타일이 자식 element에 전파될 수 있는데 이러한 현상을 **Style Inheritance**라고 한다.  
    다만, 어떤 property는 상속이 되기도 하고 안되는 경우도 있어서 이러한 부분이 CSS를 공부하는 데 있어 어려움이 된다.
-
 
 
 ## 단위
