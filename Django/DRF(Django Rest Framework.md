@@ -4,7 +4,11 @@
 - 즉, HTTP 메소드를 통해 URL만으로도 어떤 종류의 Request를 할지 명시적으로 알 수 있게끔 해준다.
 
 ## DRF 기반의 API 서버를 만들기
+- **DRF 기반의 API 서버란?**
+  - Django를 이용하여 개발한 서버에서 클라이언트가 HTTP 메소드를 이용해 Request를 했을 때, 원하는 정보를 JSON의 형태로 Response 해줄 수 있는 서버를 구축하는 것을 의미. 
 
+
+**DRF 설치 해보기**
 1. 먼저 DRF 패키지 설치하기
 ```
 pip install djangorestframework
