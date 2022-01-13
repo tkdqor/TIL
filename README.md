@@ -13,12 +13,13 @@
 ### HTML
 
 - [HTML 기초](https://github.com/tkdqor/TIL/blob/main/HTML/HTML%20%EA%B8%B0%EC%B4%88.md)
+- [HTML element 종류](https://github.com/tkdqor/TIL/blob/main/HTML/HTML%20element%20%EC%A2%85%EB%A5%98.md)
 
 
 
 ### CSS
 
-- ss
+- [css Basics](https://github.com/tkdqor/TIL/blob/main/CSS/css%20Basics.md)
 
 
 ### Python
