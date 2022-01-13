@@ -77,6 +77,7 @@ target attribute를 언더바blank로 지정하면, 링크를 눌렀을 때 이�
 
 ## 컨텐츠를 묶여주는 용도인 div element / span element
 - div와 span 모두 본인이 그 자체로 어떤 의미를 지닌다기보다는 다른 element나 콘텐츠를 필요에 따라 그룹으로 묶어주는 용도로 사용됨.
+- CSS를 적용시킬 때 -> 이 div와 span에 의해 묶여져 있는 것을 바탕으로 원하는 스타일을 입힐 수 있게 된다.
 
 ### block-level element / Inline-level element
 - HTML element를 특성에 따라 두 종류로 구분. 보통 block element / inline element라고 부른다.
@@ -91,9 +92,19 @@ target attribute를 언더바blank로 지정하면, 링크를 눌렀을 때 이�
 - ex) a element, img element
 
 ## div element
-- div element는 묶어줌과 동시에 새로운 블록을 형성하는 block element에 해당한다.
+```html
+<div>
+    <h1>...</h1>
+    <p>...</p>
+</div>    
+```
+- div element는 document division의 약자로, 묶어줌과 동시에 새로운 블록을 형성하는 block element에 해당한다.
+- 제목과 문단을 나눌 때 사용해보자.
+- HTML5 이전에는 레이아웃 구성을 위해 정말 많은 div element를 사용하게 되었다. 그러나 너무 많아져서 각 div가 어떤 역할과 기능을 의미하는지 판단하기가 어려워졌다.  
+  - 그래서 HTML5에서는 이러한 문제를 해결하기 위해 div element와 동일하지만 이름만으로도 기능과 역할을 알 수 있게끔 Semantic element라는 게 추가되었다. 
 
 
 
 ## span element
 - span element는 묶음의 결과가 inline element이기 때문에 다른 내용들과 어우러져서 같은 줄에 위치하게 된다.
+- 텍스트를 묶어주고 강조할 때 사용해보자.
