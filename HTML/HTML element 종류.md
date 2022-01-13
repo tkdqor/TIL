@@ -106,5 +106,10 @@ target attribute를 언더바blank로 지정하면, 링크를 눌렀을 때 이�
 
 
 ## span element
+```html
+<p>
+    <span>Lorem ipsum</span> dollar sit met....
+</p>
+```
 - span element는 묶음의 결과가 inline element이기 때문에 다른 내용들과 어우러져서 같은 줄에 위치하게 된다.
 - 텍스트를 묶어주고 강조할 때 사용해보자.
