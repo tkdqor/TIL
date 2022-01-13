@@ -19,7 +19,7 @@
 
 ### CSS
 
-- [css Basics](https://github.com/tkdqor/TIL/blob/main/CSS/css%20Basics.md)
+- [CSS Basics](https://github.com/tkdqor/TIL/blob/main/CSS/CSS%20Basics.md)
 
 
 ### Python
