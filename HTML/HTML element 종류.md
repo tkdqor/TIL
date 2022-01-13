@@ -15,7 +15,8 @@ h1 element부터 h6 element는 HTML 문서에 배치할 수 있는 제목에 해
 <p>...</p>
 ```
 p는 paragrah의 약자로 HTML 내에서 관련있는 콘텐츠를 하나로 묶어서 문단을 구성할 때 주로 사용.  
-p element뿐만 아니라 HTML에서는, 여러 번 띄어쓰거나 줄바꿈을 하더라도 공백은 하나만 있는 것으로 간주됨.
+p element뿐만 아니라 HTML에서는, 여러 번 띄어쓰거나 줄바꿈을 하더라도 공백은 하나만 있는 것으로 간주됨.  
+내용이 길어질 경우, 코드 에디터에서 view -> Toggle Word Wrap 클릭 / 또는 Mac에서 option + Z
 
 ```html
 &nbsp;
