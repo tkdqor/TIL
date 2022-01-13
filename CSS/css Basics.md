@@ -67,6 +67,41 @@ body {
 => CSS는 이 부모 element에 스타일을 주었을 때, 이 스타일이 자식 element에 전파될 수 있는데 이러한 현상을 **Style Inheritance**라고 한다.  
    다만, 어떤 property는 상속이 되기도 하고 안되는 경우도 있어서 이러한 부분이 CSS를 공부하는 데 있어 어려움이 된다.
 
+## 글씨 색깔
+```css
+p {
+    text-align: center;
+    color: ;
+}
+```
+- color : 글씨 색깔을 바꿔주는 property. 보통 코드 에디터에 있는 이름이 있는 색보다는, 디자이너가 요구하는 독특한 색상을 입혀야 하는 경우가 더 많다.  
+          컴퓨터에서 색은 빛의 삼원색인 Red, Green, Blue 즉 RGB를 조합해서 만드는데 이 RGB를 표시하는 방법이 여러가지가 있다.  
+          보통 Hexadecimal RGB 코드, 헥사코드를 많이 사용하지만 RGB 코드를 이용하기도 한다. 두 방법 모두 RGB 각각에 0~255까지 숫자를 부여해서 색을 표현한다.
+          
+## CSS Ruleset 작성 - 2
+- CSS selector 설정 시, 보통 현업에서는 HTML tag 이름만 지정해서 선택하지는 않는다. 먼저 selector 선택 기준 3가지를 알아보자.
+1. Type selector
+- HTML element의 이름을 바탕으로 지정하는 방식.
+
+2. Class selector
+- class라는 attribute를 가진 모든 element를 선택하는 방식.
+
+3. ID selector
+- id라는 attribute를 가진 element 딱 하나만 선택하는 방식. 오직 하나만 있다는 것을 생각하자.
+
+```html
+<p id="main-article" class="article">
+...
+</p>
+
+<p class="article">
+...
+</p>
+```
+- id와 class attribute는 모든 HTML element에서 자유롭게 사용할 수 있다. id와 class attribute를 사용하는 이유는 해당 element를 CSS에서 원하는 형태로 지정할 수 있게끔 하기 위함이다.
+- 위의 
+
+
 
 ## 단위
 * 절대 길이 단위 = 다른 요소에 의해서 길이가 변하지 않고 항상 동일한 크기로 간주되는 단위. 대표적으로 픽셀(px)이 가장 많이 사용됨.
