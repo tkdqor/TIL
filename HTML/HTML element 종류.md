@@ -70,8 +70,8 @@ p element뿐만 아니라 HTML에서는, 여러 번 띄어쓰거나 줄바꿈을
 <a href="https://www.google.com">Google</a>
 <a href="https://www.naver.com" target="_blank">Google</a>
 ```
-a는 anchor 즉, 닻에 해당하는데 인터넷이라는 바다에서 정박할 다음 목적지를 가리킨다고 보면 된다. 하이퍼텍스트를 만들기 위해서는 이 a element를 사용하자.  
-가장 중요한 것은, hyperlink Reference의 약자인 href attribute인데 이 attribute의 value가 곧 하이퍼링크를 눌렀을 때 이동하게 되는 링크의 주소가 된다.  
-a element의 content는 웹 브라우저 상에서 우리 눈에 보여질 링크의 형태이다. 단순한 텍스트부터 이미지, 다른 html element까지 모두 링크로 만들 수 있다.  
-target attribute를 언더바blank로 지정하면, 링크를 눌렀을 때 이동해야 할 페이지가 새로운 창 혹은 새로운 탭에 뜨게 된다.
+- a는 anchor 즉, 닻에 해당하는데 인터넷이라는 바다에서 정박할 다음 목적지를 가리킨다고 보면 된다. 하이퍼텍스트를 만들기 위해서는 이 a element를 사용하자.  
+  가장 중요한 것은, hyperlink Reference의 약자인 href attribute인데 이 attribute의 value가 곧 하이퍼링크를 눌렀을 때 이동하게 되는 링크의 주소가 된다.  
+  a element의 content는 웹 브라우저 상에서 우리 눈에 보여질 링크의 형태이다. 단순한 텍스트부터 이미지, 다른 html element까지 모두 링크로 만들 수 있다.  
+  target attribute를 언더바blank로 지정하면, 링크를 눌렀을 때 이동해야 할 페이지가 새로운 창 혹은 새로운 탭에 뜨게 된다.
 
