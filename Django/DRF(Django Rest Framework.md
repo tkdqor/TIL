@@ -9,7 +9,7 @@
   - DRF 기반의 API 서버를 구축하지 않는 경우, 보통 클라이언트의 Request에 대해서 웹 페이지를 랜더링 해주게 된다. 
 
 
-**DRF 설치 해보기**
+- **DRF 설치 해보기**
 1. 먼저 DRF 패키지 설치하기
 ```
 pip install djangorestframework
