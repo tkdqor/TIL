@@ -31,4 +31,17 @@ CSS에서 선택하고자 하는, 원하는 element를 어떤 식으로 바꾸�
 <link rel="stylesheet" href="style.css">
 </head>
 ```
-다음과 같이 head element 안쪽에 link element를 추가해주면 된다. href attribute에 연결하고자 하는 css 파일의 경로를 적어야 한다.
+다음과 같이 head element 안쪽에 link element를 추가해주면 된다. href attribute에 연결하고자 하는 css 파일의 경로를 적어야 한다.  
+ref attribute는 relationship의 약자로 이 HTML문서와 하이퍼링크로 연결하는 대상, 즉 여기서는 style.css라는 대상과의 관계를 나타낸다.
+
+## CSS Ruleset 작성
+- Ruleset에서 가장 먼저 적어줘야 하는 것은 바로 selector. 가장 쉬운 방법은 HTML의 tag 이름을 그대로 적는 것이다. 
+
+
+다음과 같이 h1를 선택하면, HTML파일 내에서 h1이 사용된 모든 곳에 스타일이 적용된다.
+- font-size : 글씨 크기를 변경하는 property
+
+* 절대 길이 단위 = 다른 요소에 의해서 길이가 변하지 않고 항상 동일한 크기로 간주되는 단위. 대표적으로 픽셀(px)이 가장 많이 사용됨.
+* 상대 길이 단위 = 특정 요소를 기준으로 상대적인 크기를 계산해서 사용하는 단위. 웹 페이지 전반에 걸쳐 사용되고 있는 사이즈들을 모두 한번에 조절할 수 있음. 대표적으로 rem이라는 단위가 자주 사용됨.
+- 참고할만한 페이지 : https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units  
+
