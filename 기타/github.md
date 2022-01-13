@@ -37,7 +37,7 @@ git remote add origin 새로만든github주소
 ```
 git push -u origin master
 ```
-이 push 명령어는 프로젝트 폴더의 현 브랜치에 commit된 내용들을 origin이라는 이름의 원격 레파지토리에 진행하고 우리 local git의 master라는 이름의 브랜치를 올리겠다는 의미이다.  
+이 push 명령어는 프로젝트 폴더의 현 브랜치에 commit된 내용들을 origin이라는 이름의 원격 레파지토리에 진행하고 원격 레파지토리의 master라는 이름의 브랜치를 올리겠다는 의미이다.  
 해당 명령어를 다 입력하고 나면
 ```
 Branch 'master' set up to track remote branch 'master' from 'origin'.
