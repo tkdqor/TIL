@@ -27,6 +27,14 @@ p {
   실제 웹 브라우저에는 content의 width와 height에 padding과 border값을 더한 수치로 보여지게 된다. 
 - 만약, Border를 기준으로 width와 height를 지정해주고 싶다면 -> box-sizing이라는 property에 border-box라는 value를 지정해주면 된다.
 
-
+```html
+<img id="profile" src="gattaca.png" alt="프로필 이미지" width="20%" height="200px">
+```
+```css
+img#profile {
+  display: block;
+  margin: 0px auto;
+}
+```
 - 또다른 방법으로는, CSS를 활용해서 강제로 inline element인 img element를 block element로 변경시킬 수 있다. 
-- display라는 property에다가 block이라고 지정하면 -> inline element가 block element가 된다. 그리고 margin에 auto를 줘서 가운데로 정렬하는 방식.
+- display라는 property에다가 block이라고 지정하면 -> inline element가 block element가 된다. 그리고 margin 좌우에 auto를 줘서 가운데로 정렬하는 방식.
