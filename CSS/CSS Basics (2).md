@@ -45,4 +45,12 @@ img#profile {
   list-style-type: none;
 }
 ```
-- 이렇
+- 이렇게 list-style-type에 none이라는 value를 주자.
+
+## a element 밑줄 제거
+```css
+a {
+    text-decoration: none;
+}
+```
+- 모든 a element에 적용시켜주자.
