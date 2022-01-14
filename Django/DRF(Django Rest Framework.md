@@ -1,7 +1,7 @@
 # DRF
 - DRF는 Django에서 RestFul한 API 서버를 구축하기 위한 라이브러리
 - RestFul API에 대한 설명은 다음을 참고 https://velog.io/@somday/RESTful-API-%EC%9D%B4%EB%9E%80
-- 즉, HTTP 메소드를 통해 정해진 통신 규격에 맞게 어떤 종류의 Request를 할지 명시적으로 알 수 있게끔 해준다.
+- RestFul API란, HTTP 메소드를 통해 정해진 통신 규격에 맞게 어떤 종류의 Request를 할지 명시적으로 알 수 있게끔 해준다.
 
 ## DRF 기반의 API 서버를 만들기
 - **DRF 기반의 API 서버란?**
