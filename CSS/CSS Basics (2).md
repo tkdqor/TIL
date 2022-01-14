@@ -38,3 +38,11 @@ img#profile {
 ```
 - 또다른 방법으로는, CSS를 활용해서 강제로 inline element인 img element를 block element로 변경시킬 수 있다. 
 - display라는 property에다가 block이라고 지정하면 -> inline element가 block element가 된다. 그리고 margin 좌우에 auto를 줘서 가운데로 정렬하는 방식.
+
+## 목록 element 불릿 기호 제거
+```css
+#links {
+  list-style-type: none;
+}
+```
+- 이렇
