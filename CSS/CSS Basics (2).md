@@ -23,8 +23,8 @@ p {
   padding: 20px 40px 20px 40px;
 }
 ```
-- 이 block box에는 가로인 width와 세로인 height를 content 기준으로 지정할 수 있다. 
-- 실제 웹 브라우저에는 content의 width와 height에 padding과 border값을 더한 수치로 보여지게 된다. 
+- 이 block box에는 가로인 width와 세로인 height를 content 기준으로 지정할 수 있다.  
+  실제 웹 브라우저에는 content의 width와 height에 padding과 border값을 더한 수치로 보여지게 된다. 
 - 만약, Border를 기준으로 width와 height를 지정해주고 싶다면 -> box-sizing이라는 property에 border-box라는 value를 지정해주면 된다.
 
 
