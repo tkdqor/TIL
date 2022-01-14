@@ -15,8 +15,17 @@ div {
 ## CSS Box Model
 - HTML의 모든 element는 기본적으로 box에 해당한다. * 를 CSS selector로 border값을 적용하면 모두 box라는 것을 확인할 수 있다. 
 <img src="https://user-images.githubusercontent.com/95380638/149442614-23a81968-1a6a-40f0-8e04-214ddd908651.png" width="60%" height="60%">
+- padding, border, margin 이 3가지는 -> top / right / bottom / left를 모두 따로 설정할 수 있고 한번에 설정할 수도 있다.
 
-
+```css
+p {
+  /* top - right - bottom - left */
+  padding: 20px 40px 20px 40px;
+}
+```
+- 이 block box에는 가로인 width와 세로인 height를 content 기준으로 지정할 수 있다. 
+- 실제 웹 브라우저에는 content의 width와 height에 padding과 border값을 더한 수치로 보여지게 된다. 
+- 만약, Border를 기준으로 width와 height를 지정해주고 싶다면 -> box-sizing이라는 property에 border-box라는 value를 지정해주면 된다.
 
 
 - 또다른 방법으로는, CSS를 활용해서 강제로 inline element인 img element를 block element로 변경시킬 수 있다. 
