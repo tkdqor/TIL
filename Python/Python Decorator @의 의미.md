@@ -20,8 +20,8 @@ def main_function_1():
     print ("MAIN function 1 start")
 ```
 이렇게 Decorator를 해주고 **main_function_1()** 를 호출해주면 함수에 구문이 추가된 것을 확인할 수 있다.
--> 2021-01-16 17:24:54.972919
-   MAIN function 1 start 
+-> 2021-01-16 17:24:54.972919  
+   MAIN function 1 start  
    2021-01-16 17:24:54.973226
    
 
