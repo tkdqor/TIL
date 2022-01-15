@@ -11,7 +11,7 @@
 
 * * *
 
-**DRF 설치 해보기**
+## DRF 실습 해보기
 1. 먼저 DRF 패키지 설치하기
 ```
 pip install djangorestframework
