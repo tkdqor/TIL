@@ -15,3 +15,7 @@ def EnglishName(*kwargs):
   for key, value in kwargs.items():
     print("{0} is {1}".format(key, value))
 ```
+
+
+## 참고 자료
+- https://brunch.co.kr/@princox/180
