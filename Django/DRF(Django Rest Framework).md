@@ -13,14 +13,14 @@
 * * *
 
 ## DRF 실습 해보기
-1. 먼저 DRF 패키지 설치하기
+**1. 먼저 DRF 패키지 설치하기**
 ```
 pip install djangorestframework
 ```
 터미널에 해당 명령어 입력
 
 
-2. 프로젝트 디렉토리 안에 있는 settings.py에서 
+**2. 프로젝트 디렉토리 안에 있는 settings.py에서** 
 ```python
 INSTALLED_APPS = [
     ...,
@@ -30,7 +30,7 @@ INSTALLED_APPS = [
 새로운 앱으로 추가해주기
 
 
-3. Serializer 생성하기
+**3. Serializer 생성하기**
 - app 내부 디렉토리안에 serializer.py 생성하기
 ```python
 from rest_framework import serializers
@@ -46,7 +46,7 @@ class PostSerializer(serializers.ModelSerializer):
 - 위에 코드에서는 Post라는 모델을 사용하고 fields는 사용하고 싶은 필드(column)를 나열해주면 된다. __all__를 입력할 경우 모든 필드를 사용하곘다는 의미이다. 
 
 
-4. views.py에서 API 설정해주기
+**4. views.py에서 API 설정해주기**
 ```python
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -68,7 +68,7 @@ def Postinfo(request, post_id):
 - 마지막으로 serializer.data로 반환해주면 된다.
 
 
-5. urls.py에서 url 설정해주기
+**5. urls.py에서 url 설정해주기**
 ```python
 from django.urls import path
 from . import views
@@ -83,7 +83,7 @@ urlpatterns = [
 - 이런식으로 views.py에 있는 Postinfo 함수를 import하고 post_id를 전달할 수 있는 url를 설정하면 된다.
 
 
-6. 그리고 해당 url로 request를 해보면,
+**6. 그리고 해당 url로 request를 해보면,**
 ![image](https://user-images.githubusercontent.com/95380638/149622616-d0e6631a-ca45-4186-8302-8eb38ad4a83e.png)
 - 이런식으로 post_id에 해당하는 Post모델에 데이터를 JSON 형태로 전달해준다.
 
