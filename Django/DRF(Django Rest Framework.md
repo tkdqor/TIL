@@ -9,13 +9,24 @@
   - 즉, api서버를 구성했다는 것은 클라이언트에서 원하는 정보를 전달해줄 수 있는 서버를 구현한다고 생각하면 된다.
   - DRF 기반의 API 서버를 구축하지 않는 경우, 보통 클라이언트의 Request에 대해서 웹 페이지를 랜더링 해주게 된다. 그리고 Request한 API에 대해 정보를 전달해주지는 않는다.
 
+* * *
 
-- **DRF 설치 해보기**
+**DRF 설치 해보기**
 1. 먼저 DRF 패키지 설치하기
 ```
 pip install djangorestframework
 ```
 터미널에 해당 명령어 입력
+
+2. 프로젝트 디렉토리 안에 있는 settings.py에서 
+```python
+INSTALLED_APPS = [
+    ...,
+    'rest_framework',
+]
+```
+새로운 앱으로 추가해주기
+
 
 
 
