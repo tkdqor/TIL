@@ -41,6 +41,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('product_name', 'brand', 'created_at')
 ```
+- serializer는 장고 모델 데이터를 JSON 타입으로 바꿔주는(직렬화) 코드이다.
 - serializers와 app에 설정한 모델(여기서는 예시로 Post)을 import 해준다.
 - 클래스는 "모델이름Serializer" 라고 설정 -> 이 때, ModelSerializer 클래스를 활용하게 되면 Model에 정의한 필드에 해당하는 값을 Serializer에서 사용할 수 있게 된다.
 - 위에 코드에서는 Post라는 모델을 사용하고 fields는 사용하고 싶은 필드(column)를 나열해주면 된다. __all__를 입력할 경우 모든 필드를 사용하곘다는 의미이다. 
@@ -89,20 +90,9 @@ urlpatterns = [
 
 * * * 
 ## DRF 기반으로 API 서버를 구축하는 이유?
-- 
+=> **프론트엔드와 백엔드의 분리가 가능해진다.**
 
-
-
-
-
-
-https://www.youtube.com/watch?v=ywJWbAF6txQ 이거 내용 일단 보기...
-==> 반환을 할 때, JSON형태로 응답... / 그걸 프론트엔드에서 요청할 때 서버에서 응답을해주는데 이걸 RESTFUL하게 해준다..는 것...
-- 파이썬으로 로컬 서버를 열 때, 그냥 하려면 힘듬...일일이.. —> 프레임워크를 실행만 하면 서버를 가동할 수 있게끔..
-- 시리얼라이저는 장고 모델 데이터를 JSON 타입으로 바꿔주는(직렬화) 코드
-- 장고 모델 데이터를 JSON 타입으로 뿌려주면 API로 통신이 가능하며 내 데이터를 JSON으로 바꿔줄 수 있다..!
-- JSON형태의 결과값은 문자열, string으로 인식된다. 그래서 받은 입장에서 가공을 해줘야 한다.
-
-==> 장고 서버를 만든 것을 -> 라이브러리를 설치해서 Restful한 API서버로 만들었다는 것이다!
-
+- 프론트엔드 개발자는 서버로 Request를 하면 JSON 형태의 데이터를 얻을 수 있기 때문에 django와 관련된 내용을 알고 있지 않아도, Serialization된 JSON 형식의 데이터를 API 서버로부터 받아서 개발할 수 있다.
+  - JSON 형태의 결과값은 문자열, string으로 인식되기 때문에 받는 입장에서는 가공을 해줘야 한다.
+- 백엔드 개발자는 API 서버를 개발하는 것에 집중하여 각각 독립된 개발환경을 유지할 수 있다. 
 
