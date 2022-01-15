@@ -35,6 +35,8 @@ https://www.youtube.com/watch?v=ywJWbAF6txQ 이거 내용 일단 보기...
 - 장고 모델 데이터를 JSON 타입으로 뿌려주면 API로 통신이 가능하며 내 데이터를 JSON으로 바꿔줄 수 있다..!
 - JSON형태의 결과값은 문자열, string으로 인식된다. 그래서 받은 입장에서 가공을 해줘야 한다.
 
+==> 장고 서버를 만든 것을 -> 라이브러리를 설치해서 Restful한 API서버로 만들었다는 것이다!
+
 * * * 
 
 - app 디렉토리 안에 serializers.py 파일 만들기
