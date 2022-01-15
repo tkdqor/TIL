@@ -27,6 +27,19 @@ INSTALLED_APPS = [
 ```
 새로운 앱으로 추가해주기
 
+3. Serializer 생성하기
+- app 내부 디렉토리안에 serializer.py 생성하기
+```python
+from rest_framework import serializers
+from .models import Post
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ('product_name', 'brand', 'created_at')
+```
+
+
 
 
 
