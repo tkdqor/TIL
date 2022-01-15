@@ -45,7 +45,26 @@ class PostSerializer(serializers.ModelSerializer):
 - 위에 코드에서는 Post라는 모델을 사용하고 fields는 사용하고 싶은 필드(column)를 나열해주면 된다. __all__를 입력할 경우 모든 필드를 사용하곘다는 의미이다. 
 
 
-4. views.py에서 
+4. views.py에서 API 설정해주기
+```python
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import PostSerializer
+
+
+# RDF를 이용한 상품 정보 1개에 대한 API
+@api_view(['GET'])
+def Postinfo(request, post_id):
+    post = Post.objects.get(id=post_id)
+    serializer = PostSerializer(post)
+
+    return Response(serializer.data)
+```
+- GET메소드로 API를 설정하기
+- 요청되는 request에 대한 정보와 DB에 저장되어있는 상품 1개에 대한 정보를 받기 위해 request와 post_id를 파라미터로 설정
+- post라는 임의의 변수에 Post모델 1개 데이터를 담기
+- serializer라는 변수에 serializers.py에 설정해둔 PostSerializer를 사용하기(괄호안에는 모델이름 설정)
+- 마지막으로 serializer.data로 반환해주면 된다.
 
 
 
