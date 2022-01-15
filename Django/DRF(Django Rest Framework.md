@@ -38,7 +38,9 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('product_name', 'brand', 'created_at')
 ```
-
+- serializers와 app에 설정한 모델(여기서는 예시로 Post)을 import 해준다.
+- 클래스는 "모델이름Serializer" 라고 설정 -> 이 때, ModelSerializer 클래스를 활용하게 되면 Model에 정의한 필드에 해당하는 값을 Serializer에서 사용할 수 있게 된다.
+- 위에 코드에서는 Post라는 모델을 사용하고 fields는 사용하고 싶은 필드(column)를 나열해주면 된다. '__all__'를 입력할 경우 모든 필드를 사용하곘다는 의미이다. 
 
 
 
