@@ -12,6 +12,27 @@
 => 그래서 결국, 우리가 실제로 웹 페이지를 개발할 때 가장 많이 작업하게 되는 부분은 **큼지막한 block element를 작은 block element로 쪼개고 또 배치하는 작업이다.**
 - 기본적으로 block element는 한 줄을 다 차지해서 세로로만 배치가 가능하나, CSS를 이용해서 block element를 가로로도 배치할 수 있게 된다. 
 
+## 레이아웃 예제
+```html
+<body>
+    <div class="box">Box 1</div>
+    <div class="box">Box 2</div>
+    <div class="box">Box 3</div>
+</body>
+```
+```css
+.box {
+    width: 300px;
+    height: 300px;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149648508-3e795eb0-5c99-4678-85d7-2172d7bcd515.png" width="70%" height="70%">
+
+- 이 경우에는 캡처와 같이 개발자도구로 box 1를 선택해보면, 파란색으로 너비 300px / 높이 300px 이렇게 지정된 것을 확인할 수 있다.  
+- 그리고 content는 들어있지 않지만 block element의 특성 상, 차지하고 있는 영역이 개발자도구에서 주황색으로 표시되고 있다. 이는 개발자도구의 CSS box에서 표시되는 색깔과 같으니 참고하자.  
+
+
+
 * * *
 ## CSS Flexbox
 - 대부분의 브라우저에서 지원하고 현업에서 많이 쓰이는 방법 중 하나인 CSS Flexbox를 이용해서 block element를 배치해보자.
