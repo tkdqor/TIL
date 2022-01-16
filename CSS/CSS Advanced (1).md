@@ -42,7 +42,7 @@
 ```
 <img src="https://user-images.githubusercontent.com/95380638/149648715-6e168f6b-f1fe-417d-a414-ba971e6498aa.png" width="70%" height="70%">
 
-- background-color라는 property는 block element의 content에 배경 색깔을 입혀줄 수 있는 property이다.
+- background-color라는 property는 block element에 배경 색깔을 입혀줄 수 있는 property이다.
 
 
 ## block element간의 세로로 여백 주기  
@@ -58,7 +58,29 @@
 <img src="https://user-images.githubusercontent.com/95380638/149648988-9dea355b-20af-45fd-81be-ee73095bd38c.png" width="70%" height="70%">
 
 - box에 margin 값을 주게 되면, 상하좌우에 각각 20px씩 block box의 외부에 여백이 생긴 것을 확인할 수 있다. 그런데 우측 margin은 굉장히 크게 보이는데, 실제 box가 가지고 있는 margin은 20px이지만,  
-  block element의 특성 상, 차지하고 있지 않은 영역도 이렇게 margin처럼 취급되고 있음을 확인할 수 있다. 
+  block element의 특성 상, 차지하고 있지 않은 영역도 이렇게 margin처럼 취급되고 있음을 확인할 수 있다.  
+- 해당 내역은 개발자도구에서도 확인할 수 있다.
+
+
+**2. padding 값 주기**
+- padding의 경우도 padding-top. 이렇게 각각 조개서 줄 수도 있고, 그냥 padding이라고 적고 단축 형태로 값을 줄 수 있다.
+```css
+.box {
+    width: 300px;
+    height: 300px;
+    background-color: grey;
+    color: white;
+    font-size: 30px;
+    margin: 20px;
+    padding: 20px;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149649362-d0550790-7d91-4ba4-bf99-5636f39d8cec.png" width="70%" height="70%">
+
+- 이렇게 box에 padding 값을 주게 되면, content 크기는 동일한 상태에서 content와 border사이에 상하좌우 공간이 초록색으로 생겨나게 된다.(background-color 영역도 늘어난다)
+- 그리고 CSS Box model은 우리가 별도로 지정해주지 않는 이상, 우리가 설정한 width와 height가 content box를 기준으로 측정이 되기 때문에  
+  이 content box에 -> padding과 border까지 더해야 우리가 웹 브라우저 상에서 실제로 눈으로 보는 영역의 너비와 높이가 된다.  
+
 
 
 
