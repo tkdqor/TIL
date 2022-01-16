@@ -32,6 +32,20 @@
 - 그리고 content는 들어있지 않지만 block element의 특성 상, 차지하고 있는 영역이 개발자도구에서 주황색으로 표시되고 있다. 이는 개발자도구의 CSS box에서 표시되는 색깔과 같으니 참고하자.  
 
 
+- **block element 배경 색깔**
+```css
+.box {
+    width: 300px;
+    height: 300px;
+    background-color: grey;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149648715-6e168f6b-f1fe-417d-a414-ba971e6498aa.png" width="70%" height="70%">
+
+- background-color라는 property는 block element의 content에 배경 색깔을 입혀줄 수 있는 property이다.
+
+
+
 
 * * *
 ## CSS Flexbox
