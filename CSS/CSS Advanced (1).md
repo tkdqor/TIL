@@ -45,7 +45,7 @@
 - background-color라는 property는 block element에 배경 색깔을 입혀줄 수 있는 property이다.
 
 
-## block element간의 세로로 여백 주기  
+## block element간의 여백 주기  
 
 **1. margin 값 주기**
 - margin의 경우는 margin-top 이렇게 각각 쪼개서 줄 수도 있고, 그냥 margin이라고 적고 top, right, bottom, left를 단축 형태로 적어줄 수도 있다.
@@ -81,6 +81,23 @@
 - 그리고 CSS Box model은 우리가 별도로 지정해주지 않는 이상, 우리가 설정한 width와 height가 content box를 기준으로 측정이 되기 때문에  
   이 content box에 -> padding과 border까지 더해야 우리가 웹 브라우저 상에서 실제로 눈으로 보는 영역의 너비와 높이가 된다.  
 
+
+**3. border 값 주기**
+- CSS에서 border는 문자 그대로 테두리에 해당하는데 이 테두리의 두께와 테두리의 색상 그리고 테두리의 스타일을 지정해줄 수 있다. 
+```css
+.box {
+    ...
+    border-width: 5px; /* 테두리의 두께 */
+    border-style: solid; /* 테두리의 스타일 */  
+    border-color: #535353; /* 테두리의 색상 */
+}
+- 여기서 solid는 실선을 의미. 이렇게 작성하는 방법 말고도 border는 단축 방법을 제공한다.
+```css
+.box {
+    ...
+    border: 5px solid #535353;
+}
+- 이렇게 작성하면, 위의 코드처럼 따로따로 적어주지 않아도 한 번에 적용이 된다.
 
 
 
