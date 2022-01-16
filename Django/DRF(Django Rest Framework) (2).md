@@ -28,6 +28,7 @@ router.register('viewset', views.PostViewSet)  # ViewSet과 함께 본인이 설
 urlpatterns = [
     path('', include(router.urls)),
 ]
+```
 - DefaultRouter를 설정하고 본인이 설정하고 싶은 router를 router.register()에서 설정하고 이전에 생성한 PostViewSet를 같이 등록해준다.
 - 그리고 urlpatterns에 router의 url를 path로 추가해주자.
 
