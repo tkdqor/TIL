@@ -32,7 +32,7 @@
 - 그리고 content는 들어있지 않지만 block element의 특성 상, 차지하고 있는 영역이 개발자도구에서 주황색으로 표시되고 있다. 이는 개발자도구의 CSS box에서 표시되는 색깔과 같으니 참고하자.  
 
 
-- **block element 배경 색깔**
+## block element 배경 색깔
 ```css
 .box {
     width: 300px;
@@ -45,9 +45,20 @@
 - background-color라는 property는 block element의 content에 배경 색깔을 입혀줄 수 있는 property이다.
 
 
-- **block element간의 세로로 여백 주기**
-- 
+## block element간의 세로로 여백 주기  
 
+**1. margin 값 주기**
+- margin의 경우는 margin-top 이렇게 각각 쪼개서 줄 수도 있고, 그냥 margin이라고 적고 top, right, bottom, left를 단축 형태로 적어줄 수도 있다.
+```css
+.box {
+    ...
+    margin: 20px;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149648988-9dea355b-20af-45fd-81be-ee73095bd38c.png" width="70%" height="70%">
+
+- box에 margin 값을 주게 되면, 상하좌우에 각각 20px씩 block box의 외부에 여백이 생긴 것을 확인할 수 있다. 그런데 우측 margin은 굉장히 크게 보이는데, 실제 box가 가지고 있는 margin은 20px이지만,  
+  block element의 특성 상, 차지하고 있지 않은 영역도 이렇게 margin처럼 취급되고 있음을 확인할 수 있다. 
 
 
 
