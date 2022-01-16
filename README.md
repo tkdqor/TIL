@@ -34,7 +34,10 @@
 
 ### Django
 
-- dd
+- [admin.py](https://github.com/tkdqor/TIL/blob/main/Django/admin.py.md)
+- [render와 redirect](https://github.com/tkdqor/TIL/blob/main/Django/render%EC%99%80%20redirect.md)
+- [DRF(Django Rest Framework)](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework).md)
+- [DRF(Django Rest Framework) (2)](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework)%20(2).md)
 
 
 ### Database
