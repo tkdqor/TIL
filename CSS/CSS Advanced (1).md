@@ -117,6 +117,32 @@
 - 이렇게 box-sizing에 border-box를 설정하면 -> 테두리까지의 전체 box(border를 포함하는 box)가 가로 300px 세로 300px로 설정된다. 따라서 content의 크기는 300px에서 border값, padding값을 제외한 크기가 된다. 
 
 
+## block element의 width 값을 px로 고정시킨 경우의 텍스트
+- box 크기 보다 더 많은 텍스트를 입력하게 되는 경우, 텍스트가 box 크기를 삐져나와서 출력이 된다. 
+- 이럴 때 사용할 수 있는 property가 바로 -> **overflow property**이다. 그리고 hidden이라는 값을 선택하게 되면
+
+```css
+.box {
+    ...
+    overflow: hidden;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149650381-396a8c1c-41d4-40c5-b004-e91803eae3d8.png" width="70%" height="70%">
+
+- 캡처처럼 block element의 레이아웃을 넘어서는 content를 가려주게 된다. 만약, 가려진 내용까지 확인할 수 있게 하고 싶다면
+
+```css
+.box {
+    ...
+    overflow: scroll;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149650481-abd5e0d2-7f2c-4625-9024-02e92a5b68ef.png" width="70%" height="70%">
+
+- overflow property에 scroll를 주면 box내에서 스크롤이 되면서 모든 내용을 확인할 수 있다.
+
+
+
 
 
 * * *
