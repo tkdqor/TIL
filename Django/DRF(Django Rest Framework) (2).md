@@ -15,6 +15,24 @@ class PostViewSet(viewsets.ModelViewSet):    # ModelViewSet 활용하기
 - APIView 경우 CRUD 로직을 각각 작성해야 하지만 -> Viewset은 반복되는 로직을 하나의 클래스로 정의해서 queryset를 한번만 설정하면 된다. 그리고 Router를 사용해서 URL설정을 따로 할 필요가 없다.
 
 
-**2. 
+**2. app 내부 디렉토리에 urls.py 설정**
+```python
+from django.urls import path, include
+from rest_framework import routers  # router import
+from . import views  # views.py import
+
+
+router = routers.DefaultRouter()  # DefaultRouter 설정
+router.register('viewset', views.PostViewSet)  # ViewSet과 함께 본인이 설정하고 싶은 router 등록 ex) ~~/viewset
+
+urlpatterns = [
+    path('', include(router.urls)),
+]
+- DefaultRouter를 설정하고 본인이 설정하고 싶은 router를 router.register()에서 설정하고 이전에 생성한 PostViewSet를 같이 등록해준다.
+- 그리고 urlpatterns에 router의 url를 path로 추가해주자.
+
+
+**3. 
+      
 
 
