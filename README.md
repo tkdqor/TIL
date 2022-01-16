@@ -20,11 +20,16 @@
 ### CSS
 
 - [CSS Basics](https://github.com/tkdqor/TIL/blob/main/CSS/CSS%20Basics.md)
+- [CSS Basics (2)](https://github.com/tkdqor/TIL/blob/main/CSS/CSS%20Basics%20(2).md)
+- [CSS Advanced (1)](https://github.com/tkdqor/TIL/blob/main/CSS/CSS%20Advanced%20(1).md) 
 
 
 ### Python
 
-- dd
+- [변수입력과 연산자](https://github.com/tkdqor/TIL/blob/main/Python/%EB%B3%80%EC%88%98%EC%9E%85%EB%A0%A5%EA%B3%BC%20%EC%97%B0%EC%82%B0%EC%9E%90.md)
+- [변수와 출력함수](https://github.com/tkdqor/TIL/blob/main/Python/%EB%B3%80%EC%88%98%EC%99%80%20%EC%B6%9C%EB%A0%A5%ED%95%A8%EC%88%98.md)
+- [Python Decorator @의 의미](https://github.com/tkdqor/TIL/blob/main/Python/Python%20Decorator%20%40%EC%9D%98%20%EC%9D%98%EB%AF%B8.md)
+- [*args와 **kwargs](https://github.com/tkdqor/TIL/blob/main/Python/*args%EC%99%80%20**kwargs.md)
 
 
 ### Django
