@@ -16,7 +16,7 @@ class PostViewSet(viewsets.ModelViewSet):    # ModelViewSet 활용하기
 
 
 **2. app 내부 디렉토리에 urls.py 설정**
-```django
+```python
 from django.urls import path, include
 from rest_framework import routers  # router import
 from . import views  # views.py import
