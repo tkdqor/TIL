@@ -15,4 +15,5 @@
 * * *
 ## CSS Flexbox
 - 대부분의 브라우저에서 지원하고 현업에서 많이 쓰이는 방법 중 하나인 CSS Flexbox를 이용해서 block element를 배치해보자.
-- dd
+- CSS Box model 내용에도 나와있지만, 모든 HTML element는 Box model, box의 형태로 구성되어 있고 특히 block element의 경우에는 너비와 높이를 추가로 지닐 수 있다고 했다.  
+  즉, block element는 padding, border, margin 이외에 width, height까지 가질 수 있다는 것. 
