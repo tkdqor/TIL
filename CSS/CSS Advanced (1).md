@@ -102,6 +102,21 @@
 ```
 - 이렇게 작성하면, 위의 코드처럼 따로따로 적어주지 않아도 한 번에 적용이 된다.
 
+<img src="https://user-images.githubusercontent.com/95380638/149649943-a6aede8d-8ba1-4b76-ae51-b611ed961aec.png" width="70%" height="70%">
+
+- 그런데, 우리가 디자이너로부터 시안을 받을 경우에는 box의 content 영역이 300 x 300px 이라고 전달받지 않고 -> box가 가로 300px 세로 300px이라고 전달 받을 것이다.
+  - 그래서 원래대로라면 300px에서 border 빼고 padding 빼고 content의 크기인 width와 height를 계산해주어야 한다.  
+  - 이 문제를 해결하기 위해 나온 CSS property가 바로 box-sizing이라는 property이다.
+
+```css
+.box {
+    ...
+    box-sizing: border-box;
+}
+```
+- 이렇게 box-sizing에 border-box를 설정하면 -> 테두리까지의 전체 box(border를 포함하는 box)가 가로 300px 세로 300px로 설정된다. 따라서 content의 크기는 300px에서 border값, padding값을 제외한 크기가 된다. 
+
+
 
 
 * * *
