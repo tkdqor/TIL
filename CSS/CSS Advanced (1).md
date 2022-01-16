@@ -45,6 +45,10 @@
 - background-color라는 property는 block element의 content에 배경 색깔을 입혀줄 수 있는 property이다.
 
 
+- **block element간의 세로로 여백 주기**
+- 
+
+
 
 
 * * *
