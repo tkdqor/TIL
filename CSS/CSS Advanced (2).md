@@ -281,7 +281,12 @@
 
 <img src="https://user-images.githubusercontent.com/95380638/149699822-93c35e41-fbec-4cf8-8a2a-1b70e8056810.png" width="70%" height="70%">
 
-- flex-wrap: wrap; 를 설정하면, 위와 같이 container가 담을 수 있는 box가 한 줄에 4개이고 그 보다 많아지면 자동으로 줄바꿈을 해줄 수 있다.
+- flex-wrap: wrap; 를 설정하면, 위와 같이 container가 담을 수 있는 box가 한 줄에 4개이고 그 보다 많아지면 자동으로 줄바꿈을 해줄 수 있다. 브라우저 크기에 따라서도 변하게 된다.
+
+* * *
+
+## 부모 element 기준으로 자식
+
 
 
 
