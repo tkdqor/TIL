@@ -103,6 +103,31 @@
 ```
 <img src="https://user-images.githubusercontent.com/95380638/149687114-886507ae-ea97-43b0-ab2a-5fb0d22c2754.png" width="70%" height="70%">
 
+- box에 적용되어있는 margin 값을 없애주면 box들이 공백없이 한 줄로 붙게된다. 
+
+
+4. space-around
+- 정렬하려고 하는 block element들 좌우로 여백을 균일하게 맞춰주는 value이다.
+```css
+.container {
+    ...
+    justify-content: space-around;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149687339-7408bea8-4cd6-4926-b845-51baa0c1b115.png" width="70%" height="70%">
+
+
+5. space-between
+- space-between은 시작과 끝에 있는 element들을 맨 끝으로 붙이고 나머지 부분에 대해서 여백을 균일하게 맞춰주는 value이다.
+```css
+.container {
+    ...
+    justify-content: space-between;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149687633-e88a8321-cb6d-41c2-9c4a-11c837a7f3cf.png" width="70%" height="70%">
+
+
 
 
 
