@@ -49,3 +49,21 @@
 
 - 기본적으로 한 줄씩 차지하고 있는, 세로로 나열된 block element들을 CSS Flexbox를 이용하여 가로로 배치해보기
 - flexbox에서 여러 개의 block element들을 가로로 나열하기 위해서는, 먼저 가로로 나열하려고 하는 block element들을 상위에서 감싸는 -> 새로운 block element를 만들어야 한다.
+
+```html
+<div class="container">
+     <div class="box">Box</div>
+     <div class="box">Box</div>
+     <div class="box">Box</div>
+</div>
+```
+
+```css
+.container {
+    display: flex;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149686436-e9756675-c4e1-4004-9fa4-20abbbe43a56.png" width="70%" height="70%">
+
+- 그리고나서 위의 코드처럼, 여러 개의 block element를 담고 있는 이 div container에 -> display: flex를 적용해서 flexbox container로 바꿔주겠다라고 해주면 된다.
+- 그러면 자식 element들도 적용되어 한 줄에 모든 block element들이 가로로 배치가 된다.
