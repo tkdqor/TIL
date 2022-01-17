@@ -67,3 +67,43 @@
 
 - 그리고나서 위의 코드처럼, 여러 개의 block element를 담고 있는 이 div container에 -> display: flex를 적용해서 flexbox container로 바꿔주겠다라고 해주면 된다.
 - 그러면 자식 element들도 적용되어 한 줄에 모든 block element들이 가로로 배치가 된다.
+
+* * *
+
+### justify-content로 가로 배치 설정하기
+- justify-content라는 property를 사용해서 가로 배치를 다양하게 진행해보자.
+- 주요 value로는 center, flex-start, flex-end, space-between, space-around가 있다.
+
+1. flex-start
+- 우리가 굳이 지정하지 않아도 왼쪽으로 치우친 형태를 의미.
+
+
+2. flex-end
+- div container로 감싼 내부 element들이 오른쪽으로 치우치게 된다.
+```css
+.container {
+    display: flex;
+    height: 800px;
+    background-color: yellowgreen;
+    justify-content: flex-end;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149686896-36be457e-7a99-4872-8913-6ee4c295865a.png" width="70%" height="70%">
+
+
+3. center
+- div container로 감싼 내부 block element들이 가로 방향의 가운데로 위치하게 된다.
+```css
+.container {
+    display: flex;
+    height: 800px;
+    background-color: yellowgreen;
+    justify-content: center;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149687114-886507ae-ea97-43b0-ab2a-5fb0d22c2754.png" width="70%" height="70%">
+
+
+
+
+
