@@ -45,7 +45,7 @@
 - 이렇게 margin 값에 auto를 설정해주면, 브라우저에게 알아서 값을 주라고 지정하게 된다.
 
 
-## block element 가로 배치하기
+## CSS Flexbox를 이용해서 block element 가로 배치하기
 
 - 기본적으로 한 줄씩 차지하고 있는, 세로로 나열된 block element들을 CSS Flexbox를 이용하여 가로로 배치해보기
 - flexbox에서 여러 개의 block element들을 가로로 나열하기 위해서는, 먼저 가로로 나열하려고 하는 block element들을 상위에서 감싸는 -> 새로운 block element를 만들어야 한다.
@@ -166,8 +166,22 @@
 
 <img src="https://user-images.githubusercontent.com/95380638/149689137-c01a5c60-8b95-4f00-b473-e652917886b3.png" width="70%" height="70%">
 
+* * *
 
+### flex-direction: column; 으로 내부 block element 세로 배치
+```css
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 800px;
+    background-color: yellowgreen;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149689712-8705012b-3cb2-4031-b07b-981dba6d3d30.png" width="70%" height="70%">
 
+- 기본적으로 display: flex; 의 경우에는 내부 block element들을 좌측 상단부터 가로로 배치하게 된다. 이유는 flex-container의 방향이 row, 가로로 되어있기 때문이다.
+- 그래서 이 방향을 flex-direction: column; 이렇게 바꿔주면 -> 내부 block element들을 세로로 배치할 수 있다.
+- 사실 이 상태는 flex container를 적용하기 전과 다르지 않지만, flex container안에 담겨져 있는 box들의 위치를 자유롭게 조정하기 편하기 때문에 이렇게 적용해주는 것이다.
 
 
 
