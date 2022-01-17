@@ -2,7 +2,6 @@
 
 ## block element 배치하기
 
-### 1. margin 값 주기
 ```css
 #box1 {
     background-color: red;
@@ -44,3 +43,9 @@
 <img src="https://user-images.githubusercontent.com/95380638/149685427-91bd5164-6699-444a-93f3-43d65df517e7.png" width="70%" height="70%">
 
 - 이렇게 margin 값에 auto를 설정해주면, 브라우저에게 알아서 값을 주라고 지정하게 된다.
+
+
+## block element 가로 배치하기
+
+- 기본적으로 한 줄씩 차지하고 있는, 세로로 나열된 block element들을 CSS Flexbox를 이용하여 가로로 배치해보기
+- flexbox에서 여러 개의 block element들을 가로로 나열하기 위해서는, 먼저 가로로 나열하려고 하는 block element들을 상위에서 감싸는 -> 새로운 block element를 만들어야 한다.
