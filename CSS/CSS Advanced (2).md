@@ -127,6 +127,17 @@
 ```
 <img src="https://user-images.githubusercontent.com/95380638/149687633-e88a8321-cb6d-41c2-9c4a-11c837a7f3cf.png" width="70%" height="70%">
 
+* * *
+
+### align-items로 가로 배치된 element들을 세로 조정하기
+- align-items 라는 property를 이용해서 가로 배치된 element들을 세로로 조정해보자.
+- 주요 value로는 flex-start, center, flex-end가 있다.
+
+1. flex-start
+- 우리가 따로 지정해주지 않아도 적용이 되어 있었던 것으로, div container 기준으로 내부 element들이 맨 위쪽 상단에 위치하게 된다.
+
+
+2. 
 
 
 
