@@ -182,7 +182,60 @@
 - 기본적으로 display: flex; 의 경우에는 내부 block element들을 좌측 상단부터 가로로 배치하게 된다. 이유는 flex-container의 방향이 row, 가로로 되어있기 때문이다.
 - 그래서 이 방향을 flex-direction: column; 이렇게 바꿔주면 -> 내부 block element들을 세로로 배치할 수 있다.
 - 사실 이 상태는 flex container를 적용하기 전과 다르지 않지만, flex container안에 담겨져 있는 box들의 위치를 자유롭게 조정하기 편하기 때문에 이렇게 적용해주는 것이다.
+  - 기본적으로 가로로 정렬할 때는 justify-content / 세로로 정렬할 때는 align-items을 사용하는데,  
+    지금은 flex-direction을 바꿔주었기 때문에 -> 가로로 정렬할 때 align-items / 세로로 정렬할 때 justify-content를 사용해주면 된다.
+    
 
+### flex-direction: column일 때, align-items로 가로 배치
+
+1. center
+- 세로로 정렬된 내부 element들을 가운데로 배치할 수 있다.
+
+```css
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 800px;
+    background-color: yellowgreen;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149690406-4db025e3-908c-433a-aad6-4ae617555f17.png" width="70%" height="70%">
+
+
+### flex-direction: column일 때, justify-content로 세로 배치
+
+1. space-between
+- 세로로 정렬된 내부 element들을 div container 기준으로 맨 위에, 맨 아래에 배치가 된다.
+
+```css
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 1000px;
+    background-color: yellowgreen;
+}
+```
+<img src="https://user-images.githubusercontent.com/95380638/149692175-e81aa528-1e25-4206-85cd-34c8190f5713.png" width="70%" height="70%">
+
+
+2. space-around
+- 세로로 정렬된 내부 element들을 div container 기준으로 균일하게 세로로 배치.
+
+```css
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    height: 1000px;
+    background-color: yellowgreen;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149693550-30100c9d-045e-47fe-9e4a-5be628b7f3b7.png" width="70%" height="70%">
 
 
 
