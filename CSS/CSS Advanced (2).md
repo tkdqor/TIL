@@ -137,7 +137,38 @@
 - 우리가 따로 지정해주지 않아도 적용이 되어 있었던 것으로, div container 기준으로 내부 element들이 맨 위쪽 상단에 위치하게 된다.
 
 
-2. 
+2. center
+- div container 기준으로 내부 element들이 세로 방향에서 가운데에 위치하게 된다.
+```css
+.container {
+    display: flex;
+    height: 800px;
+    background-color: yellowgreen;
+    justify-content: space-between;
+    align-items: center;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149688895-fcc6484e-9bfb-4f12-ad21-6993882fd5ea.png" width="70%" height="70%">
+
+
+3. flex-end
+- div container 기준으로 내부 element들이 세로 방향에서 맨 밑으로 붙게 된다.
+```css
+.container {
+    display: flex;
+    height: 800px;
+    background-color: yellowgreen;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149689137-c01a5c60-8b95-4f00-b473-e652917886b3.png" width="70%" height="70%">
+
+
+
+
 
 
 
