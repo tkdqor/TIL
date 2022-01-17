@@ -168,7 +168,7 @@
 
 * * *
 
-### flex-direction: column; 으로 내부 block element 세로 배치
+## flex-direction: column; 으로 내부 block element 세로 배치
 ```css
 .container {
     display: flex;
@@ -238,6 +238,53 @@
 <img src="https://user-images.githubusercontent.com/95380638/149693550-30100c9d-045e-47fe-9e4a-5be628b7f3b7.png" width="70%" height="70%">
 
 * * *
+
+## box의 개수가 여러개인 경우
+
+```html
+<div class="container">
+      <div class="box">Box</div>
+      <div class="box">Box</div>
+      <div class="box">Box</div>
+      <div class="box">Box</div>
+      <div class="box">Box</div>
+      <div class="box">Box</div>
+</div>
+```
+
+```css
+.container {
+    display: flex;
+    height: 1000px;
+    background-color: yellowgreen;
+    justify-content: space-between;
+    align-items: center;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149698026-08ab0e2b-3b66-4c4f-9cde-cbc31bf9c88d.png" width="70%" height="70%">
+
+- flex container는 기본적으로, 담고 있는 element의 사이즈를 유지할 수 있으면 유지하되 위와 같이 container가 담을 수 있는 것 보다 더 많은 element가 담기게 되면 강제로 사이즈를 축소시키게 된다.
+- 이렇게 container가 담을 수 있는 것 보다 더 많은 element가 담기게 되었을 때 줄바꿈을 할 수 있게끔 설정해줄 수 있다.
+
+### flex-wrap이라는 property로 box 줄바꿈 하기
+```css
+.container {
+    display: flex;
+    height: 1000px;
+    background-color: yellowgreen;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149699822-93c35e41-fbec-4cf8-8a2a-1b70e8056810.png" width="70%" height="70%">
+
+- flex-wrap: wrap; 를 설정하면, 위와 같이 container가 담을 수 있는 box가 한 줄에 4개이고 그 보다 많아지면 자동으로 줄바꿈을 해줄 수 있다.
+
+
+
 
 ## CSS Flexbox 정리
 - 우리가 block element들을 자유롭게 배치하고 싶다면, 그 block element들을 감싸고 있는 flex container를 하나 만들어주고,
