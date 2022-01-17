@@ -285,9 +285,55 @@
 
 * * *
 
-## 부모 element 기준으로 자식
+## 부모 element 기준으로 자식 element 크기를 상대적인 비율로 조정하기
+- 자식 element의 width와 height를 정할 때, %를 사용하게 되면 -> 부모 element를 기준으로 상대적으로 크기를 지정할 수 있다.
+
+```html
+<div class="outer">
+     <div class="inner">
+         Inner
+     </div>
+</div>
+```
+
+```css
+.outer {
+    width: 800px;
+    height: 600px;
+    background-color: #535353;
+}
+
+.inner {
+    width: 80%;
+    height: 50%;
+    background-color: yellow;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149700629-c5764911-e953-496d-8f11-b3cceb5a1ee2.png" width="70%" height="70%">
+
+- 이렇게 px를 지정하는 대신, 부모 element를 기준으로 %로 지정해줄 수 있다.
+- 우리가 block element에 대해 별도로 값을 지정하지 않는다면, width: 100%; 와 동일하다고 볼 수 있다. 부모 element의 너비에 따라서 설정되기 때문이다. 
 
 
+## 웹 브라우저 기준으로 element의 크기를 상대적인 비율로 조정하기
+- 우리가 웹 페이지에서 보게 되는 화면을 viewport라고 하는데, 이 viewport의 전체 사이즈를 기준으로 상대적으로 크기를 조절해줄 수 있다.
+
+```css
+.outer {
+    /* width: 800px;
+    height: 600px; */
+    width: 100vw;
+    height: 100vh;
+    background-color: #535353;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149701384-f66d549a-dfe9-4f7d-9f18-822aa7f42264.png" width="70%" height="70%">
+
+- vw는 viewport width에 해당하고 / vh는 viewport height에 해당하는데, 1vw나 1vh는 각각 전체 viewport 가로의 1%, 전체 viewport 높이의 1%를 의미한다.
+- 따라서, 100vw와 100vh는 전체 viewport 가로와 높이의 100%를 의미하니까 브라우저 화면에 꽉 차게 된다.
+- 이렇게 설정해주면 -> 브라우저의 사이즈가 바뀌더라도 자동으로 계산이 되어 동적인 웹 페이지를 만들 수 있다.
 
 
 
