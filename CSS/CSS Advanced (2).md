@@ -222,7 +222,7 @@
 
 
 2. space-around
-- 세로로 정렬된 내부 element들을 div container 기준으로 균일하게 세로로 배치.
+- 세로로 정렬된 내부 element들을 div container 기준으로 균일하게 세로로 배치. 맨 위와 맨 아래 여백이 균일하게 잡혀진다.
 
 ```css
 .container {
@@ -237,7 +237,11 @@
 
 <img src="https://user-images.githubusercontent.com/95380638/149693550-30100c9d-045e-47fe-9e4a-5be628b7f3b7.png" width="70%" height="70%">
 
+* * *
 
+## CSS Flexbox 정리
+- 우리가 block element들을 자유롭게 배치하고 싶다면, 그 block element들을 감싸고 있는 flex container를 하나 만들어주고,
+- 그 flex container에다가 display: flex; 를 적용해서 justify-content / align-items를 활용하여 자유롭게 배치를 해주면 된다.
 
 
 
