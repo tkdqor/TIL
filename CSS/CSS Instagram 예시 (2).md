@@ -61,3 +61,14 @@
   - 그리고 그 하나의 div에서도 -> 이미지가 들어갈 div story-img-frame와 제목이 들어갈 div story-title로 구분해주기.
   - div story-img-frame와 그 안에 img를 넣고 img도 story-img라는 클래스를 설정.
   - css는 예시 (1) 같이 이미지와 그 이미지를 감싸는 div에 대한 css를 적용해주자. 작은 사이즈를 위해 div story-img-frame의 크기를 줄여주기.
+
+
+
+
+
+
+- 이미지와 타이틀을 모두 감싸고 있는 div story-container에 대해 width와 hegiht를 설정하기.
+- 그리고 타이틀이 위에 너무 붙어있으니 div story-title에 대해 padding값을 설정하기.
+- 이미지와 타이틀이 모두 왼쪽으로 치우쳐져 있을 때는 -> 그것들을 감싸는 div element에 대해 display:flex로 설정하자.
+  - 그래서 여기서는 div story-container에다가 display:flex 적용하고 flex-direction: column; 이렇게 적용해서 세로로 조정할 수 있도록하기.
+  - 그리고 가로 정렬은 align-items: center; / 세로 정렬은 justify-content: center; 로 설정하면 가운데로 정렬이 된다.
