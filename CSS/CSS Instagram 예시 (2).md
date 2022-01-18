@@ -131,3 +131,10 @@
 
 - 이제 div story-container를 여러 개 만들어주기.
 - 그리고 좌측 상단에 몰려있는 이 여러 개의 div들을 조정해주기 위해 div container2에다가 justify-content: space-around; / align-items: center; 설정하기.
+
+* * *
+
+## 사용할 수 있는 CSS property
+- 특정 property가 브라우저 환경에 따라 지원하지 않을 수 있다. 사용하고 있는 CSS property가 모든 브라우저에서 사용될 수 있는지 확인해야 한다.
+- https://caniuse.com/ 해당 사이트에서 검색하면, 브라우저 버전에 따라 지원을 하는지 확인할 수 있다. 
+- flexbox와 비슷한 기능을 하는 grid를 검색하면 -> grid를 지원하지 않는 경우도 있어서 조심해야 한다.
