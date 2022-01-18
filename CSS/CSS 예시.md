@@ -113,9 +113,35 @@
 * * * 
 
 ### 계정 정보 영역
+```html
+<!-- 계정 정보 영역 -->
+        <div class="account">
+            <h1>Gattaca</h1>
+                <ul>
+                    <li>게시물 6,626</li>
+                    <li>팔로워 384백만</li>
+                    <li>팔로우 48</li>
+                </ul>
+            <h2>Gattaca</h2>
+            <p>A genetically inferior man assumes the identity of a superior one in order to pursue his lifelong dream of space travel.</p>
+            <a href="https://www.imdb.com/title/tt0119177/">About Gattaca</a>
+        </div>
+```
 
+```css
+/* 계정 정보 영역 */
+.account h1 {
+    font-size: 28px;
+    font-weight: normal;
+}
 
+.account h2 {
+    font-size: 16px;
+    font-weight: bold;
+}
+```
 
+<img src="https://user-images.githubusercontent.com/95380638/149890084-8f32ae1d-c371-41bc-adb7-4524d1424d84.png" width="70%" height="70%">
 
 - 계정 정보 영역을 표시하는 div ccount안에 -> h1 / ul / h2 / p element를 사용해서 내용 구성.
 - font-weight라는 property는 글씨 두께를 조절할 수 있음.
