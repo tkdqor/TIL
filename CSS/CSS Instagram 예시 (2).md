@@ -25,6 +25,37 @@
 - 이렇게 위의 div container와 동일한 CSS를 적용한 div container2를 만들기.
 
 
+```html
+<!-- 다른 스토리 정보 영역 -->
+    <div class="container2">
+        <div class="story-container">
+            <div class="story-img-frame">
+                <img class="story-img" src="http://www.medigatenews.com/file/news/109860" alt="Story Image">
+            </div>
+            <div class="story-title">
+                Story Title
+            </div>
+        </div>
+    </div>
+```
+
+```css
+.story-img-frame {
+    width: 80px;
+    height: 80px;
+    border: 3px solid #ebebeb;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.story-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149902879-393b9cc4-daca-4156-b847-30658a385505.png" width="70%" height="70%">
 
 
 
