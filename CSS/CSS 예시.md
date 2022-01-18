@@ -76,3 +76,5 @@
 
 
 - border-radius에 50%를 주게 되면, 정사각형의 절반을 반지름으로 하는 둥근 테두리가 되서 원이 만들어지게 된다.
+- 그리고 block element의 정해진 영역을 빠져나가는 content를 가릴 수 있는 방법으로 overflow라는 property에다가 hidden를 설정해서 이미지가 빠져나오는 걸 막아보자.
+- 또한, 이미지에 object-fit이라는 property에 cover라고 지정하게 되면 -> 이미지가 프레임에 맞게 조절이 된다.
