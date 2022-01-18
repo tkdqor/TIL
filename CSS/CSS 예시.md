@@ -72,9 +72,38 @@
 - 부모 div container에 display:flex를 적용하고, 안에 있는 -> div profile에다가도 display:flex와 justify-content, align-items를 적용해서 -> div profile만 정 가운데로 배치할 수 있다.
 
 
+```html
+<body>
+    <div class="container">
+        <div class="profile">
+            <div class="profile-frame">
+                <img id="profile-img" src="http://www.medigatenews.com/file/news/109860" alt="Profile Image">
+            </div>    
+        </div>
+        <div class="account">Account Info</div>
+    </div>
+</body>
+```
 
+```css
+.profile-frame {
+    width: 170px;
+    height: 170px;
+    border: 5px solid #ebebeb;
+    border-radius: 50%;
+    overflow: hidden;
+}
 
+#profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+```
 
+<img src="https://user-images.githubusercontent.com/95380638/149886714-40bd06f6-a959-480f-b441-0601b4446cb1.png" width="70%" height="70%">
+
+- 이미지를 넣기 전에 -> 이미지를 감싸고 있는 div profile-frame를 하나 더 만들어주고 -> 해당 클래스 css에 width와 height를 설정해주고 block element의 정해진 영역을 빠져나가는 content를 가릴 수 있는 방법으로 overflow라는 property에다가 hidden를 설정해서 이미지가 빠져나오는 걸 방지하기.
 - border-radius에 50%를 주게 되면, 정사각형의 절반을 반지름으로 하는 둥근 테두리가 되서 원이 만들어지게 된다.
-- 그리고 block element의 정해진 영역을 빠져나가는 content를 가릴 수 있는 방법으로 overflow라는 property에다가 hidden를 설정해서 이미지가 빠져나오는 걸 막아보자.
+- 그리고 이미지 자체인 img element에도 id를 설정하고 -> width와 height를 설정해준다.
 - 또한, 이미지에 object-fit이라는 property에 cover라고 지정하게 되면 -> 이미지가 프레임에 맞게 조절이 된다.
