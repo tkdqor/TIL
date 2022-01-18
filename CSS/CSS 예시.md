@@ -165,15 +165,45 @@
   - 그리고 CSS는 우선순위가 있기 때문에 CSS 파일에서 가장 위쪽에 CSS Reset 코드를 입력하자.
 
 
+```html
+<!-- 계정 정보 영역 -->
+        <div class="account">
+            <h1>Gattaca</h1>
+                <ul class="account-status">
+                    <li class="account-status-item">게시물 6,626</li>
+                    <li class="account-status-item">팔로워 384백만</li>
+                    <li class="account-status-item">팔로우 48</li>
+                </ul>
+            <h2>Gattaca</h2>
+            <p>A genetically inferior man assumes the identity of a superior one in order to pursue his lifelong dream of space travel.</p>
+            <a href="https://www.imdb.com/title/tt0119177/">About Gattaca</a>
+        </div>
+```
 
+```css
+a {
+    text-decoration: none;
+    color: #00376b;
+}
 
+.account-status {
+    list-style-type: none;
+    display: flex;
+}
+
+.account-status-item {
+    margin-right: 40px;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149895236-37977995-a797-4786-b1a0-9394f8beb6af.png" width="70%" height="70%">
 
 - a element의 밑줄을 없애기 위해서는, text-decoration property를 사용하면 된다.
 - ul element 안에 있는 게시물 / 팔로워 / 팔로우 항목들을 가로로 정렬해주기 위해서 -> ul element에 account-status라는 class 설정 / li element에 account-status-item이라는 class 설정.
 - ul element의 불릿 기호를 없애주기 위해서는, list-style-type: none;를 설정해주자.
-- 그리고 li element들을 가로 정렬하기 위해서
+- 그리고 li element들을 가로로 정렬하기 위해서
   - ul element의 account-status 클래스에 display: flex; 를 적용하고
-  - li element의 account-status-item 클래스에 margin를 설정
+  - li element의 account-status-item 클래스에 margin-right를 설정
 
 
 
