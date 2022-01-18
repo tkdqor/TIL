@@ -206,8 +206,34 @@ a {
   - li element의 account-status-item 클래스에 margin-right를 설정
 
 
+```html
+<!-- 계정 정보 영역 -->
+        <div class="account">
+            <h1>Gattaca</h1>
+                <ul class="account-status">
+                    <li class="account-status-item">게시물 6,626</li>
+                    <li class="account-status-item">팔로워 384백만</li>
+                    <li class="account-status-item">팔로우 48</li>
+                </ul>
+            
+            <div>    
+                <h2>Gattaca</h2>
+                <p>A genetically inferior man assumes the identity of a superior one in order to pursue his lifelong dream of space travel.</p>
+                <a href="https://www.imdb.com/title/tt0119177/">About Gattaca</a>
+            </div>    
+        </div>
+```
 
+```css
+.account {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+}
+```
 
+<img src="https://user-images.githubusercontent.com/95380638/149897350-be75515e-e903-463f-a764-13241e95d946.png" width="70%" height="70%">
 
 - 이제 계정 정보 영역에서도 -> 제목 / 목록(게시물,팔로워,팔로우) / 사용자 입력 부분 이렇게 3개의 섹션으로 분리해서 서로 균일한 여백을 가질 수 있게 레이아웃을 잡아보자.
 - 그래서 h2 / p / a element를 묶어주는 하나의 div element를 생성하자.
