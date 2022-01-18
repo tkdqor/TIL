@@ -70,3 +70,9 @@
 <img src="https://user-images.githubusercontent.com/95380638/149882460-e472bf4d-0fa3-4f50-82c4-835858bff088.png" width="70%" height="70%">
 
 - 부모 div container에 display:flex를 적용하고, 안에 있는 -> div profile에다가도 display:flex와 justify-content, align-items를 적용해서 -> div profile만 정 가운데로 배치할 수 있다.
+
+
+
+
+
+- border-radius에 50%를 주게 되면, 정사각형의 절반을 반지름으로 하는 둥근 테두리가 되서 원이 만들어지게 된다.
