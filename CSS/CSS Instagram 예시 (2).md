@@ -63,9 +63,24 @@
   - css는 예시 (1) 같이 이미지와 그 이미지를 감싸는 div에 대한 css를 적용해주자. 작은 사이즈를 위해 div story-img-frame의 크기를 줄여주기.
 
 
+```css
+.story-container {
+    width: 115px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
+.story-title {
+    padding-top: 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+```
 
-
+<img src="https://user-images.githubusercontent.com/95380638/149906283-c8d20ab9-3cf2-4397-b8c7-d907f945daa1.png" width="70%" height="70%">
 
 - 이미지와 타이틀을 모두 감싸고 있는 div story-container에 대해 width와 hegiht를 설정하기.
 - 그리고 타이틀이 위에 너무 붙어있으니 div story-title에 대해 padding값을 설정하기.
