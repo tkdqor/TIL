@@ -163,3 +163,20 @@
 - 그래서 CSS 작업을 할 때는, padding이나 margin의 값들을 전부 없애주고 시작하는 것이 좋다. 이렇게 기본 값들을 리셋하는 것을 **CSS Reset**이라고 부른다. 또한, 완벽하게 Reset하지 않고 최대한 통일을 시키되 기본적으로 가지고 있으면 좋은 것들은 최대한 살리려고 하는 방식을 **CSS Nomalization** 이라고 한다.
   - 지금은 가장 간단한 CSS Reset 방식으로 CSS 파일에서 *로 padding과 margin을 0으로 설정하고 CSS box를 border기준으로 설정하자.
   - 그리고 CSS는 우선순위가 있기 때문에 CSS 파일에서 가장 위쪽에 CSS Reset 코드를 입력하자.
+
+
+
+
+
+- a element의 밑줄을 없애기 위해서는, text-decoration property를 사용하면 된다.
+- ul element 안에 있는 게시물 / 팔로워 / 팔로우 항목들을 가로로 정렬해주기 위해서 -> ul element에 account-status라는 class 설정 / li element에 account-status-item이라는 class 설정.
+- ul element의 불릿 기호를 없애주기 위해서는, list-style-type: none;를 설정해주자.
+- 그리고 li element들을 가로 정렬하기 위해서
+  - ul element의 account-status 클래스에 display: flex; 를 적용하고
+  - li element의 account-status-item 클래스에 margin를 설정
+
+
+
+
+
+- VS code에서 Mac은 command + option를 동시에 누른 상태에서 화살표를 조절하면 동시에 선택이 가능하다.
