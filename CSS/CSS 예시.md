@@ -1,6 +1,8 @@
 ## Instagram 프로필 따라해보기
 
 ### 프로필 사진과 계정 정보를 담고 있는 container 구성
+
+### 프로필 사진 영역
 ```html
 <body>
     <div class="container">
@@ -107,3 +109,7 @@
 - border-radius에 50%를 주게 되면, 정사각형의 절반을 반지름으로 하는 둥근 테두리가 되서 원이 만들어지게 된다.
 - 그리고 이미지 자체인 img element에도 id를 설정하고 -> width와 height를 설정해준다.
 - 또한, 이미지에 object-fit이라는 property에 cover라고 지정하게 되면 -> 이미지가 프레임에 맞게 조절이 된다.
+
+* * * 
+
+### 계정 정보 영역
