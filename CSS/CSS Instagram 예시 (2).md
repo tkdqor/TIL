@@ -87,3 +87,47 @@
 - 이미지와 타이틀이 모두 왼쪽으로 치우쳐져 있을 때는 -> 그것들을 감싸는 div element에 대해 display:flex로 설정하자.
   - 그래서 여기서는 div story-container에다가 display:flex 적용하고 flex-direction: column; 이렇게 적용해서 세로로 조정할 수 있도록하기.
   - 그리고 가로 정렬은 align-items: center; / 세로 정렬은 justify-content: center; 로 설정하면 가운데로 정렬이 된다.
+
+
+```html
+<!-- 다른 스토리 정보 영역 -->
+    <div class="container2">
+        <div class="story-container">
+            <div class="story-img-frame">
+                <img class="story-img" src="http://www.medigatenews.com/file/news/109860" alt="Story Image">
+            </div>
+            <div class="story-title">
+                Story Title
+            </div>
+        </div>
+
+        <div class="story-container">
+            <div class="story-img-frame">
+                <img class="story-img" src="http://www.medigatenews.com/file/news/109860" alt="Story Image">
+            </div>
+            <div class="story-title">
+                Story Title
+            </div>
+        </div>
+        
+        ...
+ ```
+ 
+ ```css
+ .container2 {
+    width: 940px;
+    height: 200px;
+    background-color: #fafafa;
+    border: 1px solid #dbdbdb;
+    border-radius: 10px;
+    margin: 20px auto;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/95380638/149907386-05c3baee-a6d8-4cb1-9cc7-43b8652d9931.png" width="70%" height="70%">
+
+- 이제 div story-container를 여러 개 만들어주기.
+- 그리고 좌측 상단에 몰려있는 이 여러 개의 div들을 조정해주기 위해 div container2에다가 justify-content: space-around; / align-items: center; 설정하기.
