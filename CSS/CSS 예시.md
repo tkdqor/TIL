@@ -147,8 +147,19 @@
 - font-weight라는 property는 글씨 두께를 조절할 수 있음.
 
 
+```css
+/* CSS Reset */
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+```
 
+<img src="https://user-images.githubusercontent.com/95380638/149892347-623bf276-4046-4210-aad4-807d7c8bc1d3.png" width="70%" height="70%">
 
-- 우리가 따로 여백을 주지 않았는데도 여백이 있는 것을 확인할 수 있다... h1의 경우 우리가 따로 주지 않아도 기본적으로 여백을 스스로 가지고 있다. ul나 h2, p도 자체적인 padding과 margin를 가지고 있는 것을 확인할 수 있다. 
+- 우리가 따로 여백을 주지 않았는데도 여백이 있는 것을 확인할 수 있다. h1의 경우 우리가 따로 주지 않아도 기본적으로 여백을 스스로 가지고 있다. ul나 h2, p도 자체적인 padding과 margin를 가지고 있다. 
 - 이처럼 여러 html element에는 우리가 별도로 padding이나 margin을 주지 않아도 기본적으로 세팅되어 있는 값들이 있다. 브라우저마다 이러한 설정 값들이 조금씩 차이나기 때문에 사용자가 어떤 브라우저를 사용하느냐에 따라 웹 페이지가 서로 다르게 보일 수 있다.
 - 그래서 CSS 작업을 할 때는, padding이나 margin의 값들을 전부 없애주고 시작하는 것이 좋다. 이렇게 기본 값들을 리셋하는 것을 **CSS Reset**이라고 부른다. 또한, 완벽하게 Reset하지 않고 최대한 통일을 시키되 기본적으로 가지고 있으면 좋은 것들은 최대한 살리려고 하는 방식을 **CSS Nomalization** 이라고 한다.
+  - 지금은 가장 간단한 CSS Reset 방식으로 CSS 파일에서 *로 padding과 margin을 0으로 설정하고 CSS box를 border기준으로 설정하자.
+  - 그리고 CSS는 우선순위가 있기 때문에 CSS 파일에서 가장 위쪽에 CSS Reset 코드를 입력하자.
