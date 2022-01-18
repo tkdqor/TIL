@@ -33,3 +33,10 @@ class Post(models.Model):
 ```
 
 - 다시 Post 모델에서 user_id가 없으면 글이 생성되지 않게 하려면, null=False 값을 주고 다시 makemigrations 및 migrate를 해주면 된다.
+
+* * *
+```html
+{{ post.user.get_username }}
+```
+
+- html에서 Post 모델의 user 필드 데이터를 가져오려면 이러한 형식으로 불러오면 된다.
