@@ -55,3 +55,10 @@
 <img src="https://user-images.githubusercontent.com/95380638/149881738-e65f1ca1-45f1-4879-81ca-bbd854822dd5.png" width="70%" height="70%">
 
 - 그 다음, 부모 div에 display:flex를 적용하고, 2개의 div element를 만들어서 Profile과 account 부분을 구분해준다.
+
+
+
+
+
+
+- 부모 div container에 display:flex를 적용하고, 안에 있는 -> div profile에다가도 display:flex를 적용해서 -> 자유롭게 배치할 수 있다.
