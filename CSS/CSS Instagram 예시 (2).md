@@ -1,14 +1,14 @@
 ## CSS Instagram 예시 (2)
 
 ```html
-<!-- 다른 계정 정보 영역 -->
+<!-- 다른 스토리 정보 영역 -->
     <div class="container2">
         
     </div>
 ```
 
 ```css
-/* 다른 계정 정보 영역 */
+/* 다른 스토리 정보 영역 */
 .container2 {
     width: 940px;
     height: 200px;
