@@ -57,8 +57,7 @@
 
 <img src="https://user-images.githubusercontent.com/95380638/149902879-393b9cc4-daca-4156-b847-30658a385505.png" width="70%" height="70%">
 
-
-
-
 - 스토리 하나를 구성할 div를 하나 만들고 story-container라는 class로 설정하기.
-  - 그리고 그 하나의 div에서도 -> 이미지가 들어갈 div story-img와 제목이 들어갈 div story-title로 구분해주기.
+  - 그리고 그 하나의 div에서도 -> 이미지가 들어갈 div story-img-frame와 제목이 들어갈 div story-title로 구분해주기.
+  - div story-img-frame와 그 안에 img를 넣고 img도 story-img라는 클래스를 설정.
+  - css는 예시 (1) 같이 이미지와 그 이미지를 감싸는 div에 대한 css를 적용해주자. 작은 사이즈를 위해 div story-img-frame의 크기를 줄여주기.
