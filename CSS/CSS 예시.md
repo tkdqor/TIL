@@ -209,4 +209,12 @@ a {
 
 
 
+- 이제 계정 정보 영역에서도 -> 제목 / 목록(게시물,팔로워,팔로우) / 사용자 입력 부분 이렇게 3개의 섹션으로 분리해서 서로 균일한 여백을 가질 수 있게 레이아웃을 잡아보자.
+- 그래서 h2 / p / a element를 묶어주는 하나의 div element를 생성하자.
+- 따라서, div account안에 -> h1 / ul / div 이렇게 3개의 block element들이 균일하게 세로로 여백을 가질 수 있게 해보자.
+  - 그래서 div account에 display: flex;를 적용하고 + flex-direction를 column으로 설정하기.
+  - 이 상태에서 세로 정렬을 위해 justify-content: space-around; 를 적용하면 3개의 섹션이 균일한 여백을 가지게 된다. 
+
+
+
 - VS code에서 Mac은 command + option를 동시에 누른 상태에서 화살표를 조절하면 동시에 선택이 가능하다.
