@@ -113,3 +113,9 @@
 * * * 
 
 ### 계정 정보 영역
+
+
+
+
+- 계정 정보 영역을 표시하는 div ccount안에 -> h1 / ul / h2 / p element를 사용해서 내용 구성.
+- font-weight라는 property는 글씨 두께를 조절할 수 있음.
