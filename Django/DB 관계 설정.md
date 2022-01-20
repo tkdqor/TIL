@@ -41,6 +41,9 @@ class Post(models.Model):
 
 - html에서 Post 모델의 user 필드 데이터를 가져오려면 이러한 형식으로 불러오면 된다.
 
+### 1:N 관계가 맞는지 파악할 때는 -> FK를 설정한 테이블에서 1에 해당하는 테이블의 PK가 중복될 수 있는지 생각해보자.
+- ex) Post 모델 테이블에서 User 모델의 PK는 중복될 수 있다. 1번 user가 여러 개의 글을 작성할 수 있기 때문이다.
+
 
 * * * 
 ## M:N 관계(Many To Many Relationships)
