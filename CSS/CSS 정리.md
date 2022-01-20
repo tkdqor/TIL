@@ -46,7 +46,24 @@
 - 이렇게 css selector를 설정하면, 클래스가 resume_link인 element 내부에 있는 a element를 설정하는 것을 의미한다.
 
 
+(4) 자식 element가 부모 element 너비와 높이를 넘어서는 레이아웃으로 구성될 경우에는, 부모 element에 overflow property 적용
+```html
+<div class="resume_sections">
+    <div class="resume_section">section 1</div>
+    <div class="resume_section">section 2</div>
+    <div class="resume_section">section 3</div>
+</div>    
+```
 
+```css
+.resume_sections {
+    oveflow: hidden;     /* 또는 scroll */ 
+    ...
+}
+```
+
+- 부모 element에 overflow: hidden이라는 값을 주게 되면, 부모 크기의 영역을 빠져나가는 부분이 가려져서 스크롤이 되지 않는다.
+- 만약 overflow: scroll이라는 값을 주게 되면, 빠져나가는 영역은 가리고 스크롤의 형태로 내려서 볼 수 있게끔 해준다.
 
 
 
