@@ -84,7 +84,8 @@
 - line-height property을 설정하면 행간을 조절할 수 있다.
 
 
-
+(7) 아이콘 관련해서는 fontawesome 사이트 활용해보기
+- 아이콘들을 ul element 내부에 있는 li element로 설정하고, ul element의 CSS에서 font-size를 설정하면 아이콘 크기를 조절할 수 있다.
 
 
 * * *
