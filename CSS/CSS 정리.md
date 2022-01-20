@@ -74,6 +74,7 @@
 * * *
 
 - 부모 element에는 사이즈를 정하지 않은 상태에서 -> 자식 element에다가 height를 100vh를 설정해서 브라우저를 채우게 할 수도 있다.
+- 부모 element에는 설정하지 않고, 자식 element에만 display: flex;를 설정해서 레이아웃을 잡을수도 있다.
 
 
 
