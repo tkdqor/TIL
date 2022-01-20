@@ -1,4 +1,6 @@
 ## CSS 정리
+
+(1) body element도 div element이다.
 ```html
 <body id="resume_container">
 ...
@@ -12,6 +14,34 @@
 ```
 - 다음과 같이 body element에 id를 주고 가장 큰 div element로 설정할 수도 있다.
 
+
+(2) width를 calc()를 사용해서 설정하는 방법
+```html
+<body id="resume_container">
+    <div class="nav">asdf</div>
+    <div class="content">qwer</div>
+</body>
+```
+
+```css
+.nav {
+    width: 280px;
+}
+
+.content {
+    width: calc(100% - 280px);
+}
+```
+
+- 다음과 같이 width를 calc()를 사용하게 되면, 2개의 div element를 한 화면에 공백없이 채울 수 있다. 왼쪽 div가 280px의 너비를 가지고 오른쪽 div에서는 100%에서 280px를 제외한 너비로 설정할 수 있다.
+
+
+
+
+
+
+
+- 부모 element에는 사이즈를 정하지 않은 상태에서 -> 자식 element에다가 height를 100vh를 설정해서 브라우저를 채우게 할 수도 있다.
 
 
 
