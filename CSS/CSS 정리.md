@@ -71,7 +71,17 @@
 <h1><span>My</span> resume</h1>
 ```
 
-- ㅇㅇ
+- 이렇게 span element를 사용해서 id나 class를 설정하고 스타일링을 적용할 수 있다.
+
+
+(6) 줄과줄 사이의 여백을 주고싶을 때는 line-height 사용
+```css
+.class {
+    line-height: 28px;
+}
+```
+
+- line-height property을 설정하면 행간을 조절할 수 있다.
 
 
 
