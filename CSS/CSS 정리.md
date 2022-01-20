@@ -102,14 +102,21 @@
 - 한 페이지내에서 이동시키기 위해서는 div element에 특정 id를 지정하고 a element의 href attribute에 #id이름을 지정해주면 된다.
 
 
+(9) a element에 커서 닿을 때 기능 추가
+```css
+.section-icons a:hover {
+    color: #4169E1;
+    transition: 1s;
+}
+```
+
+- section-icons라는 클래스 안에 있는 a element가 있다면, a:hover 이렇게 selector를 설정하고 커서를 댈 때 색깔이나 나타나는 속도를 transition으로 설정해줄 수 있다.
+
+
 
 * * *
 
-- 부모 element에는 사이즈를 정하지 않은 상태에서 -> 자식 element에다가 height를 100vh를 설정해서 브라우저를 채우게 할 수도 있다.
-- 부모 element에는 설정하지 않고, 자식 element에만 display: flex;를 설정해서 레이아웃을 잡을수도 있다.
-
-
-
+## CSS 적용 시 유의사항
 
 1) 가장 먼저 CSS Reset 설정
 
@@ -131,3 +138,7 @@
    글에서도 섹션을 구분짓고 싶다면 div을 생성해서 구분
 
 7) margin, padding은 부모가 아닌 자식 element에게 클래스 주고 설정해보기.
+
+8) 부모 element에는 사이즈를 정하지 않은 상태에서 -> 자식 element에다가 height를 100vh를 설정해서 브라우저를 채우게 할 수도 있다.
+
+9) 부모 element에는 설정하지 않고, 자식 element에만 display: flex;를 설정해서 레이아웃을 잡을수도 있다.
