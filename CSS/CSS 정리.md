@@ -1,4 +1,20 @@
 ## CSS 정리
+```html
+<body id="resume_container">
+...
+</body>
+```
+
+```css
+#resume_container {
+    display: flex;
+}
+```
+- 다음과 같이 body element에 id를 주고 가장 큰 div element로 설정할 수도 있다.
+
+
+
+
 
 1) 가장 먼저 CSS Reset 설정
 
