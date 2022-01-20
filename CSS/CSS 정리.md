@@ -88,6 +88,21 @@
 - 아이콘들을 ul element 내부에 있는 li element로 설정하고, ul element의 CSS에서 font-size를 설정하면 아이콘 크기를 조절할 수 있다.
 
 
+(8) 한 페이지에서 navbar로 이동시키기
+```html
+<div><a href="#ABOUT">ABOUT</div>
+
+...
+    
+<div>
+    <div id="ABOUT">ABOUT</div>
+</div>
+```
+
+- 한 페이지내에서 이동시키기 위해서는 div element에 특정 id를 지정하고 a element의 href attribute에 #id이름을 지정해주면 된다.
+
+
+
 * * *
 
 - 부모 element에는 사이즈를 정하지 않은 상태에서 -> 자식 element에다가 height를 100vh를 설정해서 브라우저를 채우게 할 수도 있다.
