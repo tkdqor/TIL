@@ -1,4 +1,4 @@
-## CSS 정리
+## CSS 추가 내용
 
 (1) body element도 div element이다.
 ```html
