@@ -21,6 +21,22 @@ result = number1 + number2
 ```
 
 - 중요한 점은, 우리가 일반적으로 생각하는 등호(=)의 개념이 변수에서는 다른 의미로 사용된다는 점이다. 프로그래밍에서는 등호를 기준으로 오른쪽에 있는 값, 식을 통해 계산된 값을 -> 등호 왼쪽에 있는 변수에 저장한다는 의미.
+- result라는 변수에는, 먼저 number1 + number2가 계산되어 30이라는 숫자가 저장된다. 
 
+```python
+result = 'HELLO WORKS!'
+print(result)
 
-10:23 
+result = 1 + 2 + 3 + 4 + 5
+print(result)
+
+result = result * 10 - 4
+print(result)
+
+>>> HELLO WORKS!
+15
+146
+```
+
+- 다음과 같이 result라는 변수에 처음에는 문자열, 그 다음에는 숫자, 그 다음에는 식을 저장하면서 터미널에 출력되는 값이 차례대로 달라지게 된다.
+
