@@ -4,7 +4,7 @@
   - and 연산자는 and를 기준으로 좌우 양쪽이 모두 True일 경우에만 결과가 True로 계산된다. or 연산자의 경우는 좌우에 있는 것들 중 하나라도 True이면 결과가 True가 된다. not 연산자는 True를 False로, False를 True로 기존에 있는 값을 반대로 바꿔주는 역할을 한다.
 
 ```python
-print(3==3)         # True
+print(3 == 3)         # True
 
 print(3 != 3)       # False
 
