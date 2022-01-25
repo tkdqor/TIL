@@ -71,8 +71,8 @@ function updateUserOrder(postID,action){
 - **새로 생성한 함수에서 url를 정의할 때, 상품 1개 조회 화면에서 장바구니 버튼을 클릭하기 때문에 url에 post_id(product_id) 값이 들어가야 한다. 이럴 때는 위에서 정의한 "postID"를 +로 연결시켜서 url를 설정해주면 된다.**
 
 - **fetch**는 자바스크립트에서 AJAX를 쉽게 사용할 수 있게 해주는 역할을 한다. **AJAX**는 자바스크립트의 라이브러리 중 하나이고 자바스크립트를 이용해서 서버에 데이터를 요청할 수 있다.
-  - fetch 메서드는  
-
+  - fetch 메서드는 2번째 파라미터로 요청에 대한 추가적인 데이터를 입력할 수 있다. POST방식으로 headers와 body로 전달할 수 있다. 또한, stringify 메소드는 json 객체를 string 객체로 변환시켜 준다.
+ 
 - 그런데 이렇게 POST방식으로 fetch를 이용해서 정보들을 views.py로 보낼 때, django에서는 csrf_token를 사용해야 한다. 
   - https://docs.djangoproject.com/en/3.2/ref/csrf/ 해당 공식 문서에 나와있는 코드를 base.html에 먼저 추가해야 한다. base.html의 head 사이에 -> <script></script> 사이에 해당 코드를 추가하자.
 
