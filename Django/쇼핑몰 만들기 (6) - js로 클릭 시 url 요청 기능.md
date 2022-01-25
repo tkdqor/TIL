@@ -12,6 +12,8 @@ def updatedItem(request, post_id):
 
 - 이렇게 views.py에서는 JsonResponse를 추가로 import하고 updatedItem이라는 함수를 생성해준다.
 
+- **JsonResponse**는 Json 형태의 response를 생성할 수 있게 해준다. 사용 시 **첫번째 파라미터는 딕셔너리**이어야 하는데(예: return JsonResponse({'aoo': 'two'}) ), 만약 딕셔너리 이외를 받게할 경우에는 두번째 파라미터를 **safe=False**라고 설정하면 된다. 따라서 위의 코드는 reponse될 때 'Item added'가 출력된다.
+
 
 ```python
 ...
