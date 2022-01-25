@@ -123,4 +123,4 @@ var url ='/update_item/'                  // 우리가 urls.py에서 설정한 u
 - 상품 1개 조회 화면에서 장바구니 버튼 클릭 시, post_id와 action를 JSON 형태의 데이터로 정보를 보내고 -> 설정한 url -> 설정한 views.py 함수에서 response 해준 것을 다음과 같이 console에 출력됨을 확인할 수 있다.
 
 
-
+- 참고 블로그 : https://ljtaek2.tistory.com/130
