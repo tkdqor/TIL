@@ -6,7 +6,7 @@ from django.http import HttpResponse, JsonResponse
 ...
 
 # 장바구니 추가 기능
-def updatedItem(request):
+def updatedItem(request, post_id):
     return JsonResponse('Item added', safe=False)
 ```
 
@@ -112,9 +112,10 @@ var url ='/update_item/'                  // 우리가 urls.py에서 설정한 u
     })
 ```
 
+- 이렇게 js파일을 설정해주면 다음과 같이
+<img src="https://user-images.githubusercontent.com/95380638/150930179-0de6c257-18ab-4c35-9004-cfcb94dfe61b.png" width="70%" height="70%">
 
+- 상품 1개 조회 화면에서 장바구니 버튼 클릭 시, post_id와 action를 JSON 형태의 데이터로 정보를 보내고 -> 설정한 url -> 설정한 views.py 함수에서 response 해준 것을 다음과 같이 console에 출력됨을 확인할 수 있다.
 
-
-### 오류 수정 후 14:22부터!
 
 
