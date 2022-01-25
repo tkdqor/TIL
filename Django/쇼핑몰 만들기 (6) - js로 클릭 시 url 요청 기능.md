@@ -18,7 +18,7 @@ def updatedItem(request, post_id):
 ```python
 ...
 urlpatterns = [
-  path('update_item/', views.updatedItem, name='update_item'),
+  path('<int:post_id>/update_item/', views.updatedItem, name='update_item'),
 ]  
 ```
 
