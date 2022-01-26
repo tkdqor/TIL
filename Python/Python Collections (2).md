@@ -2,7 +2,7 @@
 - 딕셔너리는 중괄호로 여러 데이터를 묶어준다. 중괄호 안에 Key:Value의 Pair / 한글로 키:값 쌍이라고 하는데 이러한 형태의 값을 여러 개 작성할 수 있고 실제 데이터에 접근할 때에는 대괄호를 사용해서 인덱스 대신에 이 key값으로 데이터에 접근하게 된다.
 - Value로 단순히 숫자나 문자열만 오는 게 아니라, 리스트나 또 다른 딕셔너리를 Value로 정의할 수도 있다.
 
-```python
+```python 
 simple_dict = {'name': 'sangbaek', 'age': 29}
 
 albums = {
@@ -14,11 +14,11 @@ print(albums['나얼'])       # ['Principle Of My Soul', 'Back to the Soul Fligh
 
 albums['이수'] = ['pathos', 'Unveiling']
 print(albums)
-# {
+{
 #      '박효신': ['The Breeze OF Sea', 'Gift'], 
 #      '나얼': ['Principle Of My Soul', 'Back to the Soul Flight'], 
 #      '이수': ['pathos', 'Unveiling']
-# }
+}
 
 print(albums['김범수'])     # KeyError: '김범수'
 ```
