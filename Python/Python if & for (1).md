@@ -35,3 +35,25 @@ else:
 ```
 
 - 다음과 같이 else문에서 **print("로그인에 실패하였습니다.")** 는 -> else에 해당한다. else 다음에 첫번째로 나오는 print("FAIL") 에 사용된 들여쓰기가 4칸인데, 비록 print("로그인에 실패하였습니다.")와 중간에 공백이 있지만, 들여쓰기가 4칸으로 같기 때문에 else 구문에 포함되는 것이다.
+
+```python
+password = "SANGBAEK"
+my_input = input("PASSWORD: ")
+
+if password == my_input:
+    print("LOGIN")
+    print("LOGIN")
+    print("LOGIN")
+else:
+    print("FAIL")    
+
+    print("로그인에 실패하였습니다.")
+
+
+print("로그인 절차가 끝났습니다.")
+```
+
+- 만약, else 구문에 포함시키고자 하는 게 아니고 if랑 else가 모두 끝난 다음에 별도의 다른 코드를 수행하고 싶다면 -> 들여쓰기를 지우고 **print("로그인 절차가 끝났습니다.")** 와 같이 새로 작성해주면 된다.
+  - 따라서 해당 코드는 if문의 condition이 True이든 False라서 else구문이 수행되든, 그것과는 상관없이 무조건 돌아가는 코드가 된다.
+
+13:39부터!
