@@ -123,3 +123,25 @@ print(channels[2]['name'])  # BTS Official
 ```
 
 - 또한, 리스트와 딕셔너리를 혼합해서 다음과 같이 사용할 수 있다. 이 리스트 내부에서도 여러 개의 딕셔너리들을 이름 순서나 구독자 수 순서대로 정렬하는 방법도 있다. 
+
+
+### 딕셔너리 내부 리스트 정렬해보기
+```python
+from operator import itemgetter
+...
+
+# itemgetter를 이용한 리스트 내부 딕셔너리 정렬
+data = sorted(channels, key=itemgetter('subscribers'))      # 오름차순 정렬
+data = sorted(channels, key=itemgetter('subscribers'), reverse=True)    # 내림차순 정렬
+
+for d in data:
+    print(d)
+ 
+# {'name': 'League of Legends', 'subscribers': 6450000}
+# {'name': 'BTS Official', 'subscribers': 4500000}
+# {'name': '백종원 TV', 'subscribers': 2300000}
+```
+
+- operator 모듈의 itemgetter를 import하면 리스트나 튜플을 특정 기준에 따라 정렬할 수 있게 해준다.
+- key=itemgetter('정렬 기준') 으로 sorted 함수는 오름차순 정렬이 되고, sorted 함수의 세번째 인자로 reverse=True를 하게 되면 내림차순 정렬이 된다.
+
