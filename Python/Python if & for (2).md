@@ -111,3 +111,54 @@ for number1 in range(2, 10):
 
 - Python은 위에서부터 코드를 읽어나가는데, 첫번째 줄을 읽으면서 number1 이라는 변수에 먼저 숫자 2를 뽑아서 저장하게 된다. 그래서 number1 = 2 이 상태로 고정이 되었을 때 -> 안쪽에 있는 두번째 줄 코드가 실행된다. 그래서 두번재 줄 코드가 전부 다 실행이 된 다음에야 -> 다시 첫번째 줄로 가서 number1 = 3 이렇게 3이 뽑아지는 것이다. 그러면 다시 number1이 3일 때, 안쪽에 있는 반복문이 모두 끝나야 number1이 4로 바뀐다.
 - 이렇게 해서 최종적으로 2 * 1 = 2 에서부터 9 * 9 = 81까지 출력이 된다.
+
+* * *
+
+## While문
+```python
+password = "LIKELION"
+
+while True:
+    my_input = input("PASSWORD: ")     # while문 내부 시작
+
+    if my_input != password:
+        print("패스워드를 다시 입력해주세요!")
+    else:
+        print("로그인 성공")
+        break
+```
+
+- while문은 if문 처럼 조건을 필요로 한다. 그래서 해당 조건이 True인 동안 while문의 내부를 영원히 실행하게 된다.
+- 위의 코드는 패스워드를 다르게 입력했을 경우, 다시 my_input = input("PASSWORD: ") 이 코드로 돌아와서 맞는 패스워드가 입력될 떄까지 계속 반복된다.
+  - 그래서, 특정 시점에 반복문을 강제로 종료시키기 위해 else문 내부에는 break를 입력해놓는다. 따라서 옳은 패스워드를 입력했을 경우 break가 실행되면서 while문을 탈출할 수 있게 된다.
+  - 만약 break가 없다면 옳은 패스워드를 입력하고 나서도 while문에서 벗어날 수 없게 된다.
+
+```python
+while True:
+    print("HELLO WORLD!")
+
+print("HELLO")    
+```
+- 이렇게 영원히 실행되는 경우 무한한 루프 상태에 빠질 수가 있는데, 그러한 상태를 무한 루프, infinite loop라고 한다. 이러한 상태에 바지면 그 다음 코드가 실행이 되지 않기 때문에 문제가 발생한다.
+- 우리가 웹서핑할 때, 특정 페이지가 늦게 뜨는 이유는 -> 어떤 코드가 실행되다가 condition 계산이 잘못되어서 그 루프에서 빠져나올 수 없는 경우이다. 그래서 프로그램이 아예 홀딩이 되는 것이다.
+  - 따라서 서비스 개발자로서는 while문은 장점보다는 단점이 더 많은 문법이라고 할 수 있다. for문 같은 경우에는 range()의 범위 안에서 실행된다든지, 리스트의 범위 내에서 실행된다는 장점이 있는데 while문의 경우에는, condition 한 번 잘못 계산하게되면 무한 루프 상태에 빠지게 된다.
+
+
+### while문 활용의 좋은 예
+- break를 쓰지 않고, while문의 condition 자체가 반복문이 실행되는 과정속에서 자동으로 False가 되게끔 만드는 방식도 있다. 
+
+```python
+kill_count = 0
+
+while kill_count < 10:
+    print("몬스터를 더 잡아야 합니다.")
+    kill_count += 1                  # kill_count = kill_count + 1 과 같은 코드
+
+    if kill_count == 10:
+        print("LEVEL UP!")
+```
+
+- 이렇게 while문의 condition이 자동으로 False가 되어 종료될 수 있는 구조가 좋다.
+- while문 내부 코드가 모두 실행이 되고나서 -> 다시 while kill_count < 10:로 와서 condition를 검사하게 되는 것이다.
+
+- 어떤 변수를 기준으로 해서 거기서 +-a를 할 때, 예를 들어 kill_count = kill_count + 1과 같을 때 이 코드를 -> kill_count += 1 이렇게 해서 kill_count라는 변수의 값을 1 증가시킨다고 생각하면 된다.
