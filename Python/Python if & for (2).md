@@ -49,7 +49,7 @@ print('여기까지가 제가 보유한 주식입니다.')
 - 이렇게 들여쓰기를 다르게 해주면 된다.
 
 
-## For문에서 변수
+### For문에서 변수
 - for문에서는 **for 변수명 in 변수명** 이렇게 구성되는데, in 다음에 들어와야 하는 데이터는 꼭 리스트일 필요는 없고 **데이터의 나열된 형태나 스퀀스 형태(데이터를 순서대로 하나씩 나열하여 나타낸 데이터 구조 ex. 리스트, 문자열)** 라면 모두 다 사용할 수 있다.
 
 ```python
@@ -69,7 +69,7 @@ for char in "SANGBAEK":
 - "SANGBAEK" 이라는 문자열에 속에 있는 char(charcter의 약자), 즉 글자 하나씩을 뽑아서 출력하게 되는 것이다.
 
 
-## N번 반복하는 경우
+### N번 반복하는 경우
 ```python
 for number in range(10):
     print(f'{number + 1}번째 주식 매수입니다.')
@@ -102,5 +102,12 @@ for number in range(1, 11):
 - 이렇게 range(1, 11) 이면, 1부터 10까지 출력할 수 있다.
 
 
+### 구구단 출력해보기
+```python
+for number1 in range(2, 10):
+    for number2 in range(1, 10):
+        print(f'{number1} * {number2} = {number1 * number2}')
+```
 
-16:48!
+17:00!
+
