@@ -109,5 +109,4 @@ for number1 in range(2, 10):
         print(f'{number1} * {number2} = {number1 * number2}')
 ```
 
-17:00!
 
