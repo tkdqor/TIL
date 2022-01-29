@@ -1,4 +1,4 @@
-## TypeError
+## TypeError 1
 ```python
 print('=' * 50)
 
@@ -29,3 +29,20 @@ TypeError: unsupported operand type(s) for -: 'int' and 'str'
 ...
 age = 2022 - int(year) + 1
 ```
+
+
+## TypeError 2 - TypeError: not all arguments converted during string formatting
+```python
+a, b = input().split()
+print(a % b)
+```
+
+- 이렇게 코드를 입력하면 위와 같은 오류가 출력된다. input() 함수는 문자열로 출력하기 때문에 수를 나누고 나머지를 계산하는 %를 이용하기 위해서는, 
+
+```python
+a, b = input().split()
+c = int(a) % int(b)
+print(c)
+```
+
+- 다음과 같이 int()를 사용해주면 된다.
