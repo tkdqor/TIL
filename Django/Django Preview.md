@@ -40,6 +40,10 @@ python manage.py runserver
   - admin페이지는 Django가 기본적으로 지원해주는 기능이다. 로그인을 해보면 Users라는 모델이 있는데, 우리가 만든 어드민 계정이 있다.
   - 오른쪽 상단에 ADD USER를 클릭하고 별도의 계정을 만들 수 있다. 그렇게 만든 유저의 경우 admin에 접속할 수 없는 일반 유저인데, Change user 부분에서 -> Permissions에서 Staff status와 Superuser status에 체크해서 권한을 부여해주면 로그인이 가능해진다.
 
+* python manage.py migrate 명령어 이후, 프로젝트 디렉터리 안에 db.sqlite3 파일이 생성됨.
+
+* 서버를 구동해서 실행한 이후, 프로젝트 이름과 같은 디렉터리 내부에 **던더pycache던더** 라는 디렉터리가 만들어지고, 그 내부에는 .pyc라는 파일이 만들어졌는데 -> python 파일이 한 번 실행되게 되면, 바이트 파일로 pyc 파일이 생성되는 것이다. 즉, 다음에 실행할 때는 다시 인터프리터가 컴파일하는게 아니라 pyc파일이 있으면 즉시 실행함으로서 메모리를 절약할 수 있다.
+
 
 * * *
 
