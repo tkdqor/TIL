@@ -33,3 +33,15 @@ python3 likelion.py
 이런식으로 생성한 python 파일을 실행시켜보면 파일 안에 있는 python 코드들이 실행된다.
 
 5. vs code에서 좌측하단 경고모양 아이콘을 클릭하면, terminal 탭이 있고 우리가 사용하는 terminal를 연동할 수 있다. 더하기 버튼을 누르면 새롭게 우리의 터미널과 vs code가 연동된다. 
+
+
+### pip
+- pip는 python 패키지들의 저장소라고 생각하면 된다. https://pypi.org/ 다음은 공식사이트이다. Django를 다운로드 할 때도 pip를 사용해서 다운로드 하게 된다.
+- 그래서 가상환경이 활성화된 상태에서 터미널에 
+
+```terminal
+pip --version
+where pip
+```
+
+- 다음과 같이 pip의 설치된 버전과 현재 설치된 경로를 확인해볼 수 있다.
