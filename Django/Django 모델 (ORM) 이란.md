@@ -71,10 +71,10 @@ class Post(models.Model):        # 괄호 부분은 python의 상속 문법이�
 
 ### 모델 활용 순서
 - **장고 모델을 통해 데이터베이스 형상을 관리할 경우**
-  - 먼저 모델 클래스를 작성
+  - 먼저 모델 클래스를 작성하여 정의
   - 모델 클래스로부터 마이그레이션 파일 생성 -> makemigrations 명령
   - 마이그레이션 파일을 데이터베이스에 적용 -> migrate 명령
-  - 과정이 완료되면 모델을 활용할 수 있음
+  - 과정이 완료되면 모델을 활용할 수 있음 -> 그리고 데이터베이스를 확인하기(밑에 있는 명령어를 사용하여 쿼리문을 직접 확인하기)
 
 
 - **장고 외부에서, 이미 장고전에 데이터베이스를 구축해놓은 경우**
@@ -139,10 +139,50 @@ COMMIT;
 ```
 
 - **이런식으로 뜨게 되는데, 실제로 데이터베이스에 들어가는 쿼리문을 우리가 확인해볼 수 있다.(migrate했을 때 입력한 쿼리문이라고 생각하면 된다!)**
-- 
+
 - **CREATE TABLE "instagram_post" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "message" text NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);** 이러한 쿼리문이 실행되었다. 
-  - instagram_post라는 
-
-
+  - instagram_post라는 이름의 테이블이 생성되었고, 우리가 따로 지정하지 않았지만 id라는 필드도 Primary key로 지정되었다. 그리고 message / created_at / updated_at 필드까지 생성됨을 확인할 수 있다. 
+  - **NOT NULL** 이라는 것은, NULL을 허용하지 않는다, 즉 값이 꼭 입력되어야 한다는 것을 의미한다. 
+ 
 - 실제 SQL로 테이블을 생성하는 구문과 비교해도 똑같이 나온다. 참고 블로그 https://jhnyang.tistory.com/307
 
+
+### sqlite 바이너리
+- 이렇게 위와 같은 과정을 거쳐 모델을 정의하고 실제 데이터베이스에도 반영이 완료되었다.
+
+```terminal
+python manage.py dbshell
+```
+
+- 그리고 위의 코드를 입력해서 현재 sqlite 바이너리가 설치가 되어있는지 아닌지 확인할 수 있다. 설치가 되어있다면
+
+```terminal
+SQLite version 3.32.3 2020-06-18 14:16:19
+Enter ".help" for usage hints.
+sqlite> 
+```
+
+- 다음과 같이 splite> 상태로 변환이 된다. 만약 설치가 되어있지 않다면, https://www.sqlite.org/download.html 해당 사이트에서 sqlite 바이너리를 다운로드 할 수 있다.
+
+```terminal
+sqlite> .tables
+
+auth_group                  blog1_post                
+auth_group_permissions      django_admin_log          
+auth_permission             django_content_type       
+auth_user                   django_migrations         
+auth_user_groups            django_session            
+auth_user_user_permissions  instagram_post      
+```
+
+- 이렇게 입력하면, 테이블 목록이 나오게 된다.
+
+```terminal
+sqlite> .schema instagram_post
+CREATE TABLE IF NOT EXISTS "instagram_post" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "message" text NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
+```
+
+- 그리고 .schema 생성된 테이블 이름 이렇게 입력하면, 테이블 스키마가 나오게 된다. **테이블 스키마란, 데이터베이스가 데이터에서 필요한 부분을 받아들이기 위한 전체적인 구조와 형식을 정하는 것이다.**
+- 빠져나오려면, .quit를 입력해주면 된다.
+
+- 또한, https://sqlitebrowser.org/ 해당 사이트에서 GUI 프로그램을 설치하면, 우리 프로젝트 내부에 있는 db.sqlite3 파일을 열어서 테이블을 눈으로 확인할 수 있다.
