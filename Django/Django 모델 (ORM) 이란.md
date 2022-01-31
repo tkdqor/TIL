@@ -107,5 +107,42 @@ urlpatterns = [
 ]
 ```
 
-- 다음과 같이 ㅕ
-```terminau
+- 다음과 같이 url를 추가한다.
+
+- 그 다음에 이제 models.py에 들어가서 클래스를 정의하자.
+```python
+from django.db import models
+
+
+class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+```
+
+- 인스타그램을 생각해서 간단하게 클래스를 정의하고나서 python manage.py makemigrations instagram 입력 / python manage.py migrate instagram 입력
+  - 이렇게 입력하게 되면, 실제로 DB(데이터베이스)에 "instagram_post"라는 이름의 테이블이 생성된 것이다.
+
+```terminal
+python manage.py sqlmigrate instagram 0001_initial
+```
+
+- 그리고 이렇게 입력하게 되면, 
+
+```terminal
+BEGIN;
+--
+-- Create model Post
+--
+CREATE TABLE "instagram_post" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "message" text NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);
+COMMIT;
+```
+
+- **이런식으로 뜨게 되는데, 실제로 데이터베이스에 들어가는 쿼리문을 우리가 확인해볼 수 있다.(migrate했을 때 입력한 쿼리문이라고 생각하면 된다!)**
+- 
+- **CREATE TABLE "instagram_post" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "message" text NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL);** 이러한 쿼리문이 실행되었다. 
+  - instagram_post라는 
+
+
+- 실제 SQL로 테이블을 생성하는 구문과 비교해도 똑같이 나온다. 참고 블로그 https://jhnyang.tistory.com/307
+
