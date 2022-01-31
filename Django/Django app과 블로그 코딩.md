@@ -124,3 +124,39 @@ def post_list(request):
 - views.py라는 건, 어떤 요청이 왔을 때 호출되는 함수를 의미한다. qs라는 변수를 설정해서 Post 모델의 모든 데이터를 가져오고, render 함수 세번째 인자에 딕셔너리 형태로 넘겨준다.
 
 
+### template 설정
+- blog1이라는 디렉터리 안에 templates라는 디렉터리를 만들자. 그리고 그 안에 blog1이라는 앱과 동일한 이름의 디렉터리를 하나 더 만든다. 또 그 안에는 post_list.html을 만들자.
+
+```html
+<h1>Post List</h1>
+
+
+{% for post in post_list %}
+    <h2>{{ post.title }}</h2>
+        {{ post.content }}
+{% endfor %}
+```
+
+- 이 template의 경우, view 함수가 호출되고 render 함수로 해당 html를 사용하게 되었기 때문에 django template language를 이용해 표현할 수 있다.
+
+
+### app 내부 urls.py 설정
+- blog1 앱 내부의 urls.py로 들어가자.
+```python
+from . import views    # 현재 디렉터리에서 views.py를 import 
+from django.urls import path  # django -> urls 패키지에 conf.py 안에 있는 path 함수 import
+
+urlpatterns = [
+    path('', views.post_list, name='post_list'),    # 두번째 인자를 함수로 넘긴 것이지, 괄호를 사용해서 호출하면 안된다.
+]
+```
+
+- 앱 내부에 있는 urls.py에서 views.py을 import 하고, urls 패키지 -> conf.py에 있는 path 함수도 import한다.
+- 그리고 path 함수를 사용해서 위의 view 함수를 연결시키자. 
+
+
+### 웹 브라우저에서 화면 확인
+- 웹 브라우저에서 localhost:8000/blog1 으로 들어가보면, 우리가 작성한 post_list.html의 내용이 보여지게 된다.
+
+
+### **vs code에서 command + P 하게되면 파일 검색 가능**
