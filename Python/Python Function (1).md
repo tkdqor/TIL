@@ -2,8 +2,8 @@
 - 프로그래밍에서 함수는 특정 입력값을 전달받아서 내부적으로 모종의 절차를 수행한 다음, Output으로 어떤 결과를 만들어내는 기능에 해당한다.
   - ex) print(), input(), int() 이렇게 기능을 제공해주는 것이 함수이다.
 
-- 함수를 실행할 때는 -> 함수의 이름을 적은 다음, 괄호를 열고 닫으면 해당 함수를 실행 및 호출하게 된다. 영어로는 call function이라고 한다. 
-- 그리고 함수는 특정 기능을 수행하기 위해서 대부분 입력값을 요구한다. 함수에서는 이를 **파라미터 혹은 인자**라고 한다. (parameter, argument)
+- **함수를 실행할 때는 -> 함수의 이름을 적은 다음, 괄호를 열고 닫으면 해당 함수를 실행 및 호출하게 된다. 영어로는 call function이라고 한다.** 
+- 그리고 함수는 특정 기능을 수행하기 위해서 대부분 입력값을 요구한다. 함수에서는 이를 **파라미터**라고 한다. (parameter)
 
 ```python
 def check_assignment(name):
@@ -63,6 +63,14 @@ def check_assignment(name, assignment):
 
 check_assignment("sangbaek", "Python")
 check_assignment("baeksang", "HTML")
+
+>>>
+sangbaek님 안녕하세요?
+Python는 다 하셨나요? sangbaek님?
+고생하셨습니다. 또 과제 낼께요!
+baeksang님 안녕하세요?
+HTML는 다 하셨나요? baeksang님?
+고생하셨습니다. 또 과제 낼께요!
 ```
 
 - 여러 개의 파라미터를 정의하는 함수를 만들고자 한다면, 괄호 안에 파라미터를 콤마로 구분하여 나열하면 된다. 그렇게 정의를 하면, 함수를 호출할 때 2개의 파라미터를 입력하도록 되어있다.
