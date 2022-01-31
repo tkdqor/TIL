@@ -95,6 +95,7 @@ urlpatterns = [
 ]
 ```
 
+- **Django는 URLconf(URL configuration)를 사용하는데, URL를 어떻게 구성하는지에 대한 내용이고 즉, URLconf는 장고에서 URL과 일치하는 뷰를 찾기 위한 패턴들의 집합이다.**
 
 ### views.py 설정
 - blog1 앱 내부에 있는 views.py로 가보자.
