@@ -91,7 +91,7 @@ from django.urls import path, include      # include를 새롭게 추가
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('blog1/', include('blog1.urls')),   # 새롭게 url를 만들어주고 해당 url은 blog1 앱의 url로 보내주기
+    path('blog1/', include('blog1.urls')),   # 새롭게 url를 만들어주고 해당 url은 blog1 앱의 urls.py로 보내주기
 ]
 ```
 
