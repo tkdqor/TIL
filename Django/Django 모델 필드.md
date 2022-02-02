@@ -50,6 +50,8 @@
 - blank: 장고 단에서 validation(유효성 검사) 시에 empty 허용 여부(디폴트: false)
   - 예를 들어, 문자열의 경우에 빈 문자열을 허용하는 것. 이걸 생략하게 되면 false로 빈 문자열을 허용하지 않는다.
 - null(DB옵션): null 허용 여부(디폴트: false)
+  - blank와 null의 차이를 알려주는 글 https://django-orm-cookbook-ko.readthedocs.io/en/latest/null_vs_blank.html
+  - blank=True는 빈 채로 저장되는 것을 허용 / null=True는 필드의 값 자체가 정보 없음으로 저장되는 것을 허용
 - db_index(DB옵션): 인덱스 필드 여부(디폴트: false)
   - 모델에 db_index를 걸려고 한다면 이 옵션을 주고 migration을 하게 되면 적용이 된다. 근데 이미 데이터베이스를 꾸며놓았다면, 그 위에 장고의 이 옵션을 걸어도 쓸일이 없다. 이 옵션은 migration할 때 사용한다.
 - default: 디플트 값 지정, 혹은 값을 리턴해줄 함수 지정 / 사용자에게 디폴트값을 제공하고자 할 때
