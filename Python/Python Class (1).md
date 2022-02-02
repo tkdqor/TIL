@@ -71,11 +71,25 @@ class Car:
         self.fuel -= 2
         self.mileage += 10
 
-    
+
+# Car 클래스를 사용해서 car라는 자동차 인스턴스 생성    
 car = Car("GENESIS", "black", 30)
 
 print(car.name, car.color, car.fuel)
 car.accel()
+
+
+print(car.name, car.color, car.fuel, car.mileage)
+
+
+# 이렇게 클래스 이름을 적은 다음, 내부 메소드를 호출하고 괄호 안에 인스턴스 변수를 적어줘도 수행된다.
+Car.accel(car)
+print(car.name, car.color, car.fuel, car.mileage)
+
+>>>
+GENESIS black 30
+GENESIS black 28 10
+GENESIS black 26 20
 ```
 - 다음은 클래스를 활용해서 자동차를 구현해 본 코드이다. 이렇게 만든 클래스를 활용할 때에는, 클래스이름( ) 이렇게 해준 다음에 자동차를 표현하는데 필요한 필수 파라미터를 적어준다. 그리고 해당 내용을 car라는 소문자 변수에다가 저장해준다. 그렇게 정의하게 되면, car.name / car.accel()과 같은 형태로 Car 클래스의 정의된 내용들을 꺼내쓸 수 있다.
 
