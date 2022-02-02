@@ -5,6 +5,7 @@
 
 ### 기본 지원되는 모델 필드 타입
 - 먼저 django의 공식 문서에 있는 필드에 대한 내용을 한 번 읽어보자. https://docs.djangoproject.com/en/3.2/ref/models/fields/#field-types
+- https://brunch.co.kr/@ddangdol/4 해당 글은 한글로 번역된 내용이다.
 
 - primary Key: AutoField, BigAutoField
   - 기본적으로 모든 테이블에 id필드가 숨겨져 있는데, 그 필드가 AutoField이다. 숫자가 1씩 자동으로 증가하는 필드이다. 따라서 해당 필드를 우리는 default로 사용하게 된다.
