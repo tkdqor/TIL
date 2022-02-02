@@ -21,9 +21,9 @@
 - 아이피: GenericIPAddressField
 
 ### 관계에 대한 필드 타입
-- ForeignKey(외래키) (1:N관계..?)
-- ManyToManyField
-- OneToOneField
+- ForeignKey(외래키) -> 1:N 관계
+- ManyToManyField  -> M:N 관계
+- OneToOneField    -> 1:1 
 
 
 - 우리가 만약 Posting을 저장하는 테이블을 하나 만들고, Tag를 저장하는 필드를 하나 만든다고 했을 때, Posting 테이블에 있는 레코드와 Tag 테이블에 있는 레코드의 관계를 명시할 수 있다. 위의 3가지의 관계를 지정할 수 있다.
