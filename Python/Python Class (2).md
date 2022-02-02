@@ -56,6 +56,7 @@ genesis = Car("GENESIS", "black", 50)
 ferrari = Car("Ferrari", "Rosso Corsa", 40)
 
 print(genesis.name, genesis.color, genesis.fuel, genesis.mileage)
+print()
 print(ferrari.name, ferrari.color, ferrari.fuel, genesis.mileage)
 
 >>>
@@ -65,6 +66,86 @@ GENESIS black 50 0
 Ferrari Rosso Corsa 40 0
 ```
 
-- 이런식으로 print하고 인스턴스이름.인스턴스변수 이렇게 .으로 인스턴스 내부에 접근해서 출력할 수 있다.
+- 이런식으로 print하고 인스턴스이름.인스턴스변수 이렇게 .으로 인스턴스 내부에 접근해서 출력할 수 있다. 
+- 또한, print() 이렇게만 입력하면 터미널에 공백 한 줄을 출력하게 된다.
+
+- 이렇게 정보를 확인할 수 있지만 그래도 여전히 불편하다. print(인스턴스이름) 이렇게 했을 때 -> 우리가 커스텀할 수 있는 방법을 알아보자.
+
+
+```python
+class Car:
+    def __init__(self, name, color, fuel):
+        print("자동차를 만듭니다.")
+        self.name = name
+        self.color = color
+        self.fuel = fuel
+        self.mileage = 0
+
+    def __str__(self):
+        return f'{self.name} {self.color} {self.fuel} {self.mileage}'
+
+
+genesis = Car("GENESIS", "black", 50)
+ferrari = Car("Ferrari", "Rosso Corsa", 40)
+
+
+print(genesis)
+print(ferrari)
+
+>>>
+자동차를 만듭니다.
+자동차를 만듭니다.
+GENESIS black 50 0
+Ferrari Rosso Corsa 40 0
+```
+
+- 이렇게 클래스 내부에 던더string 메소드를 정의하면 커스텀할 수 있다. 메소드 내부에는 문자열을 retur해주면 우리가 print(인스턴스 이름)을 했을 때 어떠한 문자열이 출력되기를 원하는지 설정할 수 있다.
+  - fstring를 이용해서 위와 같이 설정해주고 print를 해보면 우리가 설정한 대로 출력이 된다.
+
+
+```python
+class Car:
+    def __init__(self, name, color, fuel):
+        print("자동차를 만듭니다.")
+        self.name = name
+        self.color = color
+        self.fuel = fuel
+        self.mileage = 0
+
+
+    def accel(self):
+        self.fuel -= 2
+        self.mileage += 10
+
+
+    def __str__(self):
+        return f'{self.name} {self.color} {self.fuel} {self.mileage}'
+
+
+genesis = Car("GENESIS", "black", 50)
+ferrari = Car("Ferrari", "Rosso Corsa", 40)
+
+
+print(genesis)
+print(ferrari)
+print()
+genesis.accel()
+ferrari.accel()
+print(genesis)
+print(ferrari)
+
+>>>
+자동차를 만듭니다.
+자동차를 만듭니다.
+GENESIS black 50 0
+Ferrari Rosso Corsa 40 0
+
+GENESIS black 48 10
+Ferrari Rosso Corsa 38 10
+```
+
+- 이번에는 클래스 내부에 accel이라는 메소드를 새롭게 추가했다. 이 메소드에서 self.fuel / self.mileage와 같이 인스턴스에 저장되어 있는 값에 접근하게 되는데, 애초에 이 accel이라는 메소드가 호출되는 과정이, 우리가 genesis와 ferrari라는 인스턴스를 만들고 .점을 기준으로 genesis와 ferrari 인스턴스 내부에 있는 변수에 접근을 했었다. 그래서 이 genesis가 굴러가게끔 하려면 genesis.accel 이렇게 사용한다. **따라서 accel이라는 메소드는 우리가 생성한 인스턴스와 관련되어 있기 때문에 그 인스턴스가 보유하고 있는 accel이 실행된다고 생각할 수 있다.** genesis.accel() 이렇게 코드를 작성하면 genesis 인스턴스 내부에 accel이 수행된다고 볼 수 있다.
+- def accel(self): -> 이렇게 정의했을 때 self에 우리가 생성한 genesis나 ferrari 인스턴스에 대한 정보가 담겨있는 것이다.
+- 위와 같이 genesis.accel() / ferrari.accel() 이렇게 메소드를 호출한 이후에는 -> 인스턴스변수인 fuel과 mileage에 변동이 생긴 걸 확인할 수 있다.
 
 
