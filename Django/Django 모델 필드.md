@@ -45,7 +45,7 @@
 
 
 ## 자주 쓰이는 필드 공통 옵션
-- blank: 장고 단에서 validation 시에 empty 허용 여부(디폴트: false)
+- blank: 장고 단에서 validation(유효성 검사) 시에 empty 허용 여부(디폴트: false)
   - 예를 들어, 문자열의 경우에 빈 문자열을 허용하는 것. 이걸 생략하게 되면 false로 빈 문자열을 허용하지 않는다.
 - null(DB옵션): null 허용 여부(디폴트: false)
 - db_index(DB옵션): 인덱스 필드 여부(디폴트: false)
