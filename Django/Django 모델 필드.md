@@ -11,6 +11,7 @@
   - 기본적으로 모든 테이블에 id필드가 숨겨져 있는데, 그 필드가 AutoField이다. 숫자가 1씩 자동으로 증가하는 필드이다. 따라서 해당 필드를 우리는 default로 사용하게 된다.
 - 문자열: CharField, TextField, SlugField
 - 날짜/시간: DateField, TimeField, DateTimeField, DurationField
+  - https://tomining.tistory.com/145 해당 블로그를 참고하면, DateField, DateTimeField의 옵션 중, auto_now=True -> 수정될 때마다 현재날짜로 갱신 / auto_now_add=True -> 최초 저장 시에만 현재날짜를 적용
 - 참/거짓: BooleanField, NullBooleanField
 - 숫자: IntegerField, SmallIntegerField, PositiveIntegerField, PositiveSmallIntegerField, BigIntegerField, DecimalField, FloatField
 - 파일: BinaryField, FileField, ImageField, FilePathField
