@@ -149,3 +149,58 @@ Ferrari Rosso Corsa 38 10
 - 위와 같이 genesis.accel() / ferrari.accel() 이렇게 메소드를 호출한 이후에는 -> 인스턴스변수인 fuel과 mileage에 변동이 생긴 걸 확인할 수 있다.
 
 
+
+## 클래스 변수란
+- 지금까지는 클래스 내부의 메소드에서 설정한 인스턴스 변수만 사용했었는데, 인스턴스와 별개로 인스턴스가 없어도 상관이 없고 언제든 사용할 수 있는 클래스 변수라는 것이 존재한다. 일반적으로 인스턴스 전반에 걸쳐 사용하거나 파악해야 하는 값이 있을 때 클래스 변수를 사용하게 된다.
+
+```python
+class Car:
+    count = 0
+
+    def __init__(self, name, color, fuel):
+        self.name = name
+        self.color = color
+        self.fuel = fuel
+        self.mileage = 0
+        Car.count += 1
+
+
+    def accel(self):
+        self.fuel -= 2
+        self.mileage += 10
+
+
+    def __str__(self):
+        return f'{self.name} {self.color} {self.fuel} {self.mileage}'
+
+
+# 클래스 변수를 활용해서 생성된 자동차 인스턴스 출력
+print(f'생성된 자동차 수: {Car.count}')
+
+genesis = Car("GENESIS", "black", 50)
+ferrari = Car("Ferrari", "Rosso Corsa", 40)
+
+# 클래스 변수를 활용해서 생성된 자동차 인스턴스 출력
+print(f'생성된 자동차 수: {Car.count}')
+
+print(genesis)
+print(ferrari)
+print()
+genesis.accel()
+ferrari.accel()
+print(genesis)
+print(ferrari)
+
+>>>
+생성된 자동차 수: 0
+생성된 자동차 수: 2
+GENESIS black 50 0
+Ferrari Rosso Corsa 40 0
+
+GENESIS black 48 10
+Ferrari Rosso Corsa 38 10
+
+```
+
+  - Car 클래스로 지금까지 총 몇 대의 인스턴스가 만들어졌는지 파악하기 위해 클래스 정의 바로 밑에 count = 0과 같이, 클래스 변수를 설정할 수 있다. 그래서 던더init 메소드에 Car.count += 1 이렇게해서 자동차가 만들어질 때마다(Car 인스턴스가 하나 만들어질 때마다) 클래스 변수 count를 1만큼 증가시켜주자라고 설정한 것이다. 인스턴스 변수가 아니기 때문에 self. 가 아닌 **클래스이름.클래스변수** 와 같은 형태로 접근하자.
+  - 마지막에 print(f"Car count: {Car.count}")로 클래스 변수를 출력해서 확인할 수 있다. 
