@@ -94,8 +94,6 @@ class Profile(models.Model):
 class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
     message = models.TextField()    # 기본 default 값이 blank=False이다.
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True) 
     title = models.CharField(max-length=100, db_index=True)
     slug = models.SlugField(allow_unicode=True, db_index=True)
     desc = models.TextField(blank=True)
