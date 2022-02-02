@@ -116,11 +116,11 @@ class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
 ```
 
-- 다음과 같이, 1개의 글에 여러개의 댓글이 달릴 수 있는 관계, 즉 1:N의 관계일 경우에는 -> N측에다가 **post = models.ForeignKey(Post, on_delete=models.CASCADE)** 다음과 같이 ForeignKey를 설정해주면 된다. N측에서 1의 관계에 있는 것은 Post다 라고 괄호 안에 설정하는 것이다.
-- 그리고 댓글의 작성자 정보가 있는데, 이 때 외래키는 작성자를 지정하게 된다. 1명의 유저가 여러개의 댓글을 달 수 있기 때문에 이 경우도 1:N의 관계가 성립된다. -> 이 경우도 Comment 모델이 N측에 있으니 설정한 것이다.
-- Post 모델에서도, 1명의 유저가 여러개의 글을 작성할 수 있기 때문에 외래키를 작성자로 지정하게 되고 1:N의 관계가 성립된다. -> Post 모델이 N측에 있으니 Post 모델에서 설정한다.
+- 다음과 같이, **1개의 글에 여러개의 댓글이 달릴 수 있는 관계, 즉 1:N의 관계일 경우에는 -> N측에다가 post = models.ForeignKey(Post, on_delete=models.CASCADE)** 다음과 같이 ForeignKey를 설정해주면 된다. N측에서 1의 관계에 있는 것은 Post다 라고 괄호 안에 설정하는 것이다.
+- 그리고 댓글의 작성자 정보가 있는데, 이 때 외래키는 작성자를 지정하게 된다. **1명의 유저가 여러개의 댓글을 달 수 있기 때문에 이 경우도 1:N의 관계가 성립된다. -> 이 경우도 Comment 모델이 N측에 있으니 설정한 것이다.**
+- **Post 모델에서도, 1명의 유저가 여러개의 글을 작성할 수 있기 때문에 외래키를 작성자로 지정하게 되고 1:N의 관계가 성립된다. -> Post 모델이 N측에 있으니 Post 모델에서 설정한다.**
 
-- Profile 모델의 경우는, 일단 User 모델은 장고의 OS - AUTH 앱에서 기본적으로 지원하고 있다. 그 User 모델과 Profile모델을 1대1 관계로 설정한 예시이다. **user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)** 이렇게 코드를 입력하고 지정해주었다.
+- Profile 모델의 경우는, 일단 User 모델은 장고의 OS - AUTH 앱에서 기본적으로 지원하고 있다. **그 User 모델과 Profile모델을 1대1 관계로 설정한 예시이다. user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)** 이렇게 코드를 입력하고 지정해주었다.
 
 - SlugField의 경우는, 외국의 뉴욕타임즈나 언론사 시스템에 보면, 특정 기사에 대한 url이 영문과 숫자 그리고 하이푼으로 이루어진 경우가 있다. 그런 부분을 slug라고 한다. 그래서 이러한 SlugField를 구성하게 되면 제목과는 다른, 제목으로부터 slug를 자동 생성하는 장고 어드민의 기능이 실행된다.
   - allow_unicode가 원래 false가 디폴트인데 이걸 True로 하면 -> 한글도 지정할 수 있게 된다.
@@ -129,7 +129,7 @@ class Tag(models.Model):
 
 - comment_count의 경우는 PositiveIntegerField로 설정했다. IntegerField도 있지만 그러면 음수도 처리할 수 있게 되는데, 댓글의 개수가 음수일리는 없으니까 조금 더 타이트하게 PositiveIntegerField라는 필드로 지정해서 0부터 양수만 처리할 수 있게 지정.
 
-- tag_set은 -> 하나의 글에서 다수의 tag가 들어올 수 있고 / 하나의 Tag도 다수의 글들이 들어올 수 있으니까 ManyToManyField를 지정해주었다.
+- **tag_set은 -> 하나의 글에서 다수의 tag가 들어올 수 있고 / 하나의 Tag도 다수의 글들이 들어올 수 있으니까 ManyToManyField를 지정해주었다.**
 
 * * *
 ## 데이터베이스 설계 시, 꼭 생각해야 할 점
@@ -137,7 +137,7 @@ class Tag(models.Model):
 - 모델 설계가 Django 개발의 절반이라고 해도 과언이 아니다.
   - blank / null 을 True로 지정하는 것은 최소화하기 (manage.py inspect 명령을 통해 생성된 모델 코드는 초안이다)
   - validators 들을 다양하게 / 타이트하게 지정하기(필요하다면 필요한 만큼의 validators들을 추가로 설정)
-  - 프린트엔드에서 유효성 검사는 사용자 편의를 위해서 수행하는 것이지, 백엔드에서의 유효성 검사는 필수이다. 만약, 백엔드에서 하지 않는다면 -> 클라이언트로부터 넘어온 값들을 절대 신뢰해서는 안된다. 누군가가 그러한 로직을 흉내내서 요청을 보낼수도 있는 것이기 때문이다.
-  - 직접 유효성 검사 로직을 만들지 말자. 이미 잘 구성된 Features를 가져다 쓰자. 장고의 Form / Model를 통해 지원되며, django-rest-framework의 Serializer를 통해서도 지원된다.
+  - 프론트엔드에서 유효성 검사는 사용자 편의를 위해서 수행하는 것이지, **백엔드에서의 유효성 검사는 필수이다.** 만약, 백엔드에서 하지 않는다면 -> 클라이언트로부터 넘어온 값들을 절대 신뢰해서는 안된다. 누군가가 그러한 로직을 흉내내서 요청을 보낼수도 있는 것이기 때문이다.
+  - 직접 유효성 검사 로직을 만들지 말자. 이미 잘 구성된 Features를 가져다 쓰자. **장고의 Form / Model를 통해 지원되며, django-rest-framework의 Serializer를 통해서도 지원된다.**
 
 - ORM은 SQL쿼리를 만들어주는 역할일 뿐, 보다 성능높은 애플리케이션을 위해서는 사용하려는 데이터베이스에 대한 깊은 이해가 필요.
