@@ -81,3 +81,14 @@ e = d if(d<c) else c
 print(e)
 ```
 - 이렇게도 할 수 있다.
+
+12) 정수 3개 입력 받아 짝수만 출력하기(내 풀이)
+```python
+a, b, c = map(int, input().split())
+numbers = [a, b, c]
+
+for number in numbers:
+    if number % 2 == 0:
+        print(number)
+```
+
