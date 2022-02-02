@@ -18,7 +18,7 @@
 - UUID: UUIDField
 - 아이피: GenericIPAddressField
 
-### 관계에 대한 필드
+### 관계에 대한 필드 타입
 - ForeignKey(외래키)
 - ManyToManyField
 - OneToOneField
