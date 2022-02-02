@@ -63,3 +63,40 @@
 - verbose_name: 필드 레이블, 미지정 시 필드명이 사용
   - 데이터베이스(DB) 하나의 필드는 -> 레이블(데이터를 분류한 제목)과 데이터로 이루어져 있다. 따라서 verbose_name 옵션을 따로 지정하지 않으면 장고 모델에서 사용한 필드 이름이 그대로 레이블이 된다.
 - help_text: 필드 입력 도움말
+
+
+## 장고 모델 예시
+```python
+from django.db import models
+
+
+class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
+    message = models.TextField()    # 기본 default 값이 blank=False이다.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+```
+
+- 위와 같이 message라는 필드는 TextField이고 아무것도 설정하지 않았기 때문에 default로 blank=False이다. 그래서 message에 값이 없다면, 빈 문자열로 저장한다면 모델과 연동된 장고 form에서 유효성 검사를 수행하는 데, 거기서 실패하게 된다. 근데 그 form를 사용하지 않고 그냥 모델만 활용해서 저장하면 유효성 검사 로직을 타지 않는다. 그래서 그런 경우에는 저장은 된다.
+
+- null과 blank 2개는 가급적으로 false로 설정하자.
+
+
+```python
+from django.db import models
+
+
+class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
+    message = models.TextField()    # 기본 default 값이 blank=False이다.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+
+class Comment(models.Model):
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)  # 댓글의 작성자 정보가 있는데, 이 때 외래키는 작성자를 지정한다.
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)  # 1개의 글은 여러개의 댓글이 달릴 수 있으니 Post모델과 1:N 관계 형성
+```
+
+- 다음과 같이, 1개의 글에 여러개의 댓글이 달릴 수 있는 관계, 즉 1:N의 관계일 경우에는 -> N측에다가 **post = models.ForeignKey(Post, on_delete=models.CASCADE)** 다음과 같이 ForeignKey를 설정해주면 된다. N측에서 1의 관계에 있는 것은 Post다 라고 괄호 안에 설정하는 것이다.
+- 그리고 댓글의 
+ㅈㅏㄱ
+- 그리고 댓글의 
