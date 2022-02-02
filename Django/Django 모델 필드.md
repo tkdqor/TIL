@@ -82,13 +82,24 @@ class Post(models.Model):       # 우리가 원하는 데이터베이스에 저�
 
 
 ```python
+from django.conf import settings
 from django.db import models
 
 
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    
+
 class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
     message = models.TextField()    # 기본 default 값이 blank=False이다.
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True) 
+    title = models.CharField(max-length=100, db_index=True)
+    slug = models.SlugField(allow_unicode=True, db_index=True)
+    desc = models.TextField(blank=True)
+    image = models.ImageField(blank=True)
+    comment_count = models.PositiveIntegerField(default=0)
 
 
 class Comment(models.Model):
@@ -97,6 +108,14 @@ class Comment(models.Model):
 ```
 
 - 다음과 같이, 1개의 글에 여러개의 댓글이 달릴 수 있는 관계, 즉 1:N의 관계일 경우에는 -> N측에다가 **post = models.ForeignKey(Post, on_delete=models.CASCADE)** 다음과 같이 ForeignKey를 설정해주면 된다. N측에서 1의 관계에 있는 것은 Post다 라고 괄호 안에 설정하는 것이다.
-- 그리고 댓글의 
-ㅈㅏㄱ
-- 그리고 댓글의 
+- 그리고 댓글의 작성자 정보가 있는데, 이 때 외래키는 작성자를 지정하게 된다. 1명의 유저가 여러개의 댓글을 달 수 있기 때문에 이 경우도 1:N의 관계가 성립된다. -> 이 경우도 Comment 모델이 N측에 있으니 설정한 것이다.
+- Post 모델에서도, 1명의 유저가 여러개의 글을 작성할 수 있기 때문에 외래키를 작성자로 지정하게 되고 1:N의 관계가 성립된다. -> Post 모델이 N측에 있으니 Post 모델에서 설정한다.
+
+- Profile 모델의 경우는, 일단 User 모델은 장고의 OS - AUTH 앱에서 기본적으로 지원하고 있다. 그 User 모델과 Profile모델을 1대1 관계로 설정한 예시이다. **user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)** 이렇게 코드를 입력하고 지정해주었다.
+
+- SlugField의 경우는, 외국의 뉴욕타임즈나 언론사 시스템에 보면, 특정 기사에 대한 url이 영문과 숫자 그리고 하이푼으로 이루어진 경우가 있다. 그런 부분을 slug라고 한다. 그래서 이러한 SlugField를 구성하게 되면 제목과는 다른, 제목으로부터 slug를 자동 생성하는 장고 어드민의 기능이 실행된다.
+  - allow_unicode가 원래 false가 디폴트인데 이걸 True로 하면 -> 한글도 지정할 수 있게 된다.
+
+- desc는 description의 약자로 "설명" 부분인데 title은 필수로 받고 desc는 blank=True로 지정해서 없어도 된다는 것으로 볼 수 있다. (이미지도 마찬가지)
+
+- 
