@@ -34,7 +34,7 @@
 - DB에서 지원하는 필드들을 반영한다. 데이터베이스의 Varchar라는 필드타입이 있는데 이 필드타입에 매핑되는 장고모델 필드는 -> CharField, SlugField, URLField, EmailField 등이 있다.
 - 그리고 python 데이터타입과 데이터베이스 데이터타입을 매핑해놓았다.
   - AutoField -> int
-    장고 모델 중에 AutoField는 python에서 참조할 때 int가 된다.
+    - 장고 모델 중에 AutoField는 python에서 참조할 때 int가 된다.
   - BinaryField -> bytes
   - BooleanField -> bool
   - CharField / SlugField / URLField / EmailField -> str 
