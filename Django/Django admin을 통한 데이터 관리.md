@@ -42,4 +42,21 @@ urlpatterns = [
 
 
 ## 모델 클래스를 admin에 등록하는 방법
-- 우리가 models.py에서 설정한 클래스로 모델을 만들고 -> 이걸 admin 페이지에서 사용하기 위해서는 프로젝트 디렉터리 -> admin.py에서 등록을 해주어야 한다.
+- 우리가 models.py에서 설정한 클래스로 모델을 만들고 -> 이걸 admin 페이지에서 사용하기 위해서는 생성한 App 디렉터리 -> admin.py에서 등록을 해주어야 한다.
+
+1) 첫번째 방법은 admin.site.register(모델 클래스 이름) 활용
+   - 모델만 알면, 기본 모델 admin으로 동작하게 된다. (admin앱 내부에 -> ModelAdmin으로 동작)
+   - 특정 모델에 대해서 admin에 등록하는 것은 한 번만 된다. 이미 등록된 모델에 대해서는 register를 해지하고나서 새롭게 등록을 할 수 있다.
+
+```python
+from django.contrib import admin
+from .models import Post        # 같은 같은 디렉터리 위치에 있는 models.py의 Post 클래스를 import
+
+
+admin.site.register(Post)       # Post 모델 등록
+```
+
+- 이렇게 저장하고나서 다시 admin 페이지를 보면 모델이 생성된 것을 확인할 수 있다. 그리고 **add 버튼**을 눌렀을 때 우리가 설정한 필드에 맞춰서 UI가 나오게 된다.
+  - 우리가 설정한 모델의 필드에는, **created_at = models.DateTimeField(auto_now_add=True) / updated_at = models.DateTimeField(auto_now=True)**  이렇게 설정했는데 admin 페이지 Form에서는 보이지가 않는다! 
+  - 그 이유는, 옵션으로 auto_now_add는 이 레코드가 생성될 때, 즉 데이터베이스에 insert 될 때(모델을 통해 DB에 저장될 때) 시각이 자동으로 입력이 되기 때문이다.(그래서 add버튼 누른 화면에는 없는 것이다) 그리고 auto_now의 경우에는 이 모델을 통해서 DB를 수정할 때의 시각이 자동으로 입력되기 때문이다. 그래서 둘 다 자동으로 입력되는 부분이기 때문에 Form에는 노출이 되지 않는 것이다. 
+
