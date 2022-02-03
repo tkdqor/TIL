@@ -82,9 +82,40 @@ admin.site.register(Post, PostAdmin)
 from django.contrib import admin
 from .models import Post        # 같은 같은 디렉터리 위치에 있는 models.py의 Post 클래스를 import
 
-@admin.register(Post)
+@admin.register(Post)           # Wrapping
 class PostAdmin(admin.ModelAdmin):
     pass   # 참과 거짓에 따라 실행할 문장 혹은 동작을 정의할 때, 아무런 일도 발생하지 않게 설정하는 것 
 ```
 
-- python의 장식자 문법은 어떠한 대상이라도 랩을 씌우듯이 wrapping, 즉 감싸는 것이다. 그래서 위와같이 클래스 자체를 장식할 수 있다. 그리고 감싼 대상을 변경할 수 있다.
+- python의 장식자 문법은 어떠한 대상이라도 랩을 씌우듯이 wrapping, 즉 감싸는 것이다. 그래서 위와같이 클래스 자체를 장식할 수 있다. 그리고 감싼 대상의 기능을 변경할 수 있다.
+- 이렇게 하고나서 저장을 하면, 똑같이 admin 페이지가 나온다.
+  - @admin.register(모델 클래스 이름) 이렇게 설정하고 -> ModelAdmin를 상속받는 새로운 클래스를 정의하자.
+
+
+## 모델 클래스에서 던더str던더 메소드 구현(models.py에서 진행)
+- admin 페이지 모델 리스트에서 "모델명 object"를 원하는대로 변경하기 위해 사용
+- 객체를 출력할 때, 객체.던더str던더()의 return 값을 활용 
+
+<img src="https://user-images.githubusercontent.com/95380638/152333418-a2fe71f5-32b6-43de-9342-ce032d56fded.png" width="70%" height="70%">
+
+- 던더str던더 메소드를 구현하지 않고 그냥 admin 페이지에서 데이터를 생성하면, 위와같이 Post라는 모델의 object로 기본적인 표현을 해준다.
+
+- Django 모델뿐만이 아니라, python 클래스에서는 JAVA의 toString과 유사하게 어떤 객체에 대한 문자열이 표현이 필요할 때가 있는데, 그럴 때 python에서는 던더str던더 메소드라는 것을 통해서 우리가 구현할 수 있다. django 모델에 대한 던더str던더 메소드의 기본 구현이, 위에서 보이는 것처럼 **Post object (1)** 이러한 형식으로 되어있다. 
+
+```python
+from django.db import models
+
+
+class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
+    message = models.TextField()    # 기본 default 값이 blank=False이다.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+    # Java의 toString
+    def __str__(self):
+        return f"Custom Post object ({self.id})"
+```
+
+- 따라서, 던더str 메소드가 기본적으로 위와 같이 되어있다는 것을 표현해볼 수 있다. 
+
+
