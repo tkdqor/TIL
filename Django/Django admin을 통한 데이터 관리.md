@@ -91,6 +91,7 @@ class PostAdmin(admin.ModelAdmin):
 - 이렇게 하고나서 저장을 하면, 똑같이 admin 페이지가 나온다.
   - @admin.register(모델 클래스 이름) 이렇게 설정하고 -> ModelAdmin를 상속받는 새로운 클래스를 정의하자.
 
+* * *
 
 ## 모델 클래스에서 던더str던더 메소드 구현(models.py에서 진행)
 - admin 페이지 모델 리스트에서 "모델명 object"를 원하는대로 변경하기 위해 사용
@@ -139,3 +140,47 @@ class Post(models.Model):       # 우리가 원하는 데이터베이스에 저�
 - 그리고, 위와같이 모델의 필드로 접근해서 문자열을 표현할 수도 있다.
   - 지금은 목록에 column이 하나밖에 없지만, admin.py에서 ModelAdmin를 상속받아 생성한 클래스를 커스텀해서 우리가 원하는 column들을 추가하거나 검색 UI, 필터링 UI, 커스텀 액션등을 구현해볼 수 있다.
   - 현재는 웹이지만 프론트엔드 코딩을 거의 하지 않고도 장고 admin 단의 python 코드 변경만으로도 수월하게 로직을 적용할 수 있다.
+
+* * *
+
+## admin.py에서 list_display 속성 정의(모델 리스트에 출력할 컬럼 지정이 가능)
+
+```python
+from django.contrib import admin
+from .models import Post        # 같은 디렉터리 위치에 있는 models.py의 Post 클래스를 import
+
+
+@admin.register(Post)           # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['pk']
+```    
+
+- admin.py에 장식자로 설정된 클래스에서 -> list_display라는 리스트를 만들어주기 / 그리고 안에는 해당 모델에 대한 속성명(column의 이름)을 적어줄 수 있다.
+  - **ex) id의 경우, 실제 필드명은 Primary Key가 id인데 id에 대한 Alias, 즉 별칭으로써 pk를 사용할 수 있다. 만약, id가 아닌 다른 message라는 필드가 Primary Key라면 message라는 필드도 pk라는 이름의 Alias로 접근할 수 있다.**
+  - 이렇게 설정하면 -> admin 페이지에서 pk가 목록에 나오게 된다.
+
+```python
+from django.contrib import admin
+from .models import Post        # 같은 디렉터리 위치에 있는 models.py의 Post 클래스를 import
+
+
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'message', 'created_at', 'updated_at']
+```
+
+- 그래서, 다음과 같이 코드를 입력하면
+<img src="https://user-images.githubusercontent.com/95380638/152338790-62e8b485-77cb-4a3f-8899-3629107ea475.png" width="70%" height="70%">
+
+- admin 페이지에 해당 필드명과 데이터들을 바로 보여준다. 그리고 첫번째 column에 링크가 잡혀있게 된다.
+  - 만약, 링크를 다른 column에 잡고 싶다면, admin.py에서 list_display_links라는 코드로 특정 필드를 선택하면 된다.
+
+```python
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'message', 'created_at', 'updated_at']
+    list_display_links = ['message']
+```
+
+
+12:51부터!
