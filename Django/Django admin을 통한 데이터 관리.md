@@ -116,6 +116,26 @@ class Post(models.Model):       # 우리가 원하는 데이터베이스에 저�
         return f"Custom Post object ({self.id})"
 ```
 
-- 따라서, 던더str 메소드가 기본적으로 위와 같이 되어있다는 것을 표현해볼 수 있다. 
+- 따라서, 던더str 메소드가 기본적으로 위와 같이 되어있다는 것을 표현해볼 수 있다.
+  - 모델 필드에는 기본적으로 id 필드가 있으니까 -> self.id처럼 사용할 수 있다.
+
+- **또 한가지는, 이렇게 모델에서 던더str 메소드를 수정하고나서 바로 admin 페이지를 새로고침하면 반영이 된다는 점을 알 수 있다.**
+
+```python
+from django.db import models
 
 
+class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
+    message = models.TextField()    # 기본 default 값이 blank=False이다.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+    # Java의 toString
+    def __str__(self):
+        # return f"Custom Post object ({self.id})"
+        return self.message
+```        
+
+- 그리고, 위와같이 모델의 필드로 접근해서 문자열을 표현할 수도 있다.
+  - 지금은 목록에 column이 하나밖에 없지만, admin.py에서 ModelAdmin를 상속받아 생성한 클래스를 커스텀해서 우리가 원하는 column들을 추가하거나 검색 UI, 필터링 UI, 커스텀 액션등을 구현해볼 수 있다.
+  - 현재는 웹이지만 프론트엔드 코딩을 거의 하지 않고도 장고 admin 단의 python 코드 변경만으로도 수월하게 로직을 적용할 수 있다.
