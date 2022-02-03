@@ -70,12 +70,19 @@ class Car:
 class Ferrari(Car):
     def __init__(self):
         super().__init__("Ferrari", "Rosso Corsa", 50)
+        self.slogan = "We are the competition."
+
+    def __str__(self):
+        return f'{self.name} {self.color} {self.fuel} {self.mileage} {self.slogan}'  
 
 
 ferrari = Ferrari()
 print(ferrari)
+
+>>>
+Ferrari Rosso Corsa 50 0 We are the competition.
 ```
 
 - super() 함수는 부모 클래스에 접근할 수 있게 해준다. 따라서 super().던더init던더() 해당 코드가 실행될 때 -> 부모 클래스에 있는 def 던더init던더(self, name, color, fuel): 이 실행된다고 볼 수 있다.
 - 그래서 super().던더init던더("Ferrari", "Rosso Corsa", 50) 이렇게 입력해주면 -> 부모 클래스의 던더init 메소드가 실행되고 인자를 넣어주는 것이다. 
-- 또한, 부모 클래스 대비 차이나는 부분에 대해서 추가할 수 있다.
+- 또한, 부모 클래스 대비 차이나는 부분에 대해서 추가할 수 있다.  self.slogan = "We are the competition." 이렇게 추가해주면 된다.
