@@ -92,3 +92,22 @@ for number in numbers:
         print(number)
 ```
 
+13) 짝수 / 홀수 구분
+    - 어떤 숫자를 2로 나눈 나머지가 0이면 짝수 / 아니면 홀수
+
+14) if문 안에 또 다른 if문을 사용할 생각을 해보자..
+ex)
+```python
+a = int(input())
+if (a < 0):
+    if (a % 2 == 0):
+        print("A")
+    else:
+        print("B")
+
+else:
+    if (a % 2 == 0):
+        print("C")
+    else:
+        print("D")    
+```
