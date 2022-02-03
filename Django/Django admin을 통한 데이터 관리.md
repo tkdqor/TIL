@@ -77,4 +77,14 @@ admin.site.register(Post, PostAdmin)
 - 상속받은 클래스 내부에서 -> Post 모델과 우리가 임의로 정한 클래스 이름인 PostAdmin를 설정해주면 된다.
 
 
-3) 
+**3) 세번째 방법은 python의 장식자 문법을 사용**
+```python
+from django.contrib import admin
+from .models import Post        # 같은 같은 디렉터리 위치에 있는 models.py의 Post 클래스를 import
+
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    pass   # 참과 거짓에 따라 실행할 문장 혹은 동작을 정의할 때, 아무런 일도 발생하지 않게 설정하는 것 
+```
+
+- python의 장식자 문법은 어떠한 대상이라도 랩을 씌우듯이 wrapping, 즉 감싸는 것이다. 그래서 위와같이 클래스 자체를 장식할 수 있다. 그리고 감싼 대상을 변경할 수 있다.
