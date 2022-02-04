@@ -98,7 +98,7 @@ class PostAdmin(admin.ModelAdmin):
 * * *
 
 ## 모델 클래스에서 던더str던더 메소드 구현(models.py에서 진행)
-- admin 페이지 모델 리스트에서 "모델명 object"를 원하는대로 변경하기 위해 사용
+- admin 페이지 모델 리스트에서 "모델명 object"를 원하는대로 변경하기 위해 사용(DB 데이터 1개에 대한 출력명 변경)
 - 객체를 출력할 때, 객체.던더str던더()의 return 값을 활용 
 
 <img src="https://user-images.githubusercontent.com/95380638/152333418-a2fe71f5-32b6-43de-9342-ce032d56fded.png" width="70%" height="70%">
