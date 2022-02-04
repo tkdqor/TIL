@@ -1,4 +1,8 @@
-# App별로 관리하는 admin.py
+## Django admin
+- 장고 기본에서 지원하는 admin은 몇 가지 설정만으로 데이터베이스 테이블 CRUD (생성, 조회, 수정, 삭제) 기능을 제공해준다. admin의 UI 흐름을 변경할려는 시도는 자칫 개발 난이도를 높일 수 있으나, admin의 한계를 알고, 그 흐름을 따라 세팅을 하신다면 편리하게 사용할 수 있다. admin은 데이터베이스 테이블 데이터 관리툴 정도로 생각하고, 보다 전문적인 관리자 툴이 필요하다면 하나의 페이지를 만들어서 구성하면 된다.
+
+
+## App별로 관리하는 admin.py
 - 새로운 app를 만들고나서 admin 페이지에 관리하기 위해서는, app 내부에 있는 admin.py에서
 ```python
 from django.contrib import admin
@@ -243,10 +247,148 @@ python manage.py shell
 - 이렇게 입력. 그리고,
 
 ```terminal
-from instagram.models import Post
-Post.objects.all()
+>>> from instagram.models import Post
+>>> Post.objects.all()
 
->>> <QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
+<QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
 ```
 
 - Post.objects.all() 이 코드로 전체 Post 모델에 대한 모든 데이터를 데이터베이스로부터 가져올 수 있다. 
+
+```terminal
+>>> Post.objects.all().filter(message__icontains='첫번째')
+
+<QuerySet [<Post: 첫번째 메세지>]>
+
+>>> qs = Post.objects.all().filter(message__icontains='첫번째')
+>>> print(qs.query)
+
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE "instagram_post"."message" LIKE %첫번째% ESCAPE '\'
+```
+
+- 이 때, 필터를 통해서 우리가 message라는 필드에 icontains라는 ignore 케이스가 포함된 contain를 주게 되면, 즉 대소문자를 구별하지 않는 쿼리를 날리겠다는 것이다. SQL에서는 ilike절이 추가되어서 전달이 된다.
+  - 그렇게 코드를 입력하면 다음과 같이 첫번째 메시지가 나온다.
+  - 그리고나서 qs라는 변수에 해당 내용을 저장해주자. 또한, 그 다음에 print(qs.query)라고 입력해보면 -> 실제 DB에 전달된 쿼리를 확인해볼 수 있다. 해당 쿼리문을 보면, where 조건에 message에 대해서 조건을 LIKE로 걸어준 게 보인다.
+
+- 이러한 일련의 과정을, 우리가 admin.py에서 search_fields를 통해서 구현해볼 수 있다.
+
+```python
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'message', 'message_length', 'created_at', 'updated_at']
+    list_display_links = ['message']
+    search_fields = ['message']
+
+    # 이 함수는 post 모델의 객체가 넘어오는 것이다. 이건 admin이 알아서 호출해주는 것이다.
+    def message_length(self, post):
+        return f"{len(post.message)} 글자"
+```
+
+- admin.py에서 이렇게 입력하고 새로고침하면 -> admin 페이지에 검색할 수 있는 bar가 새롭게 생성이 된다. 그래서 여기에 '첫번' 이렇게만 입력해도, message 필드에 있는 '첫번째 메세지'의 데이터가 조회된다.
+- 이 때, url를 보면 localhost:8000/admin/instagram/post/?q=첫번   -> 이렇게 변한다. q라는 이름의 querystring에 '첫번'이 전달되는 것이다. 즉, 쿼리가 DB를 호출하는 명령어이니까 DB에 '첫번'을 검색해달라고 하는 것이다.
+  - 사실 내부적으로는 위의 shell을 이용한 로직을 타서 -> 데이터베이스에 아까 조회했던 쿼리문을 날려서 그 결과를 admin 페이지에 보여주는 것이라고 할 수 있다. 이렇게 admin.py에서 편리하게 사용가능하다는 것이다.
+
+* * *
+## list_filter 속성 정의
+- list_filter 속성은 지정한 필드값으로 필터링 옵션을 제공하는 속성이다.
+
+```python
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'message', 'message_length', 'created_at', 'updated_at']
+    list_display_links = ['message']
+    list_filter = ['created_at']
+    search_fields = ['message']
+```
+
+- admin.py에서 다음과 같이 정의한 클래스 내부에 list_filter라는 속성에 특정 필드값, 예를 들어 created_at를 지정하자. 그 다음 admin 페이지를 보면 
+
+<img src="https://user-images.githubusercontent.com/95380638/152460815-c7651cf5-ef6a-42b3-99f4-2b969d36877d.png" width="70%" height="70%">
+
+- 다음과 같이 오른쪽 측면에 필터가 추가됨을 확인할 수 있다.
+
+
+- **또한, models.py에서 Post 모델에 is_public이라는 필드를 추가해보자. -> 해당 글을 공개할지말지 결정하는 필드이다.**
+```python
+class Post(models.Model):       
+    message = models.TextField()  
+    is_public = models.BooleanField(default=False, verbose_name='공개여부')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+```
+
+- 이렇게 is_public이라는 필드를 추가하고, 기본값은 False이고 필드명을 '공개여부'로 수정했다. **그리고 이렇게 Django의 모델을 수정했다면 -> makemigrations / migrate 을 진행해야 한다.**
+
+```terminal
+python manage.py makemigrations instagram
+python manage.py migrate instagram
+python manage.py showmigrations instagram
+
+instagram
+ [X] 0001_initial
+ [X] 0002_post_is_public
+ 
+python manage.py showmigrations
+
+admin
+ [X] 0001_initial
+ [X] 0002_logentry_remove_auto_add
+ [X] 0003_logentry_add_action_flag_choices
+auth
+ [X] 0001_initial
+ [X] 0002_alter_permission_name_max_length
+ [X] 0003_alter_user_email_max_length
+ [X] 0004_alter_user_username_opts
+ [X] 0005_alter_user_last_login_null
+ [X] 0006_require_contenttypes_0002
+ [X] 0007_alter_validators_add_error_messages
+ [X] 0008_alter_user_username_max_length
+ [X] 0009_alter_user_last_name_max_length
+ [X] 0010_alter_group_name_max_length
+ [X] 0011_update_proxy_permissions
+ [X] 0012_alter_user_first_name_max_length
+blog1
+ [X] 0001_initial
+contenttypes
+ [X] 0001_initial
+ [X] 0002_remove_content_type_name
+instagram
+ [X] 0001_initial
+ [X] 0002_post_is_public
+sessions
+ [X] 0001_initial
+```
+
+- makemigrations를 하게 되면, migrations 디렉터리에 0002 생성된다. 모델에 변경을 가하겠다는 내용이다. 그래서 해당 명령어로 migration 파일을 만들었다.
+  - 그리고, 실제 DB에 적용하기 위해서 migrate 명령어를 입력해주자.
+
+- 또한, migrate까지 하고나서 migration 적용 내역을 보려면 -> python manage.py showmigrations instagram 라는 코드를 입력하면, 위의 예시처럼 migrations 파일의 적용 내역을 볼 수 있다.
+  - 추가로, python manage.py showmigrations -> 이렇게 앱 이름을 삭제하고 입력해보면, 전체 App 별로 migrations 파일 적용 내역을 확인할 수 있다.
+
+
+- Post 모델에 is_public 필드를 추가하고, admin.py에서 해당 필드를 admin페이지에 노출시켜보자.
+```python
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'message', 'message_length', 'is_public', 'created_at', 'updated_at']
+    list_display_links = ['message']
+    list_filter = ['created_at', 'is_public']
+    search_fields = ['message']
+```
+
+- 이렇게 list_display와 list_filter에 해당 필드를 추가하고 새로고침해보면, 
+
+<img src="https://user-images.githubusercontent.com/95380638/152463152-d23fb890-775e-458e-9466-9cc63e51c77d.png" width="70%" height="70%">
+
+- 이렇게 admin 페이지에 Post 모델에 공개여부라는 필드가 생성된 것을 확인할 수 있다. 또한, 우측에는 공개여부를 기준으로 필터링을 할 수 있다.
+  - 그래서, 메세지 하나를 클릭하고 공개여부에 체크하고 -> 필터에서 체크된 것만 / 아닌것만 나눠서 볼 수 있다.
+  - 참고로, admin 화면 우측 필터는 여러개가 있다면 and 조건을 충족할 때 보여준다.
+
+
+<img src="https://user-images.githubusercontent.com/95380638/152463612-fb490c61-8684-4e6e-94af-63aace5d4cd9.png" width="70%" height="70%">
+- 참고로, 이와 같이 admin 페이지 위에 뜨는 메시지는, django의 messages framework를 통해서 보여지게 되는 것이다.
+
+
+* * *
+- 이외에도, 다양한 admin 기능들이 django에서 제공하고 있다. 자세한 내용은 https://docs.djangoproject.com/en/4.0/ref/contrib/admin/ 여기 django 공식 문서를 참고해보자.
+  - 그러면 python 코드만으로도 수월하게 admin 페이지를 관리할 수 있다.
