@@ -360,11 +360,11 @@ sessions
  [X] 0001_initial
 ```
 
-- makemigrations를 하게 되면, migrations 디렉터리에 0002 생성된다. 모델에 변경을 가하겠다는 내용이다. 그래서 해당 명령어로 migration 파일을 만들었다.
-  - 그리고, 실제 DB에 적용하기 위해서 migrate 명령어를 입력해주자.
+- **makemigrations를 하게 되면, migrations 디렉터리에 0002 생성된다. 모델에 변경을 가하겠다는 내용이다. 그래서 해당 명령어로 migration 파일을 만들었다.**
+  - **그리고, 실제 DB에 적용하기 위해서 migrate 명령어를 입력해주자.**
 
-- 또한, migrate까지 하고나서 migration 적용 내역을 보려면 -> python manage.py showmigrations instagram 라는 코드를 입력하면, 위의 예시처럼 migrations 파일의 적용 내역을 볼 수 있다.
-  - 추가로, python manage.py showmigrations -> 이렇게 앱 이름을 삭제하고 입력해보면, 전체 App 별로 migrations 파일 적용 내역을 확인할 수 있다.
+- 또한, migrate까지 하고나서 migration 적용 내역을 보려면 -> **python manage.py showmigrations instagram 라는 코드를 입력하면, 위의 예시처럼 migrations 파일의 적용 내역을 볼 수 있다.**
+  - 추가로, **python manage.py showmigrations -> 이렇게 앱 이름을 삭제하고 입력해보면, 전체 App 별로 migrations 파일 적용 내역을 확인할 수 있다.**
 
 
 - Post 모델에 is_public 필드를 추가하고, admin.py에서 해당 필드를 admin페이지에 노출시켜보자.
