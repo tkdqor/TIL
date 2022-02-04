@@ -76,7 +76,7 @@ deactivate
 - **그런데 지금은 우리가 가상환경이라는 걸 만들고, 가상환경을 활성화시킨 상태이다. 그런데 이 가상환경은 python 버전 3를 바탕으로 만든 가상환경이고, 따라서 이 가상환경 내부에 복제되어 있는 python은 python 버전 3가 된다.**
   - 그래서 맥을 사용할 때, 가상환경이 활성화 되어 있는 상태에서는 그냥 python -V를 해도 python 3점대가 출력이 된다.
 
-- 가상환경 활성화된 상태에서,
+- 가상환경 활성화된 상태에서, env에 들어와 있는 위치에서  
 ```terminal
 python -m pip install Django
 ```
@@ -88,3 +88,29 @@ python -m pip install --upgrade pip
 ```
 
 - 이렇게 pip까지 버전 업그레이드를 해줄 수 있다.
+
+- 그리고 터미널에서 dja까지만 입력하고 tab를 눌렀을 때, django-admin이 출력된다면 정상적으로 설치가 된 것이다.
+
+* * *
+## django 프로젝트 시작하기
+```terminal
+django-admin startproject 프로젝트 이름
+```
+
+- 이렇게 프로젝트를 시작해주면, env 디렉터리 내부에 -> 프로젝트 이름으로 이루어진 디렉터리가 생성된다.
+
+```terminal
+cd heestagram
+ls
+
+heestagram	manage.py
+```
+
+- 그리고 만든 프로젝트인 heestagram 내부를 보면, 동일한 이름을 가진 디렉터리와 manage.py가 있다.
+
+- 또한, 반드시 ls를 했을 때, manage.py가 보이는 위치, 상태에서
+```terminal
+python manage.py runserver
+```
+
+- 이렇게 입력해주면 서버를 구동시킬 수 있다. localhost:8000으로 접속해보면 정상적으로 설치가 된 것을 확인할 수 있다.
