@@ -182,5 +182,71 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = ['message']
 ```
 
+- 그리고, list_display에는 models.py에 정의되어있는 function도 사용가능하다.
 
-12:51부터!
+```python
+class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
+    message = models.TextField()    # 기본 default 값이 blank=False이다.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+
+    # Java의 toString
+    def __str__(self):
+        return self.message
+
+    def message_length(self):
+        return len(self.message)
+    message_length.short_description = "메세지 글자수"    
+```
+
+- 이렇게 models.py에서 함수를 정의하고, 
+
+```python
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'message', 'message_length', 'created_at', 'updated_at']
+    list_display_links = ['message']
+```
+
+- admin.py에는 다음과 같이 추가해주자. 그러면 admin 페이지에 message 필드의 길이를 나타내준다.
+
+<img src="https://user-images.githubusercontent.com/95380638/152456669-757a6986-99c4-435c-aa46-4cefa63266b1.png" width="70%" height="70%">
+
+- models.py에서 "메세지 글자수" 와 같이 필드명을 수정하는 코드는 인자없는 함수만 가능하다.
+  - 또한, python에서는 @property라는 장식자를 통해서 함수 속성을 정의할 수 있다.
+
+- 방금 위에서 진행한 message_length 함수를 -> models.py에서가 아닌 admin.py에서도 구현 가능하다.
+  - 만약 models.py에 message_length 함수를 정의하는 코드가 없는 상태에서
+
+```python
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'message', 'message_length', 'created_at', 'updated_at']
+    list_display_links = ['message']
+
+    # 이 함수는 post 모델의 객체가 넘어오는 것이다. 이건 admin이 알아서 호출해주는 것이다.
+    def message_length(self, post):
+        return len(post.message)            # 또는 return f"{len(post.message)} 글자"  이렇게도 사용가능하다.
+```
+
+- admin.py에서 message_length 함수를 정의해주면 그대로 실행이 된다.
+
+* * *
+## search_fields 속성 정의
+- admin.py에서 클래스 내부에 search_fields 라는 속성을 추가하면, admin 내 검색 UI를 통해 DB쪽으로 where 쿼리를 날려서 대상 필드를 리스트 할 수 있다.
+
+- 먼저 장고 shell를 띄워보자. 프로젝트 디렉터리 안에있는 경로에서 터미널에 
+```terminal
+python manage.py shell
+```
+
+- 이렇게 입력. 그리고,
+
+```terminal
+from instagram.models import Post
+Post.objects.all()
+
+>>> <QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
+```
+
+- Post.objects.all() 이 코드로 전체 Post 모델에 대한 모든 데이터를 데이터베이스로부터 가져올 수 있다. 
