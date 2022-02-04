@@ -81,4 +81,17 @@ hello_likelion()
 
 
 - 이렇게 cars라는 이름을 가진 디렉터리를 만들고, 그 안에 car 모듈 / 페라리 모듈 / 람보르기니 모듈 이렇게 넣으면 -> python 패키지 구성이 모두 끝난다.
-  - 그런데 뜬금없이 던더init던더.py 라는 이름을 가진 모듈이 왜 있는걸까?  
+  - 그런데 뜬금없이 **던더init던더.py** 라는 이름을 가진 모듈이 왜 있는걸까? 
+  - python 3.3버전 전에는 python package를 만들려면 반드시 이 던더init던더.py 라는 이름의 모듈을 디렉터리 안에다가 넣어줘야만 python 패키지를 만들수가 있었다. 그런데 지금은 최신 버전의 python를 사용하고 있기 때문에, 해당 이름을 가진 모듈을 굳이 넣어주지 않아도 python 패키지로서 동작하게 되지만 -> python 하위 버전에 대한 호환을 위해서 이 이름을 가진 파일을 넣어주는 게 일반적인 절차이다. 그래서 지금도 python 패키지를 만들 때에는 디렉터리 내부에, 이름이 던더init던더.py 이라는 파일을 넣어주면 된다.
+
+```python
+import cars.car                            # cars라는 패키지안에 있는 car 모듈
+from cars import ferrari                   # cars라는 패키지안에 있는 ferrari 모듈
+from cars.lamborghini import Lamborghini   # cars라는 패키지안에 lamborghini라는 모듈안에 있는 Lamborghini 클래스
+
+normal_car = cars.car.Car('GENESIS', 'black', 50)
+ferrari_car = ferrari.Ferrari()
+Lamborghini_car = Lamborghini()
+```
+
+- 그래서 이렇게 모듈이 
