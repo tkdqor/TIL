@@ -18,7 +18,7 @@ code .
 - 여기에 있는 python 중, env라는 가상환경 내부에 있는 python을 사용해야 한다.
 - 가상환경 내부에 있는 python를 클릭해서 연동시키자.
 
-4) 터미널 버튼을 클릭
+**4) 터미널 버튼을 클릭**
 - 터미널 버튼을 클릭하면, 자동으로 source /Users/kimsangbaek/Desktop/likelion/env/bin/activate 이렇게 source 명령어가 자동으로 실행되어 가상환경을 activate 해주게 된다.
 
 
