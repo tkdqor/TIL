@@ -253,6 +253,7 @@ python manage.py shell
 <QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
 ```
 
+- **QuerySet은 데이터베이스로부터 전달 받은 객체의 목록이다. Django ORM에서 발생한 자료형으로 리스트와 구조는 같으나, python에서 읽고 쓰기 위해서는 자료형 변환을 해줘야 한다.** 
 - Post.objects.all() 이 코드로 전체 Post 모델에 대한 모든 데이터를 데이터베이스로부터 가져올 수 있다. 
 
 ```terminal
