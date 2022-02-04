@@ -28,7 +28,7 @@ python3 -m pip install 패키지이름
 
 * * *
 ## Django 설치 과정
-1) 가상환경을 바탕화면에 만들어주기 위해 터미널 앱에서 cd Desktop으로 바탕화면에 위치해있자.
+**1) 가상환경을 바탕화면에 만들어주기 위해 터미널 앱에서 cd Desktop으로 바탕화면에 위치해있자.**
 
 ```python
 python3 -m venv env
@@ -37,7 +37,7 @@ python3 -m venv env
 - -m은 모듈을 사용하겠다는 의미이다. 그래서 위에서는 venv 모듈을 사용해서 가상환경을 만들겠다는 의미이고 가상환경의 이름을 env라고 설정한 것이다.
   - 이렇게 입력하면 바탕화면에 env라는 디렉터리가 생긴 것을 확인할 수 있다. 이처럼 가상환경은 하나의 디렉터리로 구성되어 있다.
 
-2) env 내부를 확인해보자. 
+**2) env 내부를 확인해보자.**
 ```terminal
 cd env/
 ls
@@ -50,7 +50,7 @@ bin  include  lib  pyvenv.cfg
 - **bin과 Scripts 안에 보면, 가상환경을 만들게 되면 가상환경 내부에 python과 pip(맥북 기준으로 이름이 python, pip로 되어있음)가 한 벌 더 생성(한 벌 더 복제되어있다고 생각하자)이 된다. 그래서 가상환경을 이용할 때에는 기존의 우리가 PC에 설치했던 python을 직접 사용하는 것이 아니라, 이 가상환경 내부에 복제되어 있는 python과 pip를 대신 사용하게 되는 것이다.**
 - 그리고 bin 내부에 보면, activate 라는 게 위치해 있다. 그래서 이걸 활용해서 가상환경을 활성화해주면 -> 가상환경 내부에 있는 python 그리고 pip를 사용할 수 있게 되는 것이다.
 
-3) 가상환경을 activate할 때는, source 다음에 -> activate 파일이 있는 경로를 적어주면 된다.
+**3) 가상환경을 activate할 때는, source 다음에 -> activate 파일이 있는 경로를 적어주면 된다.**
 - 일반적으로 우리가 env 안에 들어와 있는 상태에서 
 ```terminal
 source bin/activate
@@ -70,3 +70,21 @@ deactivate
 ```
 
 - 이렇게 입력해주면 된다.
+
+**4) 가상환경 활성화하고, 가상환경 내부에 django 설치해주기**
+- 맥북 기준으로 봤을 때, python의 버전을 확인할 때는 -> python3 -V 이렇게 입력을 해주어야 했다. 
+- **그런데 지금은 우리가 가상환경이라는 걸 만들고, 가상환경을 활성화시킨 상태이다. 그런데 이 가상환경은 python 버전 3를 바탕으로 만든 가상환경이고, 따라서 이 가상환경 내부에 복제되어 있는 python은 python 버전 3가 된다.**
+  - 그래서 맥을 사용할 때, 가상환경이 활성화 되어 있는 상태에서는 그냥 python -V를 해도 python 3점대가 출력이 된다.
+
+- 가상환경 활성화된 상태에서,
+```terminal
+python -m pip install Django
+```
+
+- 나는 python pip 모듈을 사용해서 django를 설치 할꺼야라는 의미이다.
+
+```terminal
+python -m pip install --upgrade pip
+```
+
+- 이렇게 pip까지 버전 업그레이드를 해줄 수 있다.
