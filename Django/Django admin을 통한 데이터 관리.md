@@ -147,7 +147,7 @@ class Post(models.Model):       # 우리가 원하는 데이터베이스에 저�
 
 * * *
 
-## admin.py에서 list_display 속성 정의(모델 리스트에 출력할 컬럼 지정이 가능)
+## admin.py에서 list_display 속성 정의(모델 리스트에 출력할 컬럼 지정이 가능) -> ModelAdmin 클래스에 속성(옵션)을 지정하는 것
 
 ```python
 from django.contrib import admin
