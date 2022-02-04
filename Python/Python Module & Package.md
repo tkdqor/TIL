@@ -94,4 +94,6 @@ ferrari_car = ferrari.Ferrari()
 Lamborghini_car = Lamborghini()
 ```
 
-- 그래서 이렇게 모듈이 
+- 그래서 이렇게 모듈이 패키지 내부에 구성되어 있을 때 즉, 예를 들어 car 모듈 / ferrari 모듈 / lamborghini 모듈이 cars라는 패키지 내부에 구성되어 있을 때,
+  - import 하나만 사용할 경우에는 -> import 패키지 이름을 적은 다음에 점을 찍고 패키지 내부에 있는 모듈 이름을 적어주면 된다.
+  - 두번째로는 from 패키지명 
