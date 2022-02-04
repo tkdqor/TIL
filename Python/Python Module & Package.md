@@ -78,7 +78,7 @@ hello_likelion()
 
 - ex) cars라는 패키지안에 -> car.py / ferrari.py / lamborghini.py 이렇게 cars와 관련된 모듈들이 모이게 된다. 실제로 이러한 구조를 실현해보면,
 
-
+<img src="https://user-images.githubusercontent.com/95380638/152492707-9f958a1e-28dd-4d17-a1c5-aa53ef888f39.png" width="30%" height="30%">
 
 - 이렇게 cars라는 이름을 가진 디렉터리를 만들고, 그 안에 car 모듈 / 페라리 모듈 / 람보르기니 모듈 이렇게 넣으면 -> python 패키지 구성이 모두 끝난다.
   - 그런데 뜬금없이 **던더init던더.py** 라는 이름을 가진 모듈이 왜 있는걸까? 
@@ -89,11 +89,12 @@ import cars.car                            # cars라는 패키지안에 있는 c
 from cars import ferrari                   # cars라는 패키지안에 있는 ferrari 모듈
 from cars.lamborghini import Lamborghini   # cars라는 패키지안에 lamborghini라는 모듈안에 있는 Lamborghini 클래스
 
-normal_car = cars.car.Car('GENESIS', 'black', 50)
-ferrari_car = ferrari.Ferrari()
-Lamborghini_car = Lamborghini()
+normal_car = cars.car.Car('GENESIS', 'black', 50)   # cars라는 패키지안에 car라는 모듈안에 있는 Car 클래스를 사용 -> import한 cars.car까지 작성하고 그 뒤를 이어서 작성해야 한다. 
+ferrari_car = ferrari.Ferrari()                     # ferrari 모듈을 import 했으니까 그 안에 있는 클래스를 사용하려면 -> ferrari.Ferrari() 이렇게 작성
+Lamborghini_car = Lamborghini()                     # Lamborghini라는 클래스를 import 했으니까 -> 그대로 사용하면 된다.
 ```
 
 - 그래서 이렇게 모듈이 패키지 내부에 구성되어 있을 때 즉, 예를 들어 car 모듈 / ferrari 모듈 / lamborghini 모듈이 cars라는 패키지 내부에 구성되어 있을 때,
-  - import 하나만 사용할 경우에는 -> import 패키지 이름을 적은 다음에 점을 찍고 패키지 내부에 있는 모듈 이름을 적어주면 된다.
-  - 두번째로는 from 패키지명 
+  - import 하나만 사용할 경우에는 -> **import 패키지명.모듈명** 이렇게 패키지 이름을 적은 다음에 점을 찍고 패키지 내부에 있는 모듈 이름을 적어주면 된다.
+  - 두번째로는 **from 패키지명 import 모듈명** 이렇게 사용할 수 있다.
+  - 세번째로는 **from 패키지명.모듈명 import 함수명 or 클래스명** 이렇게 사용할 수 있다.
