@@ -73,4 +73,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 - 이렇게 파일 경로를 절대경로로 바꿔주고 그 절대경로의 부모경로, 부모경로가 된다. **즉, settings.py의 절대경로의 부모의 부모이면 -> 현재 manage.py가 있는 프로젝트 디렉터리(프로젝트 루트)가 된다.**
 
 - 그래서 다시 아까 확인했던 **MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 이 코드를 생각해보면, 루트 경로 밑에 있는 media 디렉터리에 업로드된 미디어 파일들을 저장하겠다는 설정이 된다.**
-  - 만약, 이 
+  - 만약, 이 설정이 안되어 있으면 프로젝트 루트에 바로 저장이 된다.
+  - 혹은 다르게 상위 폴더를 만들어도 된다. 
+
+```python
+MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'public', 'media')
+```
+
+- 경로에서 점 2개는 상위 폴더를 의미한다. 위의코드처럼 설정하면 프로젝트 경로의 한단계 올라간 디렉터리에서 public 폴더 밑에 있는 media 폴더에 저장되는 것이다.
+
+* * *
+## FileField와 ImageField
+**1) FileField**
+- File Storage API를 통해 파일을 저장.
+- django에서는 File System Storage만 지원하고 django-storages를 통해 확장 지원한다.
+- 해당 필드를 옵션 필드로 두고자 할 경우, null이 아닌 blank=True만 적용해도 된다.
+
+**2) ImageField**
+- Pillow(이미지 처리 라이브러리)를 통해 이미지 width / height 픽셀 크기 획득
+  - Pillow 미설치 시에, ImageField를 추가한 makemigrations 수행에 실패하게 된다.
+
+- 위 2개의 필드를 상속받아서 커스텀 필드를 만들 수도 있다. ex) PDFField / ExcelField 등
+
+
+### 위의 필드와 관련해서 사용할 만한 필드 옵션
+1) blank 옵션
+- 업로드 
