@@ -173,7 +173,7 @@ if settings.DEBUG:
 - 그리고 static 설정을 언제해줄 것인지 정해야 한다. django에 DEBUG라는 옵션이 있는데, 이 옵션이 참일 때만 static를 urlpatterns에 추가하는 것으로 if문을 설정한다.
   - 실제로 settings.py에 보면, DEBUG = True 이렇게 설정되어있다.
   - 이 DEBUG는 개발 모드일 때만 DEBUG이고 실제 서비스를 할 때는 False로 두어야 한다. 
-  - **장고는 실행 도중에 오류가 발생하면 DEBUG가 True인 경우 오류 내용을 화면에 상세하게 출력한다. 이때 settings.py 파일과 urls.py 파일에 설정한 항목이 모두 노출된다. 이 말은 파이보를 DEBUG=True 상태로 운영하면 오류 발생 시 서버 정보가 노출된다는 말과 같다. 이것은 어쩌면 서버 해킹 등의 매우 나쁜 결과를 초래할 수도 있다. 따라서 운영 환경에서는 반드시 DEBUG 항목을 False로 설정해야 한다.**
+  - **장고는 실행 도중에 오류가 발생하면 DEBUG가 True인 경우 오류 내용을 화면에 상세하게 출력한다. 이때 settings.py 파일과 urls.py 파일에 설정한 항목이 모두 노출된다. 이 말은 DEBUG=True 상태로 운영하면 오류 발생 시 서버 정보가 노출된다는 말과 같다. 이것은 어쩌면 서버 해킹 등의 매우 나쁜 결과를 초래할 수도 있다. 따라서 운영 환경에서는 반드시 DEBUG 항목을 False로 설정해야 한다.**
   - 이렇게 if문을 설정하는 이유는 -> django에서는 media나 static 파일 serving를 django 기본에서 실제 production에서 하는 것을 권장하지 않기 때문이다. 만약 if settings.DEBUG: 이 부분을 주석처리 한다고 해도, 실제 서비스에서는 DEBUG 옵션을 끄게 되므로, static 함수는 빈 리스트를 반환하게 된다.
   
 16:36
