@@ -261,4 +261,27 @@ def photo_tag(self, post):                        # 위의 display에 photo_tag�
 
 * * *
 
+## uuid를 통한 파일명 정하기
+- 아래의 코드들을 만약 별도의 utils.py에 만들어둔다면, 어떤 모델에서든지 사용할 수 있다.
+
+```python
+import os 
+from uuid import uuid4
+from django.utils import timezone
+
+def uuid_name_upload_to(instance, filename):
+    app_label = instance.__class__._meta.app_label
+    cls_name = instance.__class__.__name__.lower()
+    ymd_path = timezone.now().strftime('%Y/%m/%d')
+    uuid_name = uuid4().hex
+    extension = os.path.splitext(filename)[-1].lower()
+    return '/'.join([
+        app_label,
+        cls_name,
+        ymd_path,
+        uuid_name[:2],
+        uuid_name + extension,
+    ])
+```
+
 
