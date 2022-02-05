@@ -71,10 +71,11 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - 그리고 MEDIA_ROOT가 업로드된 파일이 저장되는 경로를 지정하는 것. BASE_DIR은 settings.py 위쪽에 값으로 정의되어 있는데, 여기서 던더file던더는 python 파일이 import 될 때 파일 경로를 담고 있다. 그래서
 
 ```python
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent   # __file__가 현재 settings.py의 경로이고 여기서 resolve() 함수는 그 경로를 절대 경로로 만들어 준다. 그리고 parent가 2번이니까 상위,                                                       상위의 위치를 의미한다.
 ```
 
 - 이렇게 파일 경로를 절대경로로 바꿔주고 그 절대경로의 부모경로, 부모경로가 된다. **즉, settings.py의 절대경로의 부모의 부모이면 -> 현재 manage.py가 있는 프로젝트 디렉터리(프로젝트 루트)가 된다.**
+  - 관련 블로그 https://wookkl.tistory.com/31
 
 - 그래서 다시 아까 확인했던 **MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 이 코드를 생각해보면, 루트 경로 밑에 있는 media 디렉터리에 업로드된 미디어 파일들을 저장하겠다는 설정이 된다.**
   - 만약, 이 설정이 안되어 있으면 프로젝트 루트에 바로 저장이 된다.
