@@ -160,7 +160,7 @@ if settings.DEBUG:
 
 - **static 관련 import는 static이라는 함수를 import 한 것이다.**
 - static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) -> 이 코드를 입력하면 URL 리스트를 주게 되므로 urlpatterns라는 리스트에 추가를 하면 된다.
-  - urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 이런식으로 추가한다.
+  - urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 이런식으로 추가한다.  (리스트에 리스트를 더하는 형태..?)
 
 - 그리고 static 설정을 언제해줄 것인지 정해야 한다. django에 DEBUG라는 옵션이 있는데, 이 옵션이 참일 때만 static를 urlpatterns에 추가하는 것으로 if문을 설정한다.
   - 실제로 settings.py에 보면, DEBUG = True 이렇게 설정되어있다.
