@@ -284,4 +284,45 @@ def uuid_name_upload_to(instance, filename):
     ])
 ```
 
+- 첫번째 인자로 instance가 넘어오고 두번째 인자가 업로드 된 파일명이 넘어온다.
+- 그리고 instance.던더class던더 이렇게 하면 해당 모델의 클래스가 되고 해당 모델이 어떤 앱에 속했는지 읽어온다.
+- cls_name = ~~ 여기 코드는 모델 클래스명에 대한 이름을 가져오고 소문자로 변경을 한다.
+- 그리고 timezone를 통해서 업로드하는 현재 년월일을 가져오고 
+- uuid_name = uuid4().hex 이렇게 uuid를 쓰면, 32글자 랜덤한 문자열을 얻을 수 있다.
+- extension = os.path.splitext(filename)[-1].lower()는 -> 실제 파일명에서 split extension를 하면 2개의 항목 튜플이 나온다. 첫번째는 확장자를 제외한 이름과 두번째는 확장자이다.
 
+
+
+```terminal
+python manage.py shell
+
+>>> from uuid import uuid4 
+>>> uuid4()
+UUID('8267579c-4c0d-428a-8be7-7c8a8cad4d47')    
+
+>>> uuid4().hex
+'cf6661a5d6a2459aa5963d00fd10efd1'
+```
+
+- shell을 이용해서 보면 uuid는 하이픈을 제외한 32글자를 랜덤하게 만들어준다. 그리고 uuid4().hex라고 입력하면 32글자의 하이픈을 제외한, 랜덤한 문자열을 얻을 수 있다.
+
+```terminal
+>>> from os.path import splitext
+>>> splitext('c:/hello/world/python.py')
+('c:/hello/world/python', '.py')
+
+>>> splitext('c:/hello/world/python.py.txt')
+('c:/hello/world/python.py', '.txt')
+
+>>> splitext('c:/hello/world/python')
+('c:/hello/world/python', '')
+
+>>> splitext('c:/hello/world/python.py.txt')[1]
+'.txt'
+
+>>> splitext('c:/hello/world/python.py.txt')[-1]
+'.txt'
+```
+
+- 이렇게 splitext를 사용하면 확장자를 기준으로 나눠준 것을 튜플의 형태로 돌려준다. 확장자가 아예 없는 경우에는, 빈 문자열을 주게 된다.
+- 튜플에 [1]을 하게 되면, 두번째 인자를 선택하게 되고 [-1]은 제일 마지막이라는 의미로 똑같이 두번째 인자를 가져오게 된다.
