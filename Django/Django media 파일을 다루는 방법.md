@@ -289,7 +289,14 @@ def uuid_name_upload_to(instance, filename):
 - cls_name = ~~ 여기 코드는 모델 클래스명에 대한 이름을 가져오고 소문자로 변경을 한다.
 - 그리고 timezone를 통해서 업로드하는 현재 년월일을 가져오고 
 - uuid_name = uuid4().hex 이렇게 uuid를 쓰면, 32글자 랜덤한 문자열을 얻을 수 있다.
-- extension = os.path.splitext(filename)[-1].lower()는 -> 실제 파일명에서 split extension를 하면 2개의 항목 튜플이 나온다. 첫번째는 확장자를 제외한 이름과 두번째는 확장자이다.
+- extension = os.path.splitext(filename)[-1].lower()는 -> 실제 파일명에서 split extension를 하면 2개의 항목 튜플이 나온다. 첫번째는 확장자를 제외한 이름과 두번째는 확장자이다. 지금은 [-1]이니까 확장자만 가져오게 되고, 소문자로 변경한 것이다.
+
+* * * 
+- 그리고 return에서 join를 해주게 되면, 우리가 랜덤한 경로를 가질 수 있게 된다.
+- uuid_name[:2] -> uuid_name의 처음 2글자만 가지고 ([:2]이면 0,1을 의미) 폴더명을 구성하고, 
+- uuid_name + extension -> 전체 32글자 + 파일 확장자가 된다.
+
+- 이렇게 하면, app_label 디렉터리 밑에 -> cls_name 디렉터리 밑에 -> ymd_path 연월일 별도 디렉터리 밑에 -> uuid_name[:2] uuid 처음 2글자로 시작하는 디렉터리 밑에 -> uuid_name + extension 이러한 파일명으로 구성할 수 있게 된다.   
 
 
 
