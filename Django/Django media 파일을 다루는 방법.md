@@ -132,7 +132,39 @@ settings.MEDIA_ROOT ~~
 
 - from django.conf import settings 이렇게 입력해주면 위의 2가지를 합쳐주게 된다. 그리고 urls.py에서 settings.py에 접근할 때는 settings.MEDIA_ROOT ~~ 이런식으로 접근하면 된다.
 
-* * *
-## 이미지 파일 업로드 해보기
 
-13:04부터!
+## 이미지 파일 업로드 해보기
+- admin 페이지에서 사진 하나를 업로드하고 save 하기
+- 그리고 나서 우리가 지정한 프로젝트 디렉터리 내부를 보면 -> 우리가 설정한 경로안에 사진이 저장되어 있다. 즉, MEDIA_ROOT가 사용된 것이다.
+
+- **MEDIA_URL의 경우는 -> 파일에 대한 URL 접근 시 사용된다. 즉, 파일의 URL를 통해 접근할 때 사용된다는 것.**
+  - 어떠한 요청이 django로 왔을 때 /media/ 요청이 온다면 보여준다는 것이다. admin 페이지에 업로드한 사진 우클릭해서 '새 탭에서 링크 열기'를 해보면 우리가 설정한 URL로 접근은 되는데 오류가 난다.
+  - URL로 접근할 때 파일을 읽어서 응답해줘야 하는데, 그 설정을 urls.py에서 settings를 접근하여 코드를 입력함으로서 할 수 있다. 
+
+
+```python
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import path, include      # include를 새롭게 추가
+from django.conf import settings
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('blog1/', include('blog1.urls')),   # 새롭게 url를 만들어주고 해당 url은 blog1 앱의 urls.py로 보내주기
+    path('instagram/', include('instagram.urls')),  # 새롭게 url를 만들어주고 해당 url은 instagram 앱의 urls.py로 보내주기
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+- static 관련 import는 static이라는 함수를 import 한 것이다.
+- static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) -> 이 코드를 입력하면 URL 리스트를 주게 되므로 urlpatterns라는 리스트에 추가를 하면 된다.
+  - urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 이런식으로 추가한다.
+
+- 그리고 static 설정을 언제해줄 것인지 정해야 한다. django에 DEBUG라는 옵션이 있는데, 이 옵션이 참일 때만 static를 urlpatterns에 추가하는 것으로 if문을 설정한다.
+  - 실제로 settings.py에 보면, DEBUG = True 이렇게 설정되어있다.
+  - 이 DEBUG는 개발 모드일 때만 DEBUG이고 실제 서비스를 할 때는 False로 두어야 한다. 
+  - 이렇게 if문을 설정하는 이유는 -> django에서는 media나 static 파일 serving를 django 기본에서 실제 production에서 하는 것을 권장하지 않기 때문이다. 만약 if settings.DEBUG: 이 부분을 주석처리 한다고 해도, 실제 서비스에서는 DEBUG 옵션을 끄게 되므로, static 함수는 빈 리스트를 반환하게 된다.
+  
+16:36
