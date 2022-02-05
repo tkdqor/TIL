@@ -411,4 +411,4 @@ if settings.DEBUG:
   - django는 파일크기가 2.5MB 이하일 경우 -> 메모리에 담아서 처리를 한다. (MemoryFileUploadHandler)
   - 파일크기가 2.5MB 초과일 경우 -> 디스크에 담겨서 전달한다. (TemporaryFileUploadHandler)
 
-- 관련 설정 : settings.FILE_UPLOAD_MAX_MEMORY_SIZE -> 2.5MB
+- 관련 설정 : settings.FILE_UPLOAD_MAX_MEMORY_SIZE -> 2.5MB가 디폴트로 설정되어 있다.
