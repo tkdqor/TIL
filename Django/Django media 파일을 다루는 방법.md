@@ -97,5 +97,42 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'public', 'media')
 
 
 ### 위의 필드와 관련해서 사용할 만한 필드 옵션
-1) blank 옵션
-- 업로드 
+**1) blank 옵션**
+- 업로드 옵션처리 여부 즉, 빈 경로를 허용할것이냐의 문제이다. 디폴트는 False이다.
+
+**2) upload_to 옵션**
+- settings.MEDIA_ROOT 하위에 저장한 파일명 / 경로명 설정
+- 디폴트는 파일명 그대로 settings.MEDIA_ROOT에 저장
+- 성능을 위해서 한 디렉터리에 너무 많은 파일들이 저장되지 않도록 조정해야 함 / 동일 파일명으로 저장 시에, 파일명에 더미 문자열을 붙여 파일 덮어쓰기 방지
+
+* * *
+
+## 프로젝트 디렉터리 urls.py 설정
+- 우리가 urls.py 내부에서 프로젝트 디렉터리 밑에 있는 settings.py를 참조를 하고 싶은데, 참조를 하기 위해서 settings를 import 해야하는데..
+
+```python
+from django.conf import global_settings
+from askcompany import settings
+```
+
+- from askcompany import settings 이렇게 할 수 있지만, 이렇게 하면 절대 안된다. 왜냐하면 settings는 from django.conf import global_settings 이렇게 여기에 있는 global_settings와 settings 이 2가지가 합쳐져야 하기 때문이다. 기본 global_settings에다가 우리가 만든 settings를 overwirte하는 것이다. 그래서 이렇게 2줄로 표현하는 것이 아니고,
+
+```python
+from django.conf import settings
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('blog1/', include('blog1.urls')),   # 새롭게 url를 만들어주고 해당 url은 blog1 앱의 urls.py로 보내주기
+    path('instagram/', include('instagram.urls')),  # 새롭게 url를 만들어주고 해당 url은 instagram 앱의 urls.py로 보내주기
+]
+
+settings.MEDIA_URL ~~
+settings.MEDIA_ROOT ~~
+```
+
+- from django.conf import settings 이렇게 입력해주면 위의 2가지를 합쳐주게 된다. 그리고 urls.py에서 settings.py에 접근할 때는 settings.MEDIA_ROOT ~~ 이런식으로 접근하면 된다.
+
+* * *
+## 이미지 파일 업로드 해보기
+
+13:04부터!
