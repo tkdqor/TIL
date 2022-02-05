@@ -107,9 +107,27 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'public', 'media')
 - 업로드 옵션처리 여부 즉, 빈 경로를 허용할것이냐의 문제이다. 디폴트는 False이다.
 
 **2) upload_to 옵션**
-- settings.MEDIA_ROOT 하위에 저장한 파일명 / 경로명 설정
+- settings.MEDIA_ROOT 경로의 하위 경로에 저장할 파일명 / 경로명 설정
 - 디폴트는 파일명 그대로 settings.MEDIA_ROOT에 저장
 - 성능을 위해서 한 디렉터리에 너무 많은 파일들이 저장되지 않도록 조정해야 함 / 동일 파일명으로 저장 시에, 파일명에 더미 문자열을 붙여 파일 덮어쓰기 방지
+
+```python
+class Post(models.Model):       
+    message = models.TextField()    
+    photo = models.ImageField(blank=True, upload_to='instagram/post/%Y/%m/%d') 
+    is_public = models.BooleanField(default=False, verbose_name='공개여부')    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+```
+
+
+- 이렇게 models.py에서 필드를 정의할 때 사용할 수 있다. 만약, 따로 지정하지 않게 되면 업로드한 이미지 파일이 우리가 지정한 media 폴더 안에 너무 많아지게 된다. 그래서 media 폴더 하위에 여러 개의 폴더를 구성하게 된다.
+- 위의 코드처럼 instagram/post/%Y/%m/%d라는 이름을 주게 되면, 업로드한 사진들이 media 디렉터리 밑에 -> instagram 디렉터리 밑에 -> post 디렉터리 밑에 저장된다. 그리고 %Y%m%d는 날짜/시간에 대한 형식 지정자인데, 년도 4자리 / 월 2자리 / 일 2자리를 나타내준다. 그래서 이렇게 작성하면 해당 년월일로 이루어진 하나의 디렉터리가 post 디렉터리 밑에 생성이 되는 것이다.
+  - 더 나아가서 photo = models.ImageField(blank=True, upload_to='instagram/post/%Y/%m/%d/%H/%M/%S')  --> 이렇게 작성하면 년/월/일/시/분/초 마다 디렉터리를 만들수도 있다. 
+
+- 위와 같이 수정을 했다고 해서 이미 저장된 경로가 바로 바뀌는 건 아니다. 실제로 파일을 저장할 때 -> 반영이 되는 것이다. 그래서 이미 올린 이미지를 다시 올려보면,
+
+
 
 * * *
 
@@ -176,4 +194,51 @@ if settings.DEBUG:
   - **장고는 실행 도중에 오류가 발생하면 DEBUG가 True인 경우 오류 내용을 화면에 상세하게 출력한다. 이때 settings.py 파일과 urls.py 파일에 설정한 항목이 모두 노출된다. 이 말은 DEBUG=True 상태로 운영하면 오류 발생 시 서버 정보가 노출된다는 말과 같다. 이것은 어쩌면 서버 해킹 등의 매우 나쁜 결과를 초래할 수도 있다. 따라서 운영 환경에서는 반드시 DEBUG 항목을 False로 설정해야 한다.**
   - 이렇게 if문을 설정하는 이유는 -> django에서는 media나 static 파일 serving를 django 기본에서 실제 production에서 하는 것을 권장하지 않기 때문이다. 만약 if settings.DEBUG: 이 부분을 주석처리 한다고 해도, 실제 서비스에서는 DEBUG 옵션을 끄게 되므로, static 함수는 빈 리스트를 반환하게 된다.
   
-16:36
+- 이렇게 코드를 입력하고나서 admin 페이지에서 다시 사진을 우클릭으로 보면 이제는 화면에 뜬다.
+
+
+### instagram app -> admin.py 수정
+- 우리가 이미 admin 모듈의 ModelAdmin 클래스를 상속받아 Post 모델을 등록했고, 내부 속성 list_display 리스트에 
+```python
+@admin.register(Post)             # wrapping
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['id', 'photo_tag', 'message', 'message_length', 'is_public', 'created_at', 'updated_at']
+    list_display_links = ['message']
+    list_filter = ['created_at', 'is_public']
+    search_fields = ['message']
+
+    def photo_tag(self, post):                        # 위의 display에 photo_tag를 사용하기 위해 새롭게 정의하는 함수. 
+        if post.photo:                                # 만약 Post 모델의 photo 필드의 문자열이 있다면(저장된 이미지가 있다면)
+            return f'<img src="{post.photo.url}" />'  # 해당 이미지의 url를 얻을 수 있게 설정하고 return
+        return None  
+
+
+    # 이 함수는 post 모델의 객체가 넘어오는 것이다. 이건 admin이 알아서 호출해주는 것이다.
+    def message_length(self, post):
+        return f"{len(post.message)} 글자"
+```
+
+- 다음과 같이 'photo_tag'를 넣어주기 위해 밑에다가 photo_tag 라는 함수를 새롭게 설정했다.
+  - 해당 함수는 만약 Post 모델의 photo 필드의 문자열이 있다면(저장된 이미지가 있다면) 해당 이미지의 url를 얻을 수 있게 설정한 것이다. 이렇게 저장하고 admin 페이지를 새로고침 해보면,
+
+<img src="https://user-images.githubusercontent.com/95380638/152632068-b1d2a70a-d980-44c4-acfa-e050f46b3ebf.png" width="70%" height="70%">
+
+- 이렇게 url를 보여준다. 그리고 장고는 태그를 바로 보여주지 않는다.
+
+- 더 나아가서, 
+```python
+from django.utils.safestring import mark_safe
+
+...
+
+def photo_tag(self, post):                        # 위의 display에 photo_tag를 사용하기 위해 새롭게 정의하는 함수. 
+        if post.photo:                                # 만약 Post 모델의 photo 필드의 문자열이 있다면(저장된 이미지가 있다면)
+            return mark_safe(f'<img src="{post.photo.url}" style="width: 100px;" />')  # 해당 이미지의 url를 얻을 수 있게 설정하고 return
+        return None    
+```
+
+- mark_safe를 import하고, 이렇게 mark_safe로 안전하다고 해줘야 admin 페이지에서 실제 사진으로 보여준다. 
+
+<img src="https://user-images.githubusercontent.com/95380638/152632234-4c01e276-6e35-4d74-b76e-c97b1b5661ee.png" width="70%" height="70%">
+
+
