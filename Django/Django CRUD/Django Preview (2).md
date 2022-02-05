@@ -90,6 +90,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', views.index),
 ]
+```
 
 - 이렇게 from posts import views를 추가하고 url도 views모듈의 index함수를 설정하자. 
 
