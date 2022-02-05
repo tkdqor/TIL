@@ -109,7 +109,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, '..', 'public', 'media')
 **2) upload_to 옵션**
 - settings.MEDIA_ROOT 경로의 하위 경로에 저장할 파일명 / 경로명 설정
 - 디폴트는 파일명 그대로 settings.MEDIA_ROOT에 저장
-- 성능을 위해서 한 디렉터리에 너무 많은 파일들이 저장되지 않도록 조정해야 함 / 동일 파일명으로 저장 시에, 파일명에 더미 문자열을 붙여 파일 덮어쓰기 방지
+- 성능을 위해서 한 디렉터리에 너무 많은 파일들이 저장되지 않도록 조정해야 함
+- 동일 파일명으로 저장 시에, 파일명에 더미 문자열을 붙여 파일 덮어쓰기 방지 - 이것에 대한 검사를 django의 파일스토리지가 지원.
 
 ```python
 class Post(models.Model):       
@@ -127,6 +128,21 @@ class Post(models.Model):
 
 - 위와 같이 수정을 했다고 해서 이미 저장된 경로가 바로 바뀌는 건 아니다. 실제로 파일을 저장할 때 -> 반영이 되는 것이다. 그래서 이미 올린 이미지를 다시 올려보면,
 
+<img src="https://user-images.githubusercontent.com/95380638/152632846-4512841e-d822-46c7-9a2e-61e61b0ce0cf.png" width="60%" height="60%">
+<img src="https://user-images.githubusercontent.com/95380638/152632857-73f847d9-a64e-472e-a86b-15a25a891e6a.png" width="30%" height="30%">
+
+- 이렇게 하위 폴더를 생성해서 늘어나는 이미지 파일들을 관리할 수 있다.
+
+- 이미 다른 루트로 생성한 파일들에 대해서, ImageField나 FileField를 커스텀해서 삭제가 되도록 로직을 구성할 수도 있고, 별도의 배치성 명령을 만든 후 ImageField나 FileField에서 참조하는 목록을 구성해서 그 목록에 포함되어 있지 않은 파일들을 일괄적으로 삭제하는 배치 명령을 할 수도 있다.
+
+
+**2-1) upload_to 인자**
+- 파일 저장 시에 upload_to 함수를 호출하여 저장 경로를 계산 
+  - 파일 저장 시에 upload_to 인자를 변경한다고 해서, DB에 저장된 경로값이 갱신되지는 않는다.
+
+- upload_to의 인자는
+  - 문자열로 지정하는 경우 : 파일을 저장할 '중간 디렉터리 경로'로서 활용
+  - 함수로 지정하는 경우 : '중간 디렉터리 경로' 및 '파일명'까지 결정 가능 - 즉, 내가 올린 사진의 원본 이름이 아닌 특정한 이름으로 수정할 수 있다.
 
 
 * * *
@@ -196,6 +212,7 @@ if settings.DEBUG:
   
 - 이렇게 코드를 입력하고나서 admin 페이지에서 다시 사진을 우클릭으로 보면 이제는 화면에 뜬다.
 
+* * * 
 
 ### instagram app -> admin.py 수정
 - 우리가 이미 admin 모듈의 ModelAdmin 클래스를 상속받아 Post 모델을 등록했고, 내부 속성 list_display 리스트에 
@@ -240,5 +257,8 @@ def photo_tag(self, post):                        # 위의 display에 photo_tag�
 - mark_safe를 import하고, 이렇게 mark_safe로 안전하다고 해줘야 admin 페이지에서 실제 사진으로 보여준다. 
 
 <img src="https://user-images.githubusercontent.com/95380638/152632234-4c01e276-6e35-4d74-b76e-c97b1b5661ee.png" width="70%" height="70%">
+
+
+* * *
 
 
