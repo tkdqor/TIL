@@ -64,6 +64,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 ```
 
+- **import os -> os라는 모듈을 import 하는 것. os 모듈은 Operating System의 약자로서 운영체제에서 제공되는 여러 기능을 파이썬에서 수행할 수 있게 해준다.**
+  - 그리고 MEDIA_ROOT에서 os 모듈의 path
+
 - 이렇게 설정해주면 된다. MEDIA_ROOT가 업로드된 파일이 저장되는 경로를 지정하는 것. BASE_DIR은 settings.py 위쪽에 값으로 정의되어 있는데, 여기서 던더file던더는 python 파일이 import 될 때 파일 경로를 담고 있다. 그래서
 
 ```python
