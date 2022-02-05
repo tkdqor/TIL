@@ -333,3 +333,82 @@ UUID('8267579c-4c0d-428a-8be7-7c8a8cad4d47')
 
 - 이렇게 splitext를 사용하면 확장자를 기준으로 나눠준 것을 튜플의 형태로 돌려준다. 확장자가 아예 없는 경우에는, 빈 문자열을 주게 된다.
 - 튜플에 [1]을 하게 되면, 두번째 인자를 선택하게 되고 [-1]은 제일 마지막이라는 의미로 똑같이 두번째 인자를 가져오게 된다.
+
+
+* * *
+## Template에서 media URL 처리 예시
+- 필드의 .url 속성을 활용하자.
+
+```html
+<img src="{{ post.photo.url }}" %}" />
+
+{% if post.photo %}
+<img src="{{ post.photo.url }}" %}" />
+{% endif %}
+```
+
+- 이렇게 내부적으로 settings.MEDIA_URL과 조합을 처리
+- 필드에 저장된 경로에 없을 경우, url계산에 실패할 수 있으니 필드명 저장 유무를 if문으로 체크
+
+* 파일 시스템 상의 절대경로가 필요하다면, .path 속성을 활용하자. - settings.MEDIA_ROOT와 조합
+
+
+```terminal
+python manage.py shell
+>>> from instagram.models import Post
+>>> Post.objects.all()
+<QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
+
+>>> Post.objects.get(pk=3)
+<Post: 세번째 메세지>
+
+>>> Post.objects.get(pk=3).photo
+<ImageFieldFile: instagram/post/2022/02/05/barella2.jpeg>
+
+>>> Post.objects.get(pk=3).photo.url
+'/media/instagram/post/2022/02/05/barella2.jpeg'
+
+>>> Post.objects.get(pk=3).photo.path
+'/Users/kimsangbaek/Desktop/likelion/env/askcompany/media/instagram/post/2022/02/05/barella2.jpeg'
+
+
+>>> Post.objects.get(pk=2).photo
+<ImageFieldFile: None>
+
+>>> Post.objects.get(pk=2).photo.url
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+  File "/Users/kimsangbaek/Desktop/likelion/env/lib/python3.9/site-packages/django/db/models/fields/files.py", line 63, in url
+    self._require_file()
+  File "/Users/kimsangbaek/Desktop/likelion/env/lib/python3.9/site-packages/django/db/models/fields/files.py", line 40, in _require_file
+    raise ValueError("The '%s' attribute has no file associated with it." % self.field.name)
+ValueError: The 'photo' attribute has no file associated with it.
+```
+
+- 지금 전체 Post 모델에서 세번째만 이미지가 있는데, .photo로 접근하면 실제로는 이미지필드 파일이지만, 문자열이 저장된 필드가 출력된다. 그리고 .url로 접근하면 url 경로가 나온다. .path는 실제 저장되어있는 파일 시스템의 절대 경로가 나온다.
+- 그리고 이미지가 없는 2번 게시물에 .photo와 .photo.url를 해보면 ValueError가 발생한다.
+  - 그래서 추후에 photo 필드에 대한 .url / .path와 같은 접근이 필요할 때에는 반드시 if문 로직을 넣어주자.
+  
+  
+* * *
+## 개발환경에서의 media 파일 서빙 
+- static 파일과 다르게, 장고 개발서버에서 서빙 미지원
+- 그래서 개발 편의성 목적으로 직접 서빙 Rule을 추가해서 가능해질 수 있다.
+
+```python
+from django.conf.urls.static import static
+from django.conf import settings
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+
+### File Upload Handler
+- File Upload Handler가 있다. 파일 용량이 다양할 수 있는데 웹 서버단에서 파일 용량을 어느정도까지만 허용할지 설정을 할 수 있다. 만약, 제한이 없다면 어떤 악의적인 목적으로 수 기가바이트 짜리 파일을 업로드 하려고 할 수 있다. 그런걸 다 받아버리면 디스크가 순식간에 차버린다.
+
+- 실제 파일 디스크에 저장하기전에, 유저가 업로드한 파일을 임시적으로 어디에 담아두느냐에 대한 내용
+  - django는 파일크기가 2.5MB 이하일 경우 -> 메모리에 담아서 처리를 한다. (MemoryFileUploadHandler)
+  - 파일크기가 2.5MB 초과일 경우 -> 디스크에 담겨서 전달한다. (TemporaryFileUploadHandler)
+
+- 관련 설정 : settings.FILE_UPLOAD_MAX_MEMORY_SIZE -> 2.5MB
