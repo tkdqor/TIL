@@ -156,7 +156,7 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
+```
 
 - static 관련 import는 static이라는 함수를 import 한 것이다.
 - static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) -> 이 코드를 입력하면 URL 리스트를 주게 되므로 urlpatterns라는 리스트에 추가를 하면 된다.
