@@ -71,7 +71,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 - 그리고 MEDIA_ROOT가 업로드된 파일이 저장되는 경로를 지정하는 것. BASE_DIR은 settings.py 위쪽에 값으로 정의되어 있는데, 여기서 던더file던더는 python 파일이 import 될 때 파일 경로를 담고 있다. 그래서
 
 ```python
-BASE_DIR = Path(__file__).resolve().parent.parent   # __file__가 현재 settings.py의 경로이고 여기서 resolve() 함수는 그 경로를 절대 경로로 만들어 준다. 그리고 parent가 2번이니까 상위,                                                       상위의 위치를 의미한다.
+BASE_DIR = Path(__file__).resolve().parent.parent   
+# __file__가 현재 settings.py의 경로이고 여기서 resolve() 함수는 그 경로를 절대 경로로 만들어 준다. 그리고 parent가 2번이니까 상위, 상위의 위치를 의미한다.
 ```
 
 - 이렇게 파일 경로를 절대경로로 바꿔주고 그 절대경로의 부모경로, 부모경로가 된다. **즉, settings.py의 절대경로의 부모의 부모이면 -> 현재 manage.py가 있는 프로젝트 디렉터리(프로젝트 루트)가 된다.**
@@ -164,12 +165,15 @@ if settings.DEBUG:
 ```
 
 - **static 관련 import는 static이라는 함수를 import 한 것이다.**
+- static 함수의 첫번째 인자로 settings.py에서 정한 MEDIA_URL를 전달하고 / 두번째 인자로 document_root로 파일이 저장되는 경로를 넣어주면 된다.
 - static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) -> 이 코드를 입력하면 URL 리스트를 주게 되므로 urlpatterns라는 리스트에 추가를 하면 된다.
-  - urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 이런식으로 추가한다.  (리스트에 리스트를 더하는 형태..?)
+  - urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 이런식으로 추가한다.  
+  - 리스트 사이에서 + 기호는 2개의 리스트를 합치는 기능을 한다. https://wikidocs.net/14#_6
 
 - 그리고 static 설정을 언제해줄 것인지 정해야 한다. django에 DEBUG라는 옵션이 있는데, 이 옵션이 참일 때만 static를 urlpatterns에 추가하는 것으로 if문을 설정한다.
   - 실제로 settings.py에 보면, DEBUG = True 이렇게 설정되어있다.
   - 이 DEBUG는 개발 모드일 때만 DEBUG이고 실제 서비스를 할 때는 False로 두어야 한다. 
+  - **장고는 실행 도중에 오류가 발생하면 DEBUG가 True인 경우 오류 내용을 화면에 상세하게 출력한다. 이때 settings.py 파일과 urls.py 파일에 설정한 항목이 모두 노출된다. 이 말은 파이보를 DEBUG=True 상태로 운영하면 오류 발생 시 서버 정보가 노출된다는 말과 같다. 이것은 어쩌면 서버 해킹 등의 매우 나쁜 결과를 초래할 수도 있다. 따라서 운영 환경에서는 반드시 DEBUG 항목을 False로 설정해야 한다.**
   - 이렇게 if문을 설정하는 이유는 -> django에서는 media나 static 파일 serving를 django 기본에서 실제 production에서 하는 것을 권장하지 않기 때문이다. 만약 if settings.DEBUG: 이 부분을 주석처리 한다고 해도, 실제 서비스에서는 DEBUG 옵션을 끄게 되므로, static 함수는 빈 리스트를 반환하게 된다.
   
 16:36
