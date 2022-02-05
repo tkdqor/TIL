@@ -36,6 +36,9 @@ pip install -r requirements.txt
   - 적어줄 때, pillow는 버전을 탈 일이 별로 없지만, django는 버전을 적어주었다.
 
 - 위에서 ImageField를 설정했으니, migration / migrate 진행하기. -> 그러면 이제 DB에 photo라는 필드가 생성된 것이다.
+  - 그래서 admin 페이지에 데이터 하나를 클릭하면, 사진을 업로드 할 수 있는 photo 필드가 뜬다.
 
 
-5:29
+### Media 파일 처리 순서
+1) HttpRequest.FILES라는 속성을 통해 파일이 전달
+2) View 로직이나 
