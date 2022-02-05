@@ -73,4 +73,38 @@ code .
 - 그리고 웹서비스에 필요한 기능 단위로 쪼개서 개발을 진행, django에서는 이 기능 단위를 App이라고 한다. 잘 만든 App를 다른 프로젝트에서도 사용가능하다.
 
 
-### 어무
+### django App 생성
+```terminal
+python manage.py startapp posts(앱이름설정)
+```
+
+- 이러면 프로젝트 디렉터리 내부에 posts라는 앱, 패키지가 생성된다.
+
+- 그리고 프로젝트 디렉터리 내부 urls.py에서
+```python
+from django.contrib import admin
+from django.urls import path
+from posts import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('posts/', views.index),
+]
+
+- 이렇게 from posts import views를 추가하고 url도 views모듈의 index함수를 설정하자. 
+
+- 이제 views.py에서 index함수를 정의하자.
+```python
+from django.http import HttpResponse
+from django.shortcuts import render
+
+# Create your views here.
+
+def index(request):
+    return HttpResponse('Hello world!')
+```
+
+- views.py에 작성하는 모든 함수들은 첫번째 파라미터로 request를 적어줘야 한다.
+- index 함수의 return으로 HttpResponse 함수를 사용할 때는, from django.http import HttpResponse 이렇게 import를 해줘야 한다. 괄호안에 문자열을 입력해서 http 응답으로 해당 문자열을 return 해주는 함수를 사용하게 된다.
+
+- 이렇게 작성해주고 서버를 다시 작동시키고 localhost:8000/posts로 들어가면 Hello world! 라는 문자가 화면에 보여지게 된다.
