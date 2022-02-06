@@ -201,3 +201,120 @@ SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."phot
 <QuerySet [<Post: 세번째 메세지>, <Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
 ```
 
+
+### QuerySet 다양한 조회 요청 방법 -> SELECT SQL 생성
+- queryset.filter() / queryset.exclude() -> exclude()는 포함되지 않는 조건을 의미(filter와 반대)
+```terminal
+>>> qs = Post.objects.all().exclude(message__icontains='첫번째')
+
+>>> print(qs.query)
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."photo", "instagram_post"."is_public", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE NOT ("instagram_post"."message" LIKE %첫번째% ESCAPE '\')
+
+>>> qs
+<QuerySet [<Post: 두번째 메세지>, <Post: 세번째 메세지>]>
+```
+
+- **특정 모델객체 1개에 접근할 때**
+  - queryset[숫자인덱스]   -> 근데 만약 해당 queryset의 항목이 3개라면, 인데스로 접근할 수 있는게 0,1,2가 된다. -> 0,1,2로 접근한다면 모델 객체를 반환한다.
+  - queryset.get(...)   -> 있다면 모델객체 반환, 없다면 DoesNotExist 에러 발생 / 만약 해당 조건이 2개 이상의 대해서 요청하는 조건이라면 MultipleObjectsReturned 라는 예외가 발생.
+  - queryset.first()    -> 해당 항목에서 첫번째를 가져오게 됨. 없다면 None 반환.
+  - queryset.last()     -> 해당 항목에서 마지막을 가져오게 됨. 없다면 None 반환.
+    - first()와 last()는 에러, 예외가 발생하는 게 아니라 None를 반환해주기 때문에 없을때에 대한 조건을 체크하기 쉽다.
+
+```terminal
+>>> qs = Post.objects.all()
+>>> qs[1]
+<Post: 두번째 메세지>
+
+>>> qs.get()
+instagram.models.Post.MultipleObjectsReturned: get() returned more than one Post -- it returned 3!    # MultipleObjectsReturned 에러 발생
+
+>>> qs.get(pk=1)
+<Post: 첫번째 메세지>
+
+>>> qs.get(id__lte=2)     # id가 2보다 작거나 같다
+instagram.models.Post.MultipleObjectsReturned: get() returned more than one Post -- it returned 2!
+
+>>> qs.first()
+<Post: 첫번째 메세지>
+
+>>> qs.last()
+<Post: 세번째 메세지>
+
+>>> qs.none()
+<QuerySet []>
+```
+
+
+
+- less than ~보다 작다 / less than equal ~보다 작거나 같다 / greater than ~보다 크다 / greater than equal ~보다 크거나 같다
+  - lt / lte / gt / gte 이렇게 django queryset에서 숫자나 대소비교가 가능한 time이나 date 등에서 사용할 수 있다.
+
+- qs.none()은 아무것도 지정하지 않는 queryset를 만드는데, 이 자체가 빈 queryset이 된다.
+
+
+### filter와 exclude는 반대 조건 -> SELECT 쿼리에 WHERE 조건 추가
+- 인자로 "필드명 = 조건값"을 지정해야 함.
+- 1개 이상의 인자는 모두 and 조건으로 묶인다.
+  - OR 조건으로 묶으려면, django.db.models의 Q라는 객체 활용
+
+```terminal
+>>> Item.objects.filter(name="New item", price=3000)  # 이름과 가격이 조건에 맞는 값을 찾겠다
+>>> Item.objects.exclude(name="New item", price=3000) # 이름과 가격이 조건으로 아닌 값을 찾겠다
+```
+
+```terminal
+>>> from django.db.models import Q
+
+>>> qs = Post.objects.all().filter(id__gte=2, message__icontains='메세지')  # 아이디가 2보다 크거나 같고 '메세지'라는 메세지를 포함하는 데이터 조회 (AND 조건)
+>>> print(qs.query)
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."photo", "instagram_post"."is_public", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE ("instagram_post"."id" >= 2 AND "instagram_post"."message" LIKE %메세지% ESCAPE '\')
+```
+
+- 이렇게만 하면 filter의 조건을 and로 묶는 것이지만,
+
+```terminal
+>>> from django.db.models import Q
+
+>>> qs = Post.objects.all().filter(Q(id__gte=2) & Q(message__icontains='메세지'))
+
+>>> qs = Post.objects.all().filter(Q(id__gte=2) | Q(message__icontains='메세지'))
+>>> print(qs.query)
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."photo", "instagram_post"."is_public", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE ("instagram_post"."id" >= 2 OR "instagram_post"."message" LIKE %메세지% ESCAPE '\')
+```
+
+- &는 비트연산이다. 이렇게 개별 조건마다 Q로 묶을 수 있다. Q 끼리는 비트연산이 가능하다. Q(..) & Q(..) 이렇게 하면 두 조건을 and로 묶는 것이다. 
+- |라는 OR 비트연산자를 사용하면 Q 조건끼리 or로 묶을 수 있다. 
+
+- 또한, 별도의 Q 객체를 따로 뽑아서 사용할 수도 있다.
+```terminal
+>>> qs = Post.objects.all()
+
+>>> cond = Q(id__gte=2) | Q(message__icontains='메세지')     # cond는 condition, 조건의 약자
+
+>>> qs = qs.filter(cond)
+
+>>> print(qs.query)
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."photo", "instagram_post"."is_public", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE ("instagram_post"."id" >= 2 OR "instagram_post"."message" LIKE %메세지% ESCAPE '\')
+```
+
+
+### 필드타입 별, 다양한 조건 매칭
+- 데이터베이스에 따라 생성되는 SQL이 다르다.
+
+- **숫자/날짜/시간 필드** 
+  - 필드명__lt = 조건값 -> 필드명 < 조건값
+  - 필드명__lte = 조건값 -> 필드명 <= 조건값
+  - 필드명__gt = 조건값 -> 필드명 > 조건값
+  - 필드명__gte = 조건값 -> 필드명 >= 조건값
+
+
+- **문자열 필드**
+  - 필드명__startswith = 조건값 -> 필드명 LIKE "조건값%"
+  - 필드명__istartswith = 조건값 -> 필드명 ILIKE "조건값%"
+  - 필드명__endswith = 조건값 -> 필드명 LIKE "%조건값"
+  - 필드명__iendswith = 조건값 -> 필드명 ILIKE "%조건값"
+  - 필드명__contains = 조건값 -> 필드명 LIKE "%조건값%"
+  - 필드명__icontains = 조건값 -> 필드명 ILIKE "%조건값%"
+    - i는 ignorecase를 의미하여 대소문자를 구분하지 않겠다는 것.
+
