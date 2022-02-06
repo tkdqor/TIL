@@ -124,14 +124,42 @@ id: 2, message: 두번째 메세지 2022-02-03 11:19:55.685392+00:00
 - 이렇게 다른 형식으로도 작성해볼 수 있다.
 
 
-
 ### QuerySet의 특징 중의 하나는, Lazy하다는 것이다.
 - 즉, 이렇게 qs = Post.objects.all() 해서 QuerySet 객체를 만들자마자 데이터베이스에 select 쿼리를 하지 않는다. 데이터를 쿼리할 준비만 하고 있는 것이다. 
   - 이걸 이어서 qs = Post.objects.all().order_by('-id')[:2] 이렇게 queryset를 새롭게 객체를 만들고, 조건을 계속해서 추가하더라도 지금까지는 데이터베이스의 쿼리를 하지 않고 있는 것이다.
   - 실제로는 terminal에서 
 ```terminal
-qs 
+>>> qs  
 <QuerySet [<Post: 세번째 메세지>, <Post: 두번째 메세지>]>
 ```
-- 이렇게 입력했을 때 데이터베이스에 쿼리를 진행하게 된다. 그래서 실제로 쿼리를 진행한 것이니 결과를 출력해주는 것이다. 
+- 이렇게 입력했을 때 데이터베이스에 쿼리를 진행하게 된다.(또는 print(qs)) 그래서 실제로 쿼리를 진행한 것이니 결과를 출력해주는 것이다. 
   - 이러한 쿼리는 우리가 데이터가 필요하거나, 출력이 필요하거나 리스트 변환을 한다던지 실제 데이터가 필요할 때 최대한 lazy하게 동작을 하게 된다.
+
+
+### QuerySet은 Chaining을 지원
+- 즉, Post.objects.all().flter(..) 나 Post.objects.all().exclude(..) 와 같은 queryset은 원래의 있는 queryset객체에 변화를 가하는 게 아니라, .flter()를 사용하면 새로운 queryset를 만들어내고 / .exclude()를 사용하면 또 새로운 queryset를 만들어 낸다.
+
+```terminal
+>>> qs = Post.objects.all().filter(message='첫번째 메세지')
+
+>>> qs = Post.objects.all().filter(message__icontains='첫번째')
+
+>>> qs = Post.objects.all().filter(message__startswith='첫번째')
+```
+
+- 첫번째처럼 qs를 정해주면, 정확하게 message필드가 해당 문자열인 값을 조회하는 것이다. 그리고 두번째 qs는, message필드의 데이터 중 '첫번째' 라는 문자열이 포함된 값을 조회하게 된다. 세번째 qs는 '첫번째'라는 문자열로 시작하는 데이터를 조회한다. 이렇게 여러가지 기능들이 있다.
+  - 이렇게 filter나 exclude에서는, django에서 조건을 줄 때 -> .filter(필드명__관련된operation='..') 이러한 구조로 쓴다. 이 operation은 각 필드 별 타입에 따라서 지원되는 operation이 달라진다.
+  - 이러한 내용과 관련해서 모델 필드에 대한 django 공식 문서를 꼭 찾아보자.
+
+```terminal
+>>> query = '첫번째'     # 검색어
+>>> qs = Post.objects.all().filter(message__icontains=query)
+>>> qs
+<QuerySet [<Post: 첫번째 메세지>]>
+
+>>> print(qs.query)
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."photo", "instagram_post"."is_public", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE "instagram_post"."message" LIKE %첫번째% ESCAPE '\'
+```
+
+- 그리고 이런식으로 특정 문자열을 포함하고 있는 변수를 설정해서 필터 기능을 사용할 수 있다. 그래서 '첫번째' 라는 문자열이 포함된 데이터가 출력된다.
+
