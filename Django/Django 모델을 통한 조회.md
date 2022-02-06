@@ -135,6 +135,8 @@ id: 2, message: 두번째 메세지 2022-02-03 11:19:55.685392+00:00
 - 이렇게 입력했을 때 데이터베이스에 쿼리를 진행하게 된다.(또는 print(qs)) 그래서 실제로 쿼리를 진행한 것이니 결과를 출력해주는 것이다. 
   - 이러한 쿼리는 우리가 데이터가 필요하거나, 출력이 필요하거나 리스트 변환을 한다던지 실제 데이터가 필요할 때 최대한 lazy하게 동작을 하게 된다.
 
+- django는 데이터베이스 의존적인 애플리케이션이기 때문에, 대개 병목현상이 성능 관련해서 IO에서 발생하게 된다. 근데 input/output IO가 대부분 파일 접근보다는 데이터베이스 IO 접근이기 때문에 QuerySet과 데이터베이스 쿼리에 대해서 명확하게 잘 이해하는 것이 django 성능 향상에 가장 중요한 항목이다.
+
 
 ### QuerySet은 Chaining을 지원
 - 즉, Post.objects.all().flter(..) 나 Post.objects.all().exclude(..) 와 같은 queryset은 원래의 있는 queryset객체에 변화를 가하는 게 아니라, .flter()를 사용하면 새로운 queryset를 만들어내고 / .exclude()를 사용하면 또 새로운 queryset를 만들어 낸다.
@@ -162,4 +164,40 @@ SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."phot
 ```
 
 - 그리고 이런식으로 특정 문자열을 포함하고 있는 변수를 설정해서 필터 기능을 사용할 수 있다. 그래서 '첫번째' 라는 문자열이 포함된 데이터가 출력된다.
+
+
+### QuerySet에서 주의할 점은, chaining 줄이 너무 길어진다고 해서 enter로 다음 줄로 넘기면 안된다.
+```terminal
+qs = Post.objects.all()
+      .filter(message__icontains=query).order_by('-id')
+print(qs.query)
+```
+
+- 이러면 python은 IndentationError가 발생하게 된다. **그래서 다음 줄로 넘기고 싶을 때는, 넘기기 직전에 Escaping 처리, 즉 Escape code \을 붙여주고 enter를 누르면 넘겨진다.**
+```terminal
+>>> query = '메세지'
+>>> qs = Post.objects.all()\
+... .filter(message__icontains=query)\
+... .order_by('-id')
+
+>>> print(qs.query)
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."photo", "instagram_post"."is_public", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE "instagram_post"."message" LIKE %메세지% ESCAPE '\' ORDER BY "instagram_post"."id" DESC
+
+>>> qs
+<QuerySet [<Post: 세번째 메세지>, <Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
+```
+
+- **QuerySet이 너무 길 때, 다음과 같은 방법으로도 해볼 수 있다.**
+```terminal
+>>> query = '메세지'
+>>> qs = Post.objects.all()
+>>> qs = qs.filter(message__icontains=query)
+>>> qs = qs.order_by('-id')
+
+>>> print(qs.query)
+SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."photo", "instagram_post"."is_public", "instagram_post"."created_at", "instagram_post"."updated_at" FROM "instagram_post" WHERE "instagram_post"."message" LIKE %메세지% ESCAPE '\' ORDER BY "instagram_post"."id" DESC
+
+>>> qs
+<QuerySet [<Post: 세번째 메세지>, <Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
+```
 
