@@ -38,3 +38,12 @@
 - 모든 Request URL의 경로는 처음 시작을 /를 적는 것으로 시작하기 때문에, 도메인을 적고 /만 적은 상태(www.google.com/)에서 마무리를 하게 되면 모든 경로의 시작이니까 이 도메인이 가져야 할 가장 기본적인 웹 페이지, 메인페이지 resource가 바로 도메인 주소 다음에 /만 적었을 때 서빙이 되게 한다. 
   - 우리가 /를 지우더라도 /를 붙인 것과 동일한 효과가 난다.
 
+
+
+### GET localhost:8000/posts/ 예시
+- 먼저 localhost:8000는 host의 주소이다. 우리가 웹 브라우저라는 client를 통해서 localhost:8000이라는 host로 HTTP Request를 전송하겠다는 의미이다. 그리고 이 localhost는 우리 컴퓨터 자신을 의미하기 때문에 우리 컴퓨터 내부의 8000번 포트에 동작하고 있는 프로그램에 이 HTTP Request가 전달될 것이다.
+- **그리고 뒤에 있는 /posts/는 Request URL에 해당하는 부분이다. -> 그래서 이 부분에 대한 설정을 urls.py에서 해준 것이고, 이걸 URL configuration이라고 볼 수 있다.**
+
+- 중요한 점은, HTTP Request와 HTTP Response가 오고 가고 있지만 정확하게 보면 HTTP Response는 HTTP Request가 와야지만 줄 수 있는 것이다.
+  - server가 강제로 client가 요청하지도 않았는데, client에게 response를 주는 방식은 없다. 
+  - 주로 HTML 파일을 주고받게 되고, HTTP Response로 전달하게 된다. HTML 파일 이외에도 이미지나 동영상 등 다른 것들을 response로 전달할 수 있다. (Model의 ImageField를 생각해보자.)
