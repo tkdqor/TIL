@@ -4,7 +4,7 @@
 
 - IPython은 기본 python 패키지에는 없고 추가로 설치해야한다.
 - Jupyter Notebook은 IPython에 대한 웹 버전이다. 서버를 띄우고 웹 브라우저를 통해서 iPython을 쓸 수 있다. 텍스트 이외 이미지 등 UI를 output으로 볼 수 있다. 그래서 데이터 분석이나 머신러닝에 필요하다.
-  - 기본 shell에서는 텍스트만 볼 수 있는 것으로 다르다.
+  - 기본 shell에서는 출력된 값들을 텍스트로만 볼 수 있다.
 
 
 ## 기본 python shell / django 프로젝트 설정이 로딩된 shell
