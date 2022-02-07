@@ -3,6 +3,12 @@
    - 기본 python shell은 -> terminal에 python만 입력하면 사용가능하다.
 
 - IPython은 기본 python 패키지에는 없고 추가로 설치해야한다.
+  - IPython을 설치하는 이유? https://soooprmx.tistory.com/entry/iPython-%EC%84%A4%EC%B9%98%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95
+  - IPython 공식 문서 https://ipython.readthedocs.io/en/stable/install/index.html
+```terminal
+pip install ipython
+```
+
 - Jupyter Notebook은 IPython에 대한 웹 버전이다. 서버를 띄우고 웹 브라우저를 통해서 iPython을 쓸 수 있다. 텍스트 이외 이미지 등 UI를 output으로 볼 수 있다. 그래서 데이터 분석이나 머신러닝에 필요하다.
   - 기본 shell에서는 출력된 값들을 텍스트로만 볼 수 있다.
 
