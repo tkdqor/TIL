@@ -132,6 +132,19 @@ urlpatterns = [
 <img src="https://user-images.githubusercontent.com/95380638/152721077-740257e2-5efc-424c-9de9-c9de27c2e307.png" width="50%" height="50%">
 
 
+```html
+<td>
+    {% if post.photo %}
+        <img src="{{ post.photo.url }}" style="width: 100px;" />
+    {% else %}
+        No Photo     
+    {% endif %}
+</td>
+```
+
+- 실제로 이미지를 보여주기 위해서는, img element를 사용하기.
+
+
 
 
 **7) getBootstrap 사용해보기**
