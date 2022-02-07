@@ -150,3 +150,60 @@ urlpatterns = [
 **7) getBootstrap 사용해보기**
 - https://getbootstrap.com/ 에 들어가서, CSS 관련 링크를 가져와서 html 파일 head element에 추가해보자. 그 상태에서 새로고침해도 스타일이 적용된 걸 볼 수 있다.
 - 그리고 이제 table element에 class만 table table-bordered table-hover로 설정해줘도 스타일이 변한다.
+
+
+**8) 검색 기능 구현하기**
+- 실제로 구현하기 전에, 웹 브라우저에다가 localhost:8000/instagram/?q= 이렇게하고 검색하고 싶은 단어를 입력해보자. 그러면 해당 화면에서 검색한 단어가 있는 post만 보여주게 된다.
+- 네이버에서도 python이라고 검색해보면, 상단 주소에 query=python 이렇게 되어있다.
+
+- 먼저, post_list.html에서 form이라는 element를 사용하자.
+```html
+<body>
+
+    <!-- 검색창 만들기 -->
+    <form action="" method="GET">
+        <input type="text" name="q" />
+        <input type="submit" value="검색"/>
+    </form>
+```  
+
+- form element의 method는 GET이 디폴트이다. form element 안에는 <input type="text" name="q" /> 이렇게 input element를 사용하고 name에 우리가 view 함수에서 설정한 q를 설정하자. 이렇게까지만 해도 입력박스가 추가된다.
+  - 그리고 밑에 추가로  <input type="submit" value="검색"/> 이렇게 submit 타입을 만들어주면 -> 버튼이 만들어지고 / value는 버튼안에 글을 바꿀 수 있다.
+
+- form element의 action attribute를 비워두게 되면, 현재 form이 있는 같은 주소를 의미하게 된다. 웹 페이지에서 주소 지정하는 부분을 비워두게 되면, 현재 웹 페이지가 있는 그 주소를 의미한다. 즉, 상대경로인 것이다.
+  - **form element는 input에 입력된 값을 action에 입력된 주소에다가 method 방식으로 전달해주는 역할을 한다. 지금은 GET 방식으로 전달하게 된다.**
+
+
+**9) 실제로 검색해보기**
+- 이제 실제로 웹 페이지에서 단어를 검색해보면, 해당 단어가 있는 post가 보여지게 된다. 그냥 검색을 누를 때는 전체 글들이 다 나오게 된다.
+- 만약, 검색하고나서 검색창에 해당 단어가 계속 뜨게끔 하고 싶다면
+```python
+def post_list(request):
+    qs = Post.objects.all()
+    q = request.GET.get('q', '')    
+    if q:
+        qs = qs.filter(message__icontains=q)
+
+    # instagram/templates/instagram/post_list.html
+    return render(request, 'instagram/post_list.html', {
+        'post_list': qs,
+        'q': q,
+    })    
+
+```
+
+- views.py에 return으로 주는 render 함수에서 딕셔너리에 form으로 받은 q 변수를 추가해주면 된다. 그리고 html에서도
+
+```html
+<!-- 검색창 만들기 -->
+    <form action="" method="GET">
+        <input type="text" name="q" value="{{ q }}" />
+        <input type="submit" value="검색"/>
+    </form>
+```
+
+- 이렇게 검색창에 남아있을 수 있도록 value="{{ q }}" 로 설정해주면 검색해도 단어가 사라지지 않는다.
+
+- **django template tag에서는 -> 중괄호 2개를 사용해서 어떤 값을 감싸게 되면, 해당 객체에 대한 문자열을 표현해준다.**
+
+- **이렇게 view 모듈에서 queryset를 활용하여 검색 기능을 구현해볼 수 있다.**
