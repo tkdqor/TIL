@@ -1,11 +1,15 @@
 ## Queryset의 정렬 및 범위 조건 설정하기
 - SQL문으로 생각해보면, SELECT 쿼리에 ORDER BY를 추가하는 것과 같다. 
-- 데이터베이스 상에서 정렬 조건을 추가하지 않으면, 일관된 순서를 보장받을 수 없다. 그리고, DB에서 다수 필드에 대한 정렬을 지원하지만 -> 가급적이면 단일 필드로 하는 것이 성능에 이익이 된다.
+- **데이터베이스 상에서 정렬 조건을 추가하지 않으면, 일관된 순서를 보장받을 수 없다. 그리고, DB에서 다수 필드에 대한 정렬을 지원하지만 -> 가급적이면 단일 필드로 하는 것이 성능에 이익이 된다.**
   - 시간순/역순 정렬이 필요한 경우, id 필드를 활용해볼 수 있다.
 
 
 ## 정렬 조건을 지정하는 2가지 방법
-- default 개념의 정렬이 있다. -> 모델 클래스의 Meta 속성으로 ordering 설정가능.(list의 형태로 지정하면 된다.) 이게 default 속성이다.
+- default 개념의 정렬이 있다. -> **모델 클래스의 Meta 속성으로 ordering 설정가능.(list의 형태로 지정하면 된다.) 이게 default 속성이다.**
+  - **Meta 클래스는, 모델 자체에 대한 다양한 사항을 정의하는데 사용할 수 있다. 권한이나 순서 지정, 데이터베이스 이름 등 다양한 설정을 할 수 있다.**
+  - 관련 내용 https://www.delftstack.com/ko/howto/django/class-meta-in-django/ 
+
+
 - 그리고 원할 때, queryset에 order_by()를 지정하게 되면 위의 default가 무시되고 지정한 정렬이 사용된다.
 
 
@@ -23,6 +27,9 @@ class Item(models.Model):
 
 
 ### django extensions 설치하기
+- django extensions는 django를 더 쉽고 넓게 사용할 수 있도록 해주는 툴. 
+- django extensions로 할 수 있는 기능들. https://pointer81.tistory.com/entry/%EC%9E%A5%EA%B3%A0%EC%9D%98-%EB%8B%A8%EC%A7%9D-%EC%B9%9C%EA%B5%AC-django-extensions
+
 ```terminal
 python manage.py shell_plus --print-spl
 ```
@@ -131,7 +138,7 @@ IPython 8.0.1 -- An enhanced Interactive Python. Type '?' for help.
 ```
 
 - 이렇게 입력하면 ipython이 구동된다.
-- shell_plus의 특징은, 위의 코드처럼 필요한 몇몇 기능들을 자동으로 import 해준다. 기존의 python manage.py shell를 입력해서 장고와 연동된 shell에서는 직접 해당 모델을 import 해야했었는데, 이러한 작업을 미리 해주는 것이다. 그래서, 모델을 Import 하지 않고
+- **shell_plus의 특징은, 위의 코드처럼 필요한 몇몇 기능들을 자동으로 import 해준다. 기존의 python manage.py shell를 입력해서 장고와 연동된 shell에서는 직접 해당 모델을 import 해야했었는데, 이러한 작업을 미리 해주는 것이다.** 그래서, 모델을 Import 하지 않고
 
 ```terminal
 In [1]: Post.objects.all()
@@ -218,7 +225,7 @@ Execution time: 0.000226s [Database: default]
 ## QuerySet에 범위 조건 추가
 - SELECT 쿼리에 OFFSET/LIMIT 추가, 슬라이싱을 통한 범위조건을 추가해주는 것이다.
 - 문자열이나 리스트, 튜플에서의 슬라이싱과 거의 유사하나, 역순 슬라이싱은 지원하지 않는다. 즉, 음수 인덱스 접근이 안된다고 생각하자. 데이터베이스에서 지원하지 않기 때문.
-  - 슬라이싱은 [start:stop:step]의 형태로 step은 몇 개씩 끊어서 가져올지와 방향을 정한다. 양수이면 오른쪽 / 음수이면 왼쪽 방향으로 이동하면서 가져온다.
+  - **슬라이싱은 [start:stop:step]의 형태로 step은 몇 개씩 끊어서 가져올지와 방향을 정한다. 양수이면 오른쪽 / 음수이면 왼쪽 방향으로 이동하면서 가져온다.**
 ```terminal
 >>> a = ['a', 'b', 'c', 'd', 'e']
 # 2칸씩 이동하면서 가져옵니다.
