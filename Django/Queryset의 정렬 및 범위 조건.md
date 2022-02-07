@@ -20,6 +20,8 @@ class Item(models.Model):
       
  - 이렇게 모델 클래스 안에 클래스 구조를 설정할 수 있다. Meta 이름으로 정렬을 넣을 수 있다. 
 
+
+### django extensions 설치하기
 ```terminal
 python manage.py shell_plus --print-spl
 ```
@@ -148,3 +150,22 @@ Execution time: 0.000898s [Database: default]
 
 - 이렇게 바로 모델에 접근할 수 있다. 
 - 그리고 우리가 처음에 python manage.py shell_plus --print-sql --ipython -> 이렇게 --print-sql이라는 옵션을 주었기 때문에, sql문을 같이 출력해주고 있다.
+
+* * *
+
+### 모델 클래스 내부에 Meta 클래스 설정해보기
+- instagram 디렉터리 내부 models.py에서 설정
+```python
+class Post(models.Model):      
+    message = models.TextField()    
+    photo = models.ImageField(blank=True, upload_to='instagram/post/%Y/%m/%d')                             
+    is_public = models.BooleanField(default=False, verbose_name='공개여부')    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+    
+    class Meta:
+        ordering = ['id']
+```
+
+- Post 모델안에 
+       
