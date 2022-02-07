@@ -216,3 +216,84 @@ Execution time: 0.000226s [Database: default]
 
 * * *
 ## QuerySet에 범위 조건 추가
+- SELECT 쿼리에 OFFSET/LIMIT 추가, 슬라이싱을 통한 범위조건을 추가해주는 것이다.
+- 문자열이나 리스트, 튜플에서의 슬라이싱과 거의 유사하나, 역순 슬라이싱은 지원하지 않는다. 즉, 음수 인덱스 접근이 안된다고 생각하자. 데이터베이스에서 지원하지 않기 때문.
+  - 슬라이싱은 [start:stop:step]의 형태로 step은 몇 개씩 끊어서 가져올지와 방향을 정한다. 양수이면 오른쪽 / 음수이면 왼쪽 방향으로 이동하면서 가져온다.
+```terminal
+>>> a = ['a', 'b', 'c', 'd', 'e']
+# 2칸씩 이동하면서 가져옵니다.
+>>> a[ : : 2 ]
+['a', 'c', 'e']
+```
+
+```terminal
+Post.objects.all()[:-2]
+```
+
+- 다음과 같은 음수 인덱스는 지원하지 않음. 만약 원래 의도한대로 마지막 2개를 출력하고 싶다면,
+
+```terminal
+In [2]: Post.objects.all().order_by('id')[:2]
+
+Out[2]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ ORDER BY "instagram_post"."id" ASC
+ LIMIT 2
+
+Execution time: 0.000346s [Database: default]
+<QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>]>
+```
+
+- 이렇게 마지막 2개가 id가 가장 작다라고 표현해주면 된다.(Post 모델의 default를 내림차순으로 설정했으므로)
+
+```terminal
+In [4]: Post.objects.all()[1:3]
+
+Out[4]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ ORDER BY "instagram_post"."id" DESC
+ LIMIT 2
+OFFSET 1
+
+Execution time: 0.000454s [Database: default]
+<QuerySet [<Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
+```
+
+- 슬라이싱을 적용했을 때 조회되는 내용이다. SQL문에서 끝에 LIMIT 2 OFFSET 1처럼 추가되어있는데, **LIMIT은 행을 얼마나 가져올지 정하는 것이고, OFFSET은 어디서부터 가져올지를 정하는 것이다.** 
+  - 관련 내용은 https://zzang9ha.tistory.com/295 해당 블로그에 자세히 나와있다. 
+  - 따라서 LIMIT 2 OFFSET 1은 데이터베이스의 행 2개를 가져오되, 2번째 행부터이니까 2,3번 행들을 가져오게 된다.
+  - 위의 queryset의 결과는 queryset 타입으로 출력해준다. 반면에 step을 슬라이싱에 붙이게 되면,
+
+
+```terminal
+In [5]: Post.objects.all()[1:3:1]
+
+SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ ORDER BY "instagram_post"."id" DESC
+ LIMIT 2
+OFFSET 1
+
+Execution time: 0.000438s [Database: default]
+Out[5]: [<Post: 두번째 메세지>, <Post: 첫번째 메세지>]
+```
+
+- 반환값이 달라지게 된다. 그래서 **step이 들어가는 순간, 반환값이 리스트가 된다.**
+- 그리고 step값이 sql에 반영되지 않는다. sql에는 step이라는 개념이 없기 때문이다. 이러한 step은 django의 queryset이 처리하게 된다.
+  - 그래서 예를 들어 [1:3:2] 이러한 범위라면, 1:3을 가져온 다음에 -> 2 step을 뛰면서 새로운 리스트를 만들어주는 것이다.
+  - step이 없을 때는, 반환값이 queryset으로 lazy하게 동작하는 객체이지만 / step이 있을 때는 리스트가 되기 때문에 lazy하지 않고 그 순간 데이터베이스에 쿼리를 던지게 된다.
