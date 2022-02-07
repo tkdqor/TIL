@@ -106,9 +106,45 @@ optional arguments:
 
 ```terminal
 python manage.py shell_plus --print-sql --ipython
+
+# Shell Plus Model Imports
+from instagram.models import Post
+from django.contrib.admin.models import LogEntry
+from django.contrib.auth.models import Group, Permission, User
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.sessions.models import Session
+# Shell Plus Django Imports
+from django.core.cache import cache
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.db import transaction
+from django.db.models import Avg, Case, Count, F, Max, Min, Prefetch, Q, Sum, When
+from django.utils import timezone
+from django.urls import reverse
+from django.db.models import Exists, OuterRef, Subquery
+Python 3.9.1 (v3.9.1:1e5d33e9b9, Dec  7 2020, 12:44:01) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 8.0.1 -- An enhanced Interactive Python. Type '?' for help.
 ```
 
 - 이렇게 입력하면 ipython이 구동된다.
+- shell_plus의 특징은, 위의 코드처럼 필요한 몇몇 기능들을 자동으로 import 해준다. 기존의 python manage.py shell를 입력해서 장고와 연동된 shell에서는 직접 해당 모델을 import 해야했었는데, 이러한 작업을 미리 해주는 것이다. 그래서, 모델을 Import 하지 않고
 
+```terminal
+In [1]: Post.objects.all()
 
-4:07
+Out[1]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ LIMIT 21
+
+Execution time: 0.000898s [Database: default]
+<QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
+```
+
+- 이렇게 바로 모델에 접근할 수 있다. 
+- 그리고 우리가 처음에 python manage.py shell_plus --print-sql --ipython -> 이렇게 --print-sql이라는 옵션을 주었기 때문에, sql문을 같이 출력해주고 있다.
