@@ -3,9 +3,10 @@
 - 데이터베이스 상에서 정렬 조건을 추가하지 않으면, 일관된 순서를 보장받을 수 없다. 그리고, DB에서 다수 필드에 대한 정렬을 지원하지만 -> 가급적이면 단일 필드로 하는 것이 성능에 이익이 된다.
   - 시간순/역순 정렬이 필요한 경우, id 필드를 활용해볼 수 있다.
 
-- **정렬 조건을 지정하는 2가지 방법**
-  - default 개념의 정렬이 있다. -> 모델 클래스의 Meta 속성으로 ordering 설정가능.(list로 지정) 이게 default 속성이다.
-  - 그리고 원할 때, queryset에 order_by()를 지정하게 되면 위의 default가 무시되고 지정한 정렬이 사용된다.
+
+## 정렬 조건을 지정하는 2가지 방법
+- default 개념의 정렬이 있다. -> 모델 클래스의 Meta 속성으로 ordering 설정가능.(list의 형태로 지정하면 된다.) 이게 default 속성이다.
+- 그리고 원할 때, queryset에 order_by()를 지정하게 되면 위의 default가 무시되고 지정한 정렬이 사용된다.
 
 
 ### 모델 클래스 내부에 Meta 클래스 설정
@@ -164,8 +165,54 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True) 
     
     class Meta:
-        ordering = ['id']
+        ordering = ['-id']
 ```
 
-- Post 모델안에 
+- Post 모델안에 클래스 Meta 속성으로 id필드에 대한 역순을 설정해준다.
        
+       
+### Meta 클래스 설정 후, 다시 shell_plus로 django shell 실행
+```terminal
+python manage.py shell_plus --print-sql --ipython
+
+In [1]: Post.objects.all()
+
+Out[1]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ ORDER BY "instagram_post"."id" DESC
+ LIMIT 21
+
+Execution time: 0.000849s [Database: default]
+<QuerySet [<Post: 세번째 메세지>, <Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
+```
+
+- Post 모델 내부에 Meta 클래스를 설정한 다음, 다시 shell_plus로 django shell를 실행하고 모델 데이터를 전부 조회해보면, 
+  - 우리가 id필드의 역순으로 순서를 정의했기 때문에 -> 조회할 때도 ORDER BY "instagram_post"."id" DESC 이렇게 id필드의 역순으로 조회돼서 데이터를 볼 수 있게 된다.
+
+### 위의 상태에서 추가로 다른 정렬을 적용
+```terminal
+In [2]: Post.objects.all().order_by('created_at')
+
+Out[2]: SELECT "instagram_post"."id",
+       "instagram_post"."message",
+       "instagram_post"."photo",
+       "instagram_post"."is_public",
+       "instagram_post"."created_at",
+       "instagram_post"."updated_at"
+  FROM "instagram_post"
+ ORDER BY "instagram_post"."created_at" ASC
+ LIMIT 21
+
+Execution time: 0.000226s [Database: default]
+<QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
+```
+
+- created_at 필드를 기준으로 정렬을 요청하면, 이렇게 기존의 Meta 클래스로 정의한 내용이 무시되고 우리가 지정한 정렬이 적용된다.
+
+* * *
+## QuerySet에 범위 조건 추가
