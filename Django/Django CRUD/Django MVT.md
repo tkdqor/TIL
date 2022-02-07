@@ -34,4 +34,37 @@
   - server가 모든 HTTP Request를 처리할 필요는 없다. 해당 Request가 server가 처리할 수 있는 Request인지 아닌지를 판단하고, 처리할 수 있다면 그 Request를 어떤 view가 처리할지 결정해준다. 매핑되어 있지 않은 url의 경우에는 해당 정보가 없다는 페이지를 띄우게 된다.
 - 그렇게 결정된 view에서 template이나 model를 사용하지 않는 경우에는, 해당 view에서 모든 처리를 마무리하고 client에게 HTTP Response를 전달하게 된다.
 
-- urls.py의      
+- urls.py의 urlpatterns 라는 변수가 있는데, django server에서 처리할 수 있는 url pattern의 목록을 관리하는 변수라고 할 수 있다. 
+```python
+urlpatterns = [
+    path = ('posts/', views.index),
+]
+```
+
+- 위와 같이 작성된 경우, client가 이 posts/라는 url로 HTTP Request를 보냈을 경우에는 -> views 모듈안에 있는 index 함수가 이 HTTP Request를 처리하라고 설정해준 코드이다.
+  - **주의할 점은, 일반적으로 함수를 호출해서 사용하게 되지만 urls.py에서는 괄호를 사용하지 않고 함수 자체를 입력해서 지정만 해주게 된다. ex) views.index() -> views.index**
+  - **그 이유는, 함수를 호출하는 주체가 우리가 아닌 django server이기 때문이다. 또한, 함수를 지금 당장 호출하겠다는 것이 아니라 client가 posts/라는 url pattern를 가진 HTTP Request를 전달했을 때 그 때 비로소 이 views.index 함수를 호출하겠다 하고 지정하는 코드이기 때문이다.** 
+
+- 그래서 우리가 localhost:8000/posts/ 라는 주소로 브라우저에 입력하게 되면, posts/ 라는 Request URL로 HTTP Request가 들어오게 되는 것이다.
+  - 그렇게 되면 urls.py에 설정한대로 views 모듈의 index 함수가 호출되고 실행되는 것이다.
+  - 그래서 우리가 새로고침 할 때 마다, Request가 매번 발생하고 index 함수가 매번 다시 실행된다. 
+
+- 그리고 django가 index 함수를 포함해서 모든 view 함수를 실행할 때 첫번째 인자로 client가 전송한 HTTP Request에 대한 정보를 첫번째 인자로 전달해준다.
+```python
+def index(request):
+    return HttpResponse('Hello!')
+```
+
+- 이 request에 client가 전송한 HTTP Request에 대한 정보가 모두 담겨있다고 보면 된다. 그래서 해당 요청이 GET 또는 POST 방식인지 등 HTTP Request에 대한 정보가 필요하다면 함수 내부에 이 request를 참조하면 된다.
+- 위에서는 HttpResponse로 단순한 텍스트를 client에게 전달해주고 있다.
+
+
+### View 구성
+- HTTP Response를 만드는 과정에서 데이터가 필요하다면, view에서 model를 사용해서 데이터를 CRUD 진행할 수 있다.
+- 필요하다면 template인 HTML에 대입해서 완전한 웹 페이지를 만든 다음, HTTP Response로 줄 수 있다.
+
+- 이러한 django의 MVT pattern은 -> 다른 웹 프레임워크에서도 MVC pattern이라는 이름으로 웹 서비스를 구성하는 방식으로 사용된다.
+  - django의 Model / View / Template -> Model / Controller / View에 해당
+
+
+
