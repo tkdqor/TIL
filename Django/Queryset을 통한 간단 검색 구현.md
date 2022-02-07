@@ -62,3 +62,60 @@ urlpatterns = [
 - 같은 디렉터리 내부에 있는 views.py를 import 해주기. 그리고 path 함수를 사용하기 위해 django 디렉터리 -> urls 디렉터리로부터 import 하기 
 - path 함수를 사용해서 localhost:8000/instagram/ 일 경우에는 -> view 함수 중 post_list로 연결해주기.
   - **views.post_list() 이렇게 함수를 호출하는 것이 아니라, views.post_list 이렇게 함수 그 자체를 넣어준다는 점 유의하자.**
+
+
+**5) 이제 localhost:8000/instagram/ 으로 확인**
+- 해당 주소로 웹 브라우저에서 확인해보면, <QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]> 이렇게 화면에 뜨게 된다.
+- post_list view 함수에서 q가 있을 경우에만 qs가 filter를 하게끔 설정했으니, 지금은 q가 없어서 qs 변수가 Post 모델의 모든 데이터를 담고 있다. 따라서 html에서도 Post 모델의 모든 데이터를 보여주게 된다.
+
+- **추가로, html template을 만들 때는 html이 갖춰야 할 최소한의 포맷이 있다.**
+```html
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>Instagram / Post List</title>
+</head>
+<body>
+    {{ post_list }}    
+</body>
+</html>
+```
+
+- html도 스펙이 있다. 버전이 있는데, <!doctype html> 이 코드는 html5를 사용하겠다는 것이다.
+  - html lang="ko" 는, 어떤 언어로 작성하는지 설정. 검색엔진이나 시각장애자들을 위한 앱들이 편하게 사용할 수 있게 한다.
+  - meta charset="utf-8" 이 코드로 인코딩을 지정. 그래서 해당 페이지가 utf-8 인코딩으로 작성되어 있다는 것이다.
+
+
+**6) django template language**
+- django template에서는, python 문법을 사용할 수 없다. 대신, django template만의 template 문법이 있다. 
+```html
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <title>Instagram / Post List</title>
+</head>
+<body>
+    <table>
+        <tbody>
+            {% for post in post_list %}
+                <tr>
+                    <td>
+                        {{ post.message }}
+                    </td>
+                    <td>
+                        {{ post.photo }}
+                    </td>
+                </tr>
+            {% endfor %}    
+        </tbody>    
+    </table>
+</body>
+</html>
+```
+
+- 다음과 같이 python template 엔진 문법을 사용할 수 있다.
+- post_list에서 post를 하나씩 꺼내서 Post 모델에 있는 필드에 접근할 수 있다. ex) post.message / post.photo
+
+- html 디자인을 위해 table element를 사용해보자. 그 안에는 tbody element로 감싸고 tr element는 하나의 행을 뜻한다. 그리고 td element는 한 칸을 의미한다.
