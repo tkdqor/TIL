@@ -34,7 +34,7 @@
   - server가 모든 HTTP Request를 처리할 필요는 없다. 해당 Request가 server가 처리할 수 있는 Request인지 아닌지를 판단하고, 처리할 수 있다면 그 Request를 어떤 view가 처리할지 결정해준다. 매핑되어 있지 않은 url의 경우에는 해당 정보가 없다는 페이지를 띄우게 된다.
 - 그렇게 결정된 view에서 template이나 model를 사용하지 않는 경우에는, 해당 view에서 모든 처리를 마무리하고 client에게 HTTP Response를 전달하게 된다.
 
-- urls.py의 urlpatterns 라는 변수가 있는데, django server에서 처리할 수 있는 url pattern의 목록을 관리하는 변수라고 할 수 있다. 
+- **urls.py의 urlpatterns 라는 변수가 있는데, django server에서 처리할 수 있는 url pattern의 목록을 관리하는 변수라고 할 수 있다.**
 ```python
 urlpatterns = [
     path = ('posts/', views.index),
