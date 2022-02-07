@@ -24,10 +24,91 @@ class Item(models.Model):
 python manage.py shell_plus --print-spl
 ```
 
-- 그리고 해당 명령어로 django shell을 실행할 수 있는데, shell_plus는 django 기본에는 없다. https://django-extensions.readthedocs.io/en/latest/installation_instructions.html 여기 django extensions 라는 라이브러리에서 shell_plus라는 명령이 지원된다. 그래서
+- 그리고 해당 명령어로 django shell을 실행할 수 있는데, shell_plus는 django 기본에는 없다.     
+  https://django-extensions.readthedocs.io/en/latest/installation_instructions.html 여기 **django extensions** 라는 라이브러리에서 shell_plus라는 명령이 지원된다. 그래서
 ```terminal
 pip install django-extensions
 ```
 
 - 해당 명령어를 통해 이 라이브러리를 설치해보자. 그리고 위의 공식문서를 보면, 그 다음에 해야 될 것들이 적혀있다.
   - 프로젝트 디렉터리 내부의 settings.py의 INSTALLED_APPS에 추가하기. 다만 app 이름은 django-extensions 이렇게 -이 포함되어 있지만, 이 자체가 package 이름이 되기 때문에 추가할 때는 'django_extensions', 이런식으로 추가하게 된다.
+
+```python
+INSTALLED_APPS = [
+    # django apps
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    # locals apps
+    'blog1',
+    'instagram',
+    # third apps
+    'django_extensions',
+]
+```
+
+- settings.py의 INSTALLED_APPS 리스트를 다음과 같이 주석으로 구분하면 관리하기 편리해진다. 이제 다시 
+```terminal
+python manage.py shell_plus --help
+
+usage: manage.py shell_plus [-h] [--bpython | --idle | --ipython | --lab | --kernel | --notebook | --plain | --ptipython | --ptpython]
+                            [--connection-file CONNECTION_FILE] [--no-startup] [--use-pythonrc] [--print-sql] [--truncate-sql TRUNCATE_SQL]
+                            [--print-sql-location] [--dont-load DONT_LOAD] [--quiet-load] [--vi] [--no-browser] [-c COMMAND] [--version]
+                            [-v {0,1,2,3}] [--settings SETTINGS] [--pythonpath PYTHONPATH] [--traceback] [--no-color] [--force-color]
+                            [--skip-checks]
+
+Like the 'shell' command but autoloads the models of all installed Django apps.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --bpython             Tells Django to use BPython.
+  --idle                Tells Django to use Idle.
+  --ipython             Tells Django to use IPython.
+  --lab                 Tells Django to use JupyterLab Notebook.
+  --kernel              Tells Django to use IPython Kernel.
+  --notebook            Tells Django to use IPython Notebook.
+  --plain               Tells Django to use plain Python.
+  --ptipython           Tells Django to use PT-IPython.
+  --ptpython            Tells Django to use PTPython.
+  --connection-file CONNECTION_FILE
+                        Specifies the connection file to use if using the --kernel option
+  --no-startup          When using plain Python, ignore the PYTHONSTARTUP environment variable and ~/.pythonrc.py script.
+  --use-pythonrc        When using plain Python, load the PYTHONSTARTUP environment variable and ~/.pythonrc.py script.
+  --print-sql           Print SQL queries as they're executed
+  --truncate-sql TRUNCATE_SQL
+                        Truncate SQL queries to a number of characters.
+  --print-sql-location  Show location in code where SQL query generated from
+  --dont-load DONT_LOAD
+                        Ignore autoloading of some apps/models. Can be used several times.
+  --quiet-load          Do not display loaded models messages
+  --vi                  Load Vi key bindings (for --ptpython and --ptipython)
+  --no-browser          Don't open the notebook in a browser after startup.
+  -c COMMAND, --command COMMAND
+                        Instead of opening an interactive shell, run a command as Django and exit.
+  --version             show program's version number and exit
+  -v {0,1,2,3}, --verbosity {0,1,2,3}
+                        Verbosity level; 0=minimal output, 1=normal output, 2=verbose output, 3=very verbose output
+  --settings SETTINGS   The Python path to a settings module, e.g. "myproject.settings.main". If this isn't provided, the DJANGO_SETTINGS_MODULE
+                        environment variable will be used.
+  --pythonpath PYTHONPATH
+                        A directory to add to the Python path, e.g. "/home/djangoprojects/myproject".
+  --traceback           Raise on CommandError exceptions
+  --no-color            Don't colorize the command output.
+  --force-color         Force colorization of the command output.
+  --skip-checks         Skip system checks.
+```  
+
+- shell_plus --help 명령어를 보면, 이렇게 다양한 shell 옵션이 나와있다. 예전에는 --notebook이라는 옵션이 default가 아니었다고 한다. 지금은 default라서 python manage.py shell_plus --print-sql 이렇게만 입력하면 notebook 서버가 구동이 된다.
+- 만약, ipython 서버를 구동하고 싶다면
+
+```terminal
+python manage.py shell_plus --print-sql --ipython
+```
+
+- 이렇게 입력하면 ipython이 구동된다.
+
+
+4:07
