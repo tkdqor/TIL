@@ -95,17 +95,23 @@ urlpatterns = [
 <head>
     <meta charset="utf-8" />
     <title>Instagram / Post List</title>
+    <!-- getbootstrap  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
-    <table>
+    <table class="table table-bordered table-hover">
         <tbody>
             {% for post in post_list %}
                 <tr>
-                    <td>
-                        {{ post.message }}
+                   <td>
+                        {% if post.photo %}
+                            {{ post.photo.url }}
+                        {% else %}
+                            No Photo     
+                        {% endif %}
                     </td>
                     <td>
-                        {{ post.photo }}
+                        {{ post.message }}
                     </td>
                 </tr>
             {% endfor %}    
@@ -113,9 +119,21 @@ urlpatterns = [
     </table>
 </body>
 </html>
+
 ```
 
 - 다음과 같이 python template 엔진 문법을 사용할 수 있다.
 - post_list에서 post를 하나씩 꺼내서 Post 모델에 있는 필드에 접근할 수 있다. ex) post.message / post.photo
 
 - html 디자인을 위해 table element를 사용해보자. 그 안에는 tbody element로 감싸고 tr element는 하나의 행을 뜻한다. 그리고 td element는 한 칸을 의미한다.
+
+- 이미지를 위해 {{ post.photo.url }} -> 이렇게 설정하면 The 'photo' attribute has no file associated with it. 이러한 에러가 뜨게 된다. 이 에러는 사진이 들어있지 않은 post도 있기 때문에 발생하게 된다. 그래서 사진이 있을 경우에만 사진을 보여줄 수 있도록 {% if post.photo %} 로 시작해서 {% else %} / {% endif %}로 설정하면 된다. 그러면 아래처럼 url이 보이게 된다.
+
+<img src="https://user-images.githubusercontent.com/95380638/152721077-740257e2-5efc-424c-9de9-c9de27c2e307.png" width="50%" height="50%">
+
+
+
+
+**7) getBootstrap 사용해보기**
+- https://getbootstrap.com/ 에 들어가서, CSS 관련 링크를 가져와서 html 파일 head element에 추가해보자. 그 상태에서 새로고침해도 스타일이 적용된 걸 볼 수 있다.
+- 그리고 이제 table element에 class만 table table-bordered table-hover로 설정해줘도 스타일이 변한다.
