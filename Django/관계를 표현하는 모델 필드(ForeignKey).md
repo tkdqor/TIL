@@ -24,3 +24,36 @@
 - **M:N 관계 : models.ManyToManyField로 표현**
   - 1개의 포스팅(Post)에는 다수의 태그(Tag) / 1개의 태그(Tag)에는 다수의 포스팅(Post)이 존재하는 경우를 의미.
   - Post와 Tag간의 관계는 M:N 관계.
+
+
+### ForeignKey
+- 1:N 관계에서 N측에 명시 -> 관계는 명시하기 나름이다. Category와 Post는 1:N관계로 설정할 수도 있고, 혹은 ManyToMany 관계로 설정할 수도 있다.
+
+- **ForeingKey(to, on_delete)**
+  - 외래키를 정할 때 다양한 옵션들이 있지만, 가장 대표적으로 to라는 인자와 on_delete라는 인자는 필수적으로 지정을 해야한다. 지정하지 않으면 migrations가 되지 않는다.
+  - **to이라는 인자는 -> 1:N관계에서 1에 해당하는 모델의 클래스이름을 입력하면 된다.** 클래스명을 직접 지정하거나, 클래스명을 문자열로 지정할 수 있다. 또는 자기자신의 모델 테이블을 직접 참조해야 할 때는 self라는 이름으로 지정해주면 된다.
+
+
+- Post와 Comment의 1:N 관계를 표현해보면,
+```python 
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)     # post = models.ForeignKey('Post', on_delete=models.CASCADE) 이렇게도 가능하다.
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+```
+
+- 이렇게 Comment 모델에서 외래키가 Post 모델과 연관이 됨을 설정하고 on_delete=models.CASCADE라고 입력하고 post라는 필드를 설정해보자. 
+  - .ForeignKey(Post, on_delete=models.CASCADE) 이렇게 Post라고 입력하면 -> 현재 위치한 instagram 앱 안에서 Post라는 모델을 찾아서 참조를 하게된다. 아니면 .ForeignKey('instagram.Post', on_delete=models.CASCADE) 이렇게 앞에다가 앱 이름을 입력해도 된다. 이건 다른 앱의 모델을 가져오는 경우가 많다.
+
+
+### on_delete 속성
+- 
+
+
+
+
+
+
+
+- Primary Key는 기본적으로 1부터 1씩 증가하는 숫자로 되어 있다. 그리고 ForiegnKey는 어떤 모델에서 다른 모델의 Primary Key를 사용할 때를 의미한다. 따라서 기본적으로는 기본키가 숫자이니까 다른 모델의 외래키도 숫자로 이루어짐을 알 수 있다.
