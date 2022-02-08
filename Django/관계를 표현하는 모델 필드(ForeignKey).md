@@ -272,3 +272,4 @@ Out[14]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>
 * * *
 
 ### ForeignKey.limit_choices_to 옵션
+- 외래키에서는 limit_choices_to라는 옵션이 있다.
