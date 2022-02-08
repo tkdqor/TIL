@@ -50,19 +50,46 @@ class Comment(models.Model):
 
 ### on_delete 속성
 - **on_delete는 Record 삭제 시 Rule를 의미한다. 즉, 1:N 관계에서 1쪽에 있는 record가 삭제가 될 때 -> N측에 있는 1에 속한 해당 record들을 어떻게 처리할지에 대한 rule을 지정하는 것이다.**
-  - CASCADE = N측에 있는 ForeignKey로 참조된 다른 모델의 record도 삭제
+  - CASCADE = N측에 있는 ForeignKey로 참조된 다른 모델의 record도 삭제  (가장 많이 사용된다.)
     - 어떤 Post에 속한 Comment에서 Post가 하나 삭제되면, Comment들도 전부 다 삭제가 되도록 하는 옵션이라고 볼 수 있다.
   - PROTECT = ProtectedError(IntegrityError 상속)를 발생시키며, 삭제를 방지한다.
   - SET_NULL = null로 대체. 필드에 null = True 옵션이 필수이다. 
     - 1:N 관계에서 1이 삭제 되어도 N은 삭제되지 않고 그 관계를 null로 자동지정 하겠다는 의미이다.
-  - SET_DEFAULT = 디폴트 값으로 대체. 필드에 디폴트값 지정을 필수로 해야 한다.
+  - SET_DEFAULT = 디폴트 값으로 대체. 필드에 디폴트값 지정을 필수로 해야 한다. (별로 사용되지는 않는다..)
   - SET = 대체할 값이나 함수 지정. 함수의 경우 호출하여 리턴값을 사용.
   - DO_NOTHING = 어떠한 액션 X. DB에 따라 오류가 발생할 수도 있다.
 
 
+### 1:N 예시
+- Post와 Comment의 1:N 관계에서 N측에는 실제 어떤 값이 저장이 되냐면, **관계를 정의할 때에는 실제 각각의 모델마다 pk라고 해서 Primary Key가 있다. 디폴트로 id라는 필드이다.** 
+  - Post에도 각각의 레코드마다 pk가 있다. **1:N의 관계에서는 N쪽의 외래키에 1에 있는 Post의 pk를 저장해야 된다.** N쪽에서 저장할 필드명은 임의로 정할 수 있고 post_id 또는 post 이렇게 해줄 수 있다.
+```python
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+```
+
+- 위의 코드와 똑같지만 다시 한 번 확인해보자.
+- 여기서 실제로 생성되는 DB 필드는 -> post_id라는 필드가 생성된다.
 
 
+- 이제 실제로 migrations를 해보면,
+```terminal
+python manage.py makemigrations instagram
+python manage.py sqlmigrate instagram 0004
 
+CREATE TABLE "instagram_comment" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "message" text NOT NULL, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "post_id" bigint NOT NULL REFERENCES "instagram_post" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE INDEX "instagram_comment_post_id_41735a7d" ON "instagram_comment" ("post_id");
+COMMIT;
+```
+
+- 위와 같이 쿼리문을 보면 -> comment라는 모델 테이블이 생기면서 id라는 필드가 Primary Key로 자동으로 생긴다. 
+  - 그리고 뒤에는 post_id라는 필드가 생기게 된다.
+
+- **또한, relation에서 post = models.ForeignKey(Post, on_delete=models.CASCADE) -> 여기서의 post라는 이름은 가상의 필드이다. 실제 데이터베이스 필드와는 다르다.**
+- 그리고 post라는 필드에 저장되는 실제 필드값은 Post 모델의 pk값이 저장되기 때문에 1,2,3 이렇게 값이 올라갈 것이다. 
 
 
 - Primary Key는 기본적으로 1부터 1씩 증가하는 숫자로 되어 있다. 그리고 ForiegnKey는 어떤 모델에서 다른 모델의 Primary Key를 사용할 때를 의미한다. 따라서 기본적으로는 기본키가 숫자이니까 다른 모델의 외래키도 숫자로 이루어짐을 알 수 있다.
