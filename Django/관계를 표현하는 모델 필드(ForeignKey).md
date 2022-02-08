@@ -25,6 +25,7 @@
   - 1개의 포스팅(Post)에는 다수의 태그(Tag) / 1개의 태그(Tag)에는 다수의 포스팅(Post)이 존재하는 경우를 의미.
   - Post와 Tag간의 관계는 M:N 관계.
 
+* * *
 
 ### ForeignKey
 - **1:N 관계에서 N측에 명시** -> 관계는 명시하기 나름이다. Category와 Post는 1:N관계로 설정할 수도 있고, 혹은 ManyToMany 관계로 설정할 수도 있다.
@@ -46,7 +47,7 @@ class Comment(models.Model):
 
 - 이렇게 Comment 모델에서 외래키가 Post 모델과 연관이 됨을 설정하고 on_delete=models.CASCADE라고 입력하고 post라는 필드를 설정해보자. 
 
-- ㅇㅇㅇ 
+- **post라는 필드는 -> 실제 DB에는 post가 아니라, post_id라는 이름의 필드로 반영된다. 그리고 1:N 관계에서 N에 해당하는 모델에만 새로운 필드가 생성되는 것이다.**
   - .ForeignKey(Post, on_delete=models.CASCADE) 이렇게 Post라고 입력하면 -> 현재 위치한 instagram 앱 안에서 Post라는 모델을 찾아서 참조를 하게된다. 아니면 .ForeignKey('instagram.Post', on_delete=models.CASCADE) 이렇게 앞에다가 앱 이름을 입력해도 된다. 이건 다른 앱의 모델을 가져오는 경우가 많다.
 
 
@@ -74,7 +75,7 @@ class Comment(models.Model):
 ```
 
 - 위의 코드와 똑같지만 다시 한 번 확인해보자.
-- 여기서 실제로 생성되는 DB 필드는 -> post_id라는 필드가 생성된다.
+- **여기서 실제로 생성되는 DB 필드는 -> post_id라는 필드가 생성된다.**
 
 
 - 이제 실제로 migrations를 해보면,
@@ -90,8 +91,8 @@ COMMIT;
 - 위와 같이 쿼리문을 보면 -> comment라는 모델 테이블이 생기면서 id라는 필드가 Primary Key로 자동으로 생긴다. 
   - 그리고 뒤에는 post_id라는 필드가 생기게 된다.
 
-- **또한, relation에서 post = models.ForeignKey(Post, on_delete=models.CASCADE) -> 여기서의 post라는 이름은 가상의 필드이다. 실제 데이터베이스 필드와는 다르다.**
-- **그리고 post라는 필드에 저장되는 실제 필드값은 Post 모델의 pk값이 저장되기 때문에 1,2,3 이렇게 값이 올라갈 것이다.**
+- **또한, relation에서 post = models.ForeignKey(Post, on_delete=models.CASCADE) -> 여기서의 post라는 이름은 가상의 필드이다. 실제 데이터베이스 필드에는 post_id라는 필드로 생성이 된다.**
+- **그리고 post라는 필드에 저장되는 실제 필드값은 Post 모델의 pk값이 저장되기 때문에 1,2,3 이러한 값이 저장될 것이다.**
   - **Primary Key는 기본적으로 1부터 1씩 증가하는 숫자로 되어 있다. 그리고 ForiegnKey는 어떤 모델에서 다른 모델의 Primary Key를 사용할 때를 의미한다. 따라서 기본적으로는 기본키가 숫자이니까 다른 모델의 외래키도 숫자로 이루어짐을 알 수 있다.**
 
 * * *
