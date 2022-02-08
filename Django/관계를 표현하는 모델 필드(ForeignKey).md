@@ -28,6 +28,7 @@
 
 ### ForeignKey
 - 1:N 관계에서 N측에 명시 -> 관계는 명시하기 나름이다. Category와 Post는 1:N관계로 설정할 수도 있고, 혹은 ManyToMany 관계로 설정할 수도 있다.
+- https://docs.djangoproject.com/en/4.0/ref/models/fields/#django.db.models.ForeignKey 공식문서 참고
 
 - **ForeingKey(to, on_delete)**
   - 외래키를 정할 때 다양한 옵션들이 있지만, 가장 대표적으로 to라는 인자와 on_delete라는 인자는 필수적으로 지정을 해야한다. 지정하지 않으면 migrations가 되지 않는다.
@@ -48,7 +49,15 @@ class Comment(models.Model):
 
 
 ### on_delete 속성
-- 
+- **on_delete는 Record 삭제 시 Rule를 의미한다. 즉, 1:N 관계에서 1쪽에 있는 record가 삭제가 될 때 -> N측에 있는 1에 속한 해당 record들을 어떻게 처리할지에 대한 rule을 지정하는 것이다.**
+  - CASCADE = N측에 있는 ForeignKey로 참조된 다른 모델의 record도 삭제
+    - 어떤 Post에 속한 Comment에서 Post가 하나 삭제되면, Comment들도 전부 다 삭제가 되도록 하는 옵션이라고 볼 수 있다.
+  - PROTECT = ProtectedError(IntegrityError 상속)를 발생시키며, 삭제를 방지한다.
+  - SET_NULL = null로 대체. 필드에 null = True 옵션이 필수이다. 
+    - 1:N 관계에서 1이 삭제 되어도 N은 삭제되지 않고 그 관계를 null로 자동지정 하겠다는 의미이다.
+  - SET_DEFAULT = 디폴트 값으로 대체. 필드에 디폴트값 지정을 필수로 해야 한다.
+  - SET = 대체할 값이나 함수 지정. 함수의 경우 호출하여 리턴값을 사용.
+  - DO_NOTHING = 어떠한 액션 X. DB에 따라 오류가 발생할 수도 있다.
 
 
 
