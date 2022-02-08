@@ -68,6 +68,7 @@ INTERNAL_IPS = ['127.0.0.1']
   - instagram/ url로 입력했을 때를 보면, SQL에서는 우리가 직접 하지는 않았지만 session에서 가져오는 것도 동작을 하고, 현재 로그인된 유저의 정보를 가져오는 것도 동작한다. 그리고 instagram 앱의 Post 모델 목록을 id 역순으로 가져오고 있다.(해당 부분은 우리가 Post 모델의 Meta 클래스에다가 디폴트 정렬을 적용한 부분이 된다.)
 
 - **나중에 개발을 하다가 처음보다 페이지가 느려진다는 기분이 든다면, SQL를 수시로 확인하면서 의도치 않게 SQL이 수백 개씩 실행되는 경우가 있다.** 그럴 때는 **queryset에서 prefetch_related와 select_related**라는 join query가 생기도록 queryset에 지정할 수 있다. **그래서 이 SQL 패널을 수시로 확인해보자.** 
+- https://velog.io/@rosewwross/Django-selectrelated-%EC%99%80-prefetchedrelated%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%B0%B8%EC%A1%B0
 
 * * *
 
