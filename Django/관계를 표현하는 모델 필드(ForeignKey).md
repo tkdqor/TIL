@@ -174,10 +174,10 @@ python manage.py shell
 
 In [2]: from instagram.models import Post, Comment
 
-In [3]: Comment.objects.all()
-Out[3]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
+In [3]: Comment.objects.all()                                                       # 이렇게 입력하면 Comment 모델의 모든 row 데이터를 가져와준다.(1줄씩 여러줄..)
+Out[3]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>    
 
-In [4]: Comment.objects.first()
+In [4]: Comment.objects.first()       # 이렇게 입력하면 Comment 모델의 첫번째 row 데이터를 가져와준다.
 Out[4]: <Comment: Comment object (1)>
 
 In [5]: comment = Comment.objects.first()
@@ -189,6 +189,7 @@ Out[6]: <Post: 네번째 포스팅>
 - 이제 다시 queryset으로 조회해보면, 이렇게 2개의 댓글 데이터가 확인된다. 
   - 그리고 **Comment.objects.first() 이렇게 작성하면 첫번째 Comment 객체를 가져오게 된다. 즉, Comment 모델 테이블의 1개의 행을(1줄을) 조회한 것이라고 보면 된다.**
   - 다시 comment라는 변수에 첫번째 Comment 객체를 저장하고, Comment 모델 안에 있는 post라는 필드가 있기 때문에 **comment.post 이렇게 하면 post의 객체를 가져오게 된다.**
+    - **comment.post -> 이렇게 입력하는 것은, Comment 모델의 1줄의 row 데이터를 comment에 저장하고, 그 1줄에서 post라는 필드에 있는 pk값, 숫자를 가져오는 것이 아니라 -> Post 모델에서 그 pk값에 해당하는 row, 행 데이터 1줄을 가져와주는 것이다.**
 
 * * *
 
