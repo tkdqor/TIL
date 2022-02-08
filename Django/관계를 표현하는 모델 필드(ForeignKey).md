@@ -257,7 +257,7 @@ Out[14]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>
   - **따라서, post에서 .comment_set으로 Comment 모델에 접근하고 -> Post 모델의 첫번째 row 데이터에 해당하는 pk값을 기준으로 Comment 모델에서 그 pk값에 해당하는 모든 Comment row 데이터를 가져오라는 것이 바로 post.comment_set.all()이다.**
 
 ### FK에서의 reverse_name이란
-- reverse 접근 시의 속성명은 : default로는 "모델명소문자_set" 이라는 것이 default로 생긴다.
+- reverse 접근 시의 속성명은 : default로는 **"N측 모델명소문자_set"** 이라는 것이 default로 생긴다.
   - Post와 Comment가 1:N일 때 -> comment_set 이라는 것이 생기게 된다.  
 - 1:N의 관계에서 1쪽에서 사용하는 것이다. 1측에서는 참조할 모델명이 없다. ForeignKey 설정이 N쪽에 되어있기 때문이다.
 - post.comment_set.all() <=> Comment.objects.filter(post=post)
