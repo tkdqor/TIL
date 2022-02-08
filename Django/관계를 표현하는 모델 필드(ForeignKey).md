@@ -9,16 +9,16 @@
   - 1명의 유저(User)가 쓰는 다수의 댓글(Comment) 
   - 1개의 포스팅(Post)에 다수의 댓글(Comment)
   - ex) 1명의 User / 1개의 Post / 1개의 Comment가 있다고 가정했을 때, User와 Post간의 관계는 1:N 관계이고 / User와 Comment간의 관계도 1:N 관계이고 / Post와 Comment간의 관계도 1:N 관계이다.
-    - 이러한 관계를 표현할 때는, 외래키(ForeingKey)라는 필드를 통해서 모델에서 표현할 수 있다. -> N측에다가 외래키를 심으면 된다.
+    - **이러한 관계를 표현할 때는, 외래키(ForeingKey)라는 필드를 통해서 모델에서 표현할 수 있다. -> N측에다가 외래키를 심으면 된다.**
     - User와 Post에서는 Post에다가 외래키를 정하고, Post와 Comment와의 관계는 Comment쪽에 정하고, User와 Comment관계에서는 Comment에다가 정하면 된다.
 
 
 - **1:1 관계 : models.OneToOneField로 표현**
   - 1명의 유저(User)는 1개의 프로필(Profile)을 가지는 경우이다.
   - User와 Profile간의 관계는 1:1 관계이니까 이 관계를 User측에다가 정해도 되고 / Profile측에 이 관계를 명시해도 된다.
-    - 그런데, django에서의 User 모델은 기본적으로 django.contrib.auth 앱에서 User 모델을 지원해준다. 그래서 우리가 정의하는 게 아니고, django가 정의한 User 모델이기 때문에 우리가 이 User 모델을 변경할 수 없다.
+    - 그런데, **django에서의 User 모델은 기본적으로 django.contrib.auth 앱에서 User 모델을 지원해준다.** 그래서 우리가 정의하는 게 아니고, django가 정의한 User 모델이기 때문에 우리가 이 User 모델을 변경할 수 없다.
     - 물론 django에서는 커스텀 User 모델을 따로 만들어서 사용할 수 있는 설정이 있다. 하지만 그건 사용하는 User 모델의 클래스를 변경하는 것일 뿐, 해당 클래스 자체를 변경하는 건 아니다. 필드 자체를 바꾸는 건 아니다.
-    - 그래서 User - Profile 처럼 1:1 관계는 둘 다 설정해도 되지만, Profile 측에다가 User에 대한 관계를 OneToOneField로서 정의한다.
+    - **그래서 User - Profile 처럼 1:1 관계는 둘 다 설정해도 되지만, Profile 측에다가 User에 대한 관계를 OneToOneField로서 정의한다.**
 
 
 - **M:N 관계 : models.ManyToManyField로 표현**
@@ -27,7 +27,7 @@
 
 
 ### ForeignKey
-- 1:N 관계에서 N측에 명시 -> 관계는 명시하기 나름이다. Category와 Post는 1:N관계로 설정할 수도 있고, 혹은 ManyToMany 관계로 설정할 수도 있다.
+- **1:N 관계에서 N측에 명시** -> 관계는 명시하기 나름이다. Category와 Post는 1:N관계로 설정할 수도 있고, 혹은 ManyToMany 관계로 설정할 수도 있다.
 - https://docs.djangoproject.com/en/4.0/ref/models/fields/#django.db.models.ForeignKey 공식문서 참고
 
 - **ForeingKey(to, on_delete)**
@@ -45,6 +45,8 @@ class Comment(models.Model):
 ```
 
 - 이렇게 Comment 모델에서 외래키가 Post 모델과 연관이 됨을 설정하고 on_delete=models.CASCADE라고 입력하고 post라는 필드를 설정해보자. 
+
+- ㅇㅇㅇ 
   - .ForeignKey(Post, on_delete=models.CASCADE) 이렇게 Post라고 입력하면 -> 현재 위치한 instagram 앱 안에서 Post라는 모델을 찾아서 참조를 하게된다. 아니면 .ForeignKey('instagram.Post', on_delete=models.CASCADE) 이렇게 앞에다가 앱 이름을 입력해도 된다. 이건 다른 앱의 모델을 가져오는 경우가 많다.
 
 
