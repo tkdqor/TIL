@@ -221,14 +221,14 @@ In [10]: Comment.objects.filter(post_id=4)
 Out[10]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
 ```
 
-- 이런식으로 filter를 post_id라는 필드로 접근해서 네번째 포스팅에 해당하는 댓글 2개를 조회할 수 있다. 혹은,
+- **이런식으로 filter를 post_id라는 필드로 접근해서 네번째 포스팅에 해당하는 댓글 row 데이터 2줄을 조회할 수 있다.** 혹은,
 
 ```terminal
 In [11]: Comment.objects.filter(post__id=4)
 Out[11]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
 ```
 
-- 위와 같은 queryset은 post가 외래키이니까 post에 속한 id / 즉, 실제 post 측에 있는 id를 의미한다.
+- **위와 같은 queryset은 post가 외래키이니까 post 모델에 속한 id / 즉, 실제 post 모델에 있는 pk값 id를 의미한다.**
 
 - 그렇지만, 추천되는 방법은
 ```terminal 
@@ -253,6 +253,8 @@ Out[14]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>
 
 - 이렇게 총 4가지 queryset은 같은 결과를 낸다. 마지막이 제일 편리하게 사용이 된다.
 
+- **post.comment_set.all() -> Post 모델에서 첫번째 row 데이터를 post라는 변수에 담고, 1:N 관계에서 1에 해당하는 모델이 N에 해당하는 모델에 접근하기 위해서는 _set 함수를 사용하면 된다.**
+  - **따라서, post에서 .comment_set으로 Comment 모델에 접근하고 -> Post 모델의 첫번째 row 데이터에 해당하는 pk값을 기준으로 Comment 모델에서 그 pk값에 해당하는 모든 Comment row 데이터를 가져오라는 것이 바로 post.comment_set.all()이다.**
 
 ### FK에서의 reverse_name이란
 - reverse 접근 시의 속성명은 : default로는 "모델명소문자_set" 이라는 것이 default로 생긴다.
