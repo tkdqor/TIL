@@ -121,7 +121,7 @@ AUTH_USER_MODEL = 'instagram.User'
   - django 디렉터리 밑에 conf 디렉터리 밑에 globalsettings.py에 저장되어 있다. 그래서 다시 models.py를 수정해보면,
 
 ```python
-ㄹ
+from django.conf import settings
 
 class Post(models.Model):      
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -132,5 +132,7 @@ class Post(models.Model):
     updated_at = models.DateTimeField(auto_now=True) 
 ```    
 
-- settings.AUTH_USER_MODEL은 -> 문자열로 'auth.User'와 같다.
-- 그리고 import는 
+- settings.AUTH_USER_MODEL은 -> 문자열로 'auth.User'와 같다. 
+  - 실제로 settings.py에 따로 추가하지 않았지만, default값이 'auth.User'이기 때문에 상관없다.
+- 그리고 import는 from django.conf import settings 이렇게 해주는 것이다. 
+- 이렇게 사용하는 것이 제일 안전하고 django에서 User 모델을 지정하는 확실한 방법이다.
