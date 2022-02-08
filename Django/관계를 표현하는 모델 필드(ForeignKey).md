@@ -272,4 +272,23 @@ Out[14]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>
 * * *
 
 ### ForeignKey.limit_choices_to 옵션
-- 외래키에서는 limit_choices_to라는 옵션이 있다.
+- 외래키에서는 limit_choices_to라는 옵션이 있다. admin페이지에서 보면, Comment 모델에서 댓글 1개를 생성할 때 -> Post 필드에서 글을 choice 할 수 있게 된다. 지금은 전체가 조회되는데, 여기에 어떤 조건을 걸 수 있다는 것이다.
+- Form을 통한 Choice 위젯에서 선택항목 제한 가능.
+  - dict/Q 객체를 통한 지정 : 일괄 지정
+  - dict/Q 객체를 리턴하는 함수 지정 : 매번 다른 조건 지정 가능
+
+- ManyToManyField에서도 지원
+
+```python
+staff_member = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'is_staff': True})
+```
+
+- 이렇게 사전을 지정할 수 있고, q객체를 지정할 수도 있다. 또는 사전이나 q 객체를 리턴하는 함수를 지정할 수도 있다.
+
+```python
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, limit_choices_to={'is_public': True})
+    ...
+```
+
+- 이런식으로 설정하면 Comment add 버튼 누르고 난 다음, Post에서 is_public이 True인 포스팅만 선택할 수 있게된다.
