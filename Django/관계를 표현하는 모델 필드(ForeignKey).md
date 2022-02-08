@@ -136,3 +136,57 @@ class Post(models.Model):
   - 실제로 settings.py에 따로 추가하지 않았지만, default값이 'auth.User'이기 때문에 상관없다.
 - 그리고 import는 from django.conf import settings 이렇게 해주는 것이다. 
 - 이렇게 사용하는 것이 제일 안전하고 django에서 User 모델을 지정하는 확실한 방법이다.
+
+* * *
+
+### FK에서의 reverse_name
+- Post와 Comment의 1:N 관계에서 Comment는 현재 post_id라는 필드가 있다. 이 필드에 접근을 해보자.
+```terminal
+python manage.py shell 
+
+In [1]: from instagram.models import Post, Comment
+
+In [2]: Comment.objects.all()
+Out[2]: <QuerySet []>
+```
+
+- 일단 이렇게 django 연동 shell로 Comment 모델에 빈 데이터를 확인해봤다. 
+
+- 그리고 이제 admin.py에 Comment 모델을 등록시키자.
+```python
+from .models import Post, Comment   
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    pass
+```
+
+- 이렇게해서 admin 페이지에도 확인할 수 있다.
+
+- 그래서, admin 페이지에 Comment 모델을 선택하고 -> Add 버튼을 눌러서 새로운 댓글을 생성해보자.
+  - 그러면 post라는 필드에서 어떤 post의 댓글을 달지 선택할 수 있다. 예시로 네번째 포스팅에 첫번째, 두번째 댓글을 생성하자.
+
+```terminal
+python manage.py shell
+
+In [2]: from instagram.models import Post, Comment
+
+In [3]: Comment.objects.all()
+Out[3]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
+
+In [4]: Comment.objects.first()
+Out[4]: <Comment: Comment object (1)>
+
+In [5]: comment = Comment.objects.first()
+
+In [6]: comment.post
+Out[6]: <Post: 네번째 포스팅>
+```
+
+- 이제 다시 queryset으로 조회해보면, 이렇게 2개의 댓글 데이터가 확인된다. 
+  - 그리고 **Comment.objects.first() 이렇게 작성하면 첫번째 Comment 객체를 가져오게 된다. 즉, Comment 모델 테이블의 1개의 행을(1줄을) 조회한 것이라고 보면 된다.**
+  - 다시 comment라는 변수에 첫번째 Comment 객체를 저장하고, Comment 모델 안에 있는 post라는 필드가 있기 때문에 **comment.post 이렇게 하면 post의 객체를 가져오게 된다.**
+
+- comment.post가 
+
+
