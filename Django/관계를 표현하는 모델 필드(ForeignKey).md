@@ -198,4 +198,32 @@ Out[6]: <Post: 네번째 포스팅>
 ```
 
 - **그래서 우리가 매번 위와 같은 과정을 해야되는데, 이런 걸 하지 않아도 그냥 comment.post를 했을 때 쉽게 post 객체를 가져올 수 있는 것이다.**
+  - 여기서 Comment 모델의 post는 가상의 필드이다.
+
+* * *
+
+- **문제는 거꾸로이다.** 만약에
+```terminal
+In [7]: post = Post.objects.first()
+
+In [8]: post
+Out[8]: <Post: 네번째 포스팅>
+```
+
+- 이렇게 Post 모델의 첫번째 객체를 조회해서(default로 내림차순 되어있음) 네번째 포스팅을 조회했을 때, 우리가 이 네번째 포스팅의 속한 댓글을 어떻게 얻어올 것이냐에 대해서 고민하게 된다. 먼저,
+
+```terminal
+In [10]: Comment.objects.filter(post_id=4)
+Out[10]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
+```
+
+- 이런식으로 filter를 post_id라는 필드로 접근해서 네번째 포스팅에 해당하는 댓글 2개를 조회할 수 있다. 혹은,
+
+```terminal
+In [11]: Comment.objects.filter(post__id=4)
+Out[11]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
+```
+
+- 위와 같은 queryset은 
+
 
