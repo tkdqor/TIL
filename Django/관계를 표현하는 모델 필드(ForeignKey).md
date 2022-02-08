@@ -19,3 +19,8 @@
     - 그런데, django에서의 User 모델은 기본적으로 django.contrib.auth 앱에서 User 모델을 지원해준다. 그래서 우리가 정의하는 게 아니고, django가 정의한 User 모델이기 때문에 우리가 이 User 모델을 변경할 수 없다.
     - 물론 django에서는 커스텀 User 모델을 따로 만들어서 사용할 수 있는 설정이 있다. 하지만 그건 사용하는 User 모델의 클래스를 변경하는 것일 뿐, 해당 클래스 자체를 변경하는 건 아니다. 필드 자체를 바꾸는 건 아니다.
     - 그래서 User - Profile 처럼 1:1 관계는 둘 다 설정해도 되지만, Profile 측에다가 User에 대한 관계를 OneToOneField로서 정의한다.
+
+
+- **M:N 관계 : models.ManyToManyField로 표현**
+  - 1개의 포스팅(Post)에는 다수의 태그(Tag) / 1개의 태그(Tag)에는 다수의 포스팅(Post)이 존재하는 경우를 의미.
+  - Post와 Tag간의 관계는 M:N 관계.
