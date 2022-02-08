@@ -187,6 +187,15 @@ Out[6]: <Post: 네번째 포스팅>
   - 그리고 **Comment.objects.first() 이렇게 작성하면 첫번째 Comment 객체를 가져오게 된다. 즉, Comment 모델 테이블의 1개의 행을(1줄을) 조회한 것이라고 보면 된다.**
   - 다시 comment라는 변수에 첫번째 Comment 객체를 저장하고, Comment 모델 안에 있는 post라는 필드가 있기 때문에 **comment.post 이렇게 하면 post의 객체를 가져오게 된다.**
 
-- comment.post가 
+* * *
 
+- **comment.post가 어떤 원리로 동작이 되는것일까.**
+  - 해당 comment 모델 객체가 아직 post라는 객체를 만들지 않았다라면, post_id라는 값을 가지고(comment.post_id) -> Post.objects.get(pk=comment.post_id) 이렇게 되서 <Post: 네번째 포스팅> 을 가져오게 된다. 이 동작을 내부적으로 수행해서 post에다가 자동으로 할당을 해준다. 
+```
+In [6]: comment.post
+# Post.objects.get(pk=comment.post_id)
+Out[6]: <Post: 네번째 포스팅>
+```
+
+- **그래서 우리가 매번 위와 같은 과정을 해야되는데, 이런 걸 하지 않아도 그냥 comment.post를 했을 때 쉽게 post 객체를 가져올 수 있는 것이다.**
 
