@@ -224,6 +224,51 @@ In [11]: Comment.objects.filter(post__id=4)
 Out[11]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
 ```
 
-- 위와 같은 queryset은 
+- 위와 같은 queryset은 post가 외래키이니까 post에 속한 id / 즉, 실제 post 측에 있는 id를 의미한다.
+
+- 그렇지만, 추천되는 방법은
+```terminal 
+# post = Post.objects.first()
+
+In [12]: Comment.objects.filter(post=post)
+Out[12]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
+```
+
+- 이렇게 가져올 수 있다. 
+
+- 또한, 위의 내용들과 동일하게 결과값을 출력할 수 있는 방법은
+```terminal
+# post = Post.objects.first()
+
+In [13]: post.comment_set
+Out[13]: <django.db.models.fields.related_descriptors.create_reverse_many_to_one_manager.<locals>.RelatedManager at 0x10827c910>
+
+In [14]: post.comment_set.all()
+Out[14]: <QuerySet [<Comment: Comment object (1)>, <Comment: Comment object (2)>]>
+```
+
+- 이렇게 총 4가지 queryset은 같은 결과를 낸다. 마지막이 제일 편리하게 사용이 된다.
 
 
+### FK에서의 reverse_name이란
+- reverse 접근 시의 속성명은 : default로는 "모델명소문자_set" 이라는 것이 default로 생긴다.
+  - Post와 Comment가 1:N일 때 -> comment_set 이라는 것이 생기게 된다.  
+- 1:N의 관계에서 1쪽에서 사용하는 것이다. 1측에서는 참조할 모델명이 없다. ForeignKey 설정이 N쪽에 되어있기 때문이다.
+- post.comment_set.all() <=> Comment.objects.filter(post=post)
+
+
+### reverse_name의 이름 충돌이 발생한다면?
+- reverse name의 디폴트 명은 앱이름은 고려되지 않고, 모델명만 고려된다.
+  - ex) blog앱의 Post모델의 author필드  = FK(User) / shop앱의 Post모델의 author필드  = FK(User) -> 이런 상황일 때, user.post_set 이름에 대한 충돌이 발생한다.
+  - 이름 충돌이 발생하게 되면, makemigrations가 실패된다.
+
+- 그래서, 하나의 모델에 대해 다른 모델에서 외래키 참조를 한다면 -> 외래키를 지정할 때 어느 한쪽의 (혹은 모두) FK의 reverse_name을 변경해야 한다.
+  - ex) FK(User, related_name="blog_post.set")
+  - ex) FK(User, related_name="shop_post.set")
+  - 이렇게 reverse_name이 충돌되지 않도록 하자.
+
+- 또는, 어느 한쪽의 FK에 대해 reverse_name을 포기할 수 있다. -> related_name = '+' 이렇게 하면 reverse_name을 사용하지 않겠다는 의미이다.
+
+* * *
+
+### ForeignKey.limit_choices_to 옵션
