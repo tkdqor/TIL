@@ -91,3 +91,46 @@ COMMIT;
 - **또한, relation에서 post = models.ForeignKey(Post, on_delete=models.CASCADE) -> 여기서의 post라는 이름은 가상의 필드이다. 실제 데이터베이스 필드와는 다르다.**
 - **그리고 post라는 필드에 저장되는 실제 필드값은 Post 모델의 pk값이 저장되기 때문에 1,2,3 이렇게 값이 올라갈 것이다.**
   - **Primary Key는 기본적으로 1부터 1씩 증가하는 숫자로 되어 있다. 그리고 ForiegnKey는 어떤 모델에서 다른 모델의 Primary Key를 사용할 때를 의미한다. 따라서 기본적으로는 기본키가 숫자이니까 다른 모델의 외래키도 숫자로 이루어짐을 알 수 있다.**
+
+* * *
+
+### 올바른 User 모델 지정
+- 만약, 우리가 Post 모델에서 작성자를 지정하려고 한다면
+```python
+# from django.contrib.auth.models import User
+
+class Post(models.Model):      
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    message = models.TextField()    
+    photo = models.ImageField(blank=True, upload_to='instagram/post/%Y/%m/%d')                                    
+    is_public = models.BooleanField(default=False, verbose_name='공개여부')    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+```    
+
+- 이렇게 author라는 필드를 만들고 외래키로 User 모델을 지정할 수 있다.
+  - User 모델을 사용하기 위해서 from django.contrib.auth.models import User 대부분 이렇게 import를 하는데 적용은 되지만, 권장되는 방법은 아니다. 왜냐면 django는 User 모델이 변경될 수도 있기 때문에 확실한 방법이 아니다. 이 User 모델말고도 딴 User 모델이 현재 django 프로젝트에 활성화되어 있을 수 있다.
+
+- 그래서 만약 instagram 앱 내부에 User 모델을 변경해서 새롭게 만들었다면, instagram app 안에 있는 User 모델이 되니까 settings.py에다가 
+```python
+AUTH_USER_MODEL = 'instagram.User'
+```
+
+- AUTH_USER_MODEL이라는 이름의 변수를 만들고 해당 앱 User 모델이 있는 **'App이름.해당모델명'** 이렇게 써주어야 한다. 이 값은 항상 현재 활성화되어 있는 User 모델을 가리킨다.
+  - 그리고 이 값의 dafault 값이 바로 **'auth.User'** 이다.
+  - django 디렉터리 밑에 conf 디렉터리 밑에 globalsettings.py에 저장되어 있다. 그래서 다시 models.py를 수정해보면,
+
+```python
+ㄹ
+
+class Post(models.Model):      
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()    
+    photo = models.ImageField(blank=True, upload_to='instagram/post/%Y/%m/%d') 
+    is_public = models.BooleanField(default=False, verbose_name='공개여부')      
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+```    
+
+- settings.AUTH_USER_MODEL은 -> 문자열로 'auth.User'와 같다.
+- 그리고 import는 
