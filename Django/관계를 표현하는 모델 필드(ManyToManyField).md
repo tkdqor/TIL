@@ -59,5 +59,14 @@ python manage.py migrate instagram
 
 
 
+### DB browser for SQLite 사용하기
+- 우리가 지금은 sqlite라는 데이터베이스를 활용하고 있는데, 이 sqlite를 편하게 관리하기 위해 사용하는 DB Tool이 바로 DB browser for SQLite가 있다.
+- https://sqlitebrowser.org/ 여기에서 다운받아보자.
+  - 설치가 되었으면, 데이터베이스 열기 -> 우리 프로젝트 디렉터리 내부에 있는 db.splite3 파일을 선택해서 열여보자. 그러면 모델 테이블 내역을 볼 수 있다.
 
-- 우리가 지금은 sqlite라는 데이터베이스를 활용하고 있는데,
+- Post와 Tag 모델을 M:N 관계로 설정하고, Post 모델에다가 tag_set이라는 필드이름으로 ManyToManyField 이렇게 설정했었는데 -> DB browser를 확인해보면
+  - instagram_post_tag_set 이라는 이름으로 하나의 중간 테이블이 생성된 것을 확인할 수 있다.
+  - 그 테이블 안에는, id / post_id / tag_id 라는 column으로 구성되어 있다.
+
+- ManyToMany 관계는,
+
