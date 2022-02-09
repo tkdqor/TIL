@@ -95,3 +95,37 @@ class TagAdmin(admin.ModelAdmin):
 <img width="554" alt="image" src="https://user-images.githubusercontent.com/95380638/153171670-a9bb980e-5b52-484c-9246-141de60abd7b.png">
 
 - 그러면 다음과 같이 입력한 이름이 tag로 지정된다. 따라서 1개의 post에 여러 개의 tag가 담겨져 있을 수 있다. 
+
+
+### django shell로 확인해보기
+```terminal
+In [1]: from instagram.models import Post, Tag
+
+In [2]: post = Post.objects.first()
+
+In [3]: post
+Out[3]: <Post: 네번째 포스팅>
+
+In [4]: post.tag_set
+Out[4]: <django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager at 0x10b59b400>
+
+In [5]: post.tag_set.all()
+Out[5]: <QuerySet [<Tag: 파이썬>]>
+
+
+
+In [6]: tag = Tag.objects.first()
+
+In [7]: tag
+Out[7]: <Tag: 파이썬>
+
+In [10]: tag.post_set.all()
+Out[10]: <QuerySet [<Post: 네번째 포스팅>]>
+```
+
+
+- post.tag_set.all() -> 조회한 post 객체에 해당하는 pk값으로 tag_set 테이블에 있는 tag_id를 매칭하고, 그 pk값에 해당하는 Tag 모델의 객체를 가져와주는 것이다.
+- tag.post_set.all() -> 조회한 tag 객체에 해당하는 pk값으로 tag_set 테이블에 있는 post_id를 매칭하고, reverse 이기 때문에 _set 을 붙여주고, 그 pk값에 해당하는 Post 모델의 객체를 가져와준다.
+
+
+9:20부터!
