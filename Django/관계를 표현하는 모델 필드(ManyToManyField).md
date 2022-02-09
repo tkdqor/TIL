@@ -125,7 +125,45 @@ Out[10]: <QuerySet [<Post: 네번째 포스팅>]>
 
 
 - post.tag_set.all() -> 조회한 post 객체에 해당하는 pk값으로 tag_set 테이블에 있는 tag_id를 매칭하고, 그 pk값에 해당하는 Tag 모델의 객체를 가져와주는 것이다.
-- tag.post_set.all() -> 조회한 tag 객체에 해당하는 pk값으로 tag_set 테이블에 있는 post_id를 매칭하고, reverse 이기 때문에 _set 을 붙여주고, 그 pk값에 해당하는 Post 모델의 객체를 가져와준다.
+- tag.post_set.all() -> 조회한 tag 객체에 해당하는 pk값으로 tag_set 테이블에 있는 post_id를 매칭하고, **reverse 이기 때문에 _set 을 붙여주고, 그 pk값에 해당하는 Post 모델의 객체를 가져와준다.**
 
 
-9:20부터!
+- 그리고 이제 Tag 모델에 새로운 객체 하나를 생성해보자.
+```terminal
+In [1]: from instagram.models import Post, Tag
+
+In [2]: Tag.objects.create(name="장고")
+Out[2]: <Tag: 장고>
+
+In [3]: Tag.objects.create(name="AskCompany")
+Out[3]: <Tag: AskCompany>
+
+In [4]: Tag.objects.all()
+Out[4]: <QuerySet [<Tag: 파이썬>, <Tag: 장고>, <Tag: AskCompany>]>
+```
+
+- 이렇게 Tag 모델에 새로운 객체들을 생성해볼 수 있다. 하지만, Tag 모델에만 객체들을 생성한 것이기 때문에 중간 테이블인 Instagram_post_tag_set 모델에는 여전히 객체가 1개밖에 없다.
+```terminal
+In [8]: post.tag_set.all()
+Out[8]: <QuerySet [<Tag: 파이썬>]>
+
+In [9]: tag = Tag.objects.get(name="장고")
+
+In [10]: post.tag_set.add(tag)
+
+In [11]: post.tag_set.all()
+Out[11]: <QuerySet [<Tag: 파이썬>, <Tag: 장고>]>
+
+
+
+In [12]: post.tag_set.remove(tag)
+
+In [13]: post.tag_set.all()
+Out[13]: <QuerySet [<Tag: 파이썬>]>
+```
+
+- In [9,10,11] 을 보면, tag라는 변수에 장고라는 이름의 Tag 모델 객체를 조회하고 / post객체에 중간 테이블인 tag_set에 pk로 접근할 때 이 tag 객체를 추가해달라고 하는 것. / 그래서 post 객체의 pk로 접근하게 되면 2개의 tag가 조회되는 것을 확인할 수 있다.
+- 그리고 post.tag_set.remove(tag) 이렇게 remove를 사용하면 삭제도 된다.
+
+
+
