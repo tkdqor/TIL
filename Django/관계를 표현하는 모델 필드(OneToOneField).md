@@ -3,10 +3,10 @@
 - 공식문서 https://docs.djangoproject.com/en/4.0/ref/models/fields/#onetoonefield
   - 예외적으로 User : Profile 이렇게 2개의 모델이 있을 때, User 모델은 django의 auth앱의 User 모델을 우리가 변경할 수 없기 때문에 Profile에 설정해야 함.
 
-- ForeignKey(unique=True)와 유사하지만, reverse 차이
+- **ForeignKey(unique=True)와 유사하지만, reverse 차이**
   - 외래키는 1:N인데 ForeignKey에 unique=True를 지정하면 OneToOneField와 유사하게 동작하지만, reverse name에서 차이가 나게 된다.
-    - User:Profile를 FK로 지정한다면 -> profile.user_set.first().       -> Profile에서 User 객체 접근할 때 ??? / first()로 조회하는 이유는 unique=True라서 하나밖에 없기 때문.
-    - User:Profile를 O2O로 지정한다면 -> profile.user / 이렇게 모델명이 그대로 사용된다. 만약, Profile에 User가 지정되어 있지 않다면 DoesnotExist라는 예외가 발생하게 된다.
+    - **User:Profile를 1:N 관계로 지정한다면, profile.user 코드와 user.profile_set.all() 코드를 쓸 수 있게 된다.** / first()로 조회하는 이유는 unique=True라서 하나밖에 없기 때문.
+    - **User:Profile를 1:1 관계(O2O관계)로 지정한다면, profile.user 코드와 user.profile 코드를 쓸 수 있게 된다.** / 이렇게 모델명이 그대로 사용된다. 만약, user.profile 시에 user와 관계에 있는 Profile이 없는 경우, Profile.DoesNotExist 예외가 발생한다.
 
 
 - **OneToOneField(to, on_delete)**
@@ -92,7 +92,7 @@ class Profile(models.Model):
     zipcode = models.CharField(max_length=6)
 ```    
 
-- settings.AUTH_USER_MODEL는 -> default가 'auth.user'로 설정되어 있기 때문에 이렇게 입력.
+- **settings.AUTH_USER_MODEL는 -> default가 'auth.user'로 설정되어 있기 때문에 이렇게 입력.**
 - User:Profile를 1:1 관계로 설정.
 - zipcode는 우편번호를 의미. 문자도 포함될 수 있어서 CharField를 선택.
 
@@ -101,7 +101,7 @@ python manage.py makemigrations accounts
 python manage.py migrate accounts
 ```
 
-- migrations / migrate까지 완료하면, 이제 accounts_Profile이라는 이름의 모델(테이블)이 데이터베이스에 생성된 것이다.
+- migrations / migrate까지 완료하면, 이제 **accounts_Profile이라는 이름의 모델(테이블)이 데이터베이스에 생성**된 것이다.
 
 
 ### accounts App admin.py 설정
@@ -148,7 +148,7 @@ In [10]: profile.user
 Out[10]: <User: askcompany>
 ```
 
-- 이렇게 Profile 모델에서 User 모델로 접근이 가능하고 / 반대로 user.profile 이렇게 User 모델에서 Profile 모델로 접근이 가능하다.
+- **이렇게 Profile 모델에서 User 모델로 접근이 가능하고 / 반대로 user.profile 이렇게 User 모델에서 Profile 모델로 접근이 가능하다.**
 
 
 ### django 연동 shell로 확인해보기
@@ -169,7 +169,7 @@ In [5]: profile.user
 Out[5]: <User: sangbaek>
 ```
 
-- 먼저 위의 과정을 거쳐 User:Profile 1:1 관계에서 Profile 모델에서 User 모델로 접근이 가능함을 확인할 수 있다.
+- **먼저 위의 과정을 거쳐 User:Profile 1:1 관계에서 Profile 모델에서 User 모델로 접근이 가능함을 확인할 수 있다.**
 
 
 ```terminal
@@ -191,9 +191,9 @@ In [12]: user.profile
 Out[12]: <Profile: Profile object (1)>
 ```
 
-- from django.contrib.auth import get_user_model 이렇게 import를 하게 되면, 현재 활성화된 User 모델을 얻을 수 있는 함수를 import 한 것이다. 꼭 이렇게 사용하길 추천된다.
-- user.profile를 하게 되면 -> 1개의 user 객체에 해당하는 pk값을 기준으로, Profile 모델에서 그 pk값에 해당하는 profile 객체를 가져와 주는 것이다. 
-- 이렇게 reverse이지만 모델이름으로 접근이 가능하다.
+- **from django.contrib.auth import get_user_model** 이렇게 import를 하게 되면, 현재 활성화된 User 모델을 얻을 수 있는 함수를 import 한 것이다. 꼭 이렇게 사용하길 추천된다.
+- **user.profile를 하게 되면 -> 1개의 user 객체에 해당하는 pk값을 기준으로, Profile 모델에서 그 pk값에 해당하는 profile 객체를 가져와 주는 것이다.**
+- **이렇게 reverse이지만 모델이름으로 접근이 가능하다.**
 
 ```terminal
 In [14]: profile.delete()
@@ -205,10 +205,10 @@ RelatedObjectDoesNotExist                 Traceback (most recent call last)
 
 ```
 
-- profile.delete() 이렇게 입력하면 실제로 DB의 데이터가 지워진다. admin 페이지에서도 지워진 걸 확인할 수 있다.
+- **profile.delete()** 이렇게 입력하면 실제로 DB의 데이터가 지워진다. admin 페이지에서도 지워진 걸 확인할 수 있다.
   - 지운 상태에서 user로 접근해보면 관련된 객체가 없다는 오류가 뜨게 된다.
 
-- user.profile 이라는 코드는 = Profile.objects.get(user=user) 와 같다.
+- **user.profile 이라는 코드는 = Profile.objects.get(user=user)** 와 같다.
 
 
 ### Profile 모델
