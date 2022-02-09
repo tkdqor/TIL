@@ -128,7 +128,7 @@ Out[10]: <QuerySet [<Post: 네번째 포스팅>]>
 - tag.post_set.all() -> 조회한 tag 객체에 해당하는 pk값으로 tag_set 테이블에 있는 post_id를 매칭하고, **reverse 이기 때문에 _set 을 붙여주고, 그 pk값에 해당하는 Post 모델의 객체를 가져와준다.**
 
 
-- 그리고 이제 Tag 모델에 새로운 객체 하나를 생성해보자.
+- **그리고 이제 Tag 모델에 새로운 객체 하나를 생성해보자.**
 ```terminal
 In [1]: from instagram.models import Post, Tag
 
@@ -142,7 +142,7 @@ In [4]: Tag.objects.all()
 Out[4]: <QuerySet [<Tag: 파이썬>, <Tag: 장고>, <Tag: AskCompany>]>
 ```
 
-- 이렇게 Tag 모델에 새로운 객체들을 생성해볼 수 있다. 하지만, Tag 모델에만 객체들을 생성한 것이기 때문에 중간 테이블인 Instagram_post_tag_set 모델에는 여전히 객체가 1개밖에 없다.
+- **이렇게 Tag 모델에 새로운 객체들을 생성해볼 수 있다. 하지만, Tag 모델에만 객체들을 생성한 것이기 때문에 중간 테이블인 Instagram_post_tag_set 모델에는 여전히 객체가 1개밖에 없다.**
 ```terminal
 In [8]: post.tag_set.all()
 Out[8]: <QuerySet [<Tag: 파이썬>]>
@@ -162,8 +162,40 @@ In [13]: post.tag_set.all()
 Out[13]: <QuerySet [<Tag: 파이썬>]>
 ```
 
-- In [9,10,11] 을 보면, tag라는 변수에 장고라는 이름의 Tag 모델 객체를 조회하고 / post객체에 중간 테이블인 tag_set에 pk로 접근할 때 이 tag 객체를 추가해달라고 하는 것. / 그래서 post 객체의 pk로 접근하게 되면 2개의 tag가 조회되는 것을 확인할 수 있다.
+- In [9,10,11] 을 보면, tag라는 변수에 장고라는 이름의 Tag 모델 객체를 조회하고 / post객체에 중간 테이블인 tag_set에 pk로 접근할 때 이 tag 객체를 추가해달라고 하는 것. / 그래서 post 객체의 pk로 접근하게 되면 2개의 tag가 조회되는 것을 확인할 수 있다. 
+  - **이렇게 해서 중간 테이블에 데이터를 생성해볼 수 있다.**
 - 그리고 post.tag_set.remove(tag) 이렇게 remove를 사용하면 삭제도 된다.
 
+```terminal
+In [14]: tag_qs = Tag.objects.all()
+
+In [15]: post.tag_set.add(*tag_qs)
+
+In [16]: post.tag_set.all()
+Out[16]: <QuerySet [<Tag: 파이썬>, <Tag: 장고>, <Tag: AskCompany>]>
+```
+
+- **위와같이 진행하면 -> Tag 모델에 있는 모든 객체들을 전부 post 객체에 추가할 수 있다.**
+- **post.tag_set.add(*tag_qs) -> 이 부분은 python의 unpack 문법이라고 할 수 있다.**
+  - 하나의 인자에 들어가 있는 것을 여러 개의 인자인 것 처럼 풀어준다는 의미이다.
+
+```python
+def myfn(a, b, c):
+    print(f"a = {a}, b = {b}, c = {c}")
+    
+myfn(1, 2, 3)
+a = 1, b = 2, c = 3
+
+params = [1, 2, 3]
+
+# myfn(params)
+myfn(*params)
+a = 1, b = 2, c = 3
+```
+
+- myfn(1, 2, 3) 이렇게 인자를 넣어서 함수를 호출해도 되는데, 만약 넣으려고 하는 인자가 리스트나 튜플인 경우가 있을 것이다.
+- 그렇다고 해서 params = [1, 2, 3] / myfn(params) -> 이렇게 호출하면 동작을 하지 않는다. 왜냐하면 params 자체가 인자 하나이니까, myfn은 인자를 3개 받아야 하니까 오류가 발생한다.
+  - 그런데 여기에다가 *를 붙여서 myfn(*params) -> 이렇게 호출하면 a = 1, b = 2, c = 3 이런식으로 인자 1개를 풀어서 넣어주게 된다.
 
 
+### RDBMS이지만,
