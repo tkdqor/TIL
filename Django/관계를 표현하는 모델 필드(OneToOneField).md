@@ -123,3 +123,95 @@ class ProfileAdmin(admin.ModelAdmin):
 
 - **그리고 다시 Profile 모델에서 add를 누르고, user를 똑같이 설정한 다음 save를 누르게 되면 -> 이미 존재하는 user라고 생성되지 않는다.**
   - **즉, User와 Profile이 1:1 관계(OneToOneField)로 설정되어있기 때문에 동일한 user에 새로운 profile이 생성될 수는 없다.**
+  - 만약, 1:N관계(ForeignKey)라면 생성이 되었을 것이다.
+
+- 이렇게, relation을 타이트하게 지정해주면 우리가 원하는 애플리케이션 구조에 맞게 유효성 검사를 django가 잘 수행을 해줄 수 있다.
+
+* * *
+
+### O2O에서의 related_name
+- reverse 접근 시의 속성명 : default로 모델명소문자
+
+```python
+# accounts/models.py
+class Profile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    address = models.CharField(max_length=100)
+    zipcode = models.CharField(max_length=6)
+```
+
+- 위와 같이 Profile이라는 모델이 정의되었고 User 모델과 O2O 관계일 때,
+```terminal
+In [7]: profile = Profile.objects.first()
+
+In [10]: profile.user
+Out[10]: <User: askcompany>
+```
+
+- 이렇게 Profile 모델에서 User 모델로 접근이 가능하고 / 반대로 user.profile 이렇게 User 모델에서 Profile 모델로 접근이 가능하다.
+
+
+### django 연동 shell로 확인해보기
+```terminal
+python manage.py shell
+
+In [1]: from accounts.models import Profile
+
+In [2]: Profile.objects.all()
+Out[2]: <QuerySet [<Profile: Profile object (1)>]>
+
+In [3]: profile = Profile.objects.first()
+
+In [4]: profile
+Out[4]: <Profile: Profile object (1)>
+
+In [5]: profile.user
+Out[5]: <User: sangbaek>
+```
+
+- 먼저 위의 과정을 거쳐 User:Profile 1:1 관계에서 Profile 모델에서 User 모델로 접근이 가능함을 확인할 수 있다.
+
+
+```terminal
+# from django.contrib.auth.models import User  -> 이렇게 import 할 수 있지만 권장하지 않음
+
+In [7]: from django.contrib.auth import get_user_model
+
+In [8]: User = get_user_model()
+
+In [9]: User.objects.all()
+Out[9]: <QuerySet [<User: sangbaek>]>
+
+In [10]: User.objects.first()
+Out[10]: <User: sangbaek>
+
+In [11]: user = User.objects.first()
+
+In [12]: user.profile
+Out[12]: <Profile: Profile object (1)>
+```
+
+- from django.contrib.auth import get_user_model 이렇게 import를 하게 되면, 현재 활성화된 User 모델을 얻을 수 있는 함수를 import 한 것이다. 꼭 이렇게 사용하길 추천된다.
+- user.profile를 하게 되면 -> 1개의 user 객체에 해당하는 pk값을 기준으로, Profile 모델에서 그 pk값에 해당하는 profile 객체를 가져와 주는 것이다. 
+- 이렇게 reverse이지만 모델이름으로 접근이 가능하다.
+
+```terminal
+In [14]: profile.delete()
+Out[14]: (1, {'accounts.Profile': 1})
+
+In [15]: user.profile
+---------------------------------------------------------------------------
+RelatedObjectDoesNotExist                 Traceback (most recent call last)
+
+```
+
+- profile.delete() 이렇게 입력하면 실제로 DB의 데이터가 지워진다. admin 페이지에서도 지워진 걸 확인할 수 있다.
+  - 지운 상태에서 user로 접근해보면 관련된 객체가 없다는 오류가 뜨게 된다.
+
+- user.profile 이라는 코드는 = Profile.objects.get(user=user) 와 같다.
+
+
+### Profile 모델
+- User가 만들어지면 django에 시그널이라는 것이 있다. 일종의 이벤트 핸들러의 개념이다. 
+- 그래서 User 모델에서 Post.save()가 이루어지고 나서 호출되는 함수들을 지정할 수 있는데, 거기에서 Profile이 자동생성 되도록 그렇게 로직으로 User와 Profile이 항상 존재함을 구현할 수 있다.
+
