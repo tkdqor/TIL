@@ -44,7 +44,7 @@ urlpatterns = [
 
 
 ### HTTP Request
-- 우리가 웹페이지에 localhost:8000 주소로 enter를 입력할 때마다 HTTP Request가 발생하게 되고 그 때 마다 server에는(terminal에는) -> request가 발생한 시각과 어떤 method로 HTTP request가 발생했는지, 그리고 어떤 request URL을 요청했는지를 출력해준다. 200은 성공적으로 request가 처리되었다는 의미이다.
+- 우리가 웹페이지에 localhost:8000 주소로 enter를 입력할 때마다 HTTP Request가 발생하게 되고 **그 때 마다 server에는(terminal에는) -> request가 발생한 시각과 어떤 method로 HTTP request가 발생했는지, 그리고 어떤 request URL을 요청했는지를 출력해준다. 200은 성공적으로 request가 처리되었다는 의미이다.**
 - 즉, 우리 서비스의 사용자가 우리의 서비스를 이용할 때마다 HTTP Request가 발생하는 것이고, HTTP Request가 발생할 때마다 server에서 기본적으로 기록을 남겨주는데, 이러한 기록을 **server 로그**라고 부른다.
   - 이러한 로그는 우리가 따로 개발하지 않아도 django가 기본적으로 자동으로 남겨주는 로그인데, 원한다면 우리가 해당 request를 전달받았을 때 필요에 따라 로그를 직접 남길 수도 있다.
 
