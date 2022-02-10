@@ -97,4 +97,16 @@ shop/migrations/0002_update_field.py
 - 이렇게 되는 경우가 있다. 이 경우는 저장소가 하나가 있는데, 팀원 A가 clone하고 팀원 B가 clone한 것이다. 그래서 A 따로 migration를 하고 B 따로 migration를 해버린 것이다. 그리고나서 둘다 push를 한 것이다. 그러면 위와같이 0002가 2개 생성될 수도 있다.
 
 - 위와 같이 파일들이 있을 때, python manage.py migrate <앱이름> <마이그레이션-이름> 지정 시, 0001_initial 여기까지가 실제 파일의 풀네임이라고 보면 된다.
-  - 그런데 
+  - 그런데 풀네임에서 일부 이름만 지정해도 인지를 할 수 있다. 앞에서 유니크한 이름만 지정해주면 된다.
+
+```python
+python manage.py migrate blog 0001  # OK
+python manage.py migrate blog 000.  # FAIL
+python manage.py migrate blog 0002. # FAIL
+python manage.py migrate blog 0002_c # OK
+python manage.py migrate blog 0002_create # OK
+python manage.py migrate blog 0002_update # OK
+python manage.py migrate blog zero  # shop 앱의 모든 마이그레이션을 rollback
+```
+
+- python manage.py migrate blog zero -> 내가 현재 0005번 migrate가 완료된 상황에서 0001번도 취소하고 싶다면 최초의 상황인 zero로 설정해주면 된다. 그래서 이렇게 설정하면 마이그레이션 내역을 다 날리게 된다. 아예 테이블이 지워지게 된다.
