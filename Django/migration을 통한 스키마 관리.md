@@ -101,8 +101,8 @@ shop/migrations/0002_update_field.py
 
 ```python
 python manage.py migrate blog 0001  # OK
-python manage.py migrate blog 000.  # FAIL
-python manage.py migrate blog 0002. # FAIL
+python manage.py migrate blog 000   # FAIL
+python manage.py migrate blog 0002  # FAIL
 python manage.py migrate blog 0002_c # OK
 python manage.py migrate blog 0002_create # OK
 python manage.py migrate blog 0002_update # OK
@@ -110,3 +110,17 @@ python manage.py migrate blog zero  # shop 앱의 모든 마이그레이션을 r
 ```
 
 - python manage.py migrate blog zero -> 내가 현재 0005번 migrate가 완료된 상황에서 0001번도 취소하고 싶다면 최초의 상황인 zero로 설정해주면 된다. 그래서 이렇게 설정하면 마이그레이션 내역을 다 날리게 된다. 아예 테이블이 지워지게 된다.
+
+
+### 마이그레이션 순서는 파일명으로 정렬순?
+- 개발자가 보기좋으라고 migrations 디렉터리 내부에 파일명으로 정렬이 되어있으나, 정확한 의존관계는 마이그레이션 파일 내부에 dependencies 에 따라서 정의가 된다.
+
+
+### id필드가 왜 생길까
+- 모든 DB테이블에는 각 Row의 식별기준인 "기본키(Primary Key)"가 필요
+  - django에서는 기본키로서 id(AutoField) 필드를 디플트로 생성한다.
+  - 다른 필드를 기본키로 저장하고 싶다면, primary_key=True 옵션을 적용하면 된다.
+
+- django ORM은 id라는 필드를 Primary Key로 사용한다. 그리고 이걸 하나의 레코드에 대한 address 개념으로 활용한다.
+
+
