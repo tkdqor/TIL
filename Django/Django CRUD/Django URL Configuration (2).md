@@ -102,7 +102,7 @@ urlpatterns = [
 - urls.py 설정
 
 
-```
+```python
 def index(request):
     return HttpResponse('Hello world!')
     
