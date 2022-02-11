@@ -18,7 +18,7 @@ python manage.py shell
 <QuerySet [<Post: 첫번째 메세지>, <Post: 두번째 메세지>, <Post: 세번째 메세지>]>
 ```
 
-- Post.objects.all() 등 이러한 queryset의 실제 쿼리를 보고 싶다면, 
+- **Post.objects.all() 등 이러한 queryset의 실제 쿼리를 보고 싶다면,** 
 
 ```terminal
 >>> qs = Post.objects.all()
@@ -56,7 +56,7 @@ SELECT "instagram_post"."id", "instagram_post"."message", "instagram_post"."phot
 <QuerySet [<Post: 세번째 메세지>, <Post: 두번째 메세지>, <Post: 첫번째 메세지>]>
 ```
 
-- 이렇게 id를 기준, 오름차순으로 데이터를 정렬해서 조회할 수 있게 된다. 그리고 .order_by('-id') 이렇게 해주면 내림차순이 된다.
+- 이렇게 id를 기준, 오름차순으로 데이터를 정렬해서 조회할 수 있게 된다. 그리고 **.order_by('-id') 이렇게 해주면 내림차순이 된다.**
 
 - 꼭 queryset를 사용할 때는 이렇게 정렬을 지정해주는 것이 좋다. order_by가 지정되지 않으면 데이터베이스 상황에 따라서 정렬되지 않은 항목들이 나올 수 있기 때문이다. 그래서 기본적으로 정렬을 지정해주자.
   - 또한, Post.objects.all().order_by('-id', 'message')와 같이 정렬 기준을 콤마로 여러 개 줘서 정렬할 수도 있다. 다만, 기준을 많이 설정하기 보다는 1~2개 정도로만 설정하는 게 권장된다.
@@ -150,7 +150,7 @@ id: 2, message: 두번째 메세지 2022-02-03 11:19:55.685392+00:00
 ```
 
 - 첫번째처럼 qs를 정해주면, 정확하게 message필드가 해당 문자열인 값을 조회하는 것이다. 그리고 두번째 qs는, message필드의 데이터 중 '첫번째' 라는 문자열이 포함된 값을 조회하게 된다. 세번째 qs는 '첫번째'라는 문자열로 시작하는 데이터를 조회한다. 이렇게 여러가지 기능들이 있다.
-  - 이렇게 filter나 exclude에서는, django에서 조건을 줄 때 -> .filter(필드명__관련된operation='..') 이러한 구조로 쓴다. 이 operation은 각 필드 별 타입에 따라서 지원되는 operation이 달라진다.
+  - **이렇게 filter나 exclude에서는, django에서 조건을 줄 때 -> .filter(필드명__관련된operation='..') 이러한 구조로 쓴다. 이 operation은 각 필드 별 타입에 따라서 지원되는 operation이 달라진다.**
   - 이러한 내용과 관련해서 모델 필드에 대한 django 공식 문서를 꼭 찾아보자.
 
 ```terminal
