@@ -17,7 +17,7 @@ def index(request):
 
 - 이렇게 views.py와 html 파일 설정을 할 수 있다.
 
-- 우리가 django template language를 기반으로 template를 작성하면, django template engine이라는 것이 이 template 내부의 코드를 계산해서 최종적으로는 순수한 HTML 코드로 변환시켜준다.
+- 우리가 django template language를 기반으로 template를 작성하면, **django template engine**이라는 것이 이 template 내부의 코드를 계산해서 최종적으로는 순수한 HTML 코드로 변환시켜준다.
   - django template engine이 {{ post }} 라는 코드를 읽으면 context 내부에서 post라는 데이터를 찾아서 value값을 활용하여 HTML 코드로 변환시키는 것이다.
 
 - 이렇게 django template를 만들어 두고, 사용자의 데이터만 전달해주는 것으로 서로 다른 웹 페이지를 보여줄 수 있다.
@@ -74,7 +74,7 @@ def index(request):
 
 
 ### 예시 2
-- django template language에서 {% if post %} 와 같이 %를 활용하는 경우는, 실제로 HTML 화면에 출력하고자 하는 목적이 아니라 특수한 기능을 위해 사용하는 경우라고 볼 수 있다. ex). {% 해당기능 %}
+- django template language에서 **{% if post %}** 와 같이 %를 활용하는 경우는, 실제로 HTML 화면에 출력하고자 하는 목적이 아니라 특수한 기능을 위해 사용하는 경우라고 볼 수 있다. ex). {% 해당기능 %}
 
 ```python
 def index(request):
@@ -106,22 +106,6 @@ def index(request):
 
 - 물론 이렇게 li element를 개수만큼 다 적을 수도 있지만, 나중에는 점점 더 많아질 것이다. for문을 사용해서 다시 입력해보면, 
 
-```python
-<body>
-    <h1>Posts</h1>
-    <ul>
-        {% for post in posts %}
-        {% if post %}
-            <li>Author: {{ post.author }} | body: {{ post.body }}</li>
-        {% else %}
-            <p>게시글이 없습니다!</p>
-        {% endif %}
-        {% endfor %}
-    </ul>
-</body>
-```
-
-- li element를 한 줄만 작성하고, for문을 사용해서 반복적으로 li element를 생성할 수 있다. 그리고 if 문을 사용해서 post가 없을 경우에도 출력할 수 있게끔 설정할 수 있다.
 
 ```python
 <body>
@@ -139,4 +123,4 @@ def index(request):
 </body>
 ```
 
-- 위와 같이, 전체 if문을 설정하고 만약 posts라는 변수가 있으면 -> for문을 이용해서 li element를 만들어주고 / 없으면 다른 글을 보여줄 수 있도록 설정했다.
+- 위와 같이, 전체 if문을 설정하고 만약 posts라는 변수가 있으면 -> for문을 이용해서 li element를 만들어주고 / 없으면 다른 글을 보여줄 수 있도록 설정할 수 있다.
