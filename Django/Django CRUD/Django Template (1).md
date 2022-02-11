@@ -15,7 +15,7 @@ def index(request):
     return render(request, 'posts/index.html')
 ```    
     
-- render 함수를 사용하면 django template를 사용할 수 있게 된다. 첫번째 인자로 HTTP Request 정보인 request를 넣어주고, 두번째 인자는 우리가 사용하고자 하는 template의 경로를 적어주자. 즉, 우리가 지정한 경로에 있는 template를 사용해서 HTTP Response로 만들어주는 역할을 해준다.
+- **render 함수를 사용하면 django template를 사용할 수 있게 된다.** 첫번째 인자로 HTTP Request 정보인 request를 넣어주고, 두번째 인자는 우리가 사용하고자 하는 template의 경로를 적어주자. **즉, 우리가 지정한 경로에 있는 template를 사용해서 HTTP Response로 만들어주는 역할을 해준다.**
   - 추가로, settings.py에 INSTALLED_APPS에 posts 앱을 추가해주자.
 
 - 이러한 설정을 하고 localhost:8000/posts을 입력하면 index.html이 실행되는 것을 확인할 수 있다.
