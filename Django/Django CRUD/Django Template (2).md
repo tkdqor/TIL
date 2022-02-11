@@ -19,3 +19,58 @@ def index(request):
 
 - 우리가 django template language를 기반으로 template를 작성하면, django template engine이라는 것이 이 template 내부의 코드를 계산해서 최종적으로는 순수한 HTML 코드로 변환시켜준다.
   - django template engine이 {{ post }} 라는 코드를 읽으면 context 내부에서 post라는 데이터를 찾아서 value값을 활용하여 HTML 코드로 변환시키는 것이다.
+
+- 이렇게 django template를 만들어 두고, 사용자의 데이터만 전달해주는 것으로 서로 다른 웹 페이지를 보여줄 수 있다.
+  - context 딕셔너리 내부에 또다른 딕셔너리, 리스트, 클래스의 인스턴스 등 다양한 데이터를 전달할 수 있다. 해당 데이터를 template에 전달하고 / template에서는 모두 다 점(.)으로 접근하게 된다.
+
+
+### 예시
+```python
+class Member:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+
+
+def index(request):
+
+    context = {
+        'post': {
+            'author': 'sangbaek',
+            'body': '#django Project...'
+        },    
+        'numbers': [10, 20, 30],
+        'member': Member('sangbaek', 29),
+    }
+    return render(request, 'posts/index.html', context)
+```    
+
+- 위와 같이 views.py에서 Member라는 클래스를 정의하고, index 함수에서는 딕셔너리와 리스트, 클래스 인스턴스를 담고있는 context 딕셔너리를 설정할 수 있다. 그 다음은 html 파일에서 해당 데이터에 접근해보자.
+
+```html
+<body>
+    <h1>Post</h1>
+    <ul>
+        <li>Author: {{ post.author }}</li>
+        <li>Body: {{ post.body }}</li>
+    </ul>
+
+    <h2>Numbers</h2>
+    <ul>
+        <li>{{ numbers.0 }}</li>
+        <li>{{ numbers.1 }}</li>
+        <li>{{ numbers.2 }}</li>
+    </ul>
+
+    <h2>Member</h2>
+    <ul>
+        <li>{{ member.name }}</li>
+        <li>{{ member.age }}</li>
+    </ul>
+</body>
+```
+
+- context가 보내준 데이터의 key 값을 변수로 활용하게 되고, 그 변수에 해당하는 value값을 활용하기 위해 점(.)을 사용하고 있음을 확인할 수 있다. 이렇게 설정한 다음 html 파일을 보면 데이터가 채워져 있다.
+
+
+
