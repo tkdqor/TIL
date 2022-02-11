@@ -1,6 +1,6 @@
 ## views.py에서 QuerySet를 사용하여 로직 구성 
-- views.py에 설정하는 함수는 첫번째 파라미터로 request를 설정 - 이 request라는 객체에 요청과 관련된 모든 내역들이 담긴채로 전달된다.
-  - request의 GET / POST 인자가 있으며, request.GET() / request.POST() 이렇게 사용한다. ex) q = request.GET.get('q', '') -> GET 인자에서 q라는 이름의 인자를 가져오는데, 만약 없다면 default로 빈 문자열을 반환하라는 것이다.
+- **views.py에 설정하는 함수는 첫번째 파라미터로 request를 설정 - 이 request라는 객체에 요청과 관련된 모든 내역들이 담긴채로 전달된다.**
+  - request의 GET / POST 인자가 있으며, **request.GET() / request.POST()** 이렇게 사용한다. ex) q = request.GET.get('q', '') -> GET 인자에서 q라는 이름의 인자를 가져오는데, 만약 없다면 default로 빈 문자열을 반환하라는 것이다.
 - 템플릿 시스템을 활용하는 함수가 바로 render() 함수이다.
 
 
