@@ -73,4 +73,70 @@ def index(request):
 - context가 보내준 데이터의 key 값을 변수로 활용하게 되고, 그 변수에 해당하는 value값을 활용하기 위해 점(.)을 사용하고 있음을 확인할 수 있다. 이렇게 설정한 다음 html 파일을 보면 데이터가 채워져 있다.
 
 
+### 예시 2
+- django template language에서 {% if post %} 와 같이 %를 활용하는 경우는, 실제로 HTML 화면에 출력하고자 하는 목적이 아니라 특수한 기능을 위해 사용하는 경우라고 볼 수 있다. ex). {% 해당기능 %}
 
+```python
+def index(request):
+
+    context = {
+        'posts': [
+            {'author': 'sangbaek', 'body': 'django project 1'},
+            {'author': 'sangbaek', 'body': 'django project 2'},
+            {'author': 'sangbaek', 'body': 'django project 3'},
+            {'author': 'sangbaek', 'body': 'django project 4'},
+        ]
+    }
+    return render(request, 'posts/index.html', context)
+```
+
+- 이와 같이 context 딕셔너리안에, posts라는 key에 대응해서 -> 딕셔너리가 여러 개 있는 리스트를 value값으로 설정할 수 있다. 이러한 context를 html에 넘겨주면, posts라는 변수를 활용해서 데이터를 표시할 수 있다.
+
+```html
+<body>
+    <h1>Posts</h1>
+    <ul>
+        <li>Author: {{ posts.0.author }} | body: {{ posts.0.body }}</li>
+        <li>Author: {{ posts.1.author }} | body: {{ posts.1.body }}</li>
+        <li>Author: {{ posts.2.author }} | body: {{ posts.2.body }}</li>
+        <li>Author: {{ posts.3.author }} | body: {{ posts.3.body }}</li>
+    </ul>
+</body>
+```
+
+- 물론 이렇게 li element를 개수만큼 다 적을 수도 있지만, 나중에는 점점 더 많아질 것이다. for문을 사용해서 다시 입력해보면, 
+
+```python
+<body>
+    <h1>Posts</h1>
+    <ul>
+        {% for post in posts %}
+        {% if post %}
+            <li>Author: {{ post.author }} | body: {{ post.body }}</li>
+        {% else %}
+            <p>게시글이 없습니다!</p>
+        {% endif %}
+        {% endfor %}
+    </ul>
+</body>
+```
+
+- li element를 한 줄만 작성하고, for문을 사용해서 반복적으로 li element를 생성할 수 있다. 그리고 if 문을 사용해서 post가 없을 경우에도 출력할 수 있게끔 설정할 수 있다.
+
+```python
+<body>
+    <h1>Posts</h1>
+    
+    {% if posts %}
+        <ul>
+            {% for post in posts %}
+                <li>Author: {{ post.author }} | body: {{ post.body }}</li>
+            {% endfor %}
+        </ul>        
+    {% else %}
+            <p>게시글이 없습니다!</p>
+    {% endif %}
+</body>
+```
+
+- 위와 같이, 전체 if문을 설정하고 만약 posts라는 변수가 있으면 -> for문을 이용해서 li element를 만들어주고 / 없으면 다른 글을 보여줄 수 있도록 설정했다.
