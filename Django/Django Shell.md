@@ -74,7 +74,9 @@ KeyError: 'DJANGO_SETTINGS_MODULE'
 'askcompany.settings'
 ```
 
-- os. environ은 -> 현재 프로세스에서의 환경변수 목록을 의미한다. 그 환경변수 목록에서 django의 환경변수에 key로 접근하면, 없다고 KeyError가 나온다. 장고 환경이 로딩된 shell이 아니기 때문이다.
+- **os.environ**은 -> **현재 프로세스에서의 환경변수 목록을 의미한다.** 그 환경변수 목록에서 django의 환경변수에 key로 접근하면, 없다고 KeyError가 나온다. 장고 환경이 로딩된 shell이 아니기 때문이다.
+  - **환경변수 목록를 보고 싶다면 django shell에서 os.enviorn를 입력하면 딕셔너리 형태의 목록을 확인할 수 있다. 여기에 'PATH'라는 key에는 python이 설치된 위치가 나와있다.**
+
 - 그래서 os.environ['DJANGO_SETTINGS_MODULE'] = 'askcompany.settings' 이렇게 '프로젝트이름.settings' value를 주고나서 다시 접근을 해보면 value가 나오게 된다.
   - 이러한 과정이 외부에 있는 환경변수를 바꾼 건 아니고, 현재 프로세스 상에서의 환경변수만 수정한 것이다.
   
