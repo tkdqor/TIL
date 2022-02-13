@@ -15,9 +15,30 @@
 ```html
 {% load static %}
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heestagram</title>
+</head>
 
-
-
+<img src=".." href="{% static 'posts/images/djf.jpg %}"
+     
+```
 
 - 이렇게 html 파일위에다가 {% load static %} 를 적어줘서 static tag를 사용해야 한다. static이라는 tag를 활성화시키는 것이다.
 - django template에서 static과 같이 특별한 기능을 가지고 있는 키워드를 우리는 tag라고 부른다.(html에서의 개념과는 다름)
+  - static tag를 활성화했다면 -> 사용하고자 하는 static 파일의 경로를 지정할 때는 static 한 칸 띄우고 문자열로 static 파일의 경로를 지정해준다.
+
+- 이렇게 경로를 지정하는 것은, 실제 서비스를 배포했을 경우에는 바탕화면의 파일이라는 경로를 사용할 수 없기 때문이다. 또한, 배포 과정에서는 app단위가 아닌 하나의 디렉터리 안에 모든 static 파일들을 관리하기 때문에 static 파일의 절대경로가 바뀔 수 있다. 그래서 특정 경로로 설정하지 않는 것이다.
+  - 그래서, django template engine이 static tag를 확인했을 때 django의 환경설정에 기반해서 해당 static 파일의 위치를 계산하게끔 코드를 작성해야 한다.
+
+- static 디렉터리 내부에 이미지도 관리할 수 있지만, 모든 이미지를 django의 static이라는 개념으로 처리해서는 안된다.
+  - 백그라운드 이미지나 배너 이미지처럼 사용자가 누구든지 간에, 어떠한 상황이든 항상 변하지 않는 이미지들을 static으로 분류해서 관리하는 것이다.
+  - 그래서 static 디렉터리 내부 -> app 이름 디렉터리 내부 -> images라는 디렉터리를 생성해서 이미지 파일들을 따로 관리하자.
+
+- django template에서 style.css을 연동시켜서 사용하기 위해서는 head element에다가 link element를 사용해줘야 한다. 이 때 link element에 css파일 경로를 작성해줘야 하는데, <link rel="stylesheet" href="{% static 'posts/style.css' %}"> 이렇게 작성해주면 -> static tag를 사용해서 posts/style.css 라는 경로에 있는 걸 사용하겠다는 것이고, django template engine이 해당 코드를 읽게 되면, 해당 django 프로젝트 내부에 등록되어있는 모든 app에 대해서, 각 app 하위에 있는 static 디렉터리를 다 검색하게 된다.
+  - 우리가 posts 디렉터리 내부에 있는 css 파일을 사용하겠다고 작성했기 때문에 무조건 posts 앱 내부에 있는 파일을 사용하게 된다. 
