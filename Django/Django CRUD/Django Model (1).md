@@ -46,3 +46,58 @@ class Post(models.Model):
   - CharField는 길이가 제한되어있는 짧은 텍스트 데이터를 저장할 때 사용. max_length를 이용해 길이를 제한할 수 있다.
   - TextField는 대용량의 텍스트 데이터들을 저장하고 싶을 떄 사용하는 필드이다.
   - DateTimeField는 날짜와 시간을 저장하고 싶을 때 사용. DateField는 날짜만 저장하고 싶을 때 사용.
+    - DateTimeField의 auto_now_add=True 를 설정하면, DB에 처음 데이터가 생성될 때 딱 한번 자동으로 현재시간이 설정된다.
+
+- **클래스 내부에 던더str 메소드는, 해당 메소드를 설정하지 않으면 model의 아이디 정보만 출력되고 내용물을 확인할 수 없다.** 해당 인스턴스가 어떤 어트리뷰트를 포함하고 있는지 간단하게 확인할 수 있게 설정하는 것이다. **그래서 Post 클래스의 인스턴스가 출력될 때 -> author와 body 정보가 출력될 수 있도록 위의 코드에서 설정했다.** 
+
+
+- models.py 내용을 설정한 이후에는 terminal에
+```python
+python manage.py makemigrations posts(app이름)
+
+```
+
+- 이렇게 입력하면 해당 model 파일을 기반으로 migration 파일을 새롭게 생성해준다. 
+  - migration 파일은 우리가 작성한 model 파일, model 클래스를 데이터베이스에 실제로 반영하기 위해서 어떠한 일들을 해야하는지 시간 순서대로 기록해놓은 파일이다. 아직은 실제 데이터베이스에 반영되지는 않았다.
+  - 해당 파일을 보면, 우리가 작성한 model 클래스가 실제로 데이터베이스에 반영되기 위해서 어떠한 절차를 수행해야 하는지 그 내용을 operations라는 리스트로 나열되어있다.
+
+- python manage.py sqlmigrate posts 0001 라는 코드를 입력하면 -> posts app 내부에 있는 0001, 첫번째 migration 파일이 어떠한 SQL 코드로 변환될지를 분석해달라는 의미이다.
+
+```terminal
+(env) kimsangbaek@gimsangbaeg-ui-MacBookAir heestagram % python manage.py sqlmigrate posts 0001
+BEGIN;
+--
+-- Create model Post
+--
+CREATE TABLE "posts_post" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "author" varchar(100) NOT NULL, "body" text NOT NULL, "created_at" datetime NOT NULL);
+COMMIT;
+``` 
+
+- 그래서 위와같이 실제로 수행될 3줄의 sql 코드를 우리가 확인할 수 있다. 
+- **migration 파일들은 모델의 변경 히스토리를 파악할 수 있게 해준다.** 추후에 우리가 Post 라는 모델에 다른 column를 추가한 다음, migration을 진행하면 -> django가 분석해서 실제 데이터베이스에 있는 테이블의 형상과 우리가 수정한 Post model 클래스의 형상을 비교해서, 실제 데이터가 저장되어 있는 데이터베이스에서는 3개의 필드밖에 없는데 새롭게 작성된 model 클래스에는 또 다른 필드가 생겼다는 것을 확인한다. 
+  - **그래서, 데이터베이스에 새로운 필드를 추가하려면 어떠한 sql 코드가 필요한지를 먼저 찾아내고 그 sql 코드에 대해서 설명하는 것을 python 코드로 하나의 히스토리로 남기는 것이 migration 파일이다.**
+
+
++ django 프로젝트를 처음 시작하고 server를 구현 할 때마다 You have 18 unapplied migration(s)... 라는 메세지가 뜨게 되는데, django가 내부적으로 사용하고 있는 다양한 app들이 있고 거기에도 다양한 migration 파일들이 있다. 아직 실제로 반영이 되지 않았다고 하니까 반영을 해줘야 한다는 경고이다.
+
+```terminal
+python manage.py migrate 
+
+```
+
+- migration 파일을 근거로 해서 migration 파일 내부에 작성되어있는 operations, 수행해야 할 절차들을 실제로 수행하는 것이 migrate이다. 그래서 django 내부에 있는 app들의 migration 파일과 우리가 만든 posts app의 migration 파일도 실제 데이터베이스에 반영이 되었다. 
+  - 그래서 최종적으로, 우리가 작성한 model 클래스와 실제 연결되어 있는 데이터베이스 내부의 구조가 완벽하게 일치된다.
+
+```terminal
+python manage.py showmigrations posts
+
+posts
+ [X] 0001_initial
+
+```
+
+- 마지막으로 위와 같이 터미널에 입력하면, posts App의 migration 파일이 실제로 적용되었는지 X 표시로 확인해볼 수 있다.
+
+- 이렇게 model 클래스가 수정될 때 마다 위와같은 과정을 반복하게 된다.
+  - 프로젝트 처음 시점부터 현재까지 어떤 데이터 및 모델이 추가되었는지 변경된 히스토리가 다 migration 파일로 남아있게 된다.
+  - 우리가 기존에 사용하는 데이터베이스를 버리고 새로운 데이터베이스를 연동한다고 하더라도, 이 히스토리가 남겨져 있기 때문에 과거부터 현재까지의 migration 파일을 순서대로 실행한다면 -> 데이터베이스가 비어있더라도 기존에 사용하던 데이터베이스와 완전히 동일한 형태로 재구축을 할 수 있다.
