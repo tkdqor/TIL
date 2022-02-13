@@ -42,3 +42,39 @@
 
 - django template에서 style.css을 연동시켜서 사용하기 위해서는 head element에다가 link element를 사용해줘야 한다. 이 때 link element에 css파일 경로를 작성해줘야 하는데, <link rel="stylesheet" href="{% static 'posts/style.css' %}"> 이렇게 작성해주면 -> static tag를 사용해서 posts/style.css 라는 경로에 있는 걸 사용하겠다는 것이고, django template engine이 해당 코드를 읽게 되면, 해당 django 프로젝트 내부에 등록되어있는 모든 app에 대해서, 각 app 하위에 있는 static 디렉터리를 다 검색하게 된다.
   - 우리가 posts 디렉터리 내부에 있는 css 파일을 사용하겠다고 작성했기 때문에 무조건 posts 앱 내부에 있는 파일을 사용하게 된다. 
+
+
+### django template이 아닌 경우
+- django template이 아닌 경우에는, 예를 들어 CSS 파일내부에서 다른 static 파일을 참조하는 경우에는 static 파일을 사용할 수가 없다. static tag를 사용하지 않고도 이미지의 경로를 지정해줄 수 있는 방법이 있다. 상대 경로 방식으로 이미지를 지정하면 된다. 
+- style.css 파일 기준으로 images 디렉터리는 같은 경로에 위치해있기 때문에 -> style.css에서 images/...jpg 이렇게 사용할 수 있다.
+- background와 관련된 css property : https://developer.mozilla.org/en-US/docs/Web/CSS/background#constituent_properties
+
+
+### 서비스 배포 시 static 디렉터리
+- 실제 서비스를 배포하는 환경에서는, app 단위로 static 파일을 관리하는 것이 아니라, 프로젝트 디렉터리 내부에 static 디렉터리 -> app 이름 디렉터리 이런식으로 하나의 디렉터리 안에 관리하게 된다.
+
+
+### background CSS property
+- background를 사용하려면 일단 div element를 만들어주고, background-image 라는 property를 적용해줄 수 있다.
+```html
+...
+ <div class="profile_bg"></div>
+
+```
+
+```css
+.profile_bg {
+    width: 400px;
+    height: 400px;
+    background-image: url('images/barella2.jpeg');
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+```
+
+- 이렇게만 설정하면 block element의 영역이 잡혀있게 되고 만약 이 영역보다 작은 이미지가 사용되면 자동으로 반복해서 출력하게 된다.
+  - background-repeat: no-repeat; 이렇게 설정하면 반복하지 않게 된다.
+
+- background-position이라는 property를 사용해서 해당 백그라운드 이미지의 위치를 결정할 수 있다. 앞에 들어가는 값은 왼쪽, 가운데, 오른쪽 인지를 결정하고 / 두번쨰 값은 상단, 가운데, 하단을 결정한다. 즉, 일반적으로는 3x3 9칸에 대해서 설정한다.
+
+- background-size라는 property는 contain이나 conver를 설정할 수 있다. cover를 하게 되면 정해진 영역을 모두 다 덮게끔 설정한다. 덮기 위해서 확대가 된다. contain를 하게 되면 이미지의 원본을 유지한 상태에서 다 포함이 되게끔 출력된다. 
