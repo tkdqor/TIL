@@ -33,5 +33,39 @@ python manage.py shell
   묶음으로 전달이 된 것이다.**
   
   
-  ### python django shell로 게시물 생성
+### python django shell로 게시물 생성
+- 작성일자를 채워주기 위해서
+```terminal
+>>> from django.utils import timezone
+
+>>> new_post = Post()
+
+>>> new_post
+<Post: : : None>
+```
+
+- 먼저 new_post라는 변수에다가 Post 클래스를 생성자로 활용해서 Post() 이렇게 내용물이 없는 객체를 만들어보자. 그 상태에서 new_post를 입력하면 비어있는 Post 클래스 인스턴스만 출력하게 된다.
+  - cf) 지금 repl 환경이기 때문에 print(new_post) 가 아니라, new_post라고만 해도 출력이 되는 것이다.
   
+- 이제, new_post라는 Post 모델 객체에다가 필드에 데이터를 채워보자.  
+```terminal
+>>> new_post.author = 'sangbaek'
+>>> new_post.body = 'My new Post'
+>>> new_post.created_at = timezone.now()
+
+>>> new_post
+<Post: sangbaek: My new Post: 2022-02-14 13:52:48.483342+00:00>
+```
+
+- 위의 코드처럼 new_post라는 객체의 필드에 값을 설정해주었지만, 지금까지는 우리가 이런 게시물을 만들고 싶다는 인스턴스만 만든 것이지, 이 인스턴스가 실제로 데이터베이스에 저장이 되는 건 아니다. 아직 데이터베이스에 반영이 되지 않았다.
+  - model 클래스의 인스턴스를 활용해서 추가하고자 하는 새로운 데이터를 만들고 이 데이터를 최종적으로는
+
+```terminal
+>>> new_post.save()
+
+>>> new_post.id
+5
+```
+
+- 이렇게 save 함수를 실행해줘야만, 새로운 데이터를 생성하기 위한 SQL 쿼리가 내부적으로 실행되면서 데이터베이스에 우리가 원하는 데이터가 추가된다.
+- 그 이후에 new_post.id를 조회해보면 새롭게 추가된 것을 확인할 수 있다.
