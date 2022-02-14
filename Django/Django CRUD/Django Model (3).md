@@ -69,3 +69,19 @@ python manage.py shell
 
 - 이렇게 save 함수를 실행해줘야만, 새로운 데이터를 생성하기 위한 SQL 쿼리가 내부적으로 실행되면서 데이터베이스에 우리가 원하는 데이터가 추가된다.
 - 그 이후에 new_post.id를 조회해보면 새롭게 추가된 것을 확인할 수 있다.
+
+
+### python django shell로 게시물 생성 (2)
+- 위의 코드처럼 필드값을 하나하나 정하지 말고 한 줄로 만들어 보기.
+
+```terminal
+>>> new_post2 = Post(author='sangbaek', body='My second Post')
+>>> new_post2.save()
+```
+
+- 이런식으로 한 줄에 우리가 원하는 게시물 데이터를 생성할 수 있다. 실제 데이터베이스 반영을 위해 new_post2.save() 까지 입력하자.
+  - **DateTimeField에 auto_now_add=True라고 설정했기 때문에, created_at를 따로 설정하지 않아도 된다.**
+    - **다만, settings.py에서 USE_TZ = True로 되어있을 경우에는 -> DB에서 created_at이 UTC 기준이 된다. True면 템플릿이나 폼에서만 TIME_ZONE에 설정한 시간으로 보여준다.**
+    - **만약, USE_TZ = False로 바꾸고 새롭게 데이터를 생성하면 -> DB에서 created_at이 TIME_ZONE = 'Asia/Seoul'로 기준이 변경된다. False여야 장고의 모든 시간대가 TIME_ZONE에 설정한 시간으로 저장된다.**
+    - 관련 블로그 : https://velog.io/@sawol/Django-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0-1, https://grape-blog.tistory.com/18, https://computer-science-student.tistory.com/230
+      
