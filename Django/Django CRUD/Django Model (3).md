@@ -84,4 +84,36 @@ python manage.py shell
     - **다만, settings.py에서 USE_TZ = True로 되어있을 경우에는 -> DB에서 created_at이 UTC 기준이 된다. True면 템플릿이나 폼에서만 TIME_ZONE에 설정한 시간으로 보여준다.**
     - **만약, USE_TZ = False로 바꾸고 새롭게 데이터를 생성하면 -> DB에서 created_at이 TIME_ZONE = 'Asia/Seoul'로 기준이 변경된다. False여야 장고의 모든 시간대가 TIME_ZONE에 설정한 시간으로 저장된다.**
     - 관련 블로그 : https://velog.io/@sawol/Django-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0-1, https://grape-blog.tistory.com/18, https://computer-science-student.tistory.com/230
-      
+
+
+### python django shell로 데이터 조회
+```terminal
+>>> Post.objects.get(id=1)
+<Post: 보라돌이: 보라보라: 2022-02-14 08:54:10.887019>
+```
+
+- **objects.get()를 활용해서 특정 id를 가지고 있는 데이터를 조회할 수 있다. 데이터 1건을 가져올 때는 이 objects.get()를 활용하면 된다.**
+  - 데이터의 단 건이기 때문에 데이터의 묶음인 QuerySet이 아닌 Post 모델의 객체 정보가 출력된다.
+  - 만약, 데이터가 없다면 에러가 발생한다.
+
+
+- **데이터 단 건 조회가 아닌, 해당 조건을 만족하는 모든 데이터를 조회하려면 -> objects.filter() 함수를 사용하자.** 
+  - 해당 조건을 만족하는 모든 데이터들을 뽑아낼 수가 있다.
+
+```terminal
+>>> Post.objects.filter(author='sangbaek')
+<QuerySet [<Post: sangbaek: My new Post: 2022-02-14 14:00:52.534588>, <Post: sangbaek: My second Post: 2022-02-14 23:43:58.840950>]>
+
+>>> Post.objects.filter(author="sa")
+<QuerySet []>
+```
+
+- 이렇게 작성자에 대한 조건을 주면, 해당 조건을 만족하는 데이터를 QuerySet의 형태로 전달받을 수 있다.
+- 이 filter 함수는 해당 조건을 만족하는 데이터가 아예 없거나, 혹은 오직 하나만 있는 경우에도 -> 에러가 아니라, 무조건 결과는 QuerySet으로 전달해준다. 하나만 있더라도 하나만 있는 QuerySet를 반환한다.
+
+
+### python django shell로 데이터 수정
+- 만약, 5번 게시물을 수정하고자 한다면
+
+```terminal
+>>> ㅖㅐㄴㅅ
