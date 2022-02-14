@@ -1,11 +1,11 @@
 ## URL Dispatcher
-- Django에는 URL Dispatcher라는 시스템이 있다. 
+- **Django에는 URL Dispatcher라는 시스템이 있다.** 
   - 웹 브라우저가 client이고 웹페이지에서 어떠한 요청이 오면, 예를 들어 주소를 입력하고 enter를 할 때나 검색어를 입력하고 검색할 때나 댓글을 달 때 등등 언제나 서버로 요청이 갈 때에는 기본적으로 주소 base에서 
     서버로 전달이 된다.
-  - 해당 주소의 앞부분이 실제 server의 위치, host 주소, 도메인을 의미하고 / 뒷부분인 request URL로 -> server에서 어떠한 로직에서 처리할 것인지 server가 결정하게 된다. 이에 대한 것이 URL Dispatcher 시스템이다.
+  - **해당 주소의 앞부분이 실제 server의 위치, host 주소, 도메인을 의미하고 / 뒷부분인 request URL로 -> server에서 어떠한 로직에서 처리할 것인지 server가 결정하게 된다. 이에 대한 것이 URL Dispatcher 시스템이다.**
 
 - 특정 URL pattern이 왔을 때, 어떠한 View에서 처리하겠다라는 일련의 매핑 리스트가 존재하게 된다. 이 리스트가 urlpatterns라는 이름의 리스트가 된다.
-  - 그 urlpatterns의 최상위 urlpatterns는 프로젝트 디렉터리 -> settings.py에서 ROOT_URLCONF = 'askcompany.urls' 이렇게 ROOT_URLCONF 라는 설정으로 최상위 urlpatterns를 지정하게 된다.
+  - **그 urlpatterns의 최상위 urlpatterns는 프로젝트 디렉터리 -> settings.py에서 ROOT_URLCONF = 'askcompany.urls' 이렇게 ROOT_URLCONF 라는 설정으로 최상위 urlpatterns를 지정하게 된다.**
     - 이 최상위 urlpatterns로부터 include를 통해 TREE 구조로 확장할 수 있다.
 
 ```python
@@ -26,7 +26,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ```
 
-- 위의 코드들은 프로젝트 디렉터리 내부의 urls.py 내용이다. 위의 설명에서 ROOT_URLCONF = 'askcompany.urls' 이렇게 설정한 것 처럼 -> URL 요청이 들어왔을 때, 가장 먼저 askcompany라는 프로젝트 내부의 urls.py가 최상위로 확인하게 된다.
+- **위의 코드들은 프로젝트 디렉터리 내부의 urls.py 내용이다. 위의 설명에서 ROOT_URLCONF = 'askcompany.urls' 이렇게 설정한 것 처럼 -> URL 요청이 들어왔을 때, 가장 먼저 askcompany라는 프로젝트 내부의 urls.py가 최상위로 확인하게 된다.**
   - 또한, 여기서 path 함수를 통해 리스트를 채워나가게 된다. 
   - 그리고 TREE 구조로 확장하기 위해서 include 함수를 사용하여 -> 하위에 있는 urlpatterns를 포함시킬 수 있는 것이다.
 
@@ -78,8 +78,8 @@ urlpatterns	=	[
 
 ```
 
-- path 함수를 통해서 우리가 원하는 형태를 구성할 수 있는데, re_path 함수는 정규표현식 모듈의 이름이 붙여져 있다. re는 regular expression으로 말그대로 정규표현식을 뜻한다. 그래서 re_path 함수는 
-  정규표현식 패턴을 쓸 수 있는 path 함수이다. 그냥 path 함수는 정규표현식이 내부적으로 적용이 되어 있다. 
+- path 함수를 통해서 우리가 원하는 형태를 구성할 수 있는데, **re_path 함수는 정규표현식 모듈의 이름이 붙여져 있다. re는 regular expression으로 말그대로 정규표현식을 뜻한다. 그래서 re_path 함수는 
+  정규표현식 패턴을 쓸 수 있는 path 함수이다.** 그냥 path 함수는 정규표현식이 내부적으로 적용이 되어 있다. 
   - path('<int:id>/',.... -> 여기에서 int는 정수가 1회 이상 반복되는 정수를 의미. 따라서 1이라고 입력해도 매칭되고, 12345라고 해도 매칭이 된다. 정규표현식에서는 \d+ 이렇게 사용된다.
 
 
@@ -95,7 +95,7 @@ path('articles/<int:year>/', views.year_archive),
 re_path(r'^articles/(?P<year>[0-9]{4})/$', views.year_archive),
 ```
 
-- re_path() 의 경우는, 먼저 소괄호안에 ?P를 써주고 [0-9]{4} 이렇게 패턴을 써준다.(ex. 정수가 연속으로 4회 반복됨 / 꼭 4자리를 입력해야 된다는 것.) 요청된 URL이 이 패턴에 부합될 경우, 정해준 year라는 변수에 패턴에 부합되는 부분을 문자열로 뽑아서 넣어주고, View 함수가 호출될 때 인자로 넘겨준다.
+- **re_path() 의 경우는, 먼저 소괄호안에 ?P를 써주고 [0-9]{4} 이렇게 패턴을 써준다.(ex. 정수가 연속으로 4회 반복됨 / 꼭 4자리를 입력해야 된다는 것.) 요청된 URL이 이 패턴에 부합될 경우, 정해준 year라는 변수에 패턴에 부합되는 부분을 문자열로 뽑아서 넣어주고, View 함수가 호출될 때 인자로 넘겨준다.**
 
 
 ### 기본제공되는 Path Converters
@@ -110,11 +110,12 @@ re_path(r'^articles/(?P<year>[0-9]{4})/$', views.year_archive),
 - PathConverter (StringConverter 상속) -> r".+"
   - 점(.)이 모든 문자열을 의미. 그래서 모든 문자열이 1회이상 반복된다는 의미.
 
+* * *
 
 ## 정규표현식
 - 거의 모든 프로그래밍 언어에서 지원. 문자열의 패턴, 규칙, Rule을 정의하는 방법이다. 이 정규표현식을 통해서 우리가 원하는 패턴의 문자열을 쉽고 빠르게 찾을 수 있고 변환할 수 있다.
 - 문자열 검색이나 치환작업을 간편하게 처리
-- 장고 URL Dispatcher에서는 정규표현식을 통한 URL 매칭 문법이 존재한다.
+- **장고 URL Dispatcher에서는 정규표현식을 통한 URL 매칭 문법이 존재한다.**
   - 1글자에 대한 패턴 + 연속된 출연 횟수 지정 
   - 대괄호 내에 1글자에 대한 후보 글자들을 나열
   - ex) [ABC]{2} 이렇게하면, 올 수 있는 글자들이 ABC 이렇게 되고 연속으로 2번 반복한다는 것이다. 이렇게 1글자에 대한 패턴을 정의할 수 있다. 이 패턴을 계속 이어서 나열하는 것이다.
@@ -147,6 +148,7 @@ re_path(r'^articles/(?P<year>[0-9]{4})/$', views.year_archive),
 
 - 정규표현식은 띄워쓰기 하나에도 민감하니까 가독성 이유로 띄워쓰기 하지 말기.
 
+* * *
 
 ### 커스텀 Path Converter
 ```python
@@ -170,7 +172,8 @@ def archives_year(request, year):
 ```
 
 - 이렇게 순서대로 urls.py와 views.py를 설정해주면 매칭이 된다. 만약에 정규표현식을 사용해서 re_path를 사용하면 re_path(r'archives/(?P<year>\d+)/'), 과 같다.
-  - 앞에 r이라고 쓴 것은, Raw의 약자로 \(역슬래쉬)를 자동 escape 처리해준다. 원래 r를 빼고 쓴다면 re_path(r'archives/(?P<year>\\d+)/'), 이렇게 입력해야 한다. r은 python 기본 문법이다.
+  - **앞에 r이라고 쓴 것은, Raw의 약자로 \(역슬래쉬)를 자동 escape 처리해준다. 원래 r를 빼고 쓴다면**
+    - **re_path(r'archives/(?P<year>\\\d+)/'), 이렇게 입력해야 한다. r은 python 기본 문법이다.**
   
 - 만약, 모든 정수(지금은 1244353 이렇게도 가능한데)가 아닌 4회만 반복되었을 경우, 즉 4자리에만 요청을 받고 싶을 때는,
   
@@ -230,8 +233,13 @@ urlpatterns = [
   
 ## App 이름 설정하기
 ```python
+app_name = 'instagram' 
   
-  
+urlpatterns = [
+    path('', views.post_list, name="post_list"),
+]      
 ```  
   
-  
+- 각각의 urlpattern 마다 name을 지정할 수 있다. 위에 코드처럼 path함수에 name을 지정하면, 이 post_list가 다른 App에도 있을 수가 있다. 그래서 해당 이름이 어떠한 App에 있는 이름인지 명시해줄 수 있다.
+  - 앱 내부에 있는 urls.py에서 app_name = '앱이름' 이렇게 지정한다. url Reverse에서 namespace 역할을 하게 된다.
+ 
