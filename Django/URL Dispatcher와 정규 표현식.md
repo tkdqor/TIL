@@ -149,3 +149,31 @@ re_path(r'^articles/(?P<year>[0-9]{4})/$', views.year_archive),
 
 
 ### 커스텀 Path Converter
+```python
+from django.urls import path, re_path
+from . import views
+
+
+urlpatterns = [
+    path('', views.post_list),
+    path('<int:pk>/', views.post_detail),
+    path('archives/<int:year>/', views.archives_year),
+    
+    re_path(r'archives/(?P<year>\d+)/', views.archives_year),
+]
+
+```
+
+```
+def archives_year(request, year):
+    return HttpResponse(f"{year}년 archives")
+```
+
+- 이렇게 순서대로 urls.py와 views.py를 설정해주면 매칭이 된다. 만약에 정규표현식을 사용해서 re_path를 사용하면 re_path(r'archives/(?P<year>\d+)/'), 과 같다.
+  - 앞에 r이라고 쓴 것은, Raw의 약자로 \(역슬래쉬)를 자동 escape 처리해준다. 원래 r를 빼고 쓴다면 re_path(r'archives/(?P<year>\\d+)/'), 이렇게 입력해야 한다. r은 python 기본 문법이다.
+  
+- 만약, 모든 정수(지금은 1244353 이렇게도 가능한데)가 아닌 4회만 반복되었을 경우, 즉 4자리에만 요청을 받고 싶을 때는,
+  
+```python
+  
+```
