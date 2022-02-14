@@ -98,4 +98,9 @@ re_path(r'^articles/(?P<year>[0-9]{4})/$', views.year_archive),
 - re_path() 의 경우는, 먼저 소괄호안에 ?P를 써주고 [0-9]{4} 이렇게 패턴을 써준다.(ex. 정수가 연속으로 4회 반복됨 / 꼭 4자리를 입력해야 된다는 것.) 요청된 URL이 이 패턴에 부합될 경우, 정해준 year라는 변수에 패턴에 부합되는 부분을 문자열로 뽑아서 넣어주고, View 함수가 호출될 때 인자로 넘겨준다.
 
 
-### 기본제공되는 
+### 기본제공되는 Path Converters
+- IntConverter -> r"[0-9]+"  
+- StringConverter -> r"[^/]+"
+- UUIDConverter -> r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+- SlugConverter (StringConverter 상속) -> r"[-a-zA-Z0-9_]+"
+- PathConverter (StringConverter 상속) -> r".+"
