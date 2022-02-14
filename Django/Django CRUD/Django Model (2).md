@@ -25,10 +25,11 @@ admin.site.register(Post)
 
 - 우리가 등록할 Post 모델을 먼저 import 해야 한다. 그리고 admin 모듈을 이용해 Post 모델을 등록하자. 이제 admin 페이지를 새로고침 하면 Post 모델 내용이 추가된다.
   - 여기서 Add를 누르면, Post 모델의 새로운 데이터를 생성 및 수정, 삭제가 가능하다.
-    - Post 모델을 models.py에서 설정할 때, DateTimeField의 auto_now_add=True 속성을 추가했었는데 -> 이 경우에는 admin 페이지에서 Add를 누르면 Created_at에 대한 항목이 아예 없다. 자동으로 현재 시간이 들어가게 된다.
+    - **Post 모델을 models.py에서 설정할 때, DateTimeField의 auto_now_add=True 속성을 추가했었는데 -> 이 경우에는 admin 페이지에서 Add를 누르면 Created_at에 대한 항목이 아예 없다. 자동으로 현재 시간이 들어가게 된다.**
 
 
 - admin 페이지에서 4개의 게시물을 추가하고 목록을 보면, Post의 내용물을 출력할 때 우리가 models.py에서 던더str 메소드로 설정했던 형식으로 출력된다. 
+  - 기본적으로는 모델의 객체 id가 출력된다.
 
 
 ### django의 default Timezone
