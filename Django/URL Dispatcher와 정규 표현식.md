@@ -175,5 +175,63 @@ def archives_year(request, year):
 - 만약, 모든 정수(지금은 1244353 이렇게도 가능한데)가 아닌 4회만 반복되었을 경우, 즉 4자리에만 요청을 받고 싶을 때는,
   
 ```python
+urlpatterns = [
+    path('', views.post_list),
+    path('<int:pk>/', views.post_detail),
+    
+    # path('archives/<int:year>/', views.archives_year),
+    re_path(r'archives/(?P<year>\d{4})/', views.archives_year),
   
+    re_path(r'archives/(?P<year>20\d{2})/', views.archives_year),
+]
+    
 ```
+  
+- 이렇게 urls.py에서 {4}를 붙여주면 4번 반복이 된다. 그러면 3자리나 그 이상은 매칭이 되지 않고 꼭 4자리로 입력해야 매칭이 된다.  
+  - 혹은 4자리에서 앞에 자리는 20으로 시작하게 하고 싶다면,  re_path(r'archives/(?P<year>20\d{2})/', views.archives_year), 이런식으로 작성한다.    (나는 왜 안되는지...)
+  
+- 아니면, 아예 커스텀해서 Converter를 만들수도 있다.
+
+```python
+from django.urls import path, re_path, register_converter
+from . import views  
+  
+# 커스텀 Converter
+class YearConverter:
+    regex = r"20\d{2}"      # 정규표현식 패턴을 작성
+
+    def to_python(self, value):
+        return int(value)
+
+    def to_url(self, value):
+        return "%04d" % value  # 또는 return str(value)
+  
+  
+# YearConverter를 Year이라는 이름으로 사용하겠다는 의미  
+register_converter(YearConverter, 'year')  
+  
+
+urlpatterns = [
+    path('', views.post_list),
+    path('<int:pk>/', views.post_detail),
+    path('archives/<year:year>/', views.archives_year),
+]
+```
+
+- urls.py에서 Converter 관련 클래스를 정의해주자. to_python 함수는 -> url 매칭이 되었을 때, View 함수를 호출하기 전에 인자를 한 번 정리해주는 것이다. 원래 정규표현식을 거치면 인자가 문자열이 되는데, 그걸 지금은 정수로 변환해서 넘겨주게 된다.
+  - to_url 함수는 -> url reverse 할 때 어떤 값을 url 문자열로 리버싱할 때 호출되는 함수이다.
+  
+- 실제로 클래스로 정의된 Converter를 사용하기 위해서는, urls.py 위에 from django.urls import path, re_path, register_converter 이렇게 import를 해줘야 한다.
+  - 그리고 register_converter(YearConverter, 'year') 이렇게 YearConverter를 year이라는 이름으로 사용하겠다고 설정하기.
+  - 그 다음에 path('archives/<year:year>/', views.archives_year), 이런식으로 Converter의 이름을 적어주면 된다.
+  
+
+* * *
+  
+## App 이름 설정하기
+```python
+  
+  
+```  
+  
+  
