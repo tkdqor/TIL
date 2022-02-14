@@ -116,4 +116,83 @@ python manage.py shell
 - 만약, 5번 게시물을 수정하고자 한다면
 
 ```terminal
->>> ㅖㅐㄴㅅ
+>>> post = Post.objects.get(id=5)
+>>> post.body = 'My edited Post' 
+
+>>> post.save()
+
+>>> Post.objects.all()
+ <QuerySet [<Post: 보라돌이: 보라보라: 2022-02-14 08:54:10.887019>, <Post: 뚜비: 뚜비뚜비: 2022-02-14 08:57:27.698818>, <Post: 나나: 나나나나: 2022-02-14 08:59:08.763715>, <Post: 뽀: 뽀뽀뽀뽀: 2022-02-14 08:59:15.172612>, <Post: sangbaek: My edited Post: 2022-02-14 14:00:52.534588>, <Post: sangbaek: My second Post: 2022-02-14 23:43:58.840950>]>
+``` 
+
+
+- **post.body = 'My edited Post' 이렇게 새롭게 데이터를 설정한다고 해서 끝나는 것이 아니라 -> 실제로 데이터베이스에 반영하기 위해서는 post.save() 라는 함수를 사용해야 한다.**
+  - 실제로 바뀌었는지 확인하려면, Post.objects.all()로 데이터를 확인해보자. 5번 게시물의 내용이 바뀐 것을 확인할 수 있다.
+
+
+### python django shell로 데이터 삭제
+- delete() 함수를 호출하면 삭제가 된다.
+- 만약, 5번 게시물을 지운다고 한다면
+
+```terminal
+>>> post = Post.objects.get(id=5)
+
+>>> post.delete()
+(1, {'posts.Post': 1})
+```
+
+- **delete() 함수를 호출하면 데이터가 바로 삭제 된다. posts 패키지 내부에 있는 Post 모델 클래스가 지워졌다고 나온다.**
+
+* * *
+
+### View 로직 구성하기
+- **여기까지 python django shell로 데이터 CRUD를 모두 진행했다.**
+- **그리고 우리가 작성해봤던 모델 데이터 CRUD 관련 queryset를 View 함수에서도 작성할 수 있다.**
+  - 특히, 데이터가 많을 때에는 objects.all()로 모든 데이터를 가져오기 보다는 -> **.order_by 함수를 사용해서 데이터를 정렬해서 보여주는 게 좋다.**
+
+```python
+def index(request):
+    posts = Post.objects.all().order_by('-created_at')
+
+...
+```
+
+- .order_by() 함수에다가 괄호에는 정렬의 기준이 되는 필드, column를 지정해주면 된다.
+  - ex) 게시물이 작성된 시간 순서로 정렬하고자 한다면, posts = Post.objects.all().order_by('created_at') 이렇게 지정해주면 된다.
+  - 기본적으로 .order_by 함수는 오름차순을 기준으로 정렬해준다. 만약 내림차순으로 정렬하고 싶다면 -> posts = Post.objects.all().order_by('-created_at') 이렇게 필드 이름 앞에다가 -를 붙이면 된다.
+  
+
+- 또한, 데이터의 개수를 제한해서 가져오고 싶을 수도 있다. 이 때는 문자열 슬라이싱을 하는 것처럼, 대괄호를 쓰고 콜론을 적은 다음 슬라이싱 하듯이 인덱스를 적어주면 된다.
+```python
+def index(request):
+    posts = Post.objects.all().order_by('-created_at')[:3] 
+
+...
+```
+
+- 내림차순으로 정렬이 된 상태에서, 맨 앞에서부터 총 3개의 데이터를 추출해서 보고싶다고 했을 때는 위와 같이 적어주면 된다.
+  - 그러면, 최신 순서대로 3개의 데이터를 보여주게 된다.
+
+
+- 만약, 현재 데이터베이스에 정말 많은 데이터가 저장되어있다고 가정해보자. 그런 상황에서 posts = Post.objects.all() 이라고 작성하면, 용량이 큰 데이터가 전부 django server로 넘어와서 posts라는 변수에 저장이 되버린다.
+  - 그 다음, **posts = Post.objects.all().order_by('-created_at')[:3]** 이러한 코드를 작성하게 되면 -> 데이터베이스로부터 많은 양의 데이터를 일단 django server에 가져온 다음에, 3개를 가져오는 것이 아니라 / django 모델 클래스에서 사용하는 슬라이싱의 경우에는, 리스트에서 슬라이싱을 하는 코드가 아니다. 즉, SQL 코드 상에서 3개를 짤라서 가져오라고 하는 코드로 변환이 된다. 
+  - **결론적으로, 데이터베이스에 데이터가 얼마나 있든 상관없이 실제로 네트워크 상으로 통신할 때에는 모든 데이터를 가져와서 자르는 것이 아니라 / 데이터베이스 내부에서 정렬을 하고, 거기서 3개를 추출하기 때문에 -> 실제로 우리가 전달받는 데이터는 3개만 받게 되는 것이다.**
+  - 이러한 과정 덕분에 응답 속도가 훨씬 빠르다.
+
+- 만약, 실제로 posts = Post.objects.all().order_by('-created_at')[:3]와 같은 코드가 SQL로 변환되면 어떤 코드로 작성되는지 궁금하다면 터미널에 로그를 남겨보면 된다.
+```python
+def index(request):
+    posts = Post.objects.all().order_by('-created_at')[:3]    # Post 모델 테이블 전체 데이터에서 정렬해서 가져오기
+    print(posts.query)
+    
+...
+```
+
+- Post.objects와 같이 model 클래스의 manager를 통해서 가져온 데이터에는 .query 라는 것으로 그 데이터를 가져오기 위해서 어떠한 SQL 코드가 실행되었는지를 확인할 수 있다.
+
+```terminal
+SELECT "posts_post"."id", "posts_post"."author", "posts_post"."body", "posts_post"."created_at" FROM "posts_post" ORDER BY "posts_post"."created_at" DESC LIMIT 3
+```
+
+- 실제로 View 함수를 호출하기 위해 새로고침을 해보면, 위와 같은 SQL문을 확인할 수 있다. LIMIT 3은 SQL 코드로 3개만 잘라서 가져오겠다는 코드이다.
+  - 이 sql 코드가 실제로 데이터베이스에 수행이 되었고 결과를 우리가 받은 것이다.
