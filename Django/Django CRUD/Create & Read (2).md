@@ -102,4 +102,39 @@ def new(request):
 
 - 우리가 지금까지 만든 form에다가 author를 입력하고 body에 텍스트를 넣어 입력한 다음 버튼을 누를 때 -> 우리가 입력한 데이터를 바탕으로 새로운 게시물 생성을 server에게 요청해야 한다.
   - **즉, 데이터를 담아 새로운 Http Request를 전송해야 된다는 것이다.**
+  - **그래서 Form element에서 submit 기능을 사용하게 되면 -> Http Request가 새롭게 발생한다.**     
+    **또한, Http Request를 어떻게 발생시키고 어떠한 HTTP Method를 활용해서, 어떤 HTTP urlpattern으로 그 request를 전송할 것인지를 -> form element의 action attribute와 method attribute로 지정할 수 있다.**
+    - form element의 method attribute는 내가 어떠한 HTTP method를 사용할 것인지 지정하면 된다. ex) GET 또는 POST
+    - form element의 action attribute는 어떤 url pattern으로 request를 전송할 것인지를 결정해준다. url를 적어주면 된다. -> 아무것도 적지 않으면, 현재 페이지의 url 주소로 request를 다시 전송하게 된다.
 
+- 데이터를 입력하고 버튼을 눌러보면, 현재 페이지로 HTTP Request를 전송하고, 주소창에는 
+<img width="344" alt="image" src="https://user-images.githubusercontent.com/95380638/154036162-8c004fa3-c38d-4ecf-ad7a-5c919b46211f.png">
+
+- 다음과 같이 물음표가 생긴다. 페이지가 완전히 새로고침 된 것이기 때문에 입력한 데이터들은 사라지는 것이다.
+
+```python
+<form method="GET" action="">
+        <div>
+            <label for="author">Author</label>
+            <input id="author" type="text" name="author">
+        </div>
+        
+        <div>
+            <label for="body">Body</label>
+            <textarea id="body" cols="40" rows="10" name="body"></textarea>
+        </div>
+
+        <input type="submit" value="작성하기">   
+</form>
+```
+
+- 위와 같이 input element와 textarea element에 name이라는 attribute를 추가하고 값을 넣어주자. 그리고 이 상태에서 해당 데이터들을 입력하고 버튼을 누르면
+<img width="542" alt="image" src="https://user-images.githubusercontent.com/95380638/154037338-2da344aa-8f9c-404f-a810-32620e789432.png">
+
+- 아까와는 다르게, 주소창을 보면 url pattern은 /posts/new/로 똑같지만 ? 뒤에 데이터가 추가되었다.
+  - 우리가 form element를 사용할 때에는 사용자가 데이터를 입력하게끔 하고 그렇게 입력한 데이터를 submit, 제출하게 되는데 -> 제출할 때 GET방식이나 POST방식으로 우리가 원하는 url pattern으로 HTTP Request를 전송하게 된다.
+  - name attribute를 사용하지 않는다면 각 입력값이 어떤것을 위한 값인지 알 수 없지만, name attribute를 사용하면 각 입력값이 어떤것을 위한 입력값인지 구분해줄 수 있게 된다. 
+  - 그래서 form element로 input이나 textarea element 처럼 사용자가 값을 입력할 수 있는 element를 활용할 때는 -> 사용자가 입력한 값이 HTTP Request를 통해 server에 전달될 때, 각각의 값들이 무엇에 대한 값인지를 표현하기 위해서 name attribute로 값에 대한 이름을 지정하게 된다.
+    - 만약, HTTP Request가 GET 방식으로 데이터를 전송하게 된다면 -> url pattern 다음에 ? 뒤에다가 데이터의 name=그 name에 해당하는 value가 주소창에 표시된다. 이미지에서는 author라는 name을 가진 데이터의 value로 보라돌이라는 데이터가 전달된 것이다. 전달하고자 하는 데이터가 여러 개라면 &를 사용하여 여러 개의 데이터를 구분해서 주소창에 나열하게 된다.
+    - ex) 구글 검색창이나 네이버 검색창을 보면, input element에다가 우리가 검색하고자 하는 값을 입력하면 -> 주소창에 www.google.com/search 라는 새로운 url pattern으로 GET방식을 활용해 HTTP Request가 전송된 것이다. /search 라는 url 뒤에 ?가 붙으면서 q=강아지 이렇게 input element의 name이 q이고 거기에 우리가 입력한 강아지가 데이터로 담겨 전송된 것을 알 수 있다.
+    - **결론적으로, GET 방식으로 데이터를 전송하게 되면 url pattern이 바뀌면서 url pattern 뒤에 ?가 붙게되고, 그 뒤에 전송하고자 하는 데이터들이 name=value의 형태로 나열이 되고, 여러 개를 나열할 때는 & 기호를 사용해서 구분해준다는 것이다.**
