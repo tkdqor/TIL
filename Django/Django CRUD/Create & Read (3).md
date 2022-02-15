@@ -33,12 +33,12 @@ def create(request):
     return redirect('posts:detail', pk=post.id)
 ```
 
-- 그리고 author와 body라는 변수를 활용해서 -> 새로운 게시물을 생성하자. post = Post(author=author, body=body) 이런식으로 Post 테이블 모델에 새로운 데이터를 생성하기 위해 인스턴스를 만들어준다.
-  추가로 post.save()까지 해주면 데이터베이스에 저장된다.
+- **그리고 author와 body라는 변수를 활용해서 -> 새로운 게시물을 생성하자. post = Post(author=author, body=body) 이런식으로 Post 테이블 모델에 새로운 데이터를 생성하기 위해 인스턴스를 만들어준다.
+  추가로 post.save()까지 해주면 데이터베이스에 저장된다.**
 
 - 데이터가 생성된 이후, 별도의 안내 페이지가 아닌 우리가 만들어놓은 상세 페이지를 보여주자.
   - 이렇게 하기 위해서는 redirect 함수를 사용해서 다른 url로 보내주면 된다.
-  - redirect 함수는 방향을 다시 지시하는 것으로 최종적으로 이동해야 할 장소를 우리가 다른 곳으로 변경시키는 것이다. 꼭 데이터를 보내야 하는 View 로직이 아니라서 render 함수를 사용할 필요가 없다.
+  - **redirect 함수는 방향을 다시 지시하는 것으로 최종적으로 이동해야 할 장소를 우리가 다른 곳으로 변경시키는 것이다. 꼭 데이터를 보내야 하는 View 로직이 아니라서 render 함수를 사용할 필요가 없다.**
   - 그래서 게시물을 생성한 다음에 return redirect('posts:detail', pk=post.id) -> redirect 함수로 posts앱의 detail url로 보내준다. 그리고 detail url은 post 객체의 id가 필요하기 때문에 
     url에 있는 변수에 새로 생성한 post의 id인 post.id를 저장해준다.
 
@@ -56,7 +56,7 @@ def create(request):
 
 - 주석처리된 코드 처럼 직접 하드코딩 해도 상관없지만, url pattern naming을 통해 간단하게 작성해보자.
 
-- 그리고 추가로 생각해야 되는 점은, 바로 CSRF 검증이다.
+- **그리고 추가로 생각해야 되는 점은, 바로 CSRF 검증이다.**
   - 이 문제를 해결하기 위해서는 form element 내부에다가 
 
 ```html
@@ -65,7 +65,7 @@ def create(request):
      ...
 ```
 
-- {% csrf_token %} 이렇게 작성해줘야 한다. 이제 다시 new.html에서 데이터를 넣고 버튼을 누르면 -> 데이터베이스에 데이터가 추가되면서 상세 페이지로 이동되는 것을 확인할 수 있다.
+- **{% csrf_token %}** 이렇게 작성해줘야 한다. 이제 다시 new.html에서 데이터를 넣고 버튼을 누르면 -> 데이터베이스에 데이터가 추가되면서 상세 페이지로 이동되는 것을 확인할 수 있다.
 - 우리가 입력한 데이터로 새로운 게시물이 작성된다.
 
 - 여기까지 CRUD 중에서 Create와 Read에 대해서 구체적으로 알아봤다.
