@@ -55,8 +55,8 @@ table, td {
     <table>
         <thead>
             <tr>
-                <td>First name</td>
-                <td>Last name</td>
+                <th>First name</th>
+                <th>Last name</th>
             </tr>
         </thead>
         <tbody>
@@ -79,6 +79,14 @@ table, td {
 - 그리고 thead에 있는 element애서 td가 아닌, th 라는 element를 사용하게 되면, header를 위한 셀로 변경된다. 
   - th element가 사용된 부분을 보게 되면, 글씨가 조금 더 진하게 표시된 것을 확인할 수 있다.
     
+
+    
+### index.html 수정하기
     
     
-    10:43
+    
+333
+    
+    
+    
+    
