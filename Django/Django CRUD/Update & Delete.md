@@ -127,4 +127,48 @@ def update(request, pk):
 
 * * *
 ## CRUD 중 Delete
-- dd
+- 먼저 삭제를 위한 url pattern를 추가해줘야 한다. 삭제 역시 하나의 게시글을 삭제하는 것이니까 post 객체의 id가 url에 필요하다.
+- delete view 함수에서는 id로 해당 객체를 조회하고, 삭제를 해준다.
+
+```python
+app_name = 'posts'
+urlpatterns = [
+    # 전체 게시판 조회
+    path('', views.index, name='index'),
+    # 게시글 상세 페이지
+    path('<int:pk>/', views.detail, name='detail'),
+    # 게시글 생성 페이지
+    path('new/', views.new, name='new'),
+    # 게시글 생성 HTTP Request
+    path('create/', views.create, name='create'),
+    # 게시글 수정 페이지
+    path('<int:pk>/edit/', views.edit, name='edit'),
+    # 게시글 수정 HTTP Request
+    path('<int:pk>/update/', views.update, name='update'),
+    # 게시글 삭제
+    path('<int:pk>/delete/', views.delete, name='delete'),
+]
+```
+
+- 위와 같이 delete url pattern를 만들어주고, 이제 views.py로 가서 delete 함수를 정의해주자.
+
+```python
+
+
+
+
+- 전달받은 post 객체 id로부터 게시물 하나를 조회하고 post.delete() 함수를 사용해서 해당 데이터를 데이터베이스에서 삭제시켜준다.
+- 그리고 게시글의 목록을 보여주는 index.html로 redirect 해준다.
+
+```html
+...
+
+    <a href="{% url 'posts:index' %}">목록</a>
+    <a href="{% url 'posts:edit' post.id %}">수정하기</a>
+    <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
+...
+```
+
+- 마지막으로 detail.html에서 삭제할 수 있는 버튼을 만들어 놓는다.
+
+- 위의 코드들을 전부 입력하고 설정하면, 이제 게시글 상세 페이지에서 삭제하기 버튼을 누르면, 해당 게시글이 삭제되고 목록 페이지로 돌아가게 된다.
