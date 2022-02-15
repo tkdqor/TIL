@@ -70,3 +70,41 @@ def edit(request, pk):
   그런데, 이 update라는 name을 가진 url pattern은 수정할 post 객체의 pk, id 값을 전달해줘야 하기 때문에 -> {% url 'posts:update' post.id %} 다음과 같이 작성해주자.
   
 - 이제 다시 urls.py로 가서 update라는 name을 가진 url pattern를 추가하자.
+
+```python
+app_name = 'posts'
+urlpatterns = [
+    # 전체 게시판 조회
+    path('', views.index, name='index'),
+    # 게시글 상세 페이지
+    path('<int:pk>/', views.detail, name='detail'),
+    # 게시글 생성 페이지
+    path('new/', views.new, name='new'),
+    # 게시글 생성 HTTP Request
+    path('create/', views.create, name='create'),
+    # 게시글 수정 페이지
+    path('<int:pk>/edit/', views.edit, name='edit'),
+    # 게시글 수정 HTTP Request
+    path('<int:pk>/update/', views.update, name='update'),
+]
+```
+
+- 새로 추가한 update pattern은 반드시 앞에 정수 변수를 받는 url이 되어야 한다. 게시글 하나에 대한 수정이기 때문이다.
+
+- 이제 마지막으로 views.py로 가서 update 함수를 정의하자.
+
+```python
+# 게시글 수정 기능
+def update(request, pk):
+    post = Post.objects.get(id=pk)              # 수정해야할 post 객체 조회
+    post.author = request.POST.get('author')    # post.author 값에 사용자로부터 POST 방식으로 입력받은 값으로 수정
+    post.body = request.POST.get('body')        # post.body 값에 사용자로부터 POST 방식으로 입력받은 값으로 수정
+    post.save()
+
+    return redirect('posts:detail', pk=post.id) # redirect 함수로 게시물 상세 페이지 보여주기
+```    
+
+- 먼저 수정하고자 하는 게시물을 조회한 다음에, post.author, post.body의 값을 전달받은 데이터로 수정해주면 된다. request.POST.get('author') 이런식으로 POST 방식으로 전달받은 데이터를 key로 
+  접근한 값을 데이터베이스의 값으로 수정해주는 것이다.
+- 다 수정한 다음에는 post.save()를 해줘야 데이터베이스에 반영이 된다.
+- 마지막에는 redirect 함수를 이용하여 상세 페이지를 보여주는 것으로 설정했다.
