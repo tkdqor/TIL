@@ -188,4 +188,77 @@ def detail(request, pk):
 ```
     
 - views.py에서는 detail 함수를 설정하고, url에서 보내준 Post 모델의 pk 값으로 조회해서 단 건의 데이터를 post라는 변수에 저장한다. 그리고 detail.html에 보내준다.    
+- 앱 내부에 있는 templates -> posts -> 여기에 detail.html 파일을 새롭게 생성해주자.    
+
+```html
+<body>
+    <h1>Post detail</h1>
+
     
+    {% if post %}
+        <h2>작성자</h2>
+        <p>{{ post.author }}</p>
+        
+        <h2>본문</h2>
+        <p>{{ post.body }}</p>
+
+        <h2>게시일</h2>
+        <p>{{ post.created_at }}</p>
+    {% else %}
+        <p>No Post</p>
+    {% endif %} 
+  
+    <a href="/posts/">목록</a>
+        
+</body>
+```
+    
+- View detail 함수에서 post라는 이름의 변수를 전달해줬기 때문에, detail.html에서도 post라는 변수를 사용해서 Post 모델 1개의 객체에 대한 데이터를 출력해줄 수 있다.
+    
+
+* * * 
+- **여기까지 조회하는 부분에 대한 모든 웹페이지를 구현했다.**
+  - 페이지와 페이지간의 연결을 위해 a element를 사용했는데 그 a element의 href 값에 대해 우리가 전부 하드코딩을 진행했다.
+  - 이렇게 직접 하드코딩 하게되면, 오타가 날 수 있고 url pattern를 바꾸게 되면 하나하나 다 수정해줘야 한다.
+
+- **그래서, urls.py에서 각 url에 대한 이름을 붙여 사용할 수도 있다. 각 url pattern에 대해서 별칭을 부여하여 사용하는 방식을 url pattern naming이라고 한다.**
+  - **또한, 부여한 이름도 다른 App과 겹칠 수 있기 때문에 -> App 이름을 앞에 붙여서 구분할 수 있도록 사용할 수 있다. 이를 위해 App의 urls.py에다가 app_name이라는 변수로 app의 이름을 저장하면 된다.**
+  - 그리고나서 template에서는 django template langauge로 url tag를 사용하여 **{% url 'posts:index' %}** 이렇게 posts 앱의 index 이름을 가진 url pattern를 사용하겠다고 지정할 수 있다.
+    - posts 앱의 detail url pattern의 경우에는 -> 해당 Post 모델의 pk값이 반드시 필요한 url이니까 **{% url 'posts:detail' post.id %}** 이렇게 post.id를 같이 전달해줘야 한다.
+    
+```python
+from django.urls import path
+from . import views
+
+
+app_name = 'posts'
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('<int:pk>/', views.detail, name='detail'),
+]
+
+```    
+    
+- posts 앱 내부 urls.py에서 app_name을 지정해주고, 앱이름을 값으로 설정해주자.
+- 그리고, path 함수의 세번째 인자로 name을 사용하여 별칭을 지정하자.    
+    
+    
+    
+```html
+<tbody>
+   {% for post in posts %}
+      <tr>
+         <td>{{ post.id }}</td>
+         <td>{{ post.author }}</td>
+         <td>{{ post.body }}</td>
+         <td>{{ post.created_at }}</td>
+         <td><a href="{% url 'posts:detail' post.id %}">보기</a></td>
+      </tr>
+   {% endfor %}
+</tbody>
+```   
+    
+    
+- html 파일에서도 a element에 기록한 url을 더 편하게 설정할 수 있다. 
+    
+- 여기까지 CRUD 중, Read에 대한 내용이다.
