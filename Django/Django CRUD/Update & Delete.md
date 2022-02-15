@@ -1,4 +1,4 @@
-## CRUD 중 UD
+## CRUD 중 Update
 - 먼저 수정하기 위한 form element를 포함하고 있는 template를 보여주기 위해 url pattern이 하나 필요하고, 
 - 그 template에서 우리가 내용을 수정한 다음, HTTP Request 전송을 했을 때 실제 수정이 되고, 수정이 끝난 후 redirect 해줄 수 있는 url pattern이 하나 더 필요하다.
 
@@ -91,7 +91,7 @@ urlpatterns = [
 
 - 새로 추가한 update pattern은 반드시 앞에 정수 변수를 받는 url이 되어야 한다. 게시글 하나에 대한 수정이기 때문이다.
 
-- 이제 마지막으로 views.py로 가서 update 함수를 정의하자.
+- 이제 views.py로 가서 update 함수를 정의하자.
 
 ```python
 # 게시글 수정 기능
@@ -108,3 +108,23 @@ def update(request, pk):
   접근한 값을 데이터베이스의 값으로 수정해주는 것이다.
 - 다 수정한 다음에는 post.save()를 해줘야 데이터베이스에 반영이 된다.
 - 마지막에는 redirect 함수를 이용하여 상세 페이지를 보여주는 것으로 설정했다.
+
+- 마지막으로 상세 페이지에서 수정할 수 있는 페이지인 edit.html로 갈 수 있는 버튼을 생성하자.
+```html
+<body>
+    <h1>Post detail</h1>
+  ...
+  
+    <a href="{% url 'posts:index' %}">목록</a>
+    <a href="{% url 'posts:edit' post.id %}">수정하기</a>
+</body>
+```
+
+- 수정하기 버튼은 a element로 만들어주고 edit이라는 name의 url pattern은 post 객체의 id가 필요하니까 추가해준다.
+
+
+- 이렇게 위의 코드를 입력하고 게시글 하나 상세 페이지에서 수정하기 버튼을 누르면, edit template이 출력이 되고 author와 body의 값이 채워져 있다. 그 다음 내용을 수정하고 수정하기 버튼을 누르면 데이터베이스의 데이터가 수정이 되면서, detail template으로 redirect 하게 된다.
+
+* * *
+## CRUD 중 Delete
+- dd
