@@ -109,7 +109,7 @@ def update(request, pk):
 - 다 수정한 다음에는 post.save()를 해줘야 데이터베이스에 반영이 된다.
 - 마지막에는 redirect 함수를 이용하여 상세 페이지를 보여주는 것으로 설정했다.
 
-- 마지막으로 상세 페이지에서 수정할 수 있는 페이지인 edit.html로 갈 수 있는 버튼을 생성하자.
+- 그리고 상세 페이지에서 수정할 수 있는 페이지인 edit.html로 갈 수 있는 버튼을 생성하자.
 ```html
 <body>
     <h1>Post detail</h1>
@@ -153,9 +153,13 @@ urlpatterns = [
 - 위와 같이 delete url pattern를 만들어주고, 이제 views.py로 가서 delete 함수를 정의해주자.
 
 ```python
+# 게시글 삭제 기능
+def delete(request, pk):
+    post = Post.objects.get(id=pk)
+    post.delete()
 
-
-
+    return redirect('posts:index')
+```
 
 - 전달받은 post 객체 id로부터 게시물 하나를 조회하고 post.delete() 함수를 사용해서 해당 데이터를 데이터베이스에서 삭제시켜준다.
 - 그리고 게시글의 목록을 보여주는 index.html로 redirect 해준다.
