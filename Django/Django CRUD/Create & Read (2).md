@@ -137,4 +137,88 @@ def new(request):
   - 그래서 form element로 input이나 textarea element 처럼 사용자가 값을 입력할 수 있는 element를 활용할 때는 -> 사용자가 입력한 값이 HTTP Request를 통해 server에 전달될 때, 각각의 값들이 무엇에 대한 값인지를 표현하기 위해서 name attribute로 값에 대한 이름을 지정하게 된다.
     - 만약, HTTP Request가 GET 방식으로 데이터를 전송하게 된다면 -> url pattern 다음에 ? 뒤에다가 데이터의 name=그 name에 해당하는 value가 주소창에 표시된다. 이미지에서는 author라는 name을 가진 데이터의 value로 보라돌이라는 데이터가 전달된 것이다. 전달하고자 하는 데이터가 여러 개라면 &를 사용하여 여러 개의 데이터를 구분해서 주소창에 나열하게 된다.
     - ex) 구글 검색창이나 네이버 검색창을 보면, input element에다가 우리가 검색하고자 하는 값을 입력하면 -> 주소창에 www.google.com/search 라는 새로운 url pattern으로 GET방식을 활용해 HTTP Request가 전송된 것이다. /search 라는 url 뒤에 ?가 붙으면서 q=강아지 이렇게 input element의 name이 q이고 거기에 우리가 입력한 강아지가 데이터로 담겨 전송된 것을 알 수 있다.
-    - **결론적으로, GET 방식으로 데이터를 전송하게 되면 url pattern이 바뀌면서 url pattern 뒤에 ?가 붙게되고, 그 뒤에 전송하고자 하는 데이터들이 name=value의 형태로 나열이 되고, 여러 개를 나열할 때는 & 기호를 사용해서 구분해준다는 것이다.**
+    - **결론적으로, GET 방식으로 데이터를 전송하게 되면 url pattern이 바뀌면서 url pattern 뒤에 ?가 붙게되고, 그 뒤에 전송하고자 하는 데이터들이 name=value의 형태로 나열이 되며, 여러 개를 나열할 때는 & 기호를 사용해서 구분해준다는 것이다.**
+    - ? 뒤에 붙는 GET 방식으로 전달하고자 하는 데이터를 우리는 GET 파라미터, url 파라미터, query string이라고 한다.
+
+
+### 우리가 GET 방식으로 데이터를 전송하는 이유
+- 우리가 GET 방식으로 데이터를 전송하는 이유는, 사용자가 입력한 데이터가 주소 자체에 기록되게끔 할 수 있고 이 기록되어 있는 데이터를 활용해서 웹 페이지 자체에 보여주거나, 웹 페이지를 키워드와 관련된 데이터로 구성하기 위해 활용한다. 주소 자체에 우리가 전송한 데이터가 기록되어 있기 때문에 이 주소를 하나의 링크 형태로 타인에게 공유하면 우리가 검색한 결과가 동일한 결과를 볼 수 있다.
+- 만약, 로그인 화면에서 GET 방식으로 데이터를 전송하게 된다면 주소창에 아이디 정보와 비밀번호가 그대로 노출될 것이다.
+- 그리고 게시물 작성 역시 이렇게 노출되는 것이 문제가 될 수 있다.
+
+
+### Form element에 작성한 데이터를 server에 보내기 (2)
+```html
+<form method="GET" action="/posts/create">
+...
+</form>
+```
+
+- 이렇게 action에 특정한 url을 지정하고 다시 값을 입력해서 버튼을 누르면, /posts/create?author=보라돌이&body=도리도리 -> 이렇게 url pattern이 바뀌고, /posts/create라는 패턴으로 GET 방식을 활용해 HTTP Request가 전송된 것이다. 또한, 전송이 될 때 author=보라돌이 와 body=도리도리 라는 데이터가 함께 전송이 된 것이다.
+- 이 /posts/create 라는 url pattern를 urls.py에 설정해보자.
+
+```python
+app_name = 'posts'
+urlpatterns = [
+    # 전체 게시판 조회
+    path('', views.index, name='index'),
+    # 게시글 상세 페이지
+    path('<int:pk>/', views.detail, name='detail'),
+    # 게시글 생성 페이지
+    path('new/', views.new, name='new'),
+    # 게시글 생성 HTTP Request
+    path('create/', views.create, name='create'),
+]
+```
+
+- 이렇게 /posts/create/ 를 처리해줄 수 있게끔 path 함수를 설정했다. 이제 views.py에서 create라는 함수를 새롭게 정의하자.
+```python
+# 게시글 생성 기능
+def create(request):
+    print(request.GET)
+    
+    return render(request, 'posts/create.html')
+```
+
+- 먼저 이렇게만 작성해보고 create 함수를 실행시켜보면, server 로그로 <QueryDict: {'author': ['보라돌이'], 'body': ['도리도리']}> 이렇게 출력이 된다.
+  - QueryDict란, 딕셔너리와 사용하는 방식이 똑같다.
+  - **모든 View 함수의 첫번째 파라미터로 request를 작성하는데, 이 View 함수가 실제로 호출될 때는 -> 이 request라는 파라미터에 HTTP Request에 대한 모든 정보가 담겨져 있다.**
+  - **request.GET 이렇게 사용하면 -> GET 방식으로 request가 전송된 데이터를 QueryDict 형태로 전부 다 확인할 수 있는 것이다.** 그래서 여기서 우리가 원하는 데이터를 뽑아 쓸 수 있다.
+    - **QueryDict에서 데이터를 추출할 때도, request.GET['author'] 이런식으로 key값으로 접근하면 된다. 그래서 전송된 데이터를 추출할 수가 있다.**
+    - 그리고 여기서 author라는 key와 body라는 key는 -> 우리가 new.html의 input, textarea element에 name attribute로 지정해주었던 value인 것이다.
+
+- **딕셔너리에서 데이터를 접근할 때, 해당 key가 없을 때도 접근을 시도하면 에러가 발생할 수가 있다.** 
+  - 그래서 조금 더 안전하게 하려면, 딕셔너리에서의 .get() 함수를 사용하면 된다. .get() 함수를 사용했을 때 없는 key로 접근하면 None이 출력된다.
+  - request.GET.get('author') , request.GET.get('body') 이렇게 추출하게 되면 -> 보라돌이 , 도리도리 이러한 데이터를 추출할 수 있게 된다.
+  - 실제로 이렇게 추출한 데이터를 데이터베이스에 생성시키기 전, 데이터를 활용만 해본다면,
+
+```python
+# 게시글 생성 기능
+def create(request):
+    print(request.GET)
+    author = request.GET.get('author')       # request.GET / 여기까지 딕셔너리의 형태이고 .get() 함수를 사용해서 안전하게 접근
+    body = request.GET.get('body')
+
+    context = {
+        'author': author,
+        'body': body,
+    }
+
+    return render(request, 'posts/create.html', context)
+```
+
+- 이렇게 create 함수에서 GET 방식의 HTTP Request로 전송된 데이터를 author, body라는 변수로 저장하고 그것들을 create.html에 보낼 수 있다.
+
+```html
+<body>
+    <h1>Result</h1>
+
+    <h2>{{ author }}</h2>
+    <h3>{{ body }}</h3>
+    
+   
+    <a href="{% url 'posts:index' %}">목록</a>
+</body>
+```
+
+- create.html에서는 이렇게 context로 전달받은 데이터를 출력해줄 수 있다.
