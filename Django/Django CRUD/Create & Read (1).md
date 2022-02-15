@@ -78,15 +78,114 @@ table, td {
 - 다음과 같은 table을 구성할 수 있다.
 - 그리고 thead에 있는 element애서 td가 아닌, th 라는 element를 사용하게 되면, header를 위한 셀로 변경된다. 
   - th element가 사용된 부분을 보게 되면, 글씨가 조금 더 진하게 표시된 것을 확인할 수 있다.
-    
 
     
 ### index.html 수정하기
+```html
+<body>
+    <h1>Posts</h1>
+
+    
+    {% if posts %}
+     <table>
+         <thead>
+            <tr>
+                <th>#</th>
+                <th>작성자</th>
+                <th>본문</th>
+                <th>게시일</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.id }}</td>
+                    <td>{{ post.author }}</td>
+                    <td>{{ post.body }}</td>
+                    <td>{{ post.created_at }}</td>
+                </tr>
+            {% endfor %}
+         </tbody>
+     </table>
+     {% else %}
+        <p>No Post</p>
+    {% endif %} 
+        
+</body>    
+```
+    
+- for문을 통해 반복적으로 tbody 안에 있는 tr element를 출력할 수 있게끔 해주기.
+
+- 여기까지 여러 개의 게시물을 한꺼번에 조회(Read)할 수 있는 웹페이지가 완성. 
+    
+* * *
+    
+### 게시물 상세 조회 페이지
+- 게시물 1개의 상세 조회 페이지를 만들기 위해, 테이블에 column 1개를 더 만들고 링크 추가하기.
+```html
+<body>
+    <h1>Posts</h1>
+
+    
+    {% if posts %}
+     <table>
+         <thead>
+            <tr>
+                <th>#</th>
+                <th>작성자</th>
+                <th>본문</th>
+                <th>게시일</th>
+                <th>상세</th>
+            </tr>
+         </thead>
+         <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.id }}</td>
+                    <td>{{ post.author }}</td>
+                    <td>{{ post.body }}</td>
+                    <td>{{ post.created_at }}</td>
+                    <td><a href="/posts/{{ post.id }}">보기</a></td>
+                </tr>
+            {% endfor %}
+         </tbody>
+     </table>
+     {% else %}
+        <p>No Post</p>
+    {% endif %} 
+        
+</body>
+```
+    
+- table column를 1개 더 만들고, 보기라는 a element를 추가해서 href에 /posts/{{ post.id }} 이렇게 게시글 상세 페이지마다 url를 설정.
+  - 그래서 만약 1번 게시물을 누르면 -> /posts/1 이라는 url로 이동되는 것을 확인할 수 있다.
     
     
+- 이제, 위의 url에 해당하는 urls.py와 View 함수도 수정해보자.
+```python
+from django.urls import path
+from . import views
+
+
+urlpatterns = [
+    path('', views.index),
+    path('<int:pk>/', views.detail),
+]
+```
     
-333
+- 위와 같이 /posts/1 이러한 숫자를 받을 수 있는 urls.py를 설정
     
+```python
+# 게시판 상세 페이지
+def detail(request, pk):
+    post = Post.objects.get(id=pk)
     
+    context = {
+        'post': post,
+    }
+
+    return render(request, 'posts/detail.html', context)
+```
     
+- views.py에서는 detail 함수를 설정하고, url에서 보내준 Post 모델의 pk 값으로 조회해서 단 건의 데이터를 post라는 변수에 저장한다. 그리고 detail.html에 보내준다.    
     
