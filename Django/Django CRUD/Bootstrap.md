@@ -45,9 +45,9 @@
 ```html
 {% block content %}
 
+<div class="container">    
     <h1>Posts</h1>
 
-    
     {% if posts %}
      <table class="table">
          <thead class="table-dark">
