@@ -60,3 +60,32 @@ urlpatterns = [
    - 이렇게 되면, year, month, day라는 값들이 해당 View 함수에 전달되는 것인데 -> 이 때 전달될 때 딕셔너리의 형태로 넘어가게 된다는 것이다. 그래서 그 값이 self.kwargs에 저장되어 있다. 그 딕셔너리에서 pk.url.kwarg이라는 이름의 값을 가져와서 pk라는 값으로 활용할 수 있다. pk = self.kwargs.get(self.pk_url_kwarg)
    - 그래서, pk 또는 slug라는 값이 있을 때에는 queryset에서 filter를 해준다.
    - 또한, obj = queryset.get()를 통해 하나의 객체를 찾아내는 것이다. 이런식으로 get_object 메소드가 구현되어 있다.
+
+
+- get_queryset() 메소드의 경우 : 안에 self.queryset은 클래스 속성에 none이라고 되어있다. 즉, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.all()) 이렇게 queryset를 추가할 수도 있다는 것이다. 또는, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.filter(is_public=True)) 이렇게 filter를 걸 수도 있다.
+  - 그러면 우리가 DetailView를 구현할 때, 실제 view에서 처리할 때 is_public이 True인 범위내에서만 detail 처리를 한다는 것이다. 만약 1번 게시물의 is_public 필드가 False이면 url을 입력해도 나오지 않는다.        
+  - 또한, 해당 메소드에서 default manager는 objects를 의미한다.
+  - 유저마다 다르게 하고 싶다면, 무조건 상속을 받아야 한다.
+
+```python
+# post_detail = DetailView.as_view(
+#    model=Post,
+#    queryset=Post.objects.filter(is_public=True))
+
+class PostDetailView(DetailView):
+    model = Post
+    # queryset = Post.objects.filter(is_public=True)
+    
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.request.user.is_authenticated:
+            qs = qs.filter(is_public=True)
+        return qs
+
+post_detail = PostDetailView.as_view()
+```
+
+- 이렇게 상속을 받아서 클래스로 정의한 다음, get_queryset 메소드를 정의해준다. 보통 재정의할 때, super() 를 사용한다. -> 그래서 부모의 function를 호출해서 부모가 만들어준 queryset를 받고 우리가 filter를 하는 것이다.
+- 함수 기반 View에서의 request인자는 -> 클래스 기반 View에서 self.request에 있다. 그리고 인증을 했다면, self.request.user.is_authenticated -> 이렇게 해서 현재 로그인된 유저의 인스턴스를 얻어올 수 있다.
+- if not self.request.user.is_authenticated: -> 만약 로그인이 되어있지 않다면 / qs = qs.filter(is_public=True) -> is_public 필드가 True인 게시물만 필터해서 저장. 즉, 로그인이 되어있지 않다면 공개된 것만 보라는 의미이다. 로그인이 되어있으면 if 조건에 걸리지 않으니까 모든 것을 다 볼 수 있다.
+- ex) admin 아이디로 로그인 되어있으면 모두 다 조회가 가능하다.
