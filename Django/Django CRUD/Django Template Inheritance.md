@@ -68,4 +68,32 @@
 {% endblock %}
 ```
 
-- 위의 코드는 detail.html 예시이다.
+- 위의 코드는 detail.html 예시이다. 다른 template들도 이런 방식으로 코드를 변경해보자.
+
+* * *
+
+### 다양한 app이 있다고 가정하고 Template Inheritance 재설정하기
+- 특정 app에서만 공통적으로 사용하는 template이 아니라, 모든 app에서 프로젝트 전반에 걸쳐 공통적으로 사용하고자 하는 template이 있을 수 있다.
+  - 이 경우에는 앱 패키지 내부에 작성하는 것이 아니라 -> 프로젝트 루트 디렉터리 내부에다가 templates라는 디렉터리를 만든 다음에 namespacing 없이 바로 base.html를 생성하면 된다.
+  - 이 base.html에서는 모든 app에 걸쳐서 사용할 공통된 레이아웃을 작성해주면 된다.
+
+- 위에서 작성했던 app 내부의 base.html 코드를 복사해서 그대로 가져오자. 그리고 기존의 base.html는 삭제하기.
+  - 그래서 결론적으로 base.html를 앱 내부에 있는 게 아니라 -> 앱 바깥에 프로젝트 레벨에서 template 디렉터리 내부에다가 구성을 했고 앱 패키지 내부에서 사용하는 다른 template에서는, 
+
+```html
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h1>New Post</h1>
+
+    <form method="POST" action="{% url 'posts:create' %}">
+        {% csrf_token %}
+    ...
+```      
+
+- 위의 new.html 예시와 같이 {% extends 'posts/base.html' %} 이렇게 posts라는 namespacing를 해주는 게 아니라, {% extends 'base.html' %} 이렇게 수정해주면 된다. 다른 template들도 수정해주자.
+- 그런데, 이 상태에서 서버를 실행시키고 보면 TemplateDoesNotExist라는 에러가 발생한다.
+  - **django는 기본적으로 django 프로젝트에 등록되어있는 app 단위로 templates라는 이름을 가진 디렉터리를 검색하기 때문에, 우리가 방금 추가했던 -> app 내부에 있는 templates가 아니라, 프로젝트 루트에 위치해있는 templates라는 디렉터리는, app 하위에 존재하는 template이 아니기 때문에 검색 대상에서 제외된다.**
+  - 그래서 이 문제를 해결하려면, django의 설정을 변경해서 -> django가 app 하위에 있는 templates 이외에도 프로젝트 루트에 있는 templates 디렉터리를 검색하게끔 해줘야 한다.
+    - 프로젝트 이름의 디렉터리 -> ㄴㄷㅅ
