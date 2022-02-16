@@ -1,5 +1,5 @@
 ## Generic display views 카테고리
-- DetailView, ListView가 있다.
+- **DetailView, ListView가 있다.**
   - 먼저 DetailView는 SingleObjectTemplateResponseMixin을 상속받았다. 그래서 template 응답을 하는 걸 알 수 있다.
     - 직접적인 부모는 SingleObject와 BaseDetailView이다. 그리고 SingleObject는 TemplateResponseMixin를 상속받았다.
   - ListView의 경우에는 MultipleObjectTemplateResponseMixin을 상속받았다. 여기도 template 응답을 해줄 수 있다.
@@ -10,8 +10,8 @@
 ### DetailView
 - 1개 모델의 1개 Object에 대한 템플릿 처리
 - 템플릿 응답을 주는 해당 멤버 함수를 재정의 해서 템플릿 응답이 아닌, 재순응답이나 다른 응답을 주도록 변경할 수도 있다.
-- 모델명소문자 이름의 Model Instance를 템플릿에 전달
-  - 우리가 Post 라는 이름의 모델이 있다면 -> 소문자 post라는 이름으로 template에다가 해당 모델 인스턴스를 전달해준다. ex) context = {'post': post} 이렇게 해서 전달해주는 것과 같이 DetailView가 해준다는 것.
+- **모델명소문자 이름의 Model Instance를 템플릿에 전달**
+  - **우리가 Post 라는 이름의 모델이 있다면 -> 소문자 post라는 이름으로 template에다가 해당 모델 인스턴스를 전달해준다. ex) context = {'post': post} 이렇게 해서 전달해주는 것과 같이 DetailView가 해준다는 것.**
 
 ```python
 def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
@@ -63,7 +63,7 @@ urlpatterns = [
 
 * * *
 
-- get_queryset() 메소드의 경우 : 안에 self.queryset은 클래스 속성에 none이라고 되어있다. 즉, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.all()) 이렇게 queryset를 추가할 수도 있다는 것이다. 또는, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.filter(is_public=True)) 이렇게 filter를 걸 수도 있다.
+- **get_queryset() 메소드**의 경우 : 안에 self.queryset은 클래스 속성에 none이라고 되어있다. 즉, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.all()) 이렇게 queryset를 추가할 수도 있다는 것이다. 또는, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.filter(is_public=True)) 이렇게 filter를 걸 수도 있다.
   - 그러면 우리가 DetailView를 구현할 때, 실제 view에서 처리할 때 is_public이 True인 범위내에서만 detail 처리를 한다는 것이다. 만약 1번 게시물의 is_public 필드가 False이면 url을 입력해도 나오지 않는다.        
   - 또한, 해당 메소드에서 default manager는 objects를 의미한다.
   - 유저마다 다르게 하고 싶다면, 무조건 상속을 받아야 한다.
@@ -87,15 +87,25 @@ post_detail = PostDetailView.as_view()
 ```
 
 - 이렇게 상속을 받아서 클래스로 정의한 다음, get_queryset 메소드를 정의해준다. 보통 재정의할 때, super() 를 사용한다. -> 그래서 부모의 function를 호출해서 부모가 만들어준 queryset를 받고 우리가 filter를 하는 것이다.
-- 함수 기반 View에서의 request인자는 -> 클래스 기반 View에서 self.request에 있다. 그리고 인증을 했다면, self.request.user.is_authenticated -> 이렇게 해서 현재 로그인된 유저의 인스턴스를 얻어올 수 있다.
+- **함수 기반 View에서의 request인자는 -> 클래스 기반 View에서 self.request에 있다. 그리고 인증을 했다면, self.request.user.is_authenticated -> 이렇게 해서 현재 로그인된 유저의 인스턴스를 얻어올 수 있다.**
 - if not self.request.user.is_authenticated: -> 만약 로그인이 되어있지 않다면 / qs = qs.filter(is_public=True) -> is_public 필드가 True인 게시물만 필터해서 저장. 즉, 로그인이 되어있지 않다면 공개된 것만 보라는 의미이다. 로그인이 되어있으면 if 조건에 걸리지 않으니까 모든 것을 다 볼 수 있다.
 - ex) admin 아이디로 로그인 되어있으면 모두 다 조회가 가능하다.
 
 * * *
 
-- get_context_data 메소드는, context가 있다. 
+- **get_context_data 메소드는, context가 있다.** 
   - context는 template 내에서 참조될 값들을 딕셔너리 형태로 준비해주는 것이다.
   - if self.object라는 건, get_object로 부터 획득한 object가 있다면 -> 그 object를 object라는 이름으로 저장해서 넘겨준다. 따라서, 우리가 object라는 이름으로 template내에서 실제로 참조할 수 있다.
-  - 그 다음에, context_object_name = self.get_context_object_name(self.object) -> 이 
-         
-        return qs
+  - 그 다음에, context_object_name = self.get_context_object_name(self.object) -> 이 코드는 get_context_object_name 이라는 함수가 위에 정의되어 있다. get_context_object_name 메소드를 보면, 해당 object가 모델의 인스턴스라면 모델명을 반환하도록 되어있다.
+    - **따라서, ex) Post 모델은 object라는 이름으로도 template내에서 접근할 수 있고 / post라는 이름으로도 접근할 수 있다. 따라서 둘 다 되는 것이다.**
+
+```python
+def post_detail(request: HttpRequest, pk: int) -> HttpResponse:
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'instagram/post_detail.html', {
+         'post': post,
+         'object': post,
+    })
+```
+
+- 이렇게 사실은 object라는 변수를 template에서도 사용할 수 있다.
