@@ -44,3 +44,19 @@ post_detail2 =	PostDetailtView.as_view()
   - 위의 코드인 post_detail1 =	DetailView.as_view(model=Post) 여기에서도 template_name를 지정하지 않았다.
   - 사실 post_detail1 =	DetailView.as_view(model=Post, template_name='') 이렇게 지정할 수도 있다. 근데 지정하지 않으면, 내부적으로 모델명으로부터 이 모델이 속한 app이름도 알 수 있고,
     모델명으로부터 template이름도 알 수 있는 것이다.
+
+- 가급적이면 따로 template_name를 지정하지 않고 유추할 수 있도록 설정하는 것이 좋다.
+
+- **SingleObjectMixin 클래스의 경우 : get_object라는 메소드가 정의되어 있다.** 이게 바로 post = get_object_or_404(Post, pk=pk) 이러한 코드를 의미한다. 함수 기반 뷰는 한 줄이지만, 클래스 기반 뷰는 엄청길게 코드가 되어있다. 여러 경우의 수를 처리해주느라 로직이 길어지는 것이다. 결론적으로 하나의 record를 찾아서 반환해준다. 이게 바로 post라고 볼 수 있다.
+  - https://github.com/django/django/blob/3.0.2/django/views/generic/detail.py 해당 코드를 한 번 읽어보면서 이렇게 내부적으로 구현이 되고 있구나라는 것을 이해할 수 있도록 노력해보자.
+  - self.kwargs 이 부분은 실제 클래스 기반 뷰에서 이미 정의가 되어있는 멤버 값이 된다. 타입은 딕셔너리이다. 우리가 url captured value, 즉 우리가 <int:pk> 처럼 url에서 전달받는 값이
+
+```python
+urlpatterns = [
+    path('archives/<year:year>/<int:month>/<int:day>', views.archives_year),
+ ]
+ ```
+ 
+   - 이렇게 되면, year, month, day라는 값들이 해당 View 함수에 전달되는 것인데 -> 이 때 전달될 때 딕셔너리의 형태로 넘어가게 된다는 것이다. 그래서 그 값이 self.kwargs에 저장되어 있다. 그 딕셔너리에서 pk.url.kwarg이라는 이름의 값을 가져와서 pk라는 값으로 활용할 수 있다. pk = self.kwargs.get(self.pk_url_kwarg)
+   - 그래서, pk 또는 slug라는 값이 있을 때에는 queryset에서 filter를 해준다.
+   - 또한, obj = queryset.get()를 통해 하나의 객체를 찾아내는 것이다. 이런식으로 get_object 메소드가 구현되어 있다.
