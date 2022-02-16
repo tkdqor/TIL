@@ -60,3 +60,11 @@
 - 즉, Bootstrap이 가이드하는 방식대로 그대로 사용할 수도 있고, 여기에 우리의 CSS를 입혀서 사용할 수도 있다. 
   - 현재까지는 table이 너무 화면에 꽉 차게끔 변경이 되었다. 이 문제를 해결하기 위해 -> index template의 {% block content %} 부터 {% endblock %} 까지의 코드들을 전체적으로 감싸는 div element를 만들어보자.
   - 그리고 div element에다가 class="container" 라고 추가해주면 -> bootstrap에서 정의하고 있는 container가 적용이 되어 웹 페이지 사이즈에 따라서 반응하는 table를 만들 수 있게 된다.
+
+9:20부터!
+
+
+
+- 참고 블로그 : https://datamoney.tistory.com/149
+- https://dinfree.com/lecture/frontend/122_css_6.html 해당 블로그 2개 꼭 읽어보기!
+- https://www.airbnb.co.kr/
