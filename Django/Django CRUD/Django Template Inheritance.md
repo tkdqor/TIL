@@ -96,4 +96,25 @@
 - 그런데, 이 상태에서 서버를 실행시키고 보면 TemplateDoesNotExist라는 에러가 발생한다.
   - **django는 기본적으로 django 프로젝트에 등록되어있는 app 단위로 templates라는 이름을 가진 디렉터리를 검색하기 때문에, 우리가 방금 추가했던 -> app 내부에 있는 templates가 아니라, 프로젝트 루트에 위치해있는 templates라는 디렉터리는, app 하위에 존재하는 template이 아니기 때문에 검색 대상에서 제외된다.**
   - 그래서 이 문제를 해결하려면, django의 설정을 변경해서 -> django가 app 하위에 있는 templates 이외에도 프로젝트 루트에 있는 templates 디렉터리를 검색하게끔 해줘야 한다.
-    - 프로젝트 이름의 디렉터리 -> ㄴㄷㅅ
+    - 프로젝트 이름의 디렉터리 -> settings.py에 들어간다.
+    - **프로젝트 디렉터리 내부에 있는 templates라는 디렉터리는, 프로젝트 디렉터리의 하위 디렉터리가 되기 때문에 -> BASE_DIR / 'templates' 라고 지정해주면 된다.**
+
+```python
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+```
+
+- settings.py의 TEMPLATES 항목에서 'DIRS'라는 변수가 있는데 여기에 'DIRS': [BASE_DIR / 'templates'], 다음과 같이 작성해주면, 각 app 하위에 있는 templates 뿐만 아니라 프로젝트 루트 디렉터리 내부에 있는 templates도 검색 대상에 포함이 된다. 이렇게 설정하고 다시 서버를 실행시키면 정상적으로 동작하게 된다.
