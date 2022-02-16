@@ -118,3 +118,118 @@ TEMPLATES = [
 ```
 
 - settings.py의 TEMPLATES 항목에서 'DIRS'라는 변수가 있는데 여기에 'DIRS': [BASE_DIR / 'templates'], 다음과 같이 작성해주면, 각 app 하위에 있는 templates 뿐만 아니라 프로젝트 루트 디렉터리 내부에 있는 templates도 검색 대상에 포함이 된다. 이렇게 설정하고 다시 서버를 실행시키면 정상적으로 동작하게 된다.
+
+
+### static 파일도 프로젝트 디렉터리로 설정하기
+- 마찬가지로 static 파일도 특정 app에서만 사용하는 것이 아니라, 프로젝트 전반에 걸쳐서 사용하고 싶을 수 있을 것이다.
+  - 위와 같이 프로젝트 루트 디렉터리 내부에다가 static 이라는 이름의 디렉터리를 생성하자. 그리고 namespacing 없이 style.css를 새롭게 만들어보자. 
+
+- templates와 마찬가지로 -> 프로젝트 루트 디렉터리에 있는 static 디렉터리는 기본적으로 django의 검색 대상이 아니기 때문에 추가로 설정을 해줘야 한다.
+  - settings.py로 가서 
+
+```python
+...
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+```
+
+- STATIC_URL = '/static/' 이라고 적혀있는 코드 밑에 새롭게 STATICFILES_DIRS라는 변수를 추가해주고, 리스트의 형태로 우리가 추가로 검색하고자 하는 static 디렉터리의 경로를 추가헤준다. 그래서 프로젝트 루트 디렉터리 내부에 static이라는 디렉터리를 검색할 수 있게끔 설정했다.
+- STATICFILES_DIRS라는 변수는 추가만 해주면 우리가 원하는대로 경로를 수정할 수 있다.
+
+- 이제 base.html로 가서 head element 내부에 link를 새롭게 추가해줘야 한다.
+```html
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+...
+```
+
+- django template language의 static tag를 활용해서 namesapce 없이 {% statc 'style.css' %} 이렇게 작성해주면 -> 프로젝트 루트 디렉터리 내부에 있는 static 디렉터리를 검색하게 되고 style.css를 사용할 수 있게 된다.
+- 이렇게 static 파일까지 프로젝트 전반에 걸쳐서 사용될 수 있게끔 설정할 수 있다.
+
+* * *
+
+### 특정 app에 적용되는 CSS
+- 특정 app에서만 사용하게끔 작성되는 코드들의 경우, base.html에 작성하는 것이 아니라 -> base template을 상속받는 부분에다가 원한다면 추가해서 사용해야 한다.
+
+```html
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'posts/style.css' %}"> -->
+    ...
+```
+
+- 위와 같이 base.html에서 style.css를 연동하기 위한 1번째 링크는 프로젝트 디렉터리 내부에 있는 static 디렉터리를 연동하는 것이다.
+  - 하지만 2번째 링크는 posts 라는 app에 적용되는 style.css를 연동하는 코드라서 삭제해줘야 한다. 그래서 이 문제를 해결하기 위해, base.html에서
+
+```html
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    {% block style %}
+    {% endblock %}
+    ...
+```
+
+- 이렇게 style이라는 block를 새롭게 설정해주면 된다. 그러면 base.html를 상속받는 posts라는 app 내부에 있는 template에 들어가보자. 
+  - 예시로 detail.html를 열어서 
+
+```html
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <h1>Post detail</h1>
+
+    
+    {% if post %}
+        <h2>작성자</h2>
+        <p>{{ post.author }}</p>
+        
+        <h2>본문</h2>
+        <p>{{ post.body }}</p>
+
+        <h2>게시일</h2>
+        <p>{{ post.created_at }}</p>
+    {% else %}
+        <p>No Post</p>
+    {% endif %} 
+       
+    <a href="{% url 'posts:index' %}">목록</a>
+    <a href="{% url 'posts:edit' post.id %}">수정하기</a>
+    <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
+
+{% endblock %}
+```
+
+- 다음과 같이 style block를 생성해서, 만약 detail.html 페이지에만 적용해야 하는 style이 따로 있다면 -> 위와 같이 다른 style.css를 연동시켜서 적용해줄 수 있다.
+
+- 이렇게 구현했을 때의 장점은,     
+  base template에서는 namespace가 없는 style.css, 즉 프로젝트 전반에 걸친 스타일링을 먼저 적용해줄 수 있다.      
+  그리고 app 단위로 특별하게 적용해줘야 할 스타일은 style block를 통해서 따로 관리할 수가 있다. posts 앱의 다른 template에도 이렇게 설정해주자.
+  
+- **한가지 유의할 점은, base.html에서 {% load static %}를 입력했다고 해서 끝나는 게 아니라 -> base template를 상속받는 각각의 template에서도 다시 {% load static %}를 해줘야 한다.**
+  - **또한, template 상속을 받을 때는 반드시 extends가 template의 첫번째 줄에 위치해야 한다. load static를 위로 올리게 되면 에러가 나게 된다.**
+  
