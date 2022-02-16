@@ -19,3 +19,4 @@ def EnglishName(*kwargs):
 
 ## 참고 자료
 - https://brunch.co.kr/@princox/180
+- https://wikidocs.net/24
