@@ -8,3 +8,64 @@
 
 - 그래서, 공통적인 레이아웃에 해당하는 부분을 뽑아서 base.html로 구성하고 
   - 웹 페이지별로 차이가 나야하는 부분을 Contents Block이라는 특별한 영역으로 지정해준다. 그리고 각 페이지에서는 이 Contents Block에 해당하는 부분을 채워주면 된다.
+
+
+### 실습해보기
+- 먼저, posts 앱 디렉터리 -> templates -> posts -> 여기에 base.html 생성
+- 그리고 기존의 index.html의 코드들을 복사해서 붙여넣고 모든 template에서 공통적으로 사용했던 부분만 남기기.
+- 실제 차이가 날 부분은 -> {% block content %} 이렇게 실제 차이가 날 부분 시작에 적어주자. 그리고 마지막에는 {% endblock %} 이렇게 입력해주면 된다. 그래서 block의 시작과 끝을 명시적으로 표현한다.
+  - 특별한 영역인 block를 만들어주겠다는 것. 그리고 해당 block의 이름은 content라고 지어주는 것이다.
+
+```html
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heestagram</title>
+</head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
+```
+
+- 위와 같이 base.html을 구성했다면, 이제 각각의 template에서는 content라는 block에 들어갈 내용만 작성해주면 된다.
+  - 그래서 실제로 base template을 상속받아서 content block에 해당하는 내용만 코드를 작성하려고 한다면 -> 각 template에서 base template을 상속받아서 만드는 template이라는 점을 코드로 입력해줘야 한다. 바로 **{% extends 'posts/base.html' %}** 이런식으로 해당 template이 posts 디렉터리 내부에 있는 base.html을 상속받는 중이라고 해주는 것이다.
+
+- 또한, block이 꼭 하나가 아니고 여러개로 구성할 수도 있다. 그래서 상속받은 template에서 어떤 block에 내용을 넣을 것인지 지정해줘야 한다. base.html에서 입력했던 코드와 동일하게 다르게 입력하고자 하는 부분의 처음과 끝에 {% block content %} - {% endblock %} 이렇게 설정해주면 된다.
+
+```html
+{% extends 'posts/base.html' %}
+
+{% block content %}
+
+    <h1>Post detail</h1>
+
+    
+    {% if post %}
+        <h2>작성자</h2>
+        <p>{{ post.author }}</p>
+        
+        <h2>본문</h2>
+        <p>{{ post.body }}</p>
+
+        <h2>게시일</h2>
+        <p>{{ post.created_at }}</p>
+    {% else %}
+        <p>No Post</p>
+    {% endif %} 
+       
+    <a href="{% url 'posts:index' %}">목록</a>
+    <a href="{% url 'posts:edit' post.id %}">수정하기</a>
+    <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
+
+{% endblock %}
+```
+
+- 위의 코드는 detail.html 예시이다.
