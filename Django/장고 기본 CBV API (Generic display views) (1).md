@@ -61,6 +61,7 @@ urlpatterns = [
    - 그래서, pk 또는 slug라는 값이 있을 때에는 queryset에서 filter를 해준다.
    - 또한, obj = queryset.get()를 통해 하나의 객체를 찾아내는 것이다. 이런식으로 get_object 메소드가 구현되어 있다.
 
+* * *
 
 - get_queryset() 메소드의 경우 : 안에 self.queryset은 클래스 속성에 none이라고 되어있다. 즉, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.all()) 이렇게 queryset를 추가할 수도 있다는 것이다. 또는, post_detail = DetailView.as_view(model=Post, queryset=Post.objects.filter(is_public=True)) 이렇게 filter를 걸 수도 있다.
   - 그러면 우리가 DetailView를 구현할 때, 실제 view에서 처리할 때 is_public이 True인 범위내에서만 detail 처리를 한다는 것이다. 만약 1번 게시물의 is_public 필드가 False이면 url을 입력해도 나오지 않는다.        
@@ -89,3 +90,12 @@ post_detail = PostDetailView.as_view()
 - 함수 기반 View에서의 request인자는 -> 클래스 기반 View에서 self.request에 있다. 그리고 인증을 했다면, self.request.user.is_authenticated -> 이렇게 해서 현재 로그인된 유저의 인스턴스를 얻어올 수 있다.
 - if not self.request.user.is_authenticated: -> 만약 로그인이 되어있지 않다면 / qs = qs.filter(is_public=True) -> is_public 필드가 True인 게시물만 필터해서 저장. 즉, 로그인이 되어있지 않다면 공개된 것만 보라는 의미이다. 로그인이 되어있으면 if 조건에 걸리지 않으니까 모든 것을 다 볼 수 있다.
 - ex) admin 아이디로 로그인 되어있으면 모두 다 조회가 가능하다.
+
+* * *
+
+- get_context_data 메소드는, context가 있다. 
+  - context는 template 내에서 참조될 값들을 딕셔너리 형태로 준비해주는 것이다.
+  - if self.object라는 건, get_object로 부터 획득한 object가 있다면 -> 그 object를 object라는 이름으로 저장해서 넘겨준다. 따라서, 우리가 object라는 이름으로 template내에서 실제로 참조할 수 있다.
+  - 그 다음에, context_object_name = self.get_context_object_name(self.object) -> 이 
+         
+        return qs
