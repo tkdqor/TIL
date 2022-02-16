@@ -1,7 +1,7 @@
 ## django 기본 class 기반 뷰 API 중, Base Views 카테고리
 
 ### Built-in CBV API
-- Base views 카테고리 : View, TemplateView, RedirectView
+- **Base views 카테고리 : View, TemplateView, RedirectView**
   - 여기서 View가 모든 class 기반 View의 모체가 된다. 직접 이 클래스 기반 view를 사용할 일은 없다. 주요기능은, HTTP Method별로 지정 이름의 멤버함수를 호출토록 구현했다. 그래서 GET 요청이 오면 -> 실제 
     get이라는 함수를 호출해서 처리하도록 한다. 즉 handler를 호출하게 된다.
     - 클래스 기반 View는 항상 시작할 때, 클래스기반View.as_view() 이렇게 as_view라는 클래스 메소드 호출을 통해서 실제 View function를 만들어내는 것이다. 
@@ -13,10 +13,10 @@
 
   - RedirectView는 View 클래스만 상속받았다.
     - 페이지를 이동하는 것이다. 
-- Generic display views 카테고리 : DetailView, ListView
-- Generic date views 카테고리 : ArchiveIndexView, YearArchiveView, MonthArchiveView, WeekArchiveView, DayArchiveView, TodayArchiveView,
-DateDetailView
-- Generic editing views 카테고리 : FormView, CreateView, UpdateView, DeleteView
+- **Generic display views 카테고리 : DetailView, ListView**
+- **Generic date views 카테고리 : ArchiveIndexView, YearArchiveView, MonthArchiveView, WeekArchiveView, DayArchiveView, TodayArchiveView,
+DateDetailView**
+- **Generic editing views 카테고리 : FormView, CreateView, UpdateView, DeleteView**
 - 공식문서 : https://docs.djangoproject.com/en/3.2/ref/class-based-views/
 
 - 이러한 여러 클래스 기반 뷰를 단순히 사용만 할 수 있겠지만, 내부 구현에 대해서 이해하게 된다면 더 효율적으로 활용할 수 있다.
@@ -55,8 +55,8 @@ urlpatterns = [
 ### settings.py - TEMPLATES
 - 프로젝트 디렉터리 내부 settings.py를 열어서 보면 TEMPLATES라는 부분이 있다. 여기에 'DIRS'라는 항목에다가 설정을 넣을 수 있다.
 - 우리가 지금까지는 template을 app 디렉터리 -> templates 디렉터리 -> app이름과 동일한 디렉터리 밑에 넣었다. 
-- django의 template 시스템에서 django template loader라는 것이 있는데, app 디렉터리 loader와 / 파일 시스템 loader가 있다. app 디렉터리 loader는 app 디렉터리 안에 있는 templates에서 template를 찾아주는 것이고,
-  파일 시스템 loader는 여기 setting.py - TEMPLATES - DIRS에서 정한 경로에서 template를 찾아주게 된다.
+- **django의 template 시스템에서 django template loader라는 것이 있는데, app 디렉터리 loader와 / 파일 시스템 loader가 있다. app 디렉터리 loader는 app 디렉터리 안에 있는 templates에서 template를 찾아주는 것이고,
+  파일 시스템 loader는 여기 setting.py - TEMPLATES - DIRS에서 정한 경로에서 template를 찾아주게 된다.**
   - 그래서 app 디렉터리 loader에서 찾는 경로에서는 app과 관련된 template 파일을 구현하는 용도로 쓰고 / 특정 app에 속하지 않는 template의 경우에는 File system template loader에서 찾을 수 있도록 settings.py에서 설정한다.     
 
 ```python
@@ -87,7 +87,7 @@ TEMPLATES = [
 
 
 ### RedirectView 관련
-- 우리가 웹에서 페이지를 이동하는 방식이 크게 2가지가 있다.
+- **우리가 웹에서 페이지를 이동하는 방식이 크게 2가지가 있다.**
   - 1번째는 서버 응답에서 redirect 상태 코드를 주는 것이다. 200 상태 코드는 ok이고 404는 Page not found이고 500번대는 server에러 이다.
     - 301, 302 응답은 server 응답에서 페이지를 이동하라는 응답이 된다. 이렇게 되면 브라우저가 알아서 이동하는 방식이 있다.
   - 2번째는, 자바스크립트 단에서 자바스크립트 API에서도 주소를 이동시키는 방식이 있다.
