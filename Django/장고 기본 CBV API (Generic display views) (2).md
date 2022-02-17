@@ -173,6 +173,7 @@ python manage.py shell
     ...:     post = random.choice(post_list)
     ...:     post.pk = None
     ...:     post.save()
+```
 
 
 - random.choice(post_list) 이렇게 하면 랜덤하게 가져올 수 있다.
