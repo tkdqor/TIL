@@ -228,9 +228,21 @@
   - 만약, 이 회색을 없애고 싶다면 class="form-control-plaintext" -> 이렇게 plaintext라는 클래스 속성을 추가해주면 된다. 
  
  
+ ### Materialize 
+ - 구글에 Materialize를 검색하고 showcase를 클릭해보면, https://materializecss.com/showcase.html 다양한 디자인이 있다.
+   - 이 Material 디자인은 구글 android 모바일 운영체제에서 기본적으로 사용하고 있는 디자인이다. 
+
+- Bootstrap이외에 이러한 Materialize나 다양한 라이브러리가 있다. 그래서 이러한 라이브러리를 사용하면, class 몇 개를 추가하는 것으로 예쁜 스타일을 쉽게 입힐 수 있다.
  
  
- 24:30!
+ ### Bootstrap example
+ - Bootstrap 홈페이지에서 example를 클릭해보면 https://getbootstrap.com/docs/5.1/examples/ 다음과 같이 Bootstrap를 활용했을 때, 어떤 형태의 레이아웃을 만들 수 있는지 가이드가 되어있다. 여기 화면들은 오직 Bootstrap를 활용해서 만든 페이지이다.
+ - https://getbootstrap.com/docs/5.1/examples/cover/ 이렇게 랜딩 페이지에서 활용할 수 있는 페이지나 https://getbootstrap.com/docs/5.1/examples/pricing/ 구독형 서비스에 필요한 페이지, https://getbootstrap.com/docs/5.1/examples/checkout/ 결제 페이지 등을 활용할 수 있다.
+
+- 또한, 구글에다가 Bootstrap template이라고 검색을 하면 https://startbootstrap.com/themes bootstrap를 활용해서 만든 템플릿들이 있다. 그리고 여기에서 사용되는 bootstrap은 버전 4이기 때문에 최신 버전과 맞지 않아 동작하지 않는 코드가 있을 수 있다.
+
+- 이러한 스타일링을 도와주는 라이브러리를 사용하게 되면, 라이브러리를 연동한 이후에는 class를 몇 개 적어주는 것만으로도 다양한 스타일을 입힐 수가 있다. 사용법은 공식 문서를 참고해보자.
+ 
  
 
 - 참고 블로그 : https://datamoney.tistory.com/149
