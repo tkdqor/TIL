@@ -61,7 +61,69 @@
   - 현재까지는 table이 너무 화면에 꽉 차게끔 변경이 되었다. 이 문제를 해결하기 위해 -> index template의 {% block content %} 부터 {% endblock %} 까지의 코드들을 전체적으로 감싸는 div element를 만들어보자.
   - 그리고 div element에다가 class="container" 라고 추가해주면 -> bootstrap에서 정의하고 있는 container가 적용이 되어 웹 페이지 사이즈에 따라서 반응하는 table를 만들 수 있게 된다.
 
-9:20부터!
+
+### Bootstrap으로 페이지 구성하기 - Form element
+- 일단 글쓰기 페이지인 new.html을 수정해보자.
+```html
+{% block content %}
+
+<div class="container">
+
+    <h1>New Post</h1>
+
+    <form method="POST" action="{% url 'posts:create' %}">
+        {% csrf_token %}
+
+        <div>
+            <label for="author">Author</label>
+            <input id="author" type="text" name="author">
+        </div>
+        
+        <div>
+            <label for="body">Body</label>
+            <textarea id="body" cols="40" rows="10" name="body"></textarea>
+        </div>
+
+        <input type="submit" value="작성하기">   
+    </form>
+   
+    <a href="{% url 'posts:index' %}">목록</a>
+
+</div>    
+
+{% endblock %}    
+```
+
+- block content 사이의 내용을 감싸는 div.container 생성 -> 그러면 여백을 가진 레이아웃이 구성된다.
+- **bootstrap에서 form를 검색해보기.**
+  - 맨 처음에 나오는 예제를 보면, label element에 class="form-label"이 설정되어있고 / input element에는 class="form-control" 이라는 클래스를 부여함으로서 CSS를 구성할 수 있다고 나와있다. 이러한 클래스들을 우리의 html element에도 적용시켜보자.
+
+```html
+...
+<div>
+     <label class="form-label" for="author">Author</label>
+     <input class="form-control" id="author" type="text" name="author">
+</div>
+
+- 그리고, textarea의 경우에는 Form control이라는 별도의 문서에서 설명하고 있다고 한다. 똑같이 class="form-control" 적용해보자.
+
+```html
+...
+<div>
+    <label class="form-label" for="author">Author</label>
+    <input class="form-control" id="author" type="text" name="author">
+</div>
+        
+<div>
+    <label class="form-label" for="body">Body</label>
+    <textarea class="form-control" id="body" cols="40" rows="10" name="body"></textarea>
+</div>
+```
+
+
+### Bootstrap으로 margin 설정하기
+
+
 
 
 
