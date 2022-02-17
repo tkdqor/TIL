@@ -187,6 +187,50 @@
   - 그래서 개발자도구를 열고 웹 페이지의 너비가 768px보다 클 경우에는 부모 element에 반만큼만 공간을 차지하게 되고 / 웹 페이지의 넓이가 768px보다 작을 경우에는 부모 element의 너비만큼 다 차지하고 있는 것을 볼 수 있다.
  
  
+
+### form element
+- detail.html과 같이 정보를 단순히 보여주기만 하는 페이지에서 form를 사용할 때는, 우리가 데이터를 전송하는 것이 아니기 때문에 form element의 method와 action를 전부 지워주고 / 데이터 전송을 하지 않으니까 {% csrf_token %} 도 지워주면 된다. / 그리고 제출하는 것이 아니니까 submit 버튼도 삭제하자.
+
+- 그리고 input element에 기록되어있는 정보들이 수정될 수 없도록 하기 위해서는, readonly라는 attribute를 사용해주면 된다. textarea에도 추가해줄 수 있다.
+
+```html
+{% block content %}
+
+<div class="container">
+
+    <h1>Post detail</h1>
+
+    <form>
+
+        <div class="mb-3 col-md-6">
+            <label class="form-label" for="author">Author</label>
+            <input readonly class="form-control" id="author" type="text" name="author" value="{{ post.author }}">
+        </div>
+        
+        <div class="mb-3 col-md-6">
+            <label class="form-label" for="body">Body</label>
+            <textarea readonly class="form-control" id="body" cols="40" rows="10" name="body">{{ post.body }}</textarea>
+        </div>
+
+    </form>
+   
+    <a href="{% url 'posts:index' %}">목록</a>
+    <a href="{% url 'posts:edit' post.id %}">수정하기</a>
+    <a href="{% url 'posts:delete' post.id %}">삭제하기</a>
+
+</div>    
+
+{% endblock %}
+```
+
+- 그래서 위와 같이 detail 페이지를 수정할 수 있다.
+- 그리고, readonly attribute가 적용된 input과 textarea의 경우에는 배경이 회색으로 칠해져 있다.
+  - 만약, 이 회색을 없애고 싶다면 class="form-control-plaintext" -> 이렇게 plaintext라는 클래스 속성을 추가해주면 된다. 
+ 
+ 
+ 
+ 
+ 24:30!
  
 
 - 참고 블로그 : https://datamoney.tistory.com/149
