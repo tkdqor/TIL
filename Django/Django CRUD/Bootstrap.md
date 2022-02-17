@@ -157,6 +157,37 @@
 - 그리고 Utilities - Spacing를 누르면 -> margin과 padding에 대한 내용이 나와있다. https://getbootstrap.com/docs/5.1/utilities/spacing/
   - m은 margin / p는 padding / t는 top / b는 bottom / s는 left / e는 right 이렇게 사용하게 된다.
  
+ 
+### Bootstrap에서 column 설정으로 레이아웃 구성하기
+- 레이아웃 상, 가로의 길이와 구성을 수정하기 위해서는 요소들을 담고있는 div element 등에 
+```html
+<form method="POST" action="{% url 'posts:create' %}">
+        {% csrf_token %}
+
+        <div class="mb-3 col-md-6">
+            <label class="form-label" for="author">Author</label>
+            <input class="form-control" id="author" type="text" name="author">
+        </div>
+        
+        <div class="mb-3 col-md-6">
+            <label class="form-label" for="body">Body</label>
+            <textarea class="form-control" id="body" cols="40" rows="10" name="body"></textarea>
+        </div>
+        ...
+```    
+
+- 다음과 같이 class 안에 추가로 설정을 해준다.
+  - **col은 column의 약자이고 / md는 medium의 약자이다.**
+  - **기존의 div element가 차지하고 있던 공간을 12등분 한 다음에 -> 각각의 공간을 column이라고 한다. 즉, col-md-6는 총 12개의 column 중에서 6개의 column에 해당하는 만큼만 너비를 차지하겠다는 의미이다.**
+
+- **그럼 md는 무엇일까?** Bootstrap 홈페이지에서 Layout - Containers를 가보면,
+  - **Medium은 768px 이상인 경우를 의미하고 있다. 즉, 브라우저의 전체 사이즈, 너비가 768px 이상인 경우를 의미한다.**
+  - **그래서 개발자도구에서 화면 사이즈를 조절하면 -> 현재 웹 페이지의 너비를 바로 확인할 수 있다. 이 브라우저의 너비가 768px 보다 작아지는 순간, col-md-6이라는 스타일이 적용되지 않는다.**
+  - **즉, 기본적으로 div element는 부모 element의 너비를 전부 다 차지하게 되는데, 디바이스의 너비가 medium, 768px 이상일 경우에는 -> 부모의 너비를 12등분 한 column를 활용해서 총 6개의 column, 즉 부모 element 너비의 반만큼을 차지하겠다는 것이고 단, 디바이스의 너비가 768px 이상일 경우에만 그렇게 하겠다는 설정이다.**
+  - 그래서 개발자도구를 열고 웹 페이지의 너비가 768px보다 클 경우에는 부모 element에 반만큼만 공간을 차지하게 되고 / 웹 페이지의 넓이가 768px보다 작을 경우에는 부모 element의 너비만큼 다 차지하고 있는 것을 볼 수 있다.
+ 
+ 
+ 
 
 - 참고 블로그 : https://datamoney.tistory.com/149
 - https://dinfree.com/lecture/frontend/122_css_6.html 해당 블로그 2개 꼭 읽어보기!
