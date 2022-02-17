@@ -54,8 +54,8 @@ INSTALLED_APPS = [
 {% endif %}
 ```
 
-- django template language에서 template tag는 위에 bootstrap_pagination 여기에 해당하는 부분이다. 항상 중괄호와 %를 이용해서 사용해야 한다. template tag가 함수의 이름이라고 보면 된다.
-  그리고, 원래 함수라면 bootstrap_pagination(page_obj, size="large") -> 이런식으로 호출할텐데 django template language에서는 소괄호와 콤마가 없다라고 보면 된다.
+- **django template language에서 template tag는 위에 bootstrap_pagination 여기에 해당하는 부분이다. 항상 중괄호와 %를 이용해서 사용해야 한다. template tag가 함수의 이름이라고 보면 된다.
+  그리고, 원래 함수라면 bootstrap_pagination(page_obj, size="large") -> 이런식으로 호출할텐데 django template language에서는 소괄호와 콤마가 없다라고 보면 된다.**
 
 - 또한, pagination의 위치를 가운데로 옮기고 싶다면 
 
