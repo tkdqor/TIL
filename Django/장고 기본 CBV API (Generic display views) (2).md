@@ -106,3 +106,36 @@ class MultipleObjectMixin(ContextMixin):
 - 클래스 바로 밑에 들어있는 설정들이 바로 우리가 클래스.as_view() 를 호출할 때 모두 세팅할 수 있는 값들이다. post_list2 = ListView.as_view(model=Post, paginate_by=10) 이런식으로 말이다.
 - 여러 부모 클래스들의 설정들은 as_view에서 모두 활용할 수 있다. 그래서 클래스를 볼 때, 이렇겍 들어가 있는 설정들을 읽어보자.
 - python에서는 어떠한 값들을 콤마로 구별해서 소괄호로 감싸주게 되면 -> 튜플이 된다. 소괄호로 감싸지 않아도 튜플이다.
+
+- 인자로 받은 object_list가 있다면 그 값을 쓰고 없다면 self.object_list가 활용됨.
+  - 그리고 page_size라는 값이 있다면 페이징 처리를 해주고, 값이 없다면 페이징처리를 하지 않겠다는 것.
+  - 그리고 ListView라는 클래스 기반 뷰의 템플릿에서는 context 딕셔너리에 있는 이러한 값에 다 접근할 수 있는 것이다.
+
+
+```python
+class BaseListView(MultipleObjectMixin, View):
+    """A base view for displaying a list of objects."""
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        allow_empty = self.get_allow_empty()
+        
+        if not allow_empty:
+            # When pagination is enabled and object_list is a queryset,
+            # it's better to do a cheap query than to load the unpaginated
+            # queryset in memory.
+            if self.get_paginate_by(self.object_list) is not None \
+                    and hasattr(self.object_list, 'exists'):
+                is_empty = not self.object_list.exists()
+            else:
+                is_empty = not self.object_list
+            if is_empty:
+                raise Http404(_('Empty list and “%(class_name)s.allow_empty” is False.') % {
+                     'class_name': self.__class__.__name__,
+                })
+        context = self.get_context_data()
+        return self.render_to_response(context)
+```
+
+- BaseListView 클래스는 get 함수가 호출이 될 때, get_queryset()를 통해서 queryset이 self.object_list에 담긴다.
+- 그리고 밑에는, empty를 허용하지 않는다면 -> 그리고 항목들이 없다면, Http404 에러가 발생하게 된다. 
+  - 보통 ListView에서 항목들이 없어도 그냥 빈 리스트 응답을 한다. 그래서 MultipleObjectMixin클래스의 설정인 allow_empty가 True인 것이다.
