@@ -104,6 +104,7 @@
      <label class="form-label" for="author">Author</label>
      <input class="form-control" id="author" type="text" name="author">
 </div>
+```
 
 - 그리고, textarea의 경우에는 Form control이라는 별도의 문서에서 설명하고 있다고 한다. 똑같이 class="form-control" 적용해보자.
 
@@ -122,10 +123,40 @@
 
 
 ### Bootstrap으로 margin 설정하기
+- margin를 주고자 하는 html element에다가 class= 이렇게하고 margin을 의미하는 m을 적고 / top, down, left, right 방향을 적어주면 된다. / 그리고 얼만큼 주고 싶은지 - 하고 숫자를 적자.
+  - 만약, 아래쪽에 margin를 주고 싶다면 class="mb-3" 이렇게 하면 되는 것이다.
+
+```html
+<div class="mb-3">
+      <label class="form-label" for="author">Author</label>
+      <input class="form-control" id="author" type="text" name="author">
+</div>
+```
+
+- 이렇게 bootstrap을 이용해서 margin를 설정해볼 수 있다.
+
+
+### Bootstrap으로 button 설정하기
+- bootstrap의 form를 검색하고 overview를 클릭해보면, 우리가 봤던 form 예제에 버튼 코드도 볼 수 있다.
+  - button element를 사용하고 있고 type이 submit인 것을 확인할 수 있다. 또한, value attribute를 사용하지 않고 content로 적어주면 버튼에 나타나게 된다.
+  - 이 button element로 input element를 교체해보자.
+
+```html
+<div class="mb-3">
+     <input type="submit" value="작성하기">   
+     <button type="submit" class="btn btn-primary">작성하기</button>
+</div>
+```
+
+- **이렇게 input element이든, button element이든 둘 다 type이 submit이기만 하면 -> form element 내부에서 사용자가 입력한 데이터가 HTTP Request, 전송을 유발시키는 버튼으로써 활용할 수 있다.**
 
 
 
-
+### Bootstrap의 class="container"
+- bootstrap에서 Layout - Containers를 누르면 -> 우리가 사용했던 container에 대한 설명이 나와있다. https://getbootstrap.com/docs/5.1/layout/containers/ 
+- 그리고 Utilities - Spacing를 누르면 -> margin과 padding에 대한 내용이 나와있다. https://getbootstrap.com/docs/5.1/utilities/spacing/
+  - m은 margin / p는 padding / t는 top / b는 bottom / s는 left / e는 right 이렇게 사용하게 된다.
+ 
 
 - 참고 블로그 : https://datamoney.tistory.com/149
 - https://dinfree.com/lecture/frontend/122_css_6.html 해당 블로그 2개 꼭 읽어보기!
