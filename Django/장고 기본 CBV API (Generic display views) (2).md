@@ -143,4 +143,64 @@ class BaseListView(MultipleObjectMixin, View):
 
 
 ### 적용해보기
-- ㅁㄴ어림ㄴ어리ㅏㅁㄴ
+- 게시글 데이터를 먼저 뻥튀기 해보기(추천방식은 아니다)
+```terminal
+python manage.py shell
+
+>>> from instagram.models import Post
+
+>>>  post = Post.objects.get(pk=1)
+
+>>> post.pk
+1
+
+>>> post.pk = None
+>>> post.save()
+```
+
+- 위의 경우처럼, post.pk = None하고 post.save()를 하면 -> 새롭게 모델 안에 객체 1개가 생성된다.
+  - 이렇게 되는 이유는 모델인스턴스.save()가 pk값이 None인지 아닌지에 따라서 insert를 할지 update를 할지 결정하기 때문이다.
+
+```terminal
+>>> post_list = list(Post.objects.all())
+
+>>> import random
+
+>>> random.choice(post_list)
+<Post: 첫번째 메세지>
+
+>>> for i in range(100):
+    ...:     post = random.choice(post_list)
+    ...:     post.pk = None
+    ...:     post.save()
+
+
+- random.choice(post_list) 이렇게 하면 랜덤하게 가져올 수 있다.
+- 그리고 for 반복문을 통해서 총 100개의 데이터를 생성해볼 수 있다. 
+  - 이 상태에서 views.py로 가서 
+  
+```python
+# 목록페이지 조회 클래스 기반 View
+post_list = ListView.as_view(model=Post, paginate_by=10)
+...
+```
+
+
+
+- 이렇게 paginate_by=10을 설정한다면, 한 페이지에 10개씩 처리하겠다는 의미이다. -> 그러면 새로고침했을 때 웹 페이지 화면에 10개만 나오게 된다.
+  - 그리고 주소에 ?page=2라고 추가하면 두번째 페이지가 나오게 된다.
+  
+  
+```html
+...
+    </table>
+
+    {{ is_paginated }}
+    {{ page_obj }}
+</body>
+</html>
+```
+
+
+- 그리고 목록을 보여주는 html 페이지에서 is_paginated 그리고 page_obj라는 이름의 변수를 활용할 수 있다.
+  - 웹 페이지에서 True <Page 4 of 11> 이렇게 출력이 된다. -> is_paginated가 되었다고 True를 반환하고, page_obj로 전체 페이지 수 중 몇 페이지인지 나타내준다.
