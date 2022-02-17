@@ -139,3 +139,8 @@ class BaseListView(MultipleObjectMixin, View):
 - BaseListView 클래스는 get 함수가 호출이 될 때, get_queryset()를 통해서 queryset이 self.object_list에 담긴다.
 - 그리고 밑에는, empty를 허용하지 않는다면 -> 그리고 항목들이 없다면, Http404 에러가 발생하게 된다. 
   - 보통 ListView에서 항목들이 없어도 그냥 빈 리스트 응답을 한다. 그래서 MultipleObjectMixin클래스의 설정인 allow_empty가 True인 것이다.
+  - 만약 이렇게 404 에러를 내고 싶다면, allow_empty를 False로 주면 된다.
+
+
+### 적용해보기
+- ㅁㄴ어림ㄴ어리ㅏㅁㄴ
