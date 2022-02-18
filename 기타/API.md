@@ -20,3 +20,7 @@ ex) 우리가 카카오 책 검색 open API 서버 주소로 어떤 책에 대�
 - 해당 JSON 데이터를 JavaScript로 console에 표시할 수 있다.
   - 그리고나서, Jquery를 이용해 -> html의 특정 element에 어떤 요소를 넣어줄 수 있다. 
   - <script></script> 이렇게 JavaScript 코드 사이에 HTML 특정 element를 설정하고 해당 데이터를 보여줄 수 있다. 
+
+
+### 참고자료
+- https://enjoyinjoanne.tistory.com/56
