@@ -1,5 +1,6 @@
 ## API
 - Application Programming Interface의 약자로, front-end가 back-end에 요청을 할 때 특정 규칙에 맞게 요청해야 하는데 이러한 사용 규칙을 제공하는 것을 API라고 한다.
+- **웹서버 따로 API서버를 따로 구축할 수 있다.**
 
 
 ### open API
