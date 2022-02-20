@@ -15,7 +15,7 @@
 
 
 ### ArchiveIndexView
-- 지정 날짜필드 역순으로 정렬된 목록 à 최신 목록을 보고자 할 때 사용
+- 지정 날짜필드 역순으로 정렬된 목록 -> 최신 목록을 보고자 할 때 사용
 - 필요한 URL 인자는 없다.
 - 필수 옵션은 model / date_field : 정렬 기준 필드 / date_list_period (디폴트: "year")
 
@@ -158,3 +158,191 @@ post_archive = ArchiveIndexView.as_view(model=Post, date_field='created_at', pag
   - 내가 이해한 것은, date가 하나 출력될 때 그 값이 Year만 나오게끔 필터링 해준 것이다..
 
 - 이 포맷은 django template tag 공식 문서에 보면 이와 관련된 포메팅 포맷이 있다.
+
+
+### YearArchiveView
+- 지정 year년도의 목록
+- 필요한 URL 인자 : "year" 
+- 옵션
+  - model, date_field / date_list_period (디폴트: "month") - 지정 년도에서 month 단위로 Record가 있는 날짜 리스트 / make_object_list (디폴트: False) - 거짓일 경우, object_list를 비움. 그래서 특정 연도를 보고 그 연도에 해당하는 object_list를 보고자 한다면 make_object_list를 True로 변경하면 된다.
+
+- Context
+  - year, previous_year, next_year / date_list: 전체 Record의 월 목록 / object_list
+
+- 디폴트 template_name_suffix : "_archive_year.html"
+
+```python
+# urls.py 설정
+urlpatterns	=	[
+re_path(r'^archive/(?P<year>\d{4})/$',	...),
+]
+
+# views.py 설정
+from django.views.generic.dates	import YearArchiveView
+from .models import Post
+
+class PostYearArchiveView(YearArchiveView):
+  model	=	Post
+  date_field = 'created_at'
+  #	make_object_list = False
+```
+
+- 예시로 직접 해본다면,
+
+```python
+post_archive_year = YearArchiveView.as_view(model=Post, date_field='created_at')
+```
+
+- views.py에서 다음과 같이 설정하고 
+
+```python
+urlpatterns = [
+    path('archive/<year:year>/', views.post_archive_year, name='post_yarchive_year'),
+]
+```
+
+- 위와 같이 urls.py에서는 year라는 인자를 꼭 넣어줘야 한다. 그리고 template에 post_archive_year.html를 만들고
+
+```html
+<h2>year</h2>
+{{ year }}
+
+<h2>previous_year</h2>
+{{ previous_year }}
+
+<h2>next_year</h2>
+{{ next_year }}
+
+<h2>date_list</h2>
+{{ date_list }}
+
+<h2>object_list</h2>
+{{ object_list }}
+```
+
+- 제공되는 context를 작성해보자. 그러면 출력이 된다. {{ date_list }}라고 하면 이제 년과 월까지 의미있는 데이터가 된다. {{ object_list }}는 현재 비어있다. 그런데, views.py에서 
+  - post_archive_year = YearArchiveView.as_view(model=Post, date_field='created_at', make_object_list=True) 이렇게 make_object_list=True 로 주면 object_list가 채워지게 된다.
+
+
+<img width="1134" alt="image" src="https://user-images.githubusercontent.com/95380638/154829831-ab49ea2f-098b-4a09-988b-0a8b330247ab.png">
+- 이렇게 백엔드가 준비되어있고 프론트엔드를 꾸밀 수 있다면 좋을 것이다.
+
+* * *
+19분부터 converter 설명 다시보기..!
+
+
+### MonthArchiveView
+- 지정 year/month 월의 목록
+- 필요한 URL 인자 : "year", "month"
+- 옵션
+  - month_format (디폴트: "%b") / 숫자 포맷은 "%m"
+- 디폴트 template_name_suffix : "_archive_month.html"
+- Context
+  - month, previous_month, next_month / date_list: 전체 Record의 날짜 목록 / object_list
+
+
+```python
+# urls.py
+urlpatterns	=	[
+re_path(r'^archive/(?P<year>\d{4})/(?P<month>\d{1,2})/$',	...),
+]
+
+# views.py
+from django.views.generic.dates	import MonthArchiveView
+from .models	import Post
+
+class PostMonthArchiveView(MonthArchiveView):
+  model	=	Post
+  date_field	=	'created_at'
+  month_format	=	'%m'
+```  
+
+
+### WeekArchiveView
+- 지정 year/week 주의 목록
+- 필요한 URL 인자 : "year", "week"
+- 옵션
+  - week_format / "%U" (디폴트) : 한 주의 시작을 일요일로 지정 / "%W" : 한 주의 시작을 월요일로 지정
+
+- 디폴트 template_name_suffix : "_archive_week.html"
+- Context
+  - week, previous_week, next_week / date_list: 전체 Record의 날짜 목록 / object_list
+
+```python
+# urls.py
+urlpatterns	=	[
+    re_path(r'^archive/(?P<year>\d{4})/week/(?P<week>\d{1,2})/$',	...),
+]
+
+# views.py
+from django.views.generic.dates	import WeekArchiveView
+from .models	import Post
+
+class PostWeekArchiveView(WeekArchiveView):
+  model	=	Post
+  date_field	=	'created_at'
+  week_format	=	'%U'
+```
+
+
+### DayArchiveView
+- 지정 year/month/day 일의 목록
+- 필요한 URL 인자 : "year", "month", "day"
+- 옵션 : month_format (디폴트: "%b") / 숫자 포맷은 "%m"
+- 디폴트 template_name_suffix : "_archive_day.html"
+- Context
+  - day, previous_day, next_day / date_list: 전체 Record의 날짜 목록 / object_list
+
+```python
+# urls.py
+urlpatterns	=	[
+    re_path(r'^archive/(?P<year>\d{4})/'
+    r'(?P<month>\d{1,2})/(?P<day>\d{1,2})/$',	...),
+]
+
+# views.py
+from django.views.generic.dates	import DayArchiveView
+from .models	import Post
+
+class PostDayArchiveView(DayArchiveView):
+    model	=	Post
+    date_field	=	'created_at'
+    month_format	=	'%m'
+```
+
+
+### TodayArchiveView
+- 오늘 날짜의 목록
+- 필요한 URL 인자 : 없음.
+- DayArchiveView와 유사하게 동작하지만, year/month/day 인자를 받지 않는다.  /  previous_day, next_day 미제공
+
+```python
+# views.py
+from django.views.generic.dates	import TodayArchiveView
+from .models	import Post
+
+post_today_archive	=	TodayArchiveView.as_view(
+    model=Post,	date_field='created_at')
+```
+
+
+### DateDetailView
+- 지정 year/month/day 목록 중에서 특정 pk의 detail
+- 필요한 URL 인자 : "year", "month", "day", "pk"(or "slug")
+
+```python
+# urls.py
+urlpatterns	=	[
+    re_path(r'^archive/(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/?P<pk>\d+/$',	...),
+]
+
+# views.py
+from django.views.generic.dates	import DateDetailView
+from .models	import Post
+
+class PostDateDetailView(DateDetailView):
+    model	=	Post
+    date_field	=	'created_at'
+    month_format	=	'%m'
+```    
+
