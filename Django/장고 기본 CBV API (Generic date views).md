@@ -30,3 +30,105 @@ model=Post,	date_field='created_at')
 - 그래서 코드처럼 어떤 모델에 대한 리스트를 보여줄 것이며 이 때 어떤 날짜필드에 대해서 역순정렬을 할 것인지 설정하면 된다.
 - 그리고 해당 queryset에 대해 date_list를 (날짜목록) 제공해준다. 그래서 이 View는 지금 date_list_period의 디폴트가 year이니까 date_list에 year단위로 그룹핑을 해서 year 리스트를 제공해준다. 만약, month로 수정하면 월단위로 해준다.
 - 디폴트 template_name_suffix : "_archive.html"
+- Context로는 다음과 같은 사항을 전달해준다.(즉, html에서 django template language 변수로 latest와 date_list가 활용가능하다) -> latest : QuerySet / date_list : 등록된 Record의 년도 목록    
+
+
+```python
+urlpatterns = [
+    path('archive/', views.post_archive, name='post_archive'),
+]
+```
+
+- urls.py에서 설정하고
+
+```python
+post_archive = ArchiveIndexView.as_view(model=Post, date_field='created_at')
+```
+
+- views.py에서도 설정한 다음, 앱 내부 templates - 앱이름 디렉터리 안에 post_archive.html을 새롭게 생성해주자.
+
+```html
+<h2>latest</h2>
+
+{{ latest }}
+
+<h2>date_list</h2>
+
+{{ date_list }}
+```
+
+- 이렇게 설정하면 해당 필드 역순으로 latest가 전체를 보여준다. 그리고 date_list는 전체 queryset이 모두 2022년에 생성했으니 2022년으로 표시가 된다. 다른 날짜를 확인해보기 위해 작업을 해보자.
+
+```terminal
+In [1]: from instagram.models import Post
+
+In [2]: post_list = Post.objects.all()
+
+In [3]: import random
+
+In [4]: for post in post_list:
+   ...:     year = random.choice(range(1990, 2022))
+   ...:     month = random.choice(range(1, 13))
+   ...:     post.created_at = post.created_at.replace(year=year, month=month)
+   ...:     post.save()
+   
+   
+In [6]: Post.objects.all().values_list("created_at")
+Out[6]: <QuerySet [(datetime.datetime(2018, 2, 17, 2, 15, 3, 45194, tzinfo=<UTC>),), (datetime.datetime(2000, 11, 17, 2, 15, 3, 44857, tzinfo=<UTC>),), (datetime.datetime(1991, 8, 17, 2, 15, 3, 44511, tzinfo=<UTC>),), (datetime.datetime(2003, 4, 17, 2, 15, 3, 44140, tzinfo=<UTC>),), (datetime.datetime(2003, 8, 17, 2, 15, 3, 43801, tzinfo=<UTC>),), (datetime.datetime(1993, 7, 17, 2, 15, 3, 43483, tzinfo=<UTC>),), (datetime.datetime(1999, 5, 17, 2, 15, 3, 43163, tzinfo=<UTC>),), (datetime.datetime(1994, 10, 17, 2, 15, 3, 42831, tzinfo=<UTC>),), (datetime.datetime(2008, 5, 17, 2, 15, 3, 42483, tzinfo=<UTC>),), (datetime.datetime(1993, 9, 17, 2, 15, 3, 42144, tzinfo=<UTC>),), (datetime.datetime(2006, 8, 17, 2, 15, 3, 41816, tzinfo=<UTC>),), (datetime.datetime(2000, 3, 17, 2, 15, 3, 41463, tzinfo=<UTC>),), (datetime.datetime(1994, 12, 17, 2, 15, 3, 41073, tzinfo=<UTC>),), (datetime.datetime(2019, 2, 17, 2, 15, 3, 40758, tzinfo=<UTC>),), (datetime.datetime(2000, 5, 17, 2, 15, 3, 40426, tzinfo=<UTC>),), (datetime.datetime(2014, 7, 17, 2, 15, 3, 40104, tzinfo=<UTC>),), (datetime.datetime(2007, 12, 17, 2, 15, 3, 39773, tzinfo=<UTC>),), (datetime.datetime(2013, 8, 17, 2, 15, 3, 39440, tzinfo=<UTC>),), (datetime.datetime(1993, 2, 17, 2, 15, 3, 39118, tzinfo=<UTC>),), (datetime.datetime(2002, 7, 17, 2, 15, 3, 38794, tzinfo=<UTC>),), '...(remaining elements truncated)...']>   
+   
+
+In [7]: Post.objects.all().values_list("created_at__year")
+Out[7]: <QuerySet [(2018,), (2000,), (1991,), (2003,), (2003,), (1993,), (1999,), (1994,), (2008,), (1993,), (2006,), (2000,), (1994,), (2019,), (2000,), (2014,), (2007,), (2013,), (1993,), (2002,), '...(remaining elements truncated)...']>
+
+
+In [8]: Post.objects.all().values_list("created_at__year", flat=True)
+Out[8]: <QuerySet [2018, 2000, 1991, 2003, 2003, 1993, 1999, 1994, 2008, 1993, 2006, 2000, 1994, 2019, 2000, 2014, 2007, 2013, 1993, 2002, '...(remaining elements truncated)...']>
+
+
+In [9]: year_list = _
+
+
+In [11]: set(year_list)
+Out[11]: 
+{1990,
+ 1991,
+ 1992,
+ 1993,
+ 1994,
+ 1995,
+ 1996,
+ 1997,
+ 1998,
+ 1999,
+ 2000,
+ 2001,
+ 2002,
+ 2003,
+ 2004,
+ 2005,
+ 2006,
+ 2007,
+ 2008,
+ 2009,
+ 2010,
+ 2011,
+ 2012,
+ 2013,
+ 2014,
+ 2015,
+ 2016,
+ 2017,
+ 2018,
+ 2019,
+ 2020,
+ 2021}
+```
+
+- replace()는 python의 DateTimeField에서 지원해준다. 그래서 특정 년, 월을 변경하고자 할 때 가능하다.
+- Post 모델의 created_at 필드는 데이터가 생성될 때 값이 자동으로 들어가게끔 설정했기에 이미 생성되어있는 대상을 가져와서 하는 것이라 모델에서 직접 바뀌는 건 아니다. 그냥 임의로 변경을 해보는 것이다.
+- **Post.objects.all().values_list("created_at")** -> 이렇게 입력하면 지정한 필드만 값을 가져올 수 있게 된다.
+  - 또한, **Post.objects.all().values_list("created_at__year")** -> 이런식으로 필드 뒤에 언더바 2개로 year를 입력하면 년도만 그 필드의 연도만 가져올 수 있다. 여기까지는 개별로 리스트 퀘리셋에 튜플이 들어있는데 flat 옵션을 주면 튜플에서 빠져나오게 된다.
+- 그리고 django shell에서 직전 결과는 _로 불러올 수 있다. year_list = _ -> 이건 year_list라는 변수에 직전 결과값을 담은 것이다.
+- 또한, set()를 활용해서 year_list 변수에 다양한 년도가 있는 것을 확인할 수 있다.
+
+- 위에 작업을 진행한 다음, 다시 웹 브라우저 화면을 보면 다양한 년도가 나오게 된다.
