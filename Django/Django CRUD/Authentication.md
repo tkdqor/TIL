@@ -145,7 +145,7 @@ urlpatterns = [
             </div>
 
             <div class="mb-3">
-                <button type="submit" class="btn btn-primary">회원가입</button>
+                <button type="submit" class="btn btn-primary">로그인</button>
             </div>
         </form>
     </div>
@@ -252,5 +252,60 @@ def login(request):
   - 브라우저 내에 쿠키가 있을 경우, 우리가 request를 전송할 때 이 쿠키를 포함시켜서 전송하고 싶어 이렇게 하지 않아도 자동으로 모든 HTTP Request에 이 쿠키정보가 포함돼서 전송이 되게 한다. 그래서 server 입장에서는, 모든 request를 받을 때마다 세션 정보를 담고 있는 쿠키가 있는지 없는지 확인하고 -> 만약에 있다면 이전에 로그인을 한번이라도 수행했던 사람인 것이고, 로그아웃을 했거나 시간이 만료되어서 쿠키가 삭제되었다면 해당 request에 쿠키가 포함되어 있지 않을 것이고 server 입장에서는 로그인을 하지 않은 사람으로 간주하게 된다. 
 
 
+### 로그인 여부 표시하기
+- 로그인을 했다면 상단에 아이디와 함께 로그아웃 버튼을 제공하고, 로그인이 되어있지 않다면 로그인버튼과 회원가입 버튼을 제공하자. **그래서 로그아웃을 위한 POST 방식의 url pattern이 필요하다.**
+  - **만약 GET 방식으로 로그아웃을 구현하게 되면, 브라우저의 주소를 잘못 입력하는 것만으로도 로그아웃이 될 수 있기 때문에 POST 방식으로 요청이 들어올 때만 로그아웃을 시켜주도록 해보자.**
 
+```python
+from django.urls import path
+from . import views
 
+app_name = 'accounts'
+
+urlpatterns = [
+    path('sign_up/', views.sign_up, name='sign_up'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+]
+```
+
+- urls.py에서 로그아웃 버튼을 누르면 요청될 url pattern를 하나 추가해준다.
+
+```python
+# 로그아웃 기능
+def logout(request):
+    if request.method == 'POST':
+        auth.logout(request)
+
+    return redirect('posts:index')   
+```
+
+- 그리고 logout이라는 View 함수를 만들어준다. 실제 로그아웃 처리는 auth 모듈의 logout 함수를 사용하기만 하면 된다. auth.logout 함수를 통해서 쿠키와 세션 정보를 초기화하는 것이다. 그러면 브라우저나 server에 사용자 정보가 남지 않게 된다.
+
+- 이제 로그인 버튼과 로그아웃 버튼이 노출될 수 있게끔 하자.
+```html
+<div id="navbar-content-right">
+  <!-- 로그인 되었을 때 표시 및 로그아웃 버튼 생성 -->
+    {% if user.is_authenticated %}
+      <form method="POST" action="{% url 'accounts:logout' %}">
+         {% csrf_token %}
+
+         {{ user.get_username }} 님 환영합니다.
+         {{ user.get_email }}
+          <button type="submit" class="btn btn-primary">로그아웃</button>
+      </form>
+    {% else %}    
+       <li class="navbar-content"><a href="{% url 'accounts:login' %}">로그인</a></li>
+       <li class="navbar-content"><a href="{% url 'accounts:sign_up' %}">회원가입</a></li>
+    {% endif %}    
+</div>
+```
+
+- **위의 코드를 보면, django template language에서 user라는 변수를 사용하고 있는데, 원래 우리가 이러한 변수를 사용하기 위해서는 View에서 context로 데이터를 전달해줘야만 변수를 활용할 수 있었는데 -> django의 User모델은 특별한 기능이라서 따로 context에 유저 정보를 담아서 전달하지 않아도 template에서 바로 user 변수를 사용할 수 있다.**
+
+- **user.is_authenticated**라는 코드는 -> 현재 사용자가 로그인되어있는 경우에는 True를 return하는 Boolean 값이다. 그렇지 않을 때는 False를 return 하게 된다. 그리고 user.get_username 코드를 통해 실제 유저의 아이디를 출력해줄 수 있다. 또한, 로그인이 되면 button를 생성해주자.
+  - **django 유저의 username를 확인할 때에는 get_username이라는 함수를 사용하면 된다. django template language에서는 괄호를 사용하지 않고 함수를 호출한다.**
+
+- 로그아웃 버튼을 눌렀을 때, POST 방식으로 accounts app의 logout이라는 url pattern으로 request가 전송되면서 로그아웃 처리가 되는 것이다.
+
+- **로그인이 되었을 경우에는, 해당 계정 정보를 담고있는 세션이라는 데이터가 저장되고 브라우저에는 그 세션에 대한 정보를 담고 있는 쿠키라는 게 브라우저 내부에 저장되기 때문에 우리가 다른 페이지로 이동하면서 다양한 request를 전송하더라도 -> 항상 그 로그인 쿠키 정보가 같이 server에 전달되기 때문에 django server는 모든 request에 대해서 그 쿠키 여부를 검증해서 로그인했구나, 안 했구나를 구별할 수 있게 되는 것이다.** 
