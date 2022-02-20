@@ -33,7 +33,7 @@ urlpatterns = [
     # posts/로 요청 시 posts 앱으로 연결
     path('posts/', include('posts.urls')),
     # accounts로 요청 시 accounts 앱으로 연결
-    path('accounts/', include('accounts.url')),
+    path('accounts/', include('accounts.urls')),
 ]
 ```
 
@@ -182,7 +182,7 @@ def sign_up(request):
         else:
             context['error'] = '아이디와 비밀번호를 다시 입력해주세요.'
 
-    render(request, 'accounts/sign_up.html', context)    
+    return render(request, 'accounts/sign_up.html', context)    
     
     
     
