@@ -105,10 +105,113 @@ urlpatterns = [
 {% endblock %}
 ```
 
+- 다음과 같이 error라는 데이터를 보내주는 것은 회원가입에 실패했을 경우에 보내줄 메시지를 담은 변수이다. 
+- 그리고 회원가입을 하는 데 필요한 아이디, 비밀번호, 비밀번호 확인을 위한 3개의 input element를 추가했다. 비밀번호와 비밀번호 확인은 type이 password로 되어있다. 이 경우에는 뭔가를 입력하면 화면에 가려져서 보이게 된다.
+  - server에 데이터를 전송할 때 각각의 데이터가 어떤 데이터인지 name attribute를 이용해서 이름을 붙여줬다.
+
+- 그리고 POST 방식으로 accounts 앱의 sign_up이라는 이름의 url pattern으로 HTTP Request를 전송하게 된다.
+  - POST 방식으로 form을 사용하니까 csrf_token도 추가를 했다.
 
 
+```html
+{% extends 'base.html' %}
+{% load static %}
 
+{% block style %}
+{% endblock %}
 
+{% block content %}
+    <div class="container">
+        {% if error %}
+          <div class="alert alert-danger mt-3">
+                {{ error }}
+          </div>
+        {% endif %}  
+
+        <h1>Login</h1>
+
+        <form method="POST" action="{% url 'accounts:login' %}">
+            {% csrf_token %}
+
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="username">아이디</label>
+                <input class="form-control" id="username" type="text" name="username" placeholder="아이디">
+            </div>
+
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="password">비밀번호</label>
+                <input class="form-control" id="password" type="password" name="password" placeholder="비밀번호">
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">회원가입</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+```
+
+- 위에는 login.html 코드이다. sign_up.html과 유사한데 아이디와 비밀번호만 받는 input element로 구성되어있다. 
+
+- 다음은 sign_up View 함수와 login View 함수이다.
+
+```python
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User    # django에 내장된 User 모델
+from django.contrib import auth                # django에 내장된 auth 모델
+
+# 회원가입 기능 
+def sign_up(request):
+    context = {}
+
+    if request.method == 'POST':
+        if (request.POST.get('username') and 
+            request.POST.get('password') and
+            request.POST.get('password') == request.POST.get('password_check')):
+
+            new_user = User.objects.create_user(
+                username = request.POST.get('username'),
+                password = request.POST.get('password'),
+            )
+
+            auth.login(request, new_user)
+
+            return redirect('posts:index')
+
+        else:
+            context['error'] = '아이디와 비밀번호를 다시 입력해주세요.'
+
+    render(request, 'accounts/sign_up.html', context)    
+    
+    
+    
+# 로그인 기능
+def login(request):
+    context = {}
+
+    if request.method == 'POST':
+        if request.POST.get('username') and request.POST.get('password'):
+
+            user = auth.authenticate(
+                request,
+                username = request.POST.get('username'),
+                password = request.POST.get('password'),
+            )
+
+            if user is not None:
+                auth.login(request, user)
+                return redirect('posts:index')
+            else:
+                context['error'] = '아이디와 비밀번호를 다시 입력해주세요.'
+
+        else:
+            context['error'] = '아이디와 비밀번호를 모두 입력해주세요.'     
+
+    return render(request, 'accounts/login.html', context)        
+```
+
+- ddd
 
 
 
