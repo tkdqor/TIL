@@ -132,3 +132,29 @@ Out[11]:
 - 또한, set()를 활용해서 year_list 변수에 다양한 년도가 있는 것을 확인할 수 있다.
 
 - 위에 작업을 진행한 다음, 다시 웹 브라우저 화면을 보면 다양한 년도가 나오게 된다.
+
+```python
+post_archive = ArchiveIndexView.as_view(model=Post, date_field='created_at', paginate_by=10)
+```
+
+- views.py에서 paginate_by=10 이렇게 설정하면 화면에 10개 단위로 queryset이 출력된다.
+
+```html
+<h2>latest</h2>
+
+{{ latest }}
+
+<h2>date_list</h2>
+
+{% for date in date_list %}
+    {{ date }}
+    {{ date.year }}
+    {{ date|date:"Y" }}
+{% endfor %}
+```
+
+- html에서 date_list를 하나씩 출력해보면 다른 정보들이 나오지만 디폴트인 year만 의미있는 데이터로 나오게 된다. 대신 {{ date.year }}로 출력하면 년도만 출력된다.
+- 혹은 원하는 문자열로 datetime 객체에서 지원해주는 function이 있다. 파이프 객체가 있다. 파이프는 django template 문법에서는 필터라는 함수를 의미한다. jango template 안에서 파이프를 쓰고 입력하면 된다. 그래서 첫번째 인자로 date라는 값이 출력되고 두번째 인자로 "Y" 이렇게 넘어가게 된다.(무슨말인지 이해 필요..)
+  - 내가 이해한 것은, date가 하나 출력될 때 그 값이 Year만 나오게끔 필터링 해준 것이다..
+
+- 이 포맷은 django template tag 공식 문서에 보면 이와 관련된 포메팅 포맷이 있다.
