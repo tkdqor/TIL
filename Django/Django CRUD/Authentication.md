@@ -52,6 +52,7 @@ urlpatterns = [
 ```
 
 - app_name을 설정하고 accounts/ 이후에 url pattern를 작성해준다. 각각 회원가입과 로그인 url로 설정하자.
+  - **django의 url configuration에서는 url pattern만 정의할 수 있을 뿐, HTTP Method에 대한 부분은 설정할 수 없다. 그래서 GET방식이 되었든 POST방식이 되었든 sign_up이라는 url pattern은 sign_up View 함수가 처리하고 login이라는 url pattern은 login이라는 View 함수가 처리하게 된다.**
 
 - 그리고 이제는 회원가입 페이지 & 로그인 페이지를 form를 이용해서 보여주는 template과 회원가입 & 로그인을 해주는 로직을 구성한 View 함수를 만들어야 한다.
 
@@ -154,6 +155,8 @@ urlpatterns = [
 
 - 위에는 login.html 코드이다. sign_up.html과 유사한데 아이디와 비밀번호만 받는 input element로 구성되어있다. 
 
+* * *
+
 - 다음은 sign_up View 함수와 login View 함수이다.
 
 ```python
@@ -211,8 +214,22 @@ def login(request):
     return render(request, 'accounts/login.html', context)        
 ```
 
-- ddd
+- 이렇게 작성하게 되면 일단, GET방식으로 accounts/sign_up 또는 accounts/login이라는 HTTP Request를 주게 되면 회원가입 및 로그인 페이지가 나온다.
+- **View 함수에서 -> GET방식일 때와 POST방식일 때를 구분하기 위해서 HTTP Method 정보를 담고있는 request.method를 활용해서 POST방식이 맞는지 if문을 사용했다.**
+  - 만약 POST방식이 아니면 바로 return으로 template 페이지를 랜더링하도록 했다.
 
+- 회원가입 페이지에서 아이디와 비밀번호, 비밀번호 확인을 입력하면 -> sign_up View 함수에서는, 해당 request가 POST 메소드일 때 request.POST.get(), POST방식으로 전달된 데이터 속에서 username이라는 데이터와 password라는 데이터가 실제로 있는지 확인하고 만약 없으면 None이 return 된다. 그리고 password와 password_check가 서로 같은지까지 확인한다.
+  - 그리고 if문에서 조건이 길 때는 -> 모든 조건을 감싸는 괄호를 작성해줘야 한다. 그러면 여러 줄에 걸쳐서 작성할 수 있다. 만약 조건을 만족하지 않는다면 -> else문의 context['error'] = '아이디와 비밀번호를 다시 입력해주세요.' 가 실행되서 context 딕셔너리에 'error'라는 key로 에러 메세지를 저장하게 된다. 그리고 else문에는 별도의 return이 없기 때문에 에러 메시지를 저장한 다음, 그 아래에 render 함수가 실행된다. 그래서 context가 전달되어 template에는 에러 메세지가 뜨게 된다.
 
+- 만약, 회원가입 페이지에서 정상적으로 아이디, 비밀번호, 비번 확인 값을 입력하게 된다면 -> **django User 모델에 내장되어있는 User.objects.create_user라는 함수를 통해서 새로운 유저를 추가할 수 있다. (왜 User 모델에서만 이렇게 create함수를 쓰는걸까?)** -> 이 과정이 회원가입이다.
+  - **django User 모델을 활용해서 새로운 사용자를 추가할 때 비밀번호를 암호화해서 저장한다든지 등의 특별한 절차들이 수행되어야 하기 때문에 사용자를 추가할 때에는 반드시 이 create_user 함수를 사용해야 한다.**
+  - 이 create_user 함수가 실행되면 해당 데이터를 바탕으로 데이터베이스에 실제로 추가해주게 된다. 그래서 별도의 save 함수가 필요없다.
 
+- **회원가입이 완료가 되면 -> django auth 모듈이 login 함수를 통해서 해당 유저를 로그인시켜줄 수 있다.**
+  - **첫번째 인자로는 모든 view 함수가 가지는 request를 입력하고, 두번째 인자로는 로그인을 시켜주고자 하는 사용자를 전달해주면 된다. 이렇게 로그인이 가능하다.**
+  - 로그인 처리가 된 다음으로는 redirect함수로 다른 template으로 보내준다.
+
+* * *
+
+- login View 함수는, POST 방식일 때 
 
