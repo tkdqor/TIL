@@ -291,7 +291,6 @@ def logout(request):
          {% csrf_token %}
 
          {{ user.get_username }} 님 환영합니다.
-         {{ user.get_email }}
           <button type="submit" class="btn btn-primary">로그아웃</button>
       </form>
     {% else %}    
