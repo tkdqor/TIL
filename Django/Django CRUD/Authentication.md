@@ -60,8 +60,56 @@ urlpatterns = [
 - sign_up.html에는
 
 ```html
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        {% if error %}
+        <div class="alert alert-danger mt-3">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <h1>Sign up</h1>
+
+        <form method="POST" action="{% url 'accounts:sign_up' %}">
+            {% csrf_token %}
+
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="username">아이디</label>
+                <input class="form-control" id="username" type="text" name="username" placeholder="아이디">
+            </div>
+
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="password">비밀번호</label>
+                <input class="form-control" id="password" type="password" name="password" placeholder="비밀번호">
+            </div>
+
+            <div class="mb-3 col-md-6">
+                <label class="form-label" for="password_check">비밀번호 확인</label>
+                <input class="form-control" id="password_check" type="password" name="password_check" placeholder="비밀번호 확인">
+            </div>
+
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">회원가입</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+```
 
 
-9:26부터!
+
+
+
+
+
 
 
