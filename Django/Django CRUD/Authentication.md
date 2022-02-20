@@ -22,4 +22,46 @@ python manage.py startapp accounts
 
 - 그리고 이제 회원가입을 할 수 있는 Form를 제공하는 템플릿과 실제 회원가입을 하게 하는 view 로직을 구성해야 하고, 로그인을 할 수 있는 Form를 제공하는 템플릿과 실제 로그인을 하게 하는 view 로직을 구성하면 된다.
   - 또한, 회원가입 페이지와 로그인 페이지는 각각 GET /accounts/sign-up, GET /accounts/login 이라는 url로 설정하고 
-  - 실제 회원가입과 로그인이 처리되는 로직의 경우에는 동일한 url pattern를 사용하되 메소드만 POST 방식으로 변경해서 사용해보도록 하자.
+  - 실제 회원가입과 로그인이 처리되는 로직의 경우에는 동일한 url pattern를 사용하되 메소드만 POST 방식으로 변경해서 사용해보도록 하자.  -> **Restful API를 생각해보자.**
+
+```python
+urlpatterns = [
+    # admin 페이지 url
+    path('admin/', admin.site.urls),
+    # host 주소로 요청 시 posts앱의 main 페이지로 연결
+    path('', views.main, name='main'),
+    # posts/로 요청 시 posts 앱으로 연결
+    path('posts/', include('posts.urls')),
+    # accounts로 요청 시 accounts 앱으로 연결
+    path('accounts/', include('accounts.url')),
+]
+```
+
+- 먼저 프로젝트 디렉터리 내부 urls.py에서 위와 같이 accounts/로 요청되는 url이면 accounts 앱으로 연동시키자. 그리고 accounts 앱 내부에 urls.py를 생성한 다음
+
+```python
+from django.urls import path
+from . import views
+
+app_name = 'accounts'
+
+urlpatterns = [
+    path('sign_up/', views.sign_up, name='sign_up'),
+    path('login/', views.login, name='login'),
+]
+```
+
+- app_name을 설정하고 accounts/ 이후에 url pattern를 작성해준다. 각각 회원가입과 로그인 url로 설정하자.
+
+- 그리고 이제는 회원가입 페이지 & 로그인 페이지를 form를 이용해서 보여주는 template과 회원가입 & 로그인을 해주는 로직을 구성한 View 함수를 만들어야 한다.
+
+* * *
+- 먼저 accounts 앱 내부에 templates 디렉터리를 만들고, 그 안에 accounts라는 이름의 디렉터리를 또 만들어서 sign_up.html과 login.html를 만든다.
+- sign_up.html에는
+
+```html
+
+
+9:26부터!
+
+
