@@ -112,3 +112,41 @@ Out[8]: '/instagram/123/'
 - reverse("instagram:post_detail") -> 이렇게만 입력하면 reverse 함수에 인자가 없다고 나온다. 그래서 reverse("instagram:post_detail", args=[123]) 이렇게 인자를 넣어줘야 한다.
 
 - redirect 함수도 resolve_url 함수와 같은 형태로 활용할 수 있는데, 응답이 HttpResponse 응답이 된다. (301 or 302) 디폴트로는 임시이동 응답이고, 추가로 지정해서 영구이동 상태코드를 반환할 수도 있다.
+
+* * *
+```html
+ <a href="/instagram/{{ post.pk }}/">
+     {{ post.message }}
+ </a>
+
+<a href="{% url 'instagram:post_detail' post.pk %}">
+     {{ post.message }}
+</a>
+```
+
+- template에서도 1개의 글 페이지에 상세 페이지 버튼을 위와 같이 url 설정을 통해 만들 수 있다. 하지만 첫번째처럼 url를 구성하는 건 django 스타일은 아니다. 만약 프로젝트 디렉터리 루트에 있는 urls.py의 url이 instagram이 아니라 다른 것으로 바뀌면, 모든 a element의 url도 바꾸어야 한다.
+- 그래서 두번째처럼 django template tag를 사용해서 이용하자. 
+
+
+### 모델 객체에 대한 detail 주소 계산
+- 우리가 만약 Post와 같이 하나의 모델을 만들었다면, 해당 모델 하나의 레코드에 대한 디테일 페이지를 항상 만들게 된다. 
+  - 그래서 template이든 어떤 코드에서든 detail url을 계산할 일이 많아진다.
+
+- 매번 다음과 같은 코드로 할 수 있겠지만,
+```python
+resolve_url('blog:post_detail', pk=post.pk)
+redirect('blog:post_detail', pk=post.pk)
+{% url 'blog:post_detail' post.pk %}
+```
+
+- 아래와 같이 짧게 사용할 수도 있다.
+```python
+resolve_url(post)
+redirect(post)
+{{ post.get_absolute_url }}
+```
+
+- 여기서는 그냥 모델 객체를 넘겨주면 된다. -> Post 모델에다가 뭔가를 구현해줘야 한다. 
+
+
+
