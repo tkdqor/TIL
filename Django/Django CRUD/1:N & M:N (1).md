@@ -76,7 +76,55 @@ class Post(models.Model):
 - 그리고 던더str 메소드도 user데이터가 있을 때와 없을 때로 구분한다.
 
 - 이러한 설정 이후에 migration를 하면 파일이 생성된다. 이어서 migrate까지 진행하자.
-  - 그리고 난 다음에는 admin 페이지를 보면 각 게시글마다 user를 설정해줄 수 있다.
+  - 그리고 난 다음에는 admin 페이지를 보면 각 게시글마다 user를 설정해줄 수 있다. 다 설정하게 되면 이제 유저가 연동되지 않은 게시글은 없기 때문에 다시 models.py로 가서 null옵션을 False로 수정하자.
+
+- 그 다음 migration을 해주면, 
+```terminal
+You are trying to change the nullable field 'user' on post to non-nullable without a default; we can't do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+ 2) Ignore for now, and let me handle existing rows with NULL myself (e.g. because you added a RunPython or RunSQL operation to handle NULL values in a previous data migration)
+ 3) Quit, and let me add a default in models.py
+ ```
+ 
+ - 다음과 같이 또 출력이 되지만 2번 옵션이 추가되었다. 우리가 nullable로 user 필드를 변경한 다음, 직접 데이터 보정을 통해서 user가 null인 게시물이 없게끔 만들어주었기 때문에 문제가 없으니 2번을 선택해서 migration 파일을 만들자.
+   - migrate까지 완료하면 이제 모든 Post 모델 데이터는 user 데이터가 있어야만 생성된다.
+
+- 이제 template에서 post.author라고 되어있는 부분들을 -> post.user.get_username으로 수정해주자.
+
+* * *
+### 로그인을 한 상태에서만 글 작성
+- posts 앱의 views.py에서 글쓰기 생성과 관련된 new, create View 함수 내부에 로그인 여부를 검증하는 코드를 입력하자.
+
+```python
+# 게시글 생성 페이지
+def new(request):
+    if not request.user.is_authenticated:     # 로그인이 되지 않은 경우, login url로 redirect
+        return redirect('accounts:login')
+
+    return render(request, 'posts/new.html')      
 
 
-14:14!
+# 게시글 생성 기능
+def create(request):
+    if not request.user.is_authenticated:    # 로그인이 되지 않은 경우, login url로 redirect
+        return redirect('accounts:login')
+
+    user = request.user                      # 로그인된 유저 정보를 user라는 변수에다가 저장하기      
+    body = request.POST.get('body')          # request.POST / 여기까지 딕셔너리의 형태이고 .get() 함수를 사용해서 안전하게 접근
+    title = request.POST.get('title')
+
+    post = Post(user=user, title=title, body=body)     # created_at 필드는 자동 설정 되어있음
+    post.save()                               # Post(author=author, body=body, created_at=timezone.now()) timezone 모듈안에 now라는 함수   
+
+    return redirect('posts:detail', pk=post.id)
+```
+
+- create함수에서는, user라는 변수에다가 request.user라는 로그인된 유저 정보를 저장해주고 실제로 데이터베이스에 데이터를 생성할 때, post = Post(user=user, title=title, body=body) 이렇게 user필드에 해당 변수를 넣어주자.
+
+- new template에서도 author를 입력받는 input 코드를 삭제하기.
+
+- 그러면, 
+
+
+
