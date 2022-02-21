@@ -24,7 +24,7 @@ urlpatterns = [
 - 개발자가 일일이 URL을 계산하지 않아도 된다. URL이 변경되더라도, URL Reverse가 변경된 URL을 추적.
   - 만약, 위의 url pattern에 대응해서 html 파일의 a element에서 <a href="/blog/">...</a> 이렇게 설정을 했다가 url이 바뀌게 된다면 -> 이런 항목들을 찾아서 하나하나 다 변경해줘야 한다. 그래서 보통 
     주소를 한 번 설정하면 잘 안바꾸려고 한다. 왜냐하면 어디에서 참조되고 있는지 너무나도 찾기 힘들기 때문이다.
-  - **반면에 URL Reverse는 a element와 같은 url을 직접 계산하지 않아도 django에게 이러한 url 문자열 계산을 위임하는 것이다.
+  - **반면에 URL Reverse는 a element와 같은 url을 직접 계산하지 않아도 django에게 이러한 url 문자열 계산을 위임하는 것이다.**
 
 - django에는 App이라는 개념이 있는데, App은 재사용이 가능한 django application를 app의 형태로 패키징하는 것이다. 그래서 만약 블로그 App를 구현했다가 새로운 다른 프로젝트에서 블로그 기능을 쓸 수 있다.
   블로그 폴더를 복사해서 옮기고, settings.py - INSTALLED_APPS에다가 그 블로그 App를 추가하고 프로젝트의 urls.py에다가 include해서 해당 App에 대한 urls.py를 include해주면 끝이다. 그리고 필요하면 migration를 해준다. 
@@ -82,7 +82,7 @@ redirect('/blog/100/')
 
 - 일단 기본적으로 path마다 name을 지정해야 한다. 그래서 'app이름:url이름' 이런식으로 설정하면 된다. 만약 app이름을 설정하지 않는다면 중복될 수 있다. posts앱의 index url과 products앱의 index url 이렇게 중복이 될 수 있기 때문에 app이름을 지정해야 한다. 
 - 그리고 reverse와 resolve_url은 인자가 다르다. 
-  - resolve_url에서는 우리가 url pattern에서 pk 등 URL Capture value를 지정하는데, 이렇게 지정한 것들을 resolve_url에서 인자로 하나만 있으면 1개, 여러개라면 순서대로 하나씩 입력하고 괄호를 닫아주면 된다. resolve_url('~', 100, ..., ...) 또는 키워드 식으로 지정해도 된다. resolve_url('~', pk=100, ..=111)
+  - resolve_url에서는 우리가 url pattern에서 pk 등 URL Capture value를 지정하는데, 이렇게 지정한 것들을 resolve_url에서 인자로 하나만 있으면 1개, 여러개라면 순서대로 하나씩 입력하고 괄호를 닫아주면 된다. resolve_url('dd', 100, ..., ...) 또는 키워드 식으로 지정해도 된다. resolve_url('~', pk=100, ..=111)
   - reverse의 경우에는 인자를 항상 args라는 이름으로 지정해줘야 한다. args=[100] 또는 키워드 인자의 경우는 키워드 arguments인 kwargs={'pk': 100} 이렇게 사전으로 넘겨줘야 한다. 
 
 
