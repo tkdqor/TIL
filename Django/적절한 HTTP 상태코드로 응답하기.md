@@ -113,10 +113,50 @@ def view3(request):
         item = Item.objects.get(pk=100)
     except Item.DoesNotExist:
         return HttpResponseNotFound() # 잘 쓰지 않는 방법
-# 생략
+    # 생략
 ```
 
 - View 함수에서 특정 하나의 레코드를 queryset.get이라는 이름의 메소드를 통해서 하나에 접근할 수 있게 되는데, 만약 매칭되는 객체가 0개일 때 / 1개일 때 / 2개 이상일 때 이렇게 각각에 대해서 처리가 달라지게 된다.
   - 0개일 때는 DoesNotExist 예외가 발생
   - 1개일 때는 정상 반환을 해준다.
-  - 2개일 
+  - 2개일 때는 multipleobjectsreturned라는 예외가 발생
+
+- 예외가 발생했을 때, try - except로 잡지 않게 되면 -> DoesNotExist 에러가 500번 에러로 처리가 되어버린다. 
+  - 하지만, 이 경우는 404번 에러로 처리하는 것이 웹의 개념에 맞기 때문에 위의 코드처럼 Http404라는 예외 클래스를 raise, 발생시켜서 처리를 할 수 있다.
+  - 이 처리에 대한 심플한 코드로 get_object_or_404(Item, pk=100) 함수를 활용할 수 있다.
+  - 혹은, 예외가 아니라 직접 HttpResponse 객체를 반환하고 싶다면 HttpResponseNotFound() 라는 응답을 return 할 수도 있다. 하지만 잘 사용하지 않는다.
+
+
+
+### 500 응답 예시
+- 뷰에서 요청 처리 중에, 뷰에서 미처 잡지못한 오류가 발생했을 경우 -> IndexError, KeyError, django.db.models.ObjectDoesNotExist 등 이렇게 다양한 에러가 발생할 수 있다...
+
+```python
+from shop.models import Item
+
+def view1(request):
+    #	IndexError
+    name	=	['Tom',	'Steve'][100]
+    
+    #	지정 조건의 Item	레코드가 없을 때,	Item.DoesNotExist	예외
+    #	지정 조건의 Item	레코드가 2개 이상 있을 때,	Item.MultipleObjectsReturned	예외
+    item	=	Item.objects.get(pk=100)
+```
+
+- 우리가 예외를 처리할 때에 무작정 try - except에 exception이라고 최상위 예외 클래스를 쓰거나 DoesNotExist 이러한 항목을 생략하고 except: 이렇게만 쓰면 모든 예외를 한 번에 잡게 되는데 그렇게 처리하는 건 안티패턴이다. 무조건 해당 View 함수에서 모든 예외 exception을 잡아서 단순히 처리하기 보다는, 우리가 예상치 못한 예외가 발생했을 때는 500에러가 발생하는 건 당연한 것이다. 
+  - 에러가 무조건 나지 않도록 막는 것이 아니라, 관리하는 것이기 때문이다. 500에러가 발생했을 때 적절히 로그를 남겨두면 -> 해당 로그를 빨리 인지해서 해당 버그를 빨리 수정할 수 있다.
+
+
+
+### 다양한 HttpResponse 서브 클래스
+- 지정 상태코드의 응답이 필요할 때
+
+- HttpResponseRedirect : 상태코드 302
+- HttpResponsePermanentRedirect : 상태코드 301 (영구 이동)
+- HttpResponseNotModified : 상태코드 304
+- HttpResponseBadRequest : 상태코드 400
+- HttpResponseNotFound : 상태코드 404
+- HttpResponseForbidden : 상태코드 403
+- HttpResponseNotAllowed : 상태코드 405
+- HttpResponseGone : 상태코드 410
+- HttpResponseServerError : 상태코드 500
