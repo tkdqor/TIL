@@ -124,7 +124,95 @@ def create(request):
 
 - new template에서도 author를 입력받는 input 코드를 삭제하기.
 
-- 그러면, 
+- 그러면, 로그인이 되어있을 때만 글을 작성하고 작성할 때는 title과 body만 입력해도 자동으로 작성자가 나타나게 된다.
 
 
 
+### Login Required Decorator
+- 로그인 검증이 필요한 View 함수의 정의 부분 위에다가 @login_required 라는 decorator를 붙여주면, 로그인 여부를 확인하는 코드를 작성하지 않아도 동일한 방식으로 로그인을 검증하게 된다.
+
+```python
+from django.contrib.auth.decorators import login_required
+
+# 게시글 생성 페이지
+@login_required
+def new(request):
+...
+
+# 게시글 생성 기능
+@login_required
+def create(request):
+...
+```
+- 사용하기전에 반드시 import를 해야 사용할 수 있다. 해당 decorator를 게시글 수정 및 삭제 View 함수에도 입력하자.
+  - 그러면 로그인이 되어있지 않는 경우에는 -> 1개 글에 수정 및 삭제를 하려면 바로 login 페이지로 redirect 시켜준다. **(login 페이지로 redirect 한다는 게 정해져 있을까?)**
+
+
+### 게시물 작성자가 본인일 경우에만 수정, 삭제
+- 기존에는 View 함수에서 수정과 삭제를 진행할 때, post 객체의 pk값으로만 데이터를 가져오려고 했는데, 이제 여기에 현재 로그인된 user라는 조건을 추가해주면 된다.
+
+```python
+# 게시글 수정 페이지
+@login_required
+def edit(request, pk):
+    post = Post.objects.get(id=pk, user=request.user)    # user 조건 추가
+    ...
+    
+# 게시글 수정 기능
+@login_required
+def update(request, pk):
+    post = Post.objects.get(id=pk, user=request.user)     # 수정해야할 post 객체 조회 / user 조건 추가
+    ...
+    
+# 게시글 삭제 기능
+@login_required
+def delete(request, pk):
+    post = Post.objects.get(id=pk, user=request.user)    # user 조건 추가
+    post.delete()
+
+    return redirect('posts:index')    
+```
+
+- 이렇게 현재 로그인 되어있는 유저 정보를 함께 넣어서 본인이 작성한 게시물일 때만 가능하도록 한다. 만약 다른 유저가 해당 글을 수정 및 삭제하려고 하면 DoesNotExist라는 에러가 발생하게 된다. 즉, 해당 게시물이 없다는 것을 의미한다.
+
+
+### try - except 예외 처리
+- 에러가 발생하더라도 어떻게 대응할지를 명시해서 먹통이 되지 않고 다른 방식으로 대응할 수 있게끔 코드를 작성하는 방법.
+- 에러가 발생할 수 있을만한 부분들을 try - except로 감싸서 적절한 방식으로 대응하는 방법을 예외 처리라고 한다.
+  - post = Post.objects.get(id=pk, user=request.user) -> 다음과 같은 코드는 해당 조건을 만족하는 데이터를 못 찾으면 에러가 발생해서 먹통이 된다.
+- 이와 같이, 잠재적으로 에러가 발생할 수 있는 부분을 try - except 안쪽으로 작성하자.
+
+```python
+# 게시글 수정 페이지
+@login_required
+def edit(request, pk):
+    try:
+        post = Post.objects.get(id=pk, user=request.user)    # user 조건 추가
+    except:
+        return redirect('posts:index')
+
+    context = {
+        'post': post,
+    }
+
+    return render(request, 'posts/edit.html', context)
+```    
+
+- try 구문 안쪽에 있는 코드들을 쭉 수행하다가 만약 에러가 발생한다면, 어떻게 대응할지에 대한 대응에 해당하는 코드를 except 구문 안쪽에 작성해주면 된다.
+- 그래서 위의 코드는 게시물을 못 찾으면 게시물 목록 페이지로 redirect해주게 된다. 이와 같은 코드를 update와 delete View 함수에도 적용해주자.
+
+- 그런데, 지금의 try-except 구문은 try 구문 안쪽에 있는 코드를 수행하다가 어떤 에러든지 에러가 하나라도 발생하면 except 구문을 실행하겠다는 것인데, 
+  - 그게 아니라 내가 사전에 인지하고 있는 특정한 에러에 대해서만 대응하고 싶다면, 
+
+```python
+# 게시글 수정 페이지
+@login_required
+def edit(request, pk):
+    try:
+        post = Post.objects.get(id=pk, user=request.user)    # user 조건 추가
+    except Post.DoesNotExist:                                # Post.DoesNotExist라는 에러에 대해서만 대응
+        return redirect('posts:index')                       # 게시물을 못 찾으면 게시물 목록 페이지로 redirect
+    ...    
+```
+
+- 이렇게 Post.DoesNotExist라는 에러에 대해서만 대응할 수 있게끔 작성할 수도 있다.
