@@ -26,7 +26,7 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.author}: {self.title}: {self.created_at}'
+        return f'{self.user.get_username()}: {self.title}: {self.created_at}'
 ```
 
 - 기존의 author라는 필드를 삭제하고 새롭게 user라는 필드를 설정
@@ -43,3 +43,40 @@ class Post(models.Model):
     - django의 ForeignKey 함수를 통해서 User 모델과 Post 모델을 연동하게 되면 -> Post 테이블에 user_id라는 column이 생성되고 여기에는 연동된 유저의 PK값만 저장되지만, 실제로 우리가 python 코드로
       활용할 때에는 **post.user 이렇게 user_id가 아니라, 우리가 models.py에서 설정했던 user라는 변수 이름을 이용하게 되므로 DB에 자동생성 되는 것을 생각할 필요가 없다.**
     - **post.user -> 이렇게 사용할 경우에는 user_id만 담겨있는 것이 아니라, 그 user_id인 pk값에 해당하는 User 모델 user 인스턴스 자체에 대한 모든 정보가 담겨있는 것이라고 볼 수 있다.**
+
+- 던더str메소드에서는, admin 페이지에서 username를 보여주기 위해 self.user.get_username() 이렇게 함수를 호출하면 된다.
+
+* * *
+- 위의 모델을 설정하고 python manage.py makemigrations posts를 하게 되면 -> 비어있으면 안되는 user 필드에 default를 설정하지 않았다고 나온다. 
+```terminal
+You are trying to add a non-nullable field 'user' to post without a default; we can't do that (the database needs something to populate existing rows).
+Please select a fix:
+ 1) Provide a one-off default now (will be set on all existing rows with a null value for this column)
+ 2) Quit, and let me add a default in models.py
+ ```
+
+- **즉, 지금은 Post 모델 내부에 user라는 필드만 생성했지 그 안에 데이터를 채워주지 않은 상태이다. 그래서 Post 모델에 따르면 user_id 필드에 반드시 값을 채워 넣어야 한다. 그런데 우리가 default값을 주지 않아서 데이터를 어떻게 채울지 모르겠다는 의미이다.**
+  - 1)번은 기본적으로 지정할 default 유저 1명을 지정해준다는 것이고 2)번은 잠시 끄고 default를 설정하겠다는 것이다. 
+  - **그래서 우리는 일단, user 필드를 -> nullable로 바꿔서 migration를 진행한 다음 기존에 있었던 post 데이터 각각에다가 유저 정보를 적당히 채워주고 다시 user 필드를 non-nullable로 설정해보자.** 그러면 유저 정보가 있을 때에만 게시물을 작성할 수 있게 설정하는 것이다.
+
+```python
+class Post(models.Model):
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    ...
+    
+    def __str__(self):
+        if self.user:                     
+            return f'{self.user.get_username()}: {self.title}'
+        else:
+            return f'{self.title}'
+```
+
+- 먼저, 이렇게 ForeignKey의 세번째 인자로 null=True를 설정하면 해당 게시물이 작성될 때 user 필드가 채워지지 않아도 게시물을 생성할 수 있게 된다.
+- 그리고 던더str 메소드도 user데이터가 있을 때와 없을 때로 구분한다.
+
+- 이러한 설정 이후에 migration를 하면 파일이 생성된다. 이어서 migrate까지 진행하자.
+  - 그리고 난 다음에는 admin 페이지를 보면 각 게시글마다 user를 설정해줄 수 있다.
+
+
+14:14!
