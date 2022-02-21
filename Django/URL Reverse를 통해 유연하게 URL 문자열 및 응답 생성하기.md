@@ -128,7 +128,7 @@ Out[8]: '/instagram/123/'
 - 그래서 두번째처럼 django template tag를 사용해서 이용하자. 
 
 
-### 모델 객체에 대한 detail 주소 계산
+## 모델 객체에 대한 detail 주소 계산
 - 우리가 만약 Post와 같이 하나의 모델을 만들었다면, 해당 모델 하나의 레코드에 대한 디테일 페이지를 항상 만들게 된다. 
   - 그래서 template이든 어떤 코드에서든 detail url을 계산할 일이 많아진다.
 
@@ -149,4 +149,81 @@ redirect(post)
 - 여기서는 그냥 모델 객체를 넘겨주면 된다. -> Post 모델에다가 뭔가를 구현해줘야 한다. 
 
 
+### 모델 클래스에 get_absolute_url() 구현
+- 위에처럼 디테일 url를 구현하려면 -> 모델 클래스에 get_absolute_url() 이라는 멤버함수를 구현하면 된다. 이 함수를 구현하게 되면, resolve_url()과 redirect()에서 get_absolute_url()를 활용할 수 있도록 개발이 되어있다. 정확하게는 resolve_url()에 구축이 되어있고, redirect()는 resolve_url() 것을 가져다가 쓰는 것이다.
+- resolve_url 함수는 가장 먼저 get_absolute_url() 함수의 존재여부를 체크하고, 존재할 경우 reverse를 수행하지 않고 그 리턴값을 즉시 리턴
+- template에서는 {{ post.get_absolute_url }} 이렇게 호출할 수 있도록 하는 것이다.
 
+- resolve_url() 함수를 살펴보면,  https://github.com/django/django/blob/3.0.2/django/shortcuts.py
+```
+# django/shortcuts.py
+
+def resolve_url(to, *args, **kwargs):
+    if hasattr(to, 'get_absolute_url'):
+        return to.get_absolute_url()
+# 중략
+try:
+    return reverse(to, args=args, kwargs=kwargs)
+except NoReverseMatch:
+    # 나머지 코드 생략
+```
+
+- resolve_url()에서 우리가 첫번째 인자로 pattern name을 받을 수도 있고, 이동할 문자열 url를 받을 수도 있고, 모델 객체를 받을 수도 있다. 대상이 어떤 타입인지는 모르겠지만, 만약 그 대상이 'get_absolute_url'이라는 이름의 attribute가 있다면 그 함수를 호출해서 반환값을 바로 return 한다는 것이다. 
+
+- 그래서, 어떤 모델에 설정하는 구조는
+```python
+from django.urls import reverse
+
+class Post(models.Model):
+    # 중략
+    def get_absolute_url(self):
+    return reverse('blog:post_detail', args=[self.pk])
+```
+
+- 이렇게 어떤 모델에서 detail View를 구현하는 것은, 위와 같이 def get_absolute_url(self): 이렇게 설정을 모델 클래스 내부에 해주는 것으로 진행된다. 그리고 return 뒤에 reverse로 지정한다.
+  - 모델 클래스에 지정하게 되면 -> resolve_url(post) / redirect(post) 이와 같은 방법으로 바로 detail 페이지의 url를 획득할 수 있다.
+
+```python
+from django.urls import reverse
+
+class Post(models.Model):       # 우리가 원하는 데이터베이스에 저장하고 싶은 내역대로 설계를 해서 사용하면 된다.
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    message = models.TextField()    # 기본 default 값이 blank=False이다.
+    photo = models.ImageField(blank=True, upload_to='instagram/post/%Y/%m/%d') # 기본적으로 blank를 설정해줘야 migration이 진행됨
+    tag_set = models.ManyToManyField('Tag', blank=True) 
+    is_public = models.BooleanField(default=False, verbose_name='공개여부')      # 기본값은 공개하지 않는 것이고, 필드명을 '공개여부'로 수정
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True) 
+    
+    # detail url를 더 쉽게 얻을 수 있게 Post 모델 클래스 내부에 설정하는 코드
+    def get_absolute_url(self):
+        return reverse('instagram:post_detail', args=[self.pk])
+        
+```
+
+```html
+<a href="{{ post.get_absolute_url }}">
+   {{ post.message }}
+</a>
+```
+
+- 다음과 같이 모델 클래스 내부에 설정해보자. 그리고나서 html template에서는 간단하게 detail url를 설정할 수 있다. 
+- 또한, django shell에서도 확인가능하다.
+
+```terminal
+In [1]: from django.shortcuts import resolve_url
+
+In [2]: from instagram.models import Post
+
+In [3]: resolve_url(Post.objects.first())
+Out[3]: '/k-instagram/105/'
+```
+
+### 그 외 활용
+- CreateView / UpdateView
+  - success_url을 제공하지 않을 경우, 해당 model instance 의 get_absolute_url 주소로 이동이 가능한지 체크하고, 이동이 가능할 경우 이동
+  - 생성/수정하고나서 Detail화면으로 이동하는 것은 자연스러운 시나리오
+  - success_url은 저장까지 완료되었을 때, 성공했을 때의 이동할 주소를 의미. 이걸 만약 지정하지 않은 경우에는 오류가 나는데 지정하지 않고도 만약 모델 인스턴스의 get_absolute_url이 있다면 -> 바로 해당 absolute_url이 반환해주는 주소로 이동하게 된다. 즉, detail View로 이동한다.
+
+- 특정 모델에 대한 Detail뷰를 작성할 경우
+  - Detail뷰에 대한 URLConf설정을 하자마자, get_absolute_url설정을 하면 코드가 간결해진다.
