@@ -45,4 +45,78 @@ class HttpResponseRedirect(HttpResponseRedirectBase):
 
 - 500번대 : 서버측 오류
   - 500 : 서버 내부 오류 발생  ex) django에서는 해당 View 함수에서 어떤 예외를 처리하지 못하고 임의의 오류가 발생했을 경우 500번대 응답을 발생시키게 된다. 
+
+
+
+### 200번대 응답하는 예시
+- 단순히 HttpResponse 응답을 만들어서 return하는 경우 200번대이다. render, JsonResponse도 200이다.
+
+```python
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+
+def view1(request):
+    return HttpResponse('Hello, Ask Company')
+def view2(request):
+    return render(request, 'template.html')
+def view3(request):
+    return JsonResponse({'hello': 'Ask Company'})
+```
+
+
+### 302 응답 예시
+- HttpResponseRedirect를 return 하는 경우나 혹은 어떤 이동해야 할 url를 url reverse를 통해서 url를 계산해서 이동하는 형태를 예로 들 수 있다. 하지만 이러한 2가지 경우를 별로 사용하지 않는다. HttpResponseRedirect를 직접적으로 사용하는 경우가 별로 없다.
+
+
+```python
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, resolve_url
+
+def view1(request):
+    return HttpResponseRedirect('/shop/')
     
+def view2(request):
+    url = resolve_url('shop:item_list') # 후에 배울 URL Reverse 적용
+    return HttpResponseRedirect(url)
+    
+def view3(request):
+    # 내부적으로 resolve_url 사용
+    # 인자로 지정된 문자열이 url reverse에 실패할 경우,
+    # 그 문자열을 그대로 URL로 사용하여, redirect 시도
+    return redirect('shop:item_list')
+```
+
+- 대신 redirect라는 shortcuts 함수를 통해서 redirect를 처리한다. 내부적으로 HttpResponse 객체를 만들어준다. redirect 괄호안에는 url(redirect('/shop/'))도 쓸 수 있고, 패턴 네임(redirect('shop:item_list'))도 사용할 수 있다. 
+  - redirect를 django View에서 할 때는 shortcuts redirect 함수를 사용하자.
+
+
+
+### 404 응답 예시
+```python
+from django.http import Http404, HttpResponseNotFound
+from django.shortcuts import get_object_or_404
+from shop.models import Item
+
+def view1(request):
+    try:
+        item = Item.objects.get(pk=100)
+    except Item.DoesNotExist:
+        raise Http404
+    # 생략
+    
+def view2(request):
+    item = get_object_or_404(Item, pk=100) # 내부에서 raise Http404
+    # 생략
+    
+def view3(request):
+    try:
+        item = Item.objects.get(pk=100)
+    except Item.DoesNotExist:
+        return HttpResponseNotFound() # 잘 쓰지 않는 방법
+# 생략
+```
+
+- View 함수에서 특정 하나의 레코드를 queryset.get이라는 이름의 메소드를 통해서 하나에 접근할 수 있게 되는데, 만약 매칭되는 객체가 0개일 때 / 1개일 때 / 2개 이상일 때 이렇게 각각에 대해서 처리가 달라지게 된다.
+  - 0개일 때는 DoesNotExist 예외가 발생
+  - 1개일 때는 정상 반환을 해준다.
+  - 2개일 
