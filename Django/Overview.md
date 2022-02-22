@@ -80,3 +80,28 @@
   - /blog/images/flower.jpg : 장고 View를 통해, JPG파일 내용을 응답으로 내어주도록 설정
   - /blog/images/flower/ : 장고 View를 통해, JPG파일 내용을 응답으로 내어주도록 설정
   - 웹서버 구성에 따라, 특정 요청에 대한 응답을 Apache/Nginx 웹서버에도 할 수도 있고 Django 뷰에서 응답을 할 수도 있다.
+
+
+### 단지 하나의 HTTP 요청에 대해, 하나의 응답을 받는다.
+1) 브라우저(클라이언트)에서 서버로 HTTP 요청
+
+2) 서버에서는 해당 HTTP요청에 대한 처리 : 장고에서는 관련 뷰 함수가 호출
+
+3) 뷰 함수에서 리턴을 해야지만 비로소 HTTP응답이 시작되며, 그 HTTP 응답을 받기전까지는 하얀 화면만 보여진다. 따라서 뷰 처리시간이 길어질수록 흰 화면이 보여지는 시간이 길어진다.
+
+4) 브라우저는 서버로부터 HTTP 문자열 응답(html파일 등)을 1줄씩 해석하여, 그래픽적으로 표현한다. 
+   - 만약 HTML 문자열 응답에 추가 리소스가 지정되어있다면? (css, js) -> html 문자열은 1줄씩 처리되며, 외부 리소스는 해당 리소스가 로딩완료/실행될 때까지 대기한다.
+
+```html
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>AskDjango Blog</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <script src="/static/jquery-3.2.1.min.js"></script>
+</head>
+...
+```
+
+- 위와 같을 때, 
