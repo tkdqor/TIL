@@ -29,3 +29,17 @@ class Post(models.Model):
 
 - 이제, migration과 migrate을 실행해주자.
   - **그러면 이제 실제로 User 모델과 Post 모델을 M:N으로 연동하기 위해서 데이터베이스 내에 post_liked_users라는 이름의 테이블이 생성된다.**
+
+
+### 좋아요 기능 구현
+- posts 앱 내부 urls.py로 가서 다음과 같이 설정.
+```python
+app_name = 'posts'
+urlpatterns = [
+    # 좋아요 버튼
+    path('<int:pk>/like/', views.like, name='like'),
+]
+```
+
+- 그리고 
+
