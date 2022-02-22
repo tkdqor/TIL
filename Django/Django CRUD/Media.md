@@ -73,6 +73,7 @@ urlpatterns = [
 
 - 위의 코드는 django 공식 문서에 작성 방식이 나와있다.
 
+* * *
 
 ```html
 <form method="POST" action="{% url 'posts:create' %}" enctype="multipart/form-data">
@@ -110,4 +111,76 @@ def create(request):
     return redirect('posts:detail', pk=post.id)
 ```
 
-- 우리가 
+- 우리가 이미지파일을 POST 방식으로 전송했다 하더라도 -> 파일의 경우에는 request.FILES라는 코드로 담겨서 전달이 된다. get 함수를 통해서 request.FILES 내부에 image라는 key로 전달된 데이터를 찾아서 image라는 변수에 저장한다. 만약 이미지가 전달되지 않았을 경우에는 None이 return 된다.(사용자가 이미지를 업로드하지 않고 글을 작성했을 경우)
+- 그리고 데이터베이스에 추가할 때, post = Post(user=user, title=title, body=body, image=image) -> 이렇게 image 필드에 추가해준다.
+
+* * *
+- 이미지를 업로드하고 글을 작성한 이후에, detail 페이지에서 해당 이미지를 볼 수 있게끔 detail template를 수정.
+```html
+<h1>Post detail</h1>
+
+    <!-- 이미지파일 보여주기 -->
+    {% if post.image %}
+        <div class="mb-3 col-md-6">
+            <img class="img-fluid" src="{{ post.image.url }}" alt="Post Image">
+        </div>
+    {% endif %}    
+...
+```
+
+- 해당 게시물에 연동된 이미지가 있을 경우에만 image element를 사용해서 이미지를 보여주면 된다.
+  - **image element의 source attribute에다가 해당 이미지의 주소를 적어야 하는데 -> post.image.url의 형태로, post 객체의 image 필드에 접근하고 url를 붙여주면 된다.**
+  - 만약, post.image라고 하게 되면 이미지에 대한 복합적인 정보가 다양하게 들어있다. post.image.width / post.image.height 등 너비나 높이를 추출해서 사용할 수 있다.
+
+- 실제로 업로드를 해보면, 프로젝트 루트 기준으로 media라는 새로운 디렉터리가 생성된 것을 확인할 수 있다. MEDIA_ROOT 하위 경로로 posts까지 생성된 것을 볼 수 있다.
+
+
+- 마지막으로 이미지파일을 수정할 수 있게 edit.html를 수정해보자.
+```html
+<h1>Edit Post</h1>
+
+    <!-- 이미지파일 보여주기 -->
+    {% if post.image %}
+        <div class="mb-3 col-md-6">
+            <img class="img-fluid" src="{{ post.image.url }}" alt="Post Image">
+        </div>
+    {% endif %}  
+
+ <form method="POST" action="{% url 'posts:update' post.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+   ...
+ <!-- 이미지 업로드 코드 -->
+        <div class="mb-3 col-md-6">
+            <label class="form-label" for="image">Image</label>
+            <input type="file" class="form-control" id="image" name="image">
+        </div>
+```
+
+- 이미지파일이 있으면 보여주고, 업로드를 할 수 있게 input element의 type을 file로 설정. form element에도 enctype="multipart/form-data" 추가.
+- 그리고 수정 페이지에서 실제로 버튼을 눌렀을 때 수정이 되게끔 udpate View 함수를 수정.
+
+```python
+# 게시글 수정 기능
+@login_required
+def update(request, pk):
+    try:
+        post = Post.objects.get(id=pk, user=request.user)    # 수정해야할 post 객체 조회 / user 조건 추가
+    except Post.DoesNotExist:                                # Post.DoesNotExist라는 에러에 대해서만 대응
+        return redirect('posts:index')                       # 게시물을 못 찾으면 게시물 목록 페이지로 redirect
+
+    # post.author = request.POST.get('author')    # post.author 값에 사용자로부터 POST 방식으로 입력받은 값으로 수정
+    post.body = request.POST.get('body')        # post.body 값에 사용자로부터 POST 방식으로 입력받은 값으로 수정
+    post.title = request.POST.get('title')
+    image = request.FILES.get('image')
+    if image:
+        post.image = image
+        
+    post.save()
+
+    return redirect('posts:detail', pk=post.id) # redirect 함수로 게시물 상세 페이지 보여주기
+```
+
+- **request.FILES.get('image') 이렇게 이미지를 전달받았을 경우에 image라는 변수에 해당 이미지 데이터가 채워진다. 만약 사용자가 이미지를 업로드 하지 않았다면 None이 저장된다.**
+- **우리는 새로운 이미지가 추가될 때만 교체해주고 싶기 떄문에, image가 None이 아닌 경우에만 -> if image: 일 때만 post.image = image로 새로운 이미지로 기존 이미지를 대체.**
+  - **만약, if문이 아닌 post.image = image라고 하게 되면 사용자가 파일 input에서 이미지를 선택하지 않은 경우에 -> server에 이미지 데이터가 전송되지 않는다. 그 상태에서 None이라는 값으로 덮어버리면 기존에 연동된 이미지가 날아가게 된다.**
