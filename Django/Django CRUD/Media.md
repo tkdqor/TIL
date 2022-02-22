@@ -75,10 +75,39 @@ urlpatterns = [
 
 
 ```html
+<form method="POST" action="{% url 'posts:create' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+  ...
+  
  <!-- 이미지 업로드 코드 -->
         <div class="mb-3 col-md-6">
             <label class="form-label" for="image">이미지</label>
             <input type="file" class="form-control" id="image" name="image">
         </div>
+...
+```
 
-- ddd
+- 게시글을 생성하는 new.html에서 이미지를 업로드 할 수 있게 코드를 추가하자. input element인데 type이 file이어야 한다.
+- 그리고 form element에서 이미지나 파일을 업로드 할 경우에는 -> 반드시 메소드는 POST 방식으로, enctype이라는 attribute는 encoding-type의 약자이다. 여기에 "multipart/form-data"라는 값을 지정해줘야 한다.
+
+
+- 이제, new template에서 이미지를 업로드하고 글 생성 버튼을 눌렀을 때, 실제로 데이터베이스에 추가해줘야 하니까 create View 함수를 수정하자.
+```python
+# 게시글 생성 기능
+@login_required
+def create(request):
+    # if not request.user.is_authenticated:    # 로그인이 되지 않은 경우, login url로 redirect
+    #     return redirect('accounts:login')
+
+    user = request.user                      # 로그인된 유저 정보를 user라는 변수에다가 저장하기      
+    body = request.POST.get('body')          # request.POST / 여기까지 딕셔너리의 형태이고 .get() 함수를 사용해서 안전하게 접근
+    title = request.POST.get('title')
+    image = request.FILES.get('image')
+
+    post = Post(user=user, title=title, body=body, image=image)     # created_at 필드는 자동 설정 되어있음
+    post.save()                               # Post(author=author, body=body, created_at=timezone.now()) timezone 모듈안에 now라는 함수   
+
+    return redirect('posts:detail', pk=post.id)
+```
+
+- 우리가 
