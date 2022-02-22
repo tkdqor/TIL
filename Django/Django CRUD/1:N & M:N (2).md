@@ -48,7 +48,7 @@ urlpatterns = [
 def like(request, pk):
     if request.method == 'POST':                        # HTTP Request method가 POST일 경우에만,
         try:
-            post = Post.obejcts.get(id=pk)              # 좋아요를 누를 게시글의 pk로 조회한 다음 인스턴스를 post에 저장
+            post = Post.objects.get(id=pk)              # 좋아요를 누를 게시글의 pk로 조회한 다음 인스턴스를 post에 저장
 
             if request.user in post.liked_users.all():  # 만약 로그인한 유저의 pk가 해당 글의 좋아요 유저 목록에 있다면
                 post.liked_users.remove(request.user)   # 그 목록에서 삭제
@@ -100,3 +100,9 @@ def like(request, pk):
 
 - 그리고 로그인이 되어있는 경우에만, 좋아요 버튼을 포함하고 있는 form element를 추가해준다.
   - {% if user in post.liked_users.all %} -> 원래는 all()이지만 django template language이기에 괄호를 생략. 현재 로그인되어있는 유저가 해당 게시물에 좋아요를 누른 유저 목록에 포함되어 있다면, 푸른색 버튼을 생성. / 좋아요를 누르지 않은 경우에는 회색 버튼 생성.
+
+
+
+### 모델 관계 예시
+- 1:N 관계를 적용할 수 있는 다른 예시로는, 게시물과 댓글이 있다. 하나의 게시물에는 여러 개의 댓글이 달릴 수 있고, 1개의 댓글은 특정 1개의 글에만 속하게 된다. (Post - Comment)
+- M:N 관계를 적용할 수 있는 다른 예시로는, 유저와 유저간의 팔로우 기능이 있다. 
