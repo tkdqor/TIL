@@ -163,5 +163,85 @@ def index(request):
 - **추가로, 오픈API -> API활용체험을 눌러보면, 도로명주소 API / 영문주소 API / 상세주소 API / 지도제공 API 이렇게 다양한 API를 직접 체험해볼 수 있다.**
 
 
+* * *
+### 도로명주소 API 적용해보기
+- 먼저, map이라는 새로운 app를 만들어보자.
+```terminal
+python manage.py startapp map
+```
 
-27:05
+- 그리고 settings.py에 등록해주자. 또한, 프로젝트 디렉터리 내부 urls.py로 가서 url을 설정하자.
+```python
+urlpatterns = [
+    ...
+    # map으로 요청시 map 앱으로 연결
+    path('map/', include('map.urls')), 
+]
+```
+
+- 이렇게 map/ 으로 url 요청 시 -> map app에 있는 urls.py를 연결시킨다. 그리고 map 앱 내부에서 urls.py를 생성하고 설정하자.
+```python
+from django.urls import path
+from . import views
+
+app_name = 'map'
+
+urlpatterns = [
+    path('search/<str:keyword>/', views.search, name='search'),
+]
+```
+
+- map/search/ 그 다음, 어떤 검색어를 입력할 경우에는 search라는 View 함수가 처리할 수 있도록 한다. 
+  - search/ 이후에 오는 url를 keyword로 받되, type이 int가 아닌 str -> 즉, 문자열 형태의 keyword라는 변수로 받을 수 있게끔 설정한 것이다.
+
+- 다음은 View 함수를 설정하자.
+  - 우리가 지금까지는 View 함수를 설정할 때, 최종적인 HTTP Response로 단순한 텍스트를 주거나 HTML를 주는 방식으로 개발했었다. 그런데 이번에는 JSON 형태로 응답하는 API를 개발해 볼 것이다.
+```python
+from django.shortcuts import render
+from django.http import JsonResponse
+
+# Create your views here.
+
+def search(request, keyword):
+
+    return JsonResponse({'name': 'sangbaek', 'age': 29})
+```    
+
+
+- 그래서 우리는 from django.http import JsonResponse 이렇게 JsonResponse를 import 해주자. 일단 위와 같이 search 함수의 return를 JsonResponse으로 주고 서버를 실행해보자.
+  - 그리고나서 브라우저에 http://localhost:8000/map/search/분당 이렇게 검색해보면, {"name": "sangbaek", "age": 29} 이렇게 우리가 View 함수에서 작성한 JSON 형태가 출력된다.
+  - **즉, 우리가 View 함수에서 작성한 딕셔너리 데이터가 JSON 형태로 변환이 되어서 HTTP Response로 전달되는 걸 확인할 수 있다.**
+
+
+- **이제 사용자가 입력한 값에 따라서 다른 데이터를 Response 하고 싶다면, keyword라는 변수를 활용해야 한다.**
+```python
+from django.shortcuts import render
+from django.http import JsonResponse
+
+# Create your views here.
+
+def search(request, keyword):
+
+    return JsonResponse({'keyword': keyword})   # python 딕셔너리 데이터를 JSON 형태로 전환해서 HTTP Response를 해준다.
+```
+
+- 위와같이 입력하고 url 요청을 하면 {"keyword": "\ubd84\ub2f9"} 이렇게 한글 자체가 깨져서 출력된다. 
+  - django의 JsonResponse 함수가 주어진 데이터를 활용해 JSON 형태의 문자열을 구성하는 과정에서 ASCII 인코딩이 아닌 문자열들을 자동으로 변환해버리는 이슈가 있다.
+  - 따라서, 이러한 django의 처리 방식을 수정해서 한글은 ASCII 인코딩으로 표현할 수 없는 문자이기에, 한글이 포함된 JsonResponse를 만들고 싶다면 JsonResponse 함수를 사용할 때 -> 
+
+```python
+def search(request, keyword):
+
+    return JsonResponse({'keyword': keyword}, json_dumps_params={'ensure_ascii': False})   
+```
+
+- 다음과 같이 json_dumps_params라는 옵션에 ensure_ascii를 False로 지정해서 옵션을 추가해주면 정상적으로 한글이 출력된다.
+<img width="375" alt="image" src="https://user-images.githubusercontent.com/95380638/155295140-ebcc5b09-8dfd-4c96-8c32-2da561615b1b.png">
+
+- 그래서 이렇게 입력된 키워드가 그대로 JSON 형태로 출력해줄 수 있게 된다.
+
+
+
+33분!
+
+
