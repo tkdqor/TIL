@@ -78,3 +78,34 @@ def index(request):
 - **만약 API의 응답이 JSON 형태로 전달되었다면 -> dog_api_response_dictionary = dog_api_response.json() 이렇게 .json() 함수를 통해서 해당 response를 JSON 형태로 변환해서 사용할 수 있게끔 만들어줄 수 있다. python으로 치면 딕셔너리 형태로 변환해서 사용할 수 있게 되는 것이다.**
   - 이렇게 변환된 결과를, python의 딕셔너리를 dog_api_response_dictionary라는 변수에 저장한 것이다.
   - 이제 dog_api_response_dictionary라는 변수에는 JSON 데이터가 python 딕셔너리로 변환이 되어서 들어가 있고, status가 success일 경우에만 message라는 key로 전달된 강아지 이미지 주소를 추출해서 이것을 활용해 template에서 사용하는 것이다.
+
+
+- 그래서 dog = None이라는 코드를 작성해서, 어떤 값도 들어있지 않는 비어있는 변수를 만들자.
+
+- 그리고 **if dog_api_response_dictionary.get('status') == 'success': -> 해당 딕셔너리에 status라는 key에 해당하는 값이 success라면, 즉 API가 성공적으로 응답되었다면** 
+  - **dog = dog_api_response_dictionary.get('message') -> 딕셔너리에서 message라는 key에 저장되어있는 값, 강아지 이미지 주소 데이터를 추출해서 dog라는 변수에다가 덮어쓰기를 한 것이다.**
+
+- **즉, dog라는 변수는 처음에는 None 이라는 값이 저장되어 있지만, API의 응답이 성공적으로 처리되었을 경우에는 강아지 이미지 주소가 들어있게끔 변경이 되는 것이다.**
+  - 이 dog라는 변수를 context에 추가해서 index template에 보내준다.
+
+* * *
+- index template에서는 전달받은 강아지 이미지 데이터인 dog가 있을 경우, dog라는 변수를 활용해서 레이아웃을 구성하면 된다.
+```html
+<!-- dog API -->
+{% if dog %}
+<div class="card mt-3">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img class="card-img" src="{{ dog }}" alt="Dog Image">
+        </div>
+        <div class="col-md-8 card-body">
+            <h5 class="card-title">강아지를 보고 싶다면?</h5>
+                <p class="card-text">Dog API를 사용하자!</p>
+                <a href="https://dog.ceo/dog-api/" class="card-link" target="_blank">Dog API</a>
+        </div>
+    </div>
+</div>
+{% endif %}
+```
+
+- dog 변수가 있는 경우에만 -> <img class="card-img" src="{{ dog }}" alt="Dog Image"> 이렇게 src attribute에 dog 변수를 활용해서 이미지를 보여주게 된다.
