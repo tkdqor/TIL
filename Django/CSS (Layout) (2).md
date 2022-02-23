@@ -23,16 +23,14 @@
 ...
 <body>
   {% block content %}
-  ...
-  ...
   {% endblock content %}
 </body>  
 ```
 
 - endblock에도 content라는 이름을 써주는 이유는 어떤 block에 대한 것인지 알 수 있게 하기 위함이다.
-- block을 사용하게 되면 현재 template이 부모가 되고 -> 현재 레이아웃을 post_list 등 다른 template에 대한 부모로 지정하는 것이다.
-  - 그래서 자식 template에서는 -> 맨 위에다가 {% extends 'instagram/layout.html' %} 이렇게 상속받을 수 있다. 
-  - 그리고 자식 template은 부모를 상속받고 부모가 정의한 block를 자식이 구현하는 것이다. 자식 template 안에서 {% block content %} {% endblock content %}를 사용해서 내용을 채워주자.
+- **block을 사용하게 되면 현재 template이 부모가 되고 -> 현재 레이아웃을 post_list 등 다른 template에 대한 부모로 지정하는 것이다.**
+  - **그래서 자식 template에서는 -> 맨 위에다가 {% extends 'instagram/layout.html' %} 이렇게 상속받을 수 있다.**
+  - **그리고 자식 template은 부모를 상속받고 부모가 정의한 block를 자식이 구현하는 것이다. 자식 template 안에서 {% block content %} {% endblock content %}를 사용해서 내용을 채워주자.**
 
 ```html
 {% extends 'instagram/layout.html' %}
