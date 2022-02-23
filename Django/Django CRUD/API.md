@@ -273,4 +273,13 @@ def search(request, keyword):
         'resultType': 'json',}
     - 이렇게 요청변수와 값을 입력해주자. 여기서 keyword라는 변수의 값인 keyword는 사용자가 입력한 값에 따라서 그 값을 그대로 전달받아 활용해주는 것이다.
     
-- result = requests.post('https://www.juso.go.kr/addrlink/addrLinkApi.do', ... -> 이렇게 requests.post() 함수의 결과를 result라는 변수에 저장해주고 result.json() -> 이렇게 응답결과를 python 딕셔너리로 변환해서 사용할 수 있게 하자. 그래서 이 result.json()를 JsonResponse 함수의 첫번째 인자로 넣어준다.
+- result = requests.post('https://www.juso.go.kr/addrlink/addrLinkApi.do', ... -> 이렇게 requests.post() 함수의 결과를 result라는 변수에 저장해주고.      
+  result.json() -> 이렇게 응답결과를 python 딕셔너리로 변환해서 사용할 수 있게 하자. 그래서 이 result.json()를 JsonResponse 함수의 첫번째 인자로 넣어준다.
+  
+- **이제, 브라우저에서 localhost:8000/map/search/강남/ 이런식으로 url을 입력하면 자동으로 강남 이라는 키워드로 검색한 결과를 json 형태로 보여주게 된다.**
+  - **이러한 실습으로 도로명주소 검색 API처럼 우리도 직접 JSON 형태의 response를 내려주는 API서버를 개발할 수 있다는 것을 알 수 있다.**
+  - 그리고 도로명주소 검색 API를 활용한 것처럼 view 함수 내부에서 requests 모듈을 사용해 외부 API를 필요할 때마다 사용할 수 있다. 
+  - 마지막으로 우리가 search view 함수를 작성하면서 도로명주소 검색 API의 응답 결과를 그냥 그대로 전달만 했지만 -> 복잡한 응답 결과 속에서 우리가 필요한 데이터만 추출해서 가공을 하면,     
+    예를 들어 실제 도로명 주소와 해당 주소의 영어 주소, 이 2개를 추출해서 구성한다면 -> 우리가 분당이라고 입력했을 때, 그 분당이라는 keyword를 포함하고 있는 도로명주소와 영어주소만 포함하고 있는 **우리만의 API를 개발할 수도 있다.**
+    
+- **그래서 여기까지, 다른 사람들이 제공하는 API를 활용해보고 / 우리가 직접 API를 제공하는 주체, API서버를 만들어보기도 했다.**
