@@ -240,8 +240,37 @@ def search(request, keyword):
 
 - 그래서 이렇게 입력된 키워드가 그대로 JSON 형태로 출력해줄 수 있게 된다.
 
+* * *
+- **이제 강남, 분당 이러한 keyword를 전달받아서 도로명주소 검색 API를 대신 호출해줄 수 있도록 하자. 그리고 그 호출결과를 우리가 보는 페이지에서 볼 수 있게끔 구현해보자.**
+
+- 먼저 HTTP Request를 만들기 위해서 map App의 views.py에서 requests 모듈을 import 하기.
+```python
+from django.shortcuts import render
+from django.http import JsonResponse
+import requests
+
+# Create your views here.
+
+def search(request, keyword):
+    result = requests.post('https://www.juso.go.kr/addrlink/addrLinkApi.do', {    # 해당 url로 POST 방식으로 HTTP Request를 진행
+        'confmKey': 'devU01TX0FVVEgyMDIyMDIyMzE3MTYwOTExMjI3MzM=',                # 이 떄, 요청변수를 딕셔너리 형태로 넣어서 요청하기
+        'keyword': keyword,                                                       # keyword는 사용자가 입력한 값을 의미
+        'resultType': 'json',
+    })
 
 
-33분!
+    return JsonResponse(result.json(), json_dumps_params={'ensure_ascii': False}) # JsonResponse의 첫번째 인자로, Http Response를 json 형태로 바꾼 값을 넣어주기
+    # python 딕셔너리 데이터를 JSON 형태로 전환해서 HTTP Response를 해준다.
+    # json_dumps_params 라는 옵션으로 JSON에서 한글 출력이 가능하도록 설정.
+```
 
-
+- 그리고 search라는 View 함수가 실행될 때마다 requests.get() 함수를 통해서 GET 방식으로 요청할 수도 있지만, 이번에는 POST 방식으로 요청해보자. requests.post() 함수를 사용하면 된다.
+  - 첫번째 인자로는 API의 url를 적어주면 되니까 https://www.juso.go.kr/addrlink/addrLinkApi.do를 적어준다.
+  - 두번째 인자로는 POST 방식이니까 request body로 보낼 데이터를 딕셔너리 형태로 적어주면 된다. 
+    - ex) {
+        'confmKey': 'devU01TX0FVVEgyMDIyMDIyMzE3MTYwOTExMjI3MzM=',
+        'keyword': keyword,
+        'resultType': 'json',}
+    - 이렇게 요청변수와 값을 입력해주자. 여기서 keyword라는 변수의 값인 keyword는 사용자가 입력한 값에 따라서 그 값을 그대로 전달받아 활용해주는 것이다.
+    
+- result = requests.post('https://www.juso.go.kr/addrlink/addrLinkApi.do', ... -> 이렇게 requests.post() 함수의 결과를 result라는 변수에 저장해주고 result.json() -> 이렇게 응답결과를 python 딕셔너리로 변환해서 사용할 수 있게 하자. 그래서 이 result.json()를 JsonResponse 함수의 첫번째 인자로 넣어준다.
