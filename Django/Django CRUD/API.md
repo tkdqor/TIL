@@ -108,7 +108,7 @@ def index(request):
 {% endif %}
 ```
 
-- dog 변수가 있는 경우에만 -> <img class="card-img" src="{{ dog }}" alt="Dog Image"> 이렇게 src attribute에 dog 변수를 활용해서 이미지를 보여주게 된다.
+- dog 변수가 있는 경우에만 -> img class="card-img" src="{{ dog }}" alt="Dog Image" 이렇게 src attribute에 dog 변수를 활용해서 이미지를 보여주게 된다.
 
 - 이러면 이제 게시물 목록 하단에 강아지 이미지와 간단한 문구도 확인할 수 있다. 그리고 새로고침 할 때마다 매번 새롭게 dog API를 호출하면서 새로운 강아지 이미지를 불러오게 된다. 
 
@@ -150,3 +150,18 @@ def index(request):
 
 <img width="1204" alt="image" src="https://user-images.githubusercontent.com/95380638/155287660-1ac1494b-2a3b-4296-aaad-545d77f65554.png">
 
+- 그러면 위와 같이 응답 데이터는 똑같은데, 포맷이 XML에서 JSON으로 변경된 걸 확인할 수 있다.
+
+- 추가로, keyword라는 요청변수를 이용해서 검색어를 전달해보자. GET 방식에서 여러 개의 파라미터를 전달할 때는 ? 뒤에 첫번째 파라미터=값 적고 &를 적고 두번째 파라미터=값을 적으면 된다.      
+  ex) https://www.juso.go.kr/addrlink/addrLinkApi.do?resultType=json&keyword=강서
+  - 그런데, 이렇게 입력해서 보면 승인되지 않은 KEY라고 나온다. 그 이유는 이 도로명주소 API를 사용하기 위해서는, 반드시 승인키를 전달해줘야 하기 때문이다. 그래서 confmKey 요청변수에 승인키를 담고 다시 하자.     ex) https://www.juso.go.kr/addrlink/addrLinkApi.do?resultType=json&keyword=강서&confmKey=...
+
+<img width="636" alt="image" src="https://user-images.githubusercontent.com/95380638/155288917-60270f67-b2f5-4913-9ca1-f14f28cbb45c.png">
+
+- 이렇게 요청하게 되면 키워드로 검색한 다양한 주소 정보를 API response로 전달받을 수가 있다. 
+
+- **추가로, 오픈API -> API활용체험을 눌러보면, 도로명주소 API / 영문주소 API / 상세주소 API / 지도제공 API 이렇게 다양한 API를 직접 체험해볼 수 있다.**
+
+
+
+27:05
