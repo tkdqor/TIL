@@ -62,3 +62,95 @@ $(function() {
 ### 브라우저의 개발자 도구 열기
 - 프론트엔드 개발에서는 필히 브라우저의 "개발자 도구"를 열어줘야 한다.
 - 브라우저 자바스크립트 수행 중에 발생한 오류를 "console 탭"에서 확인할 수 있기 때문.
+
+
+### 할 수 있는 jQuery 기능들
+- Event Listener 등록 / DOM 엘리먼트 추가/제거 / Ajax GET/POST 요청
+
+- **onload 이벤트 리스너 등록**
+  - 이벤트 리스너 등록은 웹페이지 로딩 후에 하는 것이 안전하다.
+  
+```html
+<script>
+$(document).ready(function() {
+    console.log("웹페이지 로딩 완료");
+});
+</script>
+```
+
+- 또는 아래와 같이 사용해도 된다.
+
+```html
+<script>
+$(function() {
+    console.log("웹페이지 로딩완료");
+});
+</script>
+```
+
+- **click 이벤트 리스너 등록**
+
+```html
+<a id="btn-naver-1" href="http://m.naver.com" target="_blank">Naver Button 1</a>
+<a id="btn-naver-2" href="http://m.naver.com" target="_blank">Naver Button 2</a>
+
+<ul id="my-list">
+  <li>list1</li>
+  <li>list2</li>
+  <li>list3</li>
+</ul>
+```
+
+- 위와 같이 html 코드가 있을 때, jQuery에서는 $()이렇게 함수 호출을 할 때 -> CSS Selector 문법을 적용할 수 있다.
+
+```html
+<script>
+$(function() {
+    // 리스너에 리턴값이 없기 때문에, 아래 리스너가 호출 + 본연의 href 링크가 동작
+    $('#btn-naver-1').click(function() {
+       console.log('clicked btn-naver-1');
+    });
+  
+    // 아래 리스너가 호출되지만, href 링크는 동작하지 않습니다.
+    $('#btn-naver-2').click(function(e) {
+        e.preventDefault(); // 디폴트 동작 수행 방지. 혹은 return false; 도 동일한 효과
+        console.log('clicked btn-naver-2');
+        // return false; // true를 리턴하면, 위 태그 클릭 시의 디폴트 동작 수행
+    });
+  
+    $('#my-list li').click(function() {
+        var content = $(this).html();
+        console.log('clicked : ' + content);
+    });
+});
+</script>
+```
+
+- 아이디 CSS 대상을 클릭했을 때 호출되는 함수를 등록할 수 있다. 
+- 그리고 click 함수에서 어떤 값을 리턴할 수 있는데, 리턴을 하지 않으면 해당 element가 동작해야 할 작업을 그대로 수행하게 된다. 첫번째로 쓴 코드는 리턴값이 없기에 바로 href로 이동하게 된다.
+  - 두번째 코드 부분은 함수에 이벤트 객체인 e를 받아서 e.preventDefault();를 하게 되면 디폴트 동작 수행을 막게 된다.
+
+
+- **submit 이벤트 리스너 등록**
+```html
+<form id="query-form">
+  <input type="text" name="query" />
+  <input type="submit" value="조회" />
+</form>
+
+<script>
+  $(function() {
+      $('#query-form').submit(function(e) {
+          e.preventDefault();
+          console.log("form submit");
+      });
+  });
+</script>
+```
+
+- submit 이벤트는 해당 form 객체에서 submit이 발생할 때 어떤 것들을 지정할 수 있는 것이다.
+  - 위의 코드에서는, form element를 통해 action를 지정해서 원래는 버튼을 누르면 해당 url로 전송이 되지만 -> submit 이벤트로 e.preventDefault(); 이렇게 해서 실제 submit이 발생하지 않게 해준다. 단순히 console에 출력만 되는 코드이다.
+  - 이렇게 하는 이유는, 실제 브라우저 기본에서 지원하는 form 전송 방식을 쓰지 않고 자바스크립트를 통해서 별도로 submit를 구현하고자 할 때 사용할 수 있다.
+
+
+11:40
