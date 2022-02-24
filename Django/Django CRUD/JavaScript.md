@@ -21,3 +21,25 @@
 
 
 ### JavaScript 변수
+- JavaScript에서도 변수를 var / let / const 이렇게 3가지로 만들 수 있다.
+  - const는 변하지 않는 변수, 상수를 의미한다. 그래서 값을 재활용하기 위해 저장만하고 변경하지는 않는다.
+```javascript
+const name = 'sangbaek'
+```
+
+  - let은 값을 저장도 하고, 추후 변경하고자 할 때 사용한다.
+```javascript
+let age = 29
+age = 30
+```
+
+
+### JavaScript BOM & DOM (Browser Object Model & Document Object Model)
+- 참고 블로그 : https://goddino.tistory.com/71
+- **JavaScript가 웹 생태계에서 강력한 힘을 가지는 이유는, 브라우저 자체와 HTML 문서를 자유롭게 컨트롤 할 수 있기 때문이다.**
+  - 브라우저와 HTML 문서를 하나의 object로 표현해놨기 때문에 우리는 JavaScipt 코드로 해당 object에 접근하고 object를 조작할 수 있게 된다. 
+
+- ex) Browser Object Model에 해당하는 location이라는 것을 활용하면 -> location.reload()를 console에 입력해서 자동으로 현재 웹페이지의 주소를 새로고침할 수 있다.        
+  또한, location.href로 현재 웹 페이지의 url를 확인할 수도 있다. 그리고 location.href = 'https://www.google.com' 를 입력해서 바로 해당 주소로 이동할 수도 있다.
+
+
