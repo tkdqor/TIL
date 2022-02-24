@@ -39,7 +39,29 @@ age = 30
 - **JavaScript가 웹 생태계에서 강력한 힘을 가지는 이유는, 브라우저 자체와 HTML 문서를 자유롭게 컨트롤 할 수 있기 때문이다.**
   - 브라우저와 HTML 문서를 하나의 object로 표현해놨기 때문에 우리는 JavaScipt 코드로 해당 object에 접근하고 object를 조작할 수 있게 된다. 
 
-- ex) Browser Object Model에 해당하는 location이라는 것을 활용하면 -> location.reload()를 console에 입력해서 자동으로 현재 웹페이지의 주소를 새로고침할 수 있다.        
-  또한, location.href로 현재 웹 페이지의 url를 확인할 수도 있다. 그리고 location.href = 'https://www.google.com' 를 입력해서 바로 해당 주소로 이동할 수도 있다.
+- ex) Browser Object Model에 해당하는 location이라는 것을 활용하면 -> **location.reload()** 를 console에 입력해서 자동으로 현재 웹페이지의 주소를 새로고침할 수 있다.        
+  또한, **location.href** 로 현재 웹 페이지의 url를 확인할 수도 있다. 그리고 **location.href = 'https://www.google.com'** 를 입력해서 바로 해당 주소로 이동할 수도 있다.
+
+- ex) 또다른 Browser Object Model인 history를 통해서는 -> **history.back()** 를 입력하면 전에 봤던 페이지로 이동하는 뒤로가기 기능을 사용할 수 있다.
 
 
+### Document Object Model
+- 웹 페이지 화면에서 개발자도구를 열고 console를 클릭한 다음 **document**라고 입력하게 되면 웹 페이지 전체가 하이라이트 되는 것을 볼 수 있다. 이 document라는 변수가 html 문서 자체를 의미한다.
+  - ex) **document.body.style.backgroundColor = '#000000'** 이렇게 입력하게 되면 -> 해당 문서내에 있는 body element에 접근해서 CSS style 중에 backgroundcolor를 #000000인 검은색으로 변경시킬 수 있다.
+- 그리고 개발자도구에서 element Inspector를 이용해서 어떠한 HTML element가 사용되었는지, 어떠한 CSS Style이 입혀졌는지 확인할 수 있었는데 JavaScript에서도 가능하다.
+  - ex) **document.querySelector('img[alt=Google]')** -> 이 querySelector 함수는 우리가 지정한 CSS Selector를 기반으로 해서 HTML element를 검색해준다. 여기서는 img element 중에서도 alt attribute가 Google이라고 작성되어 있는 HTML element를 찾아줘라는 것이다. 이렇게 입력하면 우리가 찾고자 했던 해당 img element를 검색해준다.
+    - 그리고 더 나아가서 검색만 하는것이 아니라, JavaScript 코드로 접근하고 조작하는 것까지 가능하기 때문에 **document.querySelector('img[alt=Google]').srcset = '다른이미지주소'** -> 이렇게 입력해주면 구글의 로고를 다른 이미지로 대체할 수 있다.
+
+- 이렇게 우리가 보고있는 웹 페이지에 접근해서 거의 모든 것을 JavaScript로 진행할 수 있다.
+
+
+### Socket
+- 관련 블로그 : https://helloworld-88.tistory.com/215
+- 이렇게 우리가 원하는 시점에 웹 페이지를 다이나믹하게 바꿀 수 있다는 JavaScript의 특성을 최대한 활용해서 그 반응성을 극단으로 올리게 되면 https://socket.io/demos/chat 다음과 같은 실시간 채팅 서비스를 개발할 수도 있다. 우리가 채팅 메세지를 보내면 html 페이지를 바꿔서 또 보내고 새로운 li element를 추가하는 것이 가능해진다.
+  - 물론, 이러한 채팅 서비스를 개발하려면 우리가 지금까지 배웠던 HTTP 방식에다가 Socket 이라는 특수한 방식을 추가로 사용해야만 한다.
+  - 그래도 채팅 메세지라는 새로운 데이터를 전달받았을 때 해당 데이터를 활용해서 웹 페이지에 새로운 element를 추가해주는 것이 바로 JavaScript의 기능이다.
+
+- **이처럼 우리가 원하는 시점에 원하는 형태로 웹 페이지를 변경하거나 새로운 html element를 추가해야 한다면 반드시 JavaScript를 활용해야 한다.**
+
+
+14분!
