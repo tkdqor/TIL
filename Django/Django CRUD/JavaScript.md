@@ -168,4 +168,13 @@ age = 30
 - 그리고 transition이라는 속성은 CSS가 바뀔 때 어떠한 형태로 바뀌면 되는지 애니메이션 효과를 적용할 수 있다. 위 코드는 0.5초에 걸쳐서 바뀌었으면 한다는 것이다.
 
 
-28
+### navbar에서 항목 설정
+```html
+<ul>
+  <li><a onclick="document.querySelector(#about).scrollIntoView({ behavior: 'smooth' })">ABOUT</a></li>
+  <li><a onclick="document.querySelector(#experience).scrollIntoView({ behavior: 'smooth' })">EXPEIRENCE</a></li>
+  <li><a onclick="document.querySelector(#skills).scrollIntoView({ behavior: 'smooth' })">SKILLS</a></li>
+</ul>
+```
+
+- 이렇게 a element의 onclick를 설정하고 querySelector함수로 우리가 원하는 HTML element를 찾아낸 다음 scrollIntoView 함수를 통해서 해당 element가 있는 곳으로 스크롤을 조정할 수 있다. 조정할 때 behavior: 'smooth'를 지정해서 스무스하게 스크롤이 변경하게끔 작성할 수 있다.
