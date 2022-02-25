@@ -64,4 +64,108 @@ age = 30
 - **이처럼 우리가 원하는 시점에 원하는 형태로 웹 페이지를 변경하거나 새로운 html element를 추가해야 한다면 반드시 JavaScript를 활용해야 한다.**
 
 
-14분!
+### Dark Mode 실습
+```html
+<!-- dark mode 버튼 -->
+    <div>
+       <button id="dark-mode-btn" class="btn btn-primary ms-3">DARK MODE</button>
+    </div>
+```
+
+- 먼저 template에서 해당 버튼을 만들어주자.
+
+- 우리가 개발자 도구에서 Console Tab에 들어가 자바스크립트 코드를 작성하는 것은, 우리가 웹 페이지가 다 뜬 다음에 즉흥적으로 코드를 입력해서 실행하는 것이지 웹 서비스 자체에 녹아든 자바스크립트 코드는 아니다.
+  - 이러한 자바스크립트 코드가 처음부터 웹 페이지에 포함되어 있는 형태로 작성해야 한다.
+
+```html
+<head>
+  ...
+   <!-- 자바스크립트 내용 -->
+    <script>
+        alert('sangbaek')
+    </script>
+</head>
+```
+
+- 이렇게 head element 사이에 script라는 element를 이용해서 자바스크립트 코드를 작성하자.
+  - 그런데, 브라우저가 html 파일을 전달받아서 해석할 때 내부의 코드를 위에서부터 아래로 읽으면서 해석하게 된다. 그래서 head 안에 넣게 되면, 특정 html element에 접근해서 해당 element의 정보를 확인하거나 수정하는 자바스크립트 코드를 작성했다면 아직 body를 해석하지 못했기 때문에, 브라우저 입장에서는 아직 인지하지 못하는 element에 대해서 조회하거나 변경을 시도하게 된다는 것이다.
+  - 그래서 이러한 문제를 대비하기 위해 일반적으로 자바스크립트 코드를 body element가 끝나기 직전에 자바스크립트 코드를 추가하고 있다.
+
+```html
+<body>
+  ...
+      <!-- 자바스크립트 내용 -->
+    <script>
+        alert('sangbaek')
+    </script>
+</body>
+```
+
+- **이제 button element에 onclick이라는 어트리뷰트를 추가하자. 그리고 이 어트리뷰트의 value로 자바스크립트를 지정할 수 있다.**
+  - 그래서 alert('sangbaek') 다음과 같은 코드를 안에 추가해보자. 이렇게 하면 해당 버튼이 눌렸을 때 자바스크립트 코드가 실행된다.
+
+```html
+<div>
+   <button onclick="alert('sangbaek')" id="dark-mode-btn" class="btn btn-primary ms-3">DARK MODE</button>
+</div>
+```
+
+- 위와 같이 코드를 구성하면 버튼을 클릭할 때마다 팝업이 노출되는 것을 확인할 수 있다. 그런데 만약 입력해야할 코드가 길어진다면 한 줄에 다 입력하기 어려울 것이다. **그래서 복잡한 절차의 내용은 자바스크립트의 함수로 미리 작성해두고, 해당 버튼을 클릭했을 때 함수의 이름만 적어서 해당 함수가 실행되게끔 할 수 있다.**
+  - 하단의 script element에다가 function이라는 키워드로 함수를 만들어보자.
+
+```html
+<div>
+   <button onclick="setDarkMode()" id="dark-mode-btn" class="btn btn-primary ms-3">DARK MODE</button>
+</div>
+...
+
+ <!-- 자바스크립트 내용 -->
+    <script>
+        function setDarkMode() {
+            alert('sangbaek')
+        }
+    </script>
+
+
+
+- setDarkMode()라는 이름의 함수를 만들어주고 함수를 통해 실행하고자 하는 코드를 입력해주면 된다. 그리고 버튼의 onclick에는 해당 함수의 이름을 적어주자. 그러면 클릭할 때마다 해당 함수가 실행된다.
+
+```html
+ <!-- 자바스크립트 내용 -->
+    <script>
+        function setDarkMode() {
+            const isDarkMode = document.querySelector('body').classList.contains('dark-mode')
+            if (isDarkMode) {
+                document.getElementById('dark-mode-btn').innerText = 'DARK MODE'
+            } else {
+                document.getElementById('dark-mode-btn').innerText = 'LIGHT MODE'
+            } 
+            document.querySelector('body').classList.toggle('dark-mode')
+        }
+    </script>
+```
+
+- 자바스크립트 코드를 위와 같이 다시 작성하자. html 문서 자체를 가리키는 document에 querySelector 를 사용해서 CSS Selector로 body element를 선택. 
+  - 그렇게 찾은 element에 .classList라고 작성하게 되면 해당 element가 가지고 있는 class의 목록을 확인할 수 있다. -> 즉, body element가 가지고 있는 class의 목록에 dark-mode라는 class가 포함되어 있는지 체크하는 것이다. 포함되어 있다면 그 값이 True로 계산되고 아니라면 False로 계산되어 isDarkMode라는 변수에 True나 False 값이 들어가게 된다.
+  - 그 다음에, if (isDarkmode) { 로 True가 있다면 document.getElementById('dark-mode-btn').innerText = 'DARK MODE' -> 이렇게 CSS Selector가 아니라 id만을 가지고 element 하나를 검색하는 방법을 사용한다. 그래서 dark-mode-btn이라는 id를 가진 element, 즉 우리가 아까 추가한 버튼에 접근할 수 있게 된다.
+  - 그리고 .innerText로 안쪽에 있는 텍스트를 'DARK MODE'로 변경해달라는 의미이다.
+  - document.querySelector('body').classList.toggle('dark-mode') -> body element의 class 리스트를 찾고, .toggle은 스위치처럼 없으면 추가하고 있으면 빼라는 것이다. 그래서 dark-mode라는 class가 없으면 body element 자체에 추가하고 있으면 빼라는 것이다.
+
+- 이렇게 작성하고 버튼을 클릭해보면 -> DARK MODE라고 적혀있던게 LIGHT MODE라고 텍스트가 변경된 걸 확인할 수 있다. 그리고 body element의 start tag를 보면 class="dark-mode" 라는 것이 추가된 것을 확인할 수 있다. 다시 누르면 텍스트가 DARK MODE로 바뀌고 body element의 class="dark-mode"는 사라지게 된다.
+  - 그래서 우리는, 이 class="dark-mode"가 적용되었을 때 -> 어떠한 CSS Style이 입혀져야 하는지 미리 작성해놓기만 하면 기능을 구현할 수 있다.
+
+```css
+/* Dark Mode */
+.dark-mode nav,
+.dark-mode li {
+    color: black;
+    background-color: white;
+    transition: background-color 0.5s, color 0.5s;
+}
+```
+
+- dark-mode라는 클래스가 적용되어있는 element 내부에 있는데 nav를 사용했을 때를 지정한 것이다. 그러면 버튼을 눌렀을 때 색깔이 바뀌게 된다.
+- 그리고 transition이라는 속성은 CSS가 바뀔 때 어떠한 형태로 바뀌면 되는지 애니메이션 효과를 적용할 수 있다. 위 코드는 0.5초에 걸쳐서 바뀌었으면 한다는 것이다.
+
+
+28
