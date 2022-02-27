@@ -18,6 +18,11 @@ print(s2)
 
 s3 = 'number : {num}, gender : {gen}'.format(num=123, gen='남')
 print(s3)
+
+>>>
+name : BlockDMASK
+name : 29
+number : 123, gender : 남
 ```
 
 - 이렇게 format 함수 다음에 문자열을 직접 입력해도 되고 변수를 따로 지정해서 넣어도 된다.
@@ -28,6 +33,10 @@ print(s4)
 
 s5 = 'song1 : {1}, song2 : {0}'.format('nunu', 'nana')
 print(s5)
+
+>>>
+song1 : nunu, song2 : nana
+song1 : nana, song2 : nunu
 ```
 
 - 또한, 다음과 같이 중괄호 {} 안에 아무것도 입력하지 않으면 -> format 인자 순서대로 들어가게 된다.
