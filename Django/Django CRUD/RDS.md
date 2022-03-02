@@ -10,7 +10,7 @@
   - 처음 로그인했을 때는 1번째 server에 연동되다가 새로고침 후 다른 server에 연동이 된다면 다른 데이터를 받게 된다. 
 
 - 그래서, 프로덕션 환경에서는 SQLite가 아니라 PostgreSQL이나 MySQL과 같이 고성능의 DBMS를 사용하게 된다. 이 DBMS를 장고가 돌아가고 있는 server에서 같이 운영하는 것이 아니라, 별도의 server인 별도의 컴퓨터로 분리해서 -> **django server 1대 / DBMS 전용 server 1대** 이렇게 server를 분리해서 사용한다.
-  - 이렇게 구성하게 되면 -> django server가 여러 대로 늘어나게 되더라도 데이터를 다루고 있는 DBMS server는 django와 별도로 분리되어 있고 네트워크로만 통신하기 때문에 client와 연동된 django server가 바뀌었다고 해서, 저장되어있는 데이터가 바뀌는 일이 발생하지 않게 된다. 
+  - **이렇게 구성하게 되면 -> django server가 여러 대로 늘어나게 되더라도 데이터를 다루고 있는 DBMS server는 django와 별도로 분리되어 있고 네트워크로만 통신하기 때문에 client와 연동된 django server가 바뀌었다고 해서, 저장되어있는 데이터가 바뀌는 일이 발생하지 않게 된다.**
 
 
 ### Amazon AWS로 MySQL DBMS 생성해보기
