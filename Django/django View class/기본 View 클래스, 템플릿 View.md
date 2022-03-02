@@ -40,3 +40,55 @@ class TaskListView(View):
   - post 메소드도 설정해주면 되는데, 실제로 첫 메인 페이지에서 사용자가 get으로만 접근하고 post로 접근하는 경우가 없기 때문이다. 그래서 일단은 지금은 간단하게 정의해놓기만 하자.
   
 - 그리고 get이든 post든 둘 다 렌더링하는 페이지가 같기 때문에 -> 이 부분을 template_name이라는 필드를 만들어서 값을 넣어주고 사용할 수 있다.
+
+
+- 이제 task_list.html를 생성해주자.
+```html
+{% extends 'common.html' %}
+
+{% block content %}
+<div class="row row-cols-2 row-cols-md-4 g-4 mt-2">
+    {% for item in tasks %}
+    <div class="col">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">{{ item.type }}</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">
+                    <span class="badge bg-light text-dart">
+                        {{ item.due|date:'Y년 m월 d일 H시 i분' }}까지
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+```
+
+- 위의 코드에서 {{ item.due }} 이렇게 출력하면 보기 안좋게 출력이 된다. 그래서 뒤에 형식을 붙여주면 좋다. -> {{ item.due|date:'Y년 m월 d일 H시 i분' }} 이러한 형식으로 task의 종료날짜를 포매팅하겠다는 의미이다.
+
+
+- 위와 같이 설정하고 난 후, 이제는 urls.py로 가보자. 프로젝트 디렉터리 내부에 있는 urls.py를 설정하자.
+  - 뷰 클래스로 정의한 클래스는 -> as_view라는 메소드가 있다. 그걸 호출해서 처리하게 된다. 
+
+```python
+from taskapp.views import TaskListView
+
+...
+urlpatterns = [
+    # 할 일 목록
+    # path('', views.index, name='index'),
+    path('', TaskListView.as_view(), name="index"),
+    ...
+```
+
+
+
+
+- 먼저 해당 뷰 클래스를 import 해야한다. 그리고 as_view 함수를 호출해서 연결한다. 
+
+
+
+12:17
