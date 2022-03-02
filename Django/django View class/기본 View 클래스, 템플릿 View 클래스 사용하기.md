@@ -1,4 +1,4 @@
-## 기본 View 클래스, 템플릿 View
+## 기본 View 클래스, 템플릿 View 클래스 사용하기
 - 장고에서는 뷰 클래스를 제공한다.
 - 기본으로 View 클래스가 있고, 이것을 확장한 TemplateView 라는 클래스를 활용해보자. 
   - **View 클래스**는 장고에서 뷰에 필요한 내용들을 재사용할 수 있게 해주는 기본 클래스이다. 그리고 다른 확장 뷰 클래스들(TemplateView, CreateView) 의 최상위 부모 클래스가 된다. 그래서 get과 post라는 메소드를 지원한다.
@@ -68,10 +68,11 @@ class TaskListView(View):
 ```
 
 - 위의 코드에서 {{ item.due }} 이렇게 출력하면 보기 안좋게 출력이 된다. 그래서 뒤에 형식을 붙여주면 좋다. -> {{ item.due|date:'Y년 m월 d일 H시 i분' }} 이러한 형식으로 task의 종료날짜를 포매팅하겠다는 의미이다.
+- 관련 공식 문서 : https://docs.djangoproject.com/en/4.0/ref/templates/builtins/
 
 
 - 위와 같이 설정하고 난 후, 이제는 urls.py로 가보자. 프로젝트 디렉터리 내부에 있는 urls.py를 설정하자.
-  - 뷰 클래스로 정의한 클래스는 -> as_view라는 메소드가 있다. 그걸 호출해서 처리하게 된다. 
+- **뷰 클래스로 정의한 클래스는 -> as_view라는 메소드가 있다. 그걸 호출해서 처리하게 된다.**
 
 ```python
 from taskapp.views import TaskListView
@@ -106,8 +107,8 @@ python manage.py shell
 >>> task = Task.objects.create(title="Test2", type=Task.TaskType.JOB, due=timezone.now())
 ```
 
-- >>> from django.utils import timezone -> 이것은 models.py에서 DateTimeField를 설정과 관련이 있다. 장고에서는 timezone이라는 장고 내부에 있는 객체를 통해서 date값을 넣어줄 수 있다.
-  - 웹서버가 timezone이 각각 다른곳에서 접속할 수 있다. 한국, 미국 등등 우리가 오전 9시라고 설정했다 하더라도 미국은 오후 6시 이렇게 될 수 있다. 그래서 이러한 부분을 접속하는 location마다 timezone를 구분해서 저장하거나 불러오기 위해 신경써서 개발해야 된다. 근데 장고에서는 이러한 부분을 원할하게 처리하기 위해 timezone이라는 것을 import해서 사용할 수 있게 된다. timezone.now() 이렇게 사용하면 현재 시각이 들어가게 된다.
+- **from django.utils import timezone -> 이것은 models.py에서 DateTimeField를 설정과 관련이 있다. 장고에서는 timezone이라는 장고 내부에 있는 객체를 통해서 date값을 넣어줄 수 있다.**
+  - **웹서버가 timezone이 각각 다른곳에서 접속할 수 있다. 한국, 미국 등등 우리가 오전 9시라고 설정했다 하더라도 미국은 오후 6시 이렇게 될 수 있다. 그래서 이러한 부분을 접속하는 location마다 timezone를 구분해서 저장하거나 불러오기 위해 신경써서 개발해야 된다. 근데 장고에서는 이러한 부분을 원할하게 처리하기 위해 timezone이라는 것을 import해서 사용할 수 있게 된다. timezone.now() 이렇게 사용하면 현재 시각이 들어가게 된다.**
   
 - Task모델에 데이터를 3개 만들어준다. 그리고나서 컨트롤 + D로 빠져나올 수 있다.
 
@@ -115,7 +116,7 @@ python manage.py shell
 
 * * *
 ### Generic View
-- 우리가 자주 작성하는 뷰의 형태들을 최대한 공통화해서 View 클래스를 한 번 더 표준화한 클래스들을 의미한다. 장고에서만 사용되는 용어이며, 그 중 하나인 Template View를 활용해서 지금 구현한 TaskList를 코드를 줄여보는 작업을 해보자. 다시 views.py로 가보면,
+- **우리가 자주 작성하는 뷰의 형태들을 최대한 공통화해서 View 클래스를 한 번 더 표준화한 클래스들을 의미한다. 장고에서만 사용되는 용어이며, 그 중 하나인 Template View를 활용해서 지금 구현한 TaskList를 코드를 줄여보는 작업을 해보자.** 다시 views.py로 가보면,
 
 ```python
 from django.views.generic import TemplateView
@@ -126,11 +127,11 @@ class TaskListView(TemplateView):
 ...
 ```
 
-- 먼저 generic이라는 패키지 내부에 있는 TemplateView를 import 해주자.
-- 그리고 아까 정의했던 TaskListView를 View가 아닌 TemplateView를 상속받는 것으로 수정해보자.
-  - 기본적으로 TemplateView는 GET방식을 위한 클래스이다. 그래서 POST 부분은 필요가 없다.
+- **먼저 generic이라는 패키지 내부에 있는 TemplateView를 import 해주자.**
+- **그리고 아까 정의했던 TaskListView를 View가 아닌 TemplateView를 상속받는 것으로 수정해보자.**
+  - **기본적으로 TemplateView는 GET방식을 위한 클래스이다. 그래서 POST 부분은 필요가 없다.**
   
-- VS Code에서 TemplateView 위쪽에 command를 누르고 클릭을 해보면 -> TemplateView의 원형을 알 수 있다.
+- **VS Code에서 TemplateView 위쪽에 command를 누르고 클릭을 해보면 -> TemplateView의 원형을 알 수 있다.**
 
 ```python
 class TemplateView(TemplateResponseMixin, ContextMixin, View):
@@ -142,10 +143,10 @@ class TemplateView(TemplateResponseMixin, ContextMixin, View):
         return self.render_to_response(context)
 ```
 
-- 해당 View를 보면, View를 상속받고 있다. get메소드는 원래 View 클래스에 있는 메소드인데, TemplateView에서 get메소드에 대해 한 번 더 덮어씌운 것이다. (override 개념) 이러한 개념이 클린코드 관점에서는 좋은 건 아니지만, 장고는 코드를 줄이는 것에 있어 집착하는 경향이 있다고 한다. 그래서 이런식으로 기존의 선언되었던 get메소드를 덮어씌워서 get_context_data라는 함수와 render_to_response라는 2개의 함수를 통해서 get메소드를 사용할 수 있도록 만들어놓았다. 
+- **해당 View를 보면, View를 상속받고 있다. get메소드는 원래 View 클래스에 있는 메소드인데, TemplateView에서 get메소드에 대해 한 번 더 덮어씌운 것이다. (override 개념) 이러한 개념이 클린코드 관점에서는 좋은 건 아니지만, 장고는 코드를 줄이는 것에 있어 집착하는 경향이 있다고 한다. 그래서 이런식으로 기존의 선언되었던 get메소드를 덮어씌워서 get_context_data라는 함수와 render_to_response라는 2개의 함수를 통해서 get메소드를 사용할 수 있도록 만들어놓았다.**
   - 그래서 우리가 get_context_data라는 함수만 정의를 하면 -> context 데이터를 가지고 와서 템플릿을 렌더링 시켜준다고 이해하면 된다.
 
-- 그리고 TemplateResponseMixin 라는 클래스는 -> 마찬가지로 command하고 눌러보면, template_name이라는 내부 멤버 필드가 정의되어 있다. 이걸 그대로 활용해서 그 안에 정의되어있는 render_to_response 메소드에서 렌더링을 해주는 것이다. 
+- **그리고 TemplateResponseMixin 라는 클래스는 -> 마찬가지로 command하고 눌러보면, template_name이라는 내부 멤버 필드가 정의되어 있다. 이걸 그대로 활용해서 그 안에 정의되어있는 render_to_response 메소드에서 렌더링을 해주는 것이다.** 
 
 ```python
 class TemplateResponseMixin:
@@ -194,5 +195,5 @@ class TaskListView(TemplateView):
 - TemplateView를 상속받고, template_name이라는 이 변수를 -> 우리가 지정하고자 하는 템플릿으로 지정해주면 된다. 그러면 위에서 본 render_to_response 함수가 알아서 꺼내 쓰게 된다.
 - 그리고 위에서 본 get_context_data라는 함수를 우리쪽에서 구현하면 되는데, 여기서는 template에 넘겨줄 변수만 정의해서 return으로 던져주면 된다.
   - 그러면 View 클래스를 이용한 것과 동일하게 화면을 확인할 수 있다. 그래서 코드가 전보다 줄일 수 있고, 코드를 줄이는 것에 일조할 수 있다는 점을 확인하자.
-  - 그리고 class TaskListView(TemplateView): -> 와 같이 누군가가 작성해놓은 원형이 있고 그 원형을 내가 필요에 맞게 가공해서 쓸 수 있도록 상속을 받으면, 원형이 가지고 있는 여러가지 속성들을(template_name이라든가 get_context_data 함수 등을 우리쪽에서 재정의하고 나머지 로직 흐름은 상속받은 부모 클래스가 가지고 있는 로직을 그대로 사용할 수 있게 함으로써, 재사용성을 높여주게 된다.
-  - 이러한 부분이 객체 지향 언어라고 볼 수 있는 것이다.
+  - **그리고 class TaskListView(TemplateView): -> 와 같이 누군가가 작성해놓은 원형이 있고 그 원형을 내가 필요에 맞게 가공해서 쓸 수 있도록 상속을 받으면, 원형이 가지고 있는 여러가지 속성들을(template_name이라든가 get_context_data 함수 등을 우리쪽에서 재정의하고 나머지 로직 흐름은 상속받은 부모 클래스가 가지고 있는 로직을 그대로 사용할 수 있게 함으로써, 재사용성을 높여주게 된다.**
+  - **이러한 부분이 객체 지향 언어라고 볼 수 있는 것이다.**
