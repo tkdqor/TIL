@@ -157,7 +157,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 {% load crispy_forms_tags %}
 
 {% block content %}
-<form method="POST" action="">
+<form method="POST" action="{% url 'create-task' %}">
     <div class="row">
         <div class="col-12">
             {% csrf_token %}
@@ -190,6 +190,27 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 - 해당 사이트를 참고해서 CDN 가져오기. https://flatpickr.js.org/getting-started/
 - 이렇게 설정하고, 로딩이 되는지 보려면 -> 브라우저 개발자도구를 키고, 새로고침 한 다음 네트워크를 보면 flatpickr 라는 이름이 잘 뜨는 것을 확인할 수 있다.
 
+* * *
+### DateTimePicker 설정
+- DateTimePicker가 그려질 페이지에서 웹 페이지가 로딩될 때 불려지도록 코드를 작성해보자.
+- task_create.html로 가서 자바스크립트를 작성해야 한다.
+```html
+<form>
+  ...
+</form>
 
+<script>
+    window.onload = function() {
+        flatpickr('input[name="due"]', {enableTime: true});
+    }
+</script>
+```
 
+- 이벤트가 발생할 때, 어떻게 할지 자바스크립트로 작성. 사용법은 flatpickr 공식 홈페이지를 참고. https://flatpickr.js.org/
+  - window가 onload 이벤트가 발생할 때 -> flatpickr('input[name="due"]', {enableTime: true}); 이 함수가 실행되도록 설정. 
+<img width="400" alt="image" src="https://user-images.githubusercontent.com/95380638/156493685-55878d39-a0bc-4041-a29a-80a628da2e5e.png">
 
+- 이렇게 하면 다음과 같이 달력이 뜨면서 날짜를 클릭할 수 있게 된다.
+
+- 여기까지 하고 나서, 이제 잘 저장이 되는지 확인해보기.
+  - 브라우저에서 할 일 추가 버튼을 누르고, Title / Type / Due를 선택한 다음 추가하기 버튼을 클릭하면 실제로 메인 페이지에서 할 일이 하나 뜨게 된다.
