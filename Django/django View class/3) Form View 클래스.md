@@ -105,4 +105,91 @@ class FormMixin(ContextMixin):
 </nav>
 ```
 
-- 위와 
+- 위와 같이 입력한 다음, 설정해준 create-task라는 이름의 url를 생성해야 한다. 프로젝트 내부 디렉터리에 urls.py로 가서 추가하자.
+```python
+from taskapp.views import TaskListView, TaskCreateView
+
+...
+
+urlpatterns = [
+    # task 생성
+    path('task/', TaskCreateView.as_view(), name='create-task'),
+    ...
+]
+```
+
+
+- 먼저 맨 위에 Views.py에 우리가 정의한 TaskCreateView를 import 해준다. 그 다음, 할 일 생성 path() 함수에서 설정한다. as_view()함수로 호출해준다.
+- 그러면 이제 브라우저 화면에서 할 일 추가 버튼을 확인할 수 있다. 이 버튼을 클릭하면, 
+<img width="1331" alt="image" src="https://user-images.githubusercontent.com/95380638/156488483-83be02c5-0308-435f-96d2-4675d52fb50d.png">
+
+- **이렇게 form 형태를 확인할 수 있게 된다. 하지만, Due 부분은 입력받기 힘들게 되어있기 때문에 이럴때는 -> 자바스크립트 라이브러리를 찾아서 DateTimePicker를 통해 입력받도록 해보자.**
+  - 또한, 부트스트랩을 사용해서 모양을 정리해보자. **이럴 때를 위해서 python에는 Crispy forms라는 django 기반의 라이브러리가 있는데, 이걸 설치해서 사용해보자. 이 모듈은 부트스트랩 5를 지원하지 않기 때문에 부트스트랩을 4버전 기준으로 바꿔줘야 한다.**
+
+```terminal
+pip install django-crispy-forms
+...
+Successfully installed django-crispy-forms-1.14.0
+```
+
+- 프로젝트 내부 디렉터리에 있는 상황에서 pip를 이용해 crispy forms를 다운해보자.
+  - 그리고 django에서 인식할 수 있게 프로젝트 디렉터리 내부 settings.py로 가서 
+```python
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'crispy_forms',
+    'taskapp',
+]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+```
+
+- 이렇게 추가해주자. 그리고 바로 아래쪽에다가 crispy_forms에서 지원하는 세팅 변수를 추가해야 한다. 이 변수의 값을 bootstrap4로 설정한다.
+
+- 이제 다시 task_create.html로 돌아가자.
+```html
+{% extends 'common.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<form method="POST" action="">
+    <div class="row">
+        <div class="col-12">
+            {% csrf_token %}
+            {{ form|crispy }} 
+            <button type="submit">추가하기</button>
+        </div>
+    </div> 
+</form>
+{% endblock %}
+```
+
+- {% load crispy_forms_tags %} -> cirspy forms라는 모듈에서 가지고 있는 태그들을 load한다는 의미이다.
+  - **{{ form|crispy }} -> 이렇게만 봤을 때, | 이 기호를 쓰고 뒤에 태그명을 써주면 되는데 여기서 crispy는 사실 함수이다. 그래서 왼쪽에 있는 것을 value로 받는 함수를 구현한 것이다. 즉, template에서는 | 이 기호를 사용해서 이어서 태그명을 넣어주면 해당 함수가 실행된다.**
+<img width="1202" alt="image" src="https://user-images.githubusercontent.com/95380638/156490797-b3b3d90a-46dc-4017-8350-c4f8c999d7a0.png">
+
+- 그러면 이렇게 form이 달라지게 된다.
+- **그리고 이제는 Due 부분에 자바스크립트로 DateTimePicker가 뜨도록 할 것이다. Flatpickr라는 라이브러리인데, 일단 CDN으로 자바스크립트와 CSS를 제공하고 있으니까 쉽게 가져올 수는 있다. 그래서 common.html에서 설정해보자.**
+
+```html
+<head> 
+  ...
+  <!-- Flatpickr 라이브러리 CSS 연결 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  ...
+  <!-- Flatpickr 라이브러리 Javascript 연결 -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head> 
+```
+
+- 해당 사이트를 참고해서 CDN 가져오기. https://flatpickr.js.org/getting-started/
+- 이렇게 설정하고, 로딩이 되는지 보려면 -> 브라우저 개발자도구를 키고, 새로고침 한 다음 네트워크를 보면 flatpickr 라는 이름이 잘 뜨는 것을 확인할 수 있다.
+
+
+
+
