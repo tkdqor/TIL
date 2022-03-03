@@ -182,7 +182,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 - **그리고 이제는 Due 부분에 자바스크립트로 DateTimePicker가 뜨도록 할 것이다. Flatpickr라는 라이브러리인데, 일단 CDN으로 자바스크립트와 CSS를 제공하고 있으니까 쉽게 가져올 수는 있다. 그래서 common.html에서 설정해보자.**
 
 * * *
-### DateTimePicker 설정
+### DateTimePicker 설정 -> Flatpickr 라이브러리 사용
 
 ```html
 <head> 
