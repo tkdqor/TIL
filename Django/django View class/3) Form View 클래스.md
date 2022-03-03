@@ -1,6 +1,6 @@
 ## Form View 클래스
 - Form View를 활용해서 Task를 생성하는 페이지 만들기
-- ModelForm, Form을 지정해서 폼을 알아서 그려주는 클래스
+- ModelForm -> Form을 지정해서 폼을 알아서 그려주고 DB에 저장할 수 있게 해주는 클래스
   - 데이터 처리 후 success_url로 지정된 주소로 자동 리디렉션을 해준다. template View랑 동일하게 template_name으로 템플릿 지정이 가능하다.
 
 
