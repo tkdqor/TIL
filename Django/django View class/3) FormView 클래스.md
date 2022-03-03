@@ -1,6 +1,6 @@
-## Form View 클래스
+## FormView 클래스
 - Form View를 활용해서 Task를 생성하는 페이지 만들기
-- ModelForm -> Form을 지정해서 폼을 알아서 그려주고 DB에 저장할 수 있게 해주는 클래스
+- **ModelForm -> Form을 지정해서 폼을 알아서 그려주고 DB에 저장할 수 있게 해주는 클래스**
   - 데이터 처리 후 success_url로 지정된 주소로 자동 리디렉션을 해준다. template View랑 동일하게 template_name으로 템플릿 지정이 가능하다.
 
 
@@ -21,7 +21,8 @@ class TaskForm(forms.ModelForm):
 
 - 모델 폼 클래스 내부에는 Meta 클래스를 설정해서 어떤 모델인지 설정하고 어떤 필드를 form에서 받도록 할 것인지 설정해준다.
 
-- 그리고 이제 View에서 해당 form View를 이용해서 코드를 구현해보자. views.py로 돌아가서 설정하기.
+* * *
+- **그리고 이제 View에서 해당 form View를 이용해서 코드를 구현해보자. views.py로 돌아가서 설정하기.**
 ```python
 from .forms import TaskForm
 from django.views.generic import TemplateView, FormView
@@ -71,12 +72,13 @@ class FormMixin(ContextMixin):
   - 즉, super()는 부모 클래스가 있을 때, 먼저 부모 클래스를 탐색하고 만약 부모 클래스 내부에 찾고자 하는 함수가 정의되어 있지 않다면 할아버지 클래스로 가서 찾게 된다. 할아버지도 없으면 증조까지 가서 계속 
     탐색해서 찾고하 하는 함수가 등장할 때 까지 올라간 다음에 그 함수를 호출하게 되는 것이다. 만약, 뿌리까지 올라가서도 해당 함수가 없다면 오류가 나게 된다. 
 
-- 이제 task_create.html이라는 파일을 만들어보자. 앱 내부 templates - pages 디렉터리 내부에 생성한다.
+* * *
+- **이제 task_create.html이라는 파일을 만들어보자. 앱 내부 templates - pages 디렉터리 내부에 생성한다.**
 ```html
 {% extends 'common.html' %}
 
 {% block content %}
-<form method="POST" action="">
+<form method="POST" action="{% url 'create-task' %}">
     <div class="row">
         <div class="col-12">
             {% csrf_token %}
@@ -125,6 +127,9 @@ urlpatterns = [
 
 - **이렇게 form 형태를 확인할 수 있게 된다. 하지만, Due 부분은 입력받기 힘들게 되어있기 때문에 이럴때는 -> 자바스크립트 라이브러리를 찾아서 DateTimePicker를 통해 입력받도록 해보자.**
   - 또한, 부트스트랩을 사용해서 모양을 정리해보자. **이럴 때를 위해서 python에는 Crispy forms라는 django 기반의 라이브러리가 있는데, 이걸 설치해서 사용해보자. 이 모듈은 부트스트랩 5를 지원하지 않기 때문에 부트스트랩을 4버전 기준으로 바꿔줘야 한다.**
+
+* * *
+### crispy forms -> django 기반 라이브러리
 
 ```terminal
 pip install django-crispy-forms
@@ -176,6 +181,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 - 그러면 이렇게 form이 달라지게 된다.
 - **그리고 이제는 Due 부분에 자바스크립트로 DateTimePicker가 뜨도록 할 것이다. Flatpickr라는 라이브러리인데, 일단 CDN으로 자바스크립트와 CSS를 제공하고 있으니까 쉽게 가져올 수는 있다. 그래서 common.html에서 설정해보자.**
 
+* * *
+### DateTimePicker 설정
+
 ```html
 <head> 
   ...
@@ -190,8 +198,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 - 해당 사이트를 참고해서 CDN 가져오기. https://flatpickr.js.org/getting-started/
 - 이렇게 설정하고, 로딩이 되는지 보려면 -> 브라우저 개발자도구를 키고, 새로고침 한 다음 네트워크를 보면 flatpickr 라는 이름이 잘 뜨는 것을 확인할 수 있다.
 
-* * *
-### DateTimePicker 설정
+
+
 - DateTimePicker가 그려질 페이지에서 웹 페이지가 로딩될 때 불려지도록 코드를 작성해보자.
 - task_create.html로 가서 자바스크립트를 작성해야 한다.
 ```html
