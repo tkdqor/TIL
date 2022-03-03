@@ -70,3 +70,39 @@ class FormMixin(ContextMixin):
     command로 클릭해서 들어가고, BaseFormView를 클릭하고 또 FormMixin를 클릭하면, form_valid라는 메소드가 정의되어 있는 것을 확인할 수 있다.**
   - 즉, super()는 부모 클래스가 있을 때, 먼저 부모 클래스를 탐색하고 만약 부모 클래스 내부에 찾고자 하는 함수가 정의되어 있지 않다면 할아버지 클래스로 가서 찾게 된다. 할아버지도 없으면 증조까지 가서 계속 
     탐색해서 찾고하 하는 함수가 등장할 때 까지 올라간 다음에 그 함수를 호출하게 되는 것이다. 만약, 뿌리까지 올라가서도 해당 함수가 없다면 오류가 나게 된다. 
+
+- 이제 task_create.html이라는 파일을 만들어보자. 앱 내부 templates - pages 디렉터리 내부에 생성한다.
+```html
+{% extends 'common.html' %}
+
+{% block content %}
+<form method="POST" action="">
+    <div class="row">
+        <div class="col-12">
+            {% csrf_token %}
+            {{ form }}
+            <button type="submit">추가하기</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
+```
+
+- 이렇게 form element를 사용해서 POST방식으로 설정해주자. 안에 django template langauge로 {{ form }} 이렇게만 설정해주면 된다..?
+- 그리고 common.html에서 추가하기 버튼을 생성한다.
+```html
+<nav>
+  <!-- 추가하기 버튼 -->
+                <ul class="nav justify-content-end">
+                    <li class="nav-item"> 
+                        <a class="nav-link" href="{% url 'create-task' %}">
+                            <button class="btn btn-dark">
+                                할 일 추가
+                            </button>
+                        </a>
+                    </li>
+                </ul>
+</nav>
+```
+
+- 위와 
