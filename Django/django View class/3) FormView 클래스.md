@@ -214,6 +214,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 </script>
 ```
 
+- **window는 : 브라우저 객체 모델(BOM, Browser Object Model)로 자바스크립트의 모든 객체, 전역 함수, 전역 변수 등을 의미한다.**
+  - **window.onload는 : 자바스크립트가 문서가 모두 준비된 상황 이후에 발동 및 호출하도록 하는 코드이다.**
+
 - 이벤트가 발생할 때, 어떻게 할지 자바스크립트로 작성. 사용법은 flatpickr 공식 홈페이지를 참고. https://flatpickr.js.org/
   - window가 onload 이벤트가 발생할 때 -> flatpickr('input[name="due"]', {enableTime: true}); 이 함수가 실행되도록 설정. 
 <img width="400" alt="image" src="https://user-images.githubusercontent.com/95380638/156493685-55878d39-a0bc-4041-a29a-80a628da2e5e.png">
