@@ -3,7 +3,7 @@
   - 장고에서는 이 2가지 형태의 조회 패턴을 지원하기 위해서 ListView와 DetailView를 지원한다. 그 중 하나인 ListView를 사용해서 지난 할일 목록을 조회해보자.
 
 
-### 
+### 실습해보기
 - ListView는 특정 모델을 바로 리스트 형태로 조회할 수 있게 해주는 ViewClass이다. 기본 형태는 model / template_name / queryset를 멤버 필드로 정의한다.
 
 - views.py로 가서 실습을 해보자.
@@ -151,3 +151,32 @@ python manage.py shell
   
 - 그래서, 이렇게 평가시점의 차이 때문에 QuerySet API를 마구 이어서 호출을 해도 별 문제는 없고 chaining이라고 부르기도 한다. 다른 프로그래밍에서도 등장하는 기법이다. 
   - 그리고 실제 데이터에 접근하는 시점과 Query가 정해지는 시점과 다르다는 것을 두고 lazy loading이라고 부르기도 한다.
+  
+  
+* * *
+- views.py에서 ListView의 queryset을 추가해보자.
+  
+```python
+class TaskPreviousListView(ListView):
+    model = Task
+    template_name = 'pages/task_previous_list.html'
+    queryset = Task.objects.filter(due__lt=timezone.now()).order_by('-due')
+
+  
+- 이렇게 due date의 내림차순으로 설정. order_by에서 정렬할 기준 필드에 마이너스가 있으면 내림차순이고 없으면 오름차순이다.
+  
+- 그리고 추가로 기존의 메인화면인 TaskListView에서는 현재 due date이 지나지 않은 것들만 보이게 해주자.
+```python
+class TaskListView(TemplateView):
+    template_name = 'pages/task_list.html'
+
+    def get_context_data(self, **kwargs):
+        tasks = Task.objects.filter(due__gte=timezone.now()).order_by('-due').all()
+        return {
+            'tasks': tasks,
+        }
+```
+  
+- 이렇게 due 기준으로 오늘 시점보다 크거나 같은 due만 필터링을 하고 due의 내림차순 기준으로 정렬한다.
+- 그리고 queryset = Task.objects.filter(due__lt=timezone.now()).order_by('-due') -> 이 상태는 QuerySet 인스턴스가 생성되는 것 뿐이니까 queryset이라는 멤버 필드에 담기는 순간에는 이 코드는 실제로 데이터베이스를 히트치지 않고 저장만 되는거라고 보면 된다.
+  - 실제로 히트를 치는 시점은, View에서 render를 호출해서 이 render하는 시점에 task_previous_list.html에서 {% for item in object_list %} -> 여기에서 이터레이션이 발생하니까 이것이 발생하는 시점에 lazy loading으로 데이터를 히트하면서 가지고 오게 된다.
