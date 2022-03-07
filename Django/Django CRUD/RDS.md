@@ -60,7 +60,7 @@ DATABASES = {
 ```
 
 - 이제 server를 구동시켜서 사용하면 되는데, 사용하기전에 django에서 데이터베이스 엔진으로 MySQL를 사용하기 위해서는 운영체제별로 다른 라이브러리를 설치해줘야 한다.
-  - MAC에서는 먼저 C언어를 컴파일하기 위한 C Compiler가 필요한데, Mac에서는 이를 위해 일반적으로 Xcode라는 프로그램을 사용한다. 그래서 터미널에
+  - **Mac에서는 먼저 C언어를 컴파일하기 위한 C Compiler가 필요한데, Mac에서는 이를 위해 일반적으로 Xcode라는 프로그램을 사용한다.** 그래서 터미널에
 ```terminal
 xcode-select --install
 ```
@@ -111,7 +111,7 @@ Homebrew/homebrew-core (git revision 4912b7df9fc; last commit 2022-03-07)
 - 2줄의 명령어를 차례대로 1줄씩 입력하면, 이제 brew --version을 입력했을 때 설치된 Homebrew의 버전이 출력된다.
 
 * * *
-- 이제, MySQL를 설치하기 전에 OpenSSL이라는 별도의 프로그램을 설치해야 한다.
+- **이제, MySQL를 설치하기 전에 OpenSSL이라는 별도의 프로그램을 설치해야 한다.**
 ```terminal
 brew install openssl
 ```
@@ -122,7 +122,7 @@ export LDFLAGS="-L/usr/local/opt/openssl/lib"
 export CPPFLAGS="-L/usr/local/opt/openssl/include"
 ```
 
-- 여기까지 입력한 다음, 이제 MySQL를 설치하는 명령어를 입력한다.
+- **여기까지 입력한 다음, 이제 MySQL를 설치하는 명령어를 입력한다.**
 ```terminal
 brew install mysql
 python -m pip install mysqlclient
@@ -161,7 +161,7 @@ WARNINGS:
         HINT: MySQL's Strict Mode fixes many data integrity problems in MySQL, such as data truncation upon insertion, by escalating warnings into errors. It is strongly recommended you activate it. See: https://docs.djangoproject.com/en/3.2/ref/databases/#mysql-sql-mode
 ```
 
-- 이렇게 Strict Mode에 대한 경고가 출력된다. 이 경우에는, settings.py에서 설정을 변경해주면 된다.
+- **이렇게 Strict Mode에 대한 경고가 출력된다. 이 경우에는, settings.py에서 설정을 변경해주면 된다.**
 ```python
 DATABASES = {
     'default': {
@@ -204,7 +204,7 @@ SELECT * FROM posts_post
   - 그런데, 나중에 서비스를 배포할 때 온라인에 저장해놓은 코드를 다운받아서 server환경에서 django 코드를 실행할 수 있고 팀원들과 협업할 때에도 온라인에 코드가 저장되어 있어야 서로 코드에 접근해서 수정하고 할 수 있다. 문제는 우리가 이렇게 입력해 준 이러한 민감한 정보들, 반드시 우리만 알고있어야 하는 정보들이 오픈된 공간에 그대로 노출된다면 위험하다.
   - RDS와 관련된 정보만이 아니라, API의 Access Token과 같이 이러한 정보를 직접 하드코딩 한 상태로 온라인에 올리는 것은 보안적인 측면에서 굉장히 취약한 부분이 된다.
 
-- 그래서 이러한 정보들이 하드코딩 된 상태에서 온라인에 올라가거나 타인과 공유되는 것을 막기 위해서 -> os.environ['...'] 이렇게 환경변수로 관리하거나, 중요한 정보들을 파일로 구성한 다음 해당 파일에 있는 내용을 import 해서 사용하는 형태로 코드를 작성할 수 있다. 또한, 공유가 되어서는 안 되는 파일의 경우에는 .gitignore에 등록해서 Git이 관리하지 못하게끔 만들어줄 수 있다.
+- **그래서 이러한 정보들이 하드코딩 된 상태에서 온라인에 올라가거나 타인과 공유되는 것을 막기 위해서 -> os.environ['...'] 이렇게 환경변수로 관리하거나, 중요한 정보들을 파일로 구성한 다음 해당 파일에 있는 내용을 import 해서 사용하는 형태로 코드를 작성할 수 있다. 또한, 공유가 되어서는 안 되는 파일의 경우에는 .gitignore에 등록해서 Git이 관리하지 못하게끔 만들어줄 수 있다.**
 
 ### 환경변수로 DB 보안 설정하기
 - settings.py 위쪽에 os 모듈을 import하면서 시작한다.
@@ -240,6 +240,7 @@ MYSQL_DB=onandoff \
 ```
 
 - 터미널에서 적어야 할 내용이 너무 길어서 여러 줄에 걸쳐서 명령어를 입력하고 싶다면, 백슬래시(\)를 입력하면 된다. 백슬래시를 입력하면 엔터를 누르면 >와 함께 다음줄에 이어서 적어주면 된다. 
-- HOST와 PORT는 한 줄에 이어서 적어야 하는 듯 하다.
 - 그리고 마지막에 python manage.py runserver를 입력하면, 해당 명령어가 동작하기 전에 다음과 같은 환경변수에 값이 채워진 상태로 runserver가 실행이 되고 그 결과, settings 모듈의 os.environ이라는 곳에서 MYSQL_DB 등 이러한 값을 꺼내와서 읽을 수 있게 되는 것이다.  
 
+* * *
+- 관련 블로그 : https://shanepark.tistory.com/45  https://www.lainyzine.com/ko/article/how-to-install-package-manager-homebrew-on-mac/   https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=kmnam2002&logNo=10180955322
