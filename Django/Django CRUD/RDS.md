@@ -50,11 +50,11 @@
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onandoff',
-        'USER': 'onandoff',
-        'PASSWORD': '패스워드 입력',
-        'HOST': 'onandoff.ccd6tbburw5u.us-east-1.rds.amazonaws.com',
-        'PORT': '3306',
+        'NAME': '데이터베이스 이름',
+        'USER': '데이터베이스 마스터 계정 아이디',
+        'PASSWORD': '마스터 계정 패스워드',
+        'HOST': '데이터베이스 호스트(엔드포인트)',
+        'PORT': '데이터베이스 포트',
     }
 }
 ```
@@ -154,6 +154,94 @@ python manage.py migrate
 ```
 
 - 이렇게 입력해서 우리가 만든 프로젝트에 생성되어있는 migrations 파일들을 바탕으로 프로젝트가 처음 생성되었을 때부터 지금에 이르기까지 쭉 발생했었던 데이터의 변화들을 새롭게 연동한 MySQL에도 반영해주자.
+- 그런데, 아래와 같이
+```terminal
+WARNINGS:
+?: (mysql.W002) MySQL Strict Mode is not set for database connection 'default'
+        HINT: MySQL's Strict Mode fixes many data integrity problems in MySQL, such as data truncation upon insertion, by escalating warnings into errors. It is strongly recommended you activate it. See: https://docs.djangoproject.com/en/3.2/ref/databases/#mysql-sql-mode
+```
+
+- 이렇게 Strict Mode에 대한 경고가 출력된다. 이 경우에는, settings.py에서 설정을 변경해주면 된다.
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'onandoff',
+        'USER': 'onandoff',
+        'PASSWORD': 'onandoff123',
+        'HOST': 'onandoff.ccd6tbburw5u.us-east-1.rds.amazonaws.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }    
+    }
+}
+```
+
+- OPTIONS라는 것을 추가해준다.
+
+- 이렇게 migrate까지 진행이 되면, django가 기본적으로 가지고 있는 User 모델에서부터 우리가 직접 추가했던 Post model 클래스가 어떻게 변경되었는지 까지 다 반영이 된다.
+  - 이제 다시 TablePlus로 돌아가서 Command + R를 누르면 -> Tables에 수많은 테이블들이 추가된다. 
+  - **posts_post**는 posts 앱 내부에 있는 post 모델 클래스가 실제 RDB속에 테이블로 변환이 된 것이다. **posts_post_liked_users**는 좋아요 기능을 구현하기 위해 생성된 중간 테이블 인 것을 확인할 수 있다.
+
+- 지금은 데이터가 없으니, server를 구동시킨 다음 회원가입 및 글을 작성해보자. 그리고나서 TablePlus를 새로고침하면 데이터가 뜨게 된다.
+
+- 그리고 화면 상단에 SQL 탭을 클릭하면, 다양한 SQL 코드를 실행해볼 수 있다. 예시로,
+```sql
+SELECT * FROM posts_post
+```
+
+- **이렇게 post 테이블의 모든 column를 선택하겠다고 입력하고 command + Enter를 누르면 해당 SQL 코드가 실행된다. 그러면 데이터가 조회되는 것을 확인할 수 있다.**
+  - **또한, 실제로 SQL를 사용할 때에는 여러 테이블들을 JOIN해서 서로 엮어서 데이터를 조회하거나 변경해서 사용한다.**
+
+- **전 회사에서도 SQL를 이용해 데이터를 조회할 때 사용했던 프로그램이 바로 이러한 RDBMS를 관리해주는 툴을 이용해 데이터를 조회한 것으로 추측된다.**
+  - **Export라는 버튼을 누르면, CSV 형태로 테이블의 데이터를 파일의 형태로 다운로드도 받을 수 있다.**
+
+* * *
+### 보완 관리하기
+- 지금까지 RDS 인스턴스를 만들고 해당 인스턴스에 접속해서 데이터를 생성하고 TablePlus로 조회하는 것까지 진행해봤다. 
+- 우리가 django의 데이터베이스 엔진을 MySQL로 지정하고 RDS 인스턴스에 접속하기 위해서 접속에 필요한 민감한 정보들, 마스터 계정 정보나 host, port 정보 등을 코드 상에 다 작성했다. 문제는 이렇게 작성한 코드를 우리가 온라인에, Github과 같은 온라인 코드 저장소에 올려서 관리를 하게 된다. 
+  - 그런데, 나중에 서비스를 배포할 때 온라인에 저장해놓은 코드를 다운받아서 server환경에서 django 코드를 실행할 수 있고 팀원들과 협업할 때에도 온라인에 코드가 저장되어 있어야 서로 코드에 접근해서 수정하고 할 수 있다. 문제는 우리가 이렇게 입력해 준 이러한 민감한 정보들, 반드시 우리만 알고있어야 하는 정보들이 오픈된 공간에 그대로 노출된다면 위험하다.
+  - RDS와 관련된 정보만이 아니라, API의 Access Token과 같이 이러한 정보를 직접 하드코딩 한 상태로 온라인에 올리는 것은 보안적인 측면에서 굉장히 취약한 부분이 된다.
+
+- 그래서 이러한 정보들이 하드코딩 된 상태에서 온라인에 올라가거나 타인과 공유되는 것을 막기 위해서 -> os.environ['...'] 이렇게 환경변수로 관리하거나, 중요한 정보들을 파일로 구성한 다음 해당 파일에 있는 내용을 import 해서 사용하는 형태로 코드를 작성할 수 있다. 또한, 공유가 되어서는 안 되는 파일의 경우에는 .gitignore에 등록해서 Git이 관리하지 못하게끔 만들어줄 수 있다.
+
+### 환경변수로 DB 보안 설정하기
+- settings.py 위쪽에 os 모듈을 import하면서 시작한다.
+```python
+import os
+
+...
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ['MYSQL_DB'],
+        'USER': os.environ['MYSQL_USER'],
+        'PASSWORD': os.environ['MYSQL_PASSWORD'],
+        'HOST': os.environ['MYSQL_HOST'],
+        'PORT': os.environ['MYSQL_PORT'],
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }    
+    }
+}
+```
+
+- **데이터베이스 접속 정보를 적는 부분에는, 직접 값을 하드코딩 하는 것이 아니라 우리만의 환경변수를 정의하고 만들어서, 환경변수에 저장되어있는 값을 읽어 들여서 적용하는 형태로 코드를 작성해주면 된다.**
+- **그리고 위와 같이 환경변수를 설정한 다음, 실제로 server를 구동시킬 때 python 명령어 앞부분에다가 해당 환경변수를 정의해주면 된다.**
+
+```terminal
+MYSQL_DB=onandoff \
+> MYSQL_USER=onandoff \
+> MYSQL_PASSWORD=onandoff123 \ 
+> MYSQL_HOST=onandoff.ccd6tbburw5u.us-east-1.rds.amazonaws.com MYSQL_PORT=3306 \ 
+> python manage.py runserver
+```
+
+- 터미널에서 적어야 할 내용이 너무 길어서 여러 줄에 걸쳐서 명령어를 입력하고 싶다면, 백슬래시(\)를 입력하면 된다. 백슬래시를 입력하면 엔터를 누르면 >와 함께 다음줄에 이어서 적어주면 된다. 
+- HOST와 PORT는 한 줄에 이어서 적어야 하는 듯 하다.
+- 그리고 마지막에 python manage.py runserver를 입력하면, 해당 명령어가 동작하기 전에 다음과 같은 환경변수에 값이 채워진 상태로 runserver가 실행이 되고 그 결과, settings 모듈의 os.environ이라는 곳에서 MYSQL_DB 등 이러한 값을 꺼내와서 읽을 수 있게 되는 것이다.  
+
 
 
 
