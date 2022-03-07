@@ -110,5 +110,52 @@ Homebrew/homebrew-core (git revision 4912b7df9fc; last commit 2022-03-07)
 
 - 2줄의 명령어를 차례대로 1줄씩 입력하면, 이제 brew --version을 입력했을 때 설치된 Homebrew의 버전이 출력된다.
 
+* * *
+- 이제, MySQL를 설치하기 전에 OpenSSL이라는 별도의 프로그램을 설치해야 한다.
+```terminal
+brew install openssl
+```
+
+- 이렇게 입력해서 OpenSSL을 설치하고 난 다음에, 라이브러리 경로와 include 경로를 export 명령어를 통해서 LDFLAGS, CPPFLAGS라는 변수에다가 경로를 등록해주자.
+```terminal
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-L/usr/local/opt/openssl/include"
+```
+
+- 여기까지 입력한 다음, 이제 MySQL를 설치하는 명령어를 입력한다.
+```terminal
+brew install mysql
+python -m pip install mysqlclient
+```
+
+- 이렇게 Mac 로컬 환경에다가 MySQL를 모두 설치했다면, mysqlclient라는 라이브러리까지 설치해주면 된다.
+- **참고로 우리가 서비스 배포 과정에서 Ubuntu라는 Linux 운영체제를 사용할 것인데 이 Ubuntu에서 mysqlclient 라이브러리를 설치하기 위해서도 libmysqlclient-dev라는 라이브러리를 사전에 설치해놔야 한다.**
+```terminal
+sudo apt-get install libmysqlclient-dev -y
+python -m pip install mysqlclient
+```
+
+- 일단 지금은 하지말고 mysqlclient 라이브러리까지 설치를 하자. 
+
+* * *
+### TablePlus 이용하기
+- 이제 server를 구동시키기 전에 TablePlus를 사용해보자. 이 프로그램을 사용하게 되면 MySQL 뿐만 아니라 Oracle 등 다양한 DBMS에서 사용할 수 있다. 해당 데이터베이스에 접속해서 테이블의 형태는 어떻게 되어있는지, 데이터는 어떤 데이터가 있는지 다 확인할 수 있고, 필요하다면 직접 SQL를 실행해서 우리가 원하는 형태로 데이터를 조회하고 생성, 수정이 가능하다.
+- 구글에 tableplus를 검색하고 홈페이지로 가서 운영체제에 맞는 다운로드 링크를 눌러서 설치 파일을 다운로드 받고 설치를 진행해주면 된다.
+- 설치를 완료하고 나서 TablePlus 프로그램을 열어주자.
+  - 하단에 Create a new connection를 클릭해서 MySQL를 선택하자. Name은 각자 정해주고 그 다음, Host / Port / User / Password / Database를 입력해야 한다. 우리가 django의 settings.py에서 작성해줬던 코드를 참고해서 값을 채워넣으면 된다.
+  - settings.py에서 NAME이라는 값이 TablePlus의 Database에다가 입력해야 하는 값이고, settings.py에서 USER와 PASSWORD는 그대로 적어주면 되고 HOST와 PORT 역시 그대로 넣어주면 된다.
+    - 그리고 이렇게 입력한 값들이 정상적이어서 RDS 인스턴스에 실제로 접속할 수 있는지 확인하기 위해서 하단에 TEST를 누른다. Mac에 경우에 맞다면 input에 녹색 배경이 뜨게 된다. 다 확인했다면, Connect 버튼을 눌러주자.
+
+
+- 이제, TablePlus를 통해서 RDS 인스턴스에 접속하게 된다. 기존에 우리가 SQLite를 기반으로 해서 posts app를 만들고 데이터를 채워넣었지만, 새로운 DBMS인 MySQL로 교체를 해버렸기 때문에 데이터가 아무것도 없다.
+- 다시 VS Code에서 터미널에
+```terminal
+python manage.py migrate
+```
+
+- 이렇게 입력해서 우리가 만든 프로젝트에 생성되어있는 migrations 파일들을 바탕으로 프로젝트가 처음 생성되었을 때부터 지금에 이르기까지 쭉 발생했었던 데이터의 변화들을 새롭게 연동한 MySQL에도 반영해주자.
+
+
+
 
 
