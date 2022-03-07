@@ -65,4 +65,50 @@ DATABASES = {
 xcode-select --install
 ```
 
-- 이렇게 입력하면 C Compiler를 비롯해서 기본적인 프로그래밍을 위해 필요한 것들이 자동으로 설치가 된다.
+- 이렇게 입력하면 C Compiler를 비롯해서 기본적인 프로그래밍을 위해 필요한 것들이 자동으로 설치가 된다. 
+
+- 설치가 되었다면, 그 다음에는 MySQL를 설치해줘야 한다. Mac에서는 MySQL를 사용하기 위해서 Mac 컴퓨터 자체에, 로컬 환경 내부에 MySQL이 설치되어 있어야 한다. Mac 자체에 설치하는 방법은 다양하지만, 대부분의 Mac 유저가 알고 있고 사용하는 방법은 **Homebrew라는 패키지 관리자를 통해서 MySQL를 설치하는 것이다.**
+  - 구글에 Homebrew라고 입력하고 Homebrew 홈페이지에 접속하자. 그리고 바로 화면에 보이는 코드를 복사해서 터미널에 붙여넣고 실행하면 된다.
+```terminal
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+- 해당 명령어를 입력하면 password를 입력하라고 나오는데, 실제 Mac 계정의 비밀번호를 입력하자. 비밀번호를 입력하고 나서 Press RETURN to continue or any other key to abort -> 이렇게 뜨는데, 여기서는 enter를 입력하면 된다.
+
+- 다운로드가 완료가 되서, 실제로 다운이 되었는지 확인하기 위해
+```terminal
+brew --version
+```
+
+- 다음과 같은 명령어를 입력했으나 zsh: command not found: brew -> 이렇게 없다고 나온다. 그리고 설치 과정에서 
+
+```terminal
+Warning: /opt/homebrew/bin is not in your PATH.
+```
+
+- 이와 같이 PATH에 등록되지 않았다고 나왔다. 그런데 친절하게 Next steps로 어떠한 명령어를 입력해야 하는지 알려준다.
+```terminal
+==> Next steps:
+- Run these two commands in your terminal to add Homebrew to your PATH:
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/kimsangbaek/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+- Run brew help to get started
+- Further documentation:
+    https://docs.brew.sh
+```
+
+- 그래서 터미널에 
+```terminal
+echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/kimsangbaek/.zprofile
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+brew --version
+
+Homebrew 3.4.0
+Homebrew/homebrew-core (git revision 4912b7df9fc; last commit 2022-03-07)
+```
+
+- 2줄의 명령어를 차례대로 1줄씩 입력하면, 이제 brew --version을 입력했을 때 설치된 Homebrew의 버전이 출력된다.
+
+
+
