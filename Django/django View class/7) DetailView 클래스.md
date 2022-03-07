@@ -126,10 +126,10 @@ class TaskDetailView(DetailView):
 </table>
 ```
 
-- 일단 우리가 View에서 checklists라는 변수를 설정해서 template에 넣어준다. 만약 할 일에 checklists가 없다면 체크리스트가 없다고 뜨게끔 설정했다. 만약 있으면 for문을 실행해서 checklists를 하나씩 꺼내게 된다.
-  - 하나씩 꺼낼 때, checklists의 항목 하나가 체크가 되어있는지 아닌지에 따라서 출력이 다르게 나와야 하기 때문에 -> {% if check.checked %} 이러한 코드를 입력해준다. 20px에 공간에 버튼을 넣는데 이 checked가 True이면 bi-check-square라는 class를 가진 아이콘, 즉 체크가 되어있는 박스를 출력하고 / 그렇지 않을 경우에는 bi-square라는 class를 가진 아이콘을 출력하게끔 설정했다. 체크가 안되어있는 경우이고 체크가 안된 박스를 출력한다.
+- **일단 우리가 View에서 checklists라는 변수를 설정해서 template에 넣어준다. 만약 할 일에 checklists가 없다면 체크리스트가 없다고 뜨게끔 설정했다. 만약 있으면 for문을 실행해서 checklists를 하나씩 꺼내게 된다.**
+  - 하나씩 꺼낼 때, checklists의 항목 하나가 체크가 되어있는지 아닌지에 따라서 출력이 다르게 나와야 하기 때문에 -> **{% if check.checked %}** 이러한 코드를 입력해준다. 20px에 공간에 버튼을 넣는데 이 checked가 True이면 bi-check-square라는 class를 가진 아이콘, 즉 체크가 되어있는 박스를 출력하고 / 그렇지 않을 경우에는 bi-square라는 class를 가진 아이콘을 출력하게끔 설정했다. 체크가 안되어있는 경우이고 체크가 안된 박스를 출력한다.
 
-- 그리고 table의 row를 하나 더 만들어서 {{ check.content }} -> 이렇게 체크리스트의 내용물을 출력하도록 한다.
+- 그리고 table의 row를 하나 더 만들어서 **{{ check.content }}** -> 이렇게 체크리스트의 내용물을 출력하도록 한다.
 
 - 또한, 추가로 부트스트랩의 아이콘을 사용하기 위해서 common.html에 head element에 CDN를 추가하자.
 ```html
