@@ -234,16 +234,12 @@ DATABASES = {
 MYSQL_DB=onandoff \
 > MYSQL_USER=onandoff \
 > MYSQL_PASSWORD=onandoff123 \ 
-> MYSQL_HOST=onandoff.ccd6tbburw5u.us-east-1.rds.amazonaws.com MYSQL_PORT=3306 \ 
+> MYSQL_HOST=onandoff.ccd6tbburw5u.us-east-1.rds.amazonaws.com \
+> MYSQL_PORT=3306 \ 
 > python manage.py runserver
 ```
 
 - 터미널에서 적어야 할 내용이 너무 길어서 여러 줄에 걸쳐서 명령어를 입력하고 싶다면, 백슬래시(\)를 입력하면 된다. 백슬래시를 입력하면 엔터를 누르면 >와 함께 다음줄에 이어서 적어주면 된다. 
 - HOST와 PORT는 한 줄에 이어서 적어야 하는 듯 하다.
 - 그리고 마지막에 python manage.py runserver를 입력하면, 해당 명령어가 동작하기 전에 다음과 같은 환경변수에 값이 채워진 상태로 runserver가 실행이 되고 그 결과, settings 모듈의 os.environ이라는 곳에서 MYSQL_DB 등 이러한 값을 꺼내와서 읽을 수 있게 되는 것이다.  
-
-
-
-
-
 
