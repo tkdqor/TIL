@@ -80,7 +80,12 @@ class TaskDetailView(DetailView):
             </span>
             {{ object.title }}
         </h4>
-
+        <dl class="row mt-4 p-2">
+            <dt class="col-sm-2">마감일</dt>
+            <dd class="col-sm-10">{{ object.due|date:'Y년 m월 d일 H시 i분' }}</dd>
+            <dt class="col-sm-2">생성일</dt>
+            <dd class="col-sm-10">{{ object.created_at|date:'Y년 m월 d일 H시 i분' }}</dd>
+        </dl>
     </div>
 </div>
 
@@ -89,10 +94,89 @@ class TaskDetailView(DetailView):
 
 - **task_detail template에서는 우리가 상세 내용을 출력할 때, View에서 설정했었던 self.object가 template에서는 -> object라는 이름의 변수로 활용할 수 있게 된다.** 지금은 일단 {{ object.get_type_display }} 이렇게 적어보자. 즉, object가 Task 모델에 인스턴스이기 때문에 {{ object.title }} 이렇게도 출력이 가능하다.
 
-- 그래서 지금까지의 코드를 설정하고 브라우저에 http://localhost:8000/task/1/ 이렇게 입력해보면, Task모델의 pk가 1번인 데이터를 출력해준다.
+- 그래서 지금까지의 코드를 설정하고 브라우저에 http://localhost:8000/task/1/ 이렇게 입력해보면, Task모델의 pk가 1번인 데이터를 출력해준다. 그리고 해당 task의 마감일과 생성일이 출력된다.
 
+* * *
+- 이제, checklist를 출력해보자. table를 만들어서 출력해보기. 밑에 코드는 위의 task_detail.html에 이어서 입력하는 코드이다.
+```html
+...
+<!-- 체크리스트 출력 부분 -->
+<table class="table">
+    <tbody>
+    {% if checklists %}
+    {% for check in checklists %}
+        <tr>
+            <td style="width:20px;">
+                {% if check.checked %}
+                <button class="btn btn-link">
+                    <i class="bi bi-check-square"></i>
+                </button>
+                {% else %}
+                <button class="btn btn-link">
+                    <i class="bi bi-square"></i>
+                </button>
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    {% else %}
+        <tr><td>체크리스트가 없습니다.</td></tr>
+    {% endif %}
+    </tbody>
+</table>
+```
 
+- 일단 우리가 View에서 checklists라는 변수를 설정해서 template에 넣어준다. 만약 할 일에 checklists가 없다면 체크리스트가 없다고 뜨게끔 설정했다. 만약 있으면 for문을 실행해서 checklists를 하나씩 꺼내게 된다.
+  - 하나씩 꺼낼 때, checklists의 항목 하나가 체크가 되어있는지 아닌지에 따라서 출력이 다르게 나와야 하기 때문에 -> {% if check.checked %} 이러한 코드를 입력해준다. 20px에 공간에 버튼을 넣는데 이 checked가 True이면 bi-check-square라는 class를 가진 아이콘, 즉 체크가 되어있는 박스를 출력하고 / 그렇지 않을 경우에는 bi-square라는 class를 가진 아이콘을 출력하게끔 설정했다. 체크가 안되어있는 경우이고 체크가 안된 박스를 출력한다.
 
+- 그리고 table의 row를 하나 더 만들어서 {{ check.content }} -> 이렇게 체크리스트의 내용물을 출력하도록 한다.
 
+- 또한, 추가로 부트스트랩의 아이콘을 사용하기 위해서 common.html에 head element에 CDN를 추가하자.
+```html
+<head>
+    <!-- bootstrap 아이콘 연결 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    ...
+</head>
+```
+
+- **이렇게 설정해서 브라우저를 확인해보면, 아직 데이터가 없어 버튼을 확인할 수 없다. 그래도 위의 icon이 잘 연결되었는지 확인하려면 -> 브라우저에서 개발자도구를 키고 Network를 선택 - CSS 선택하고 새로고침을 해보면, Name에 bootstrap-icons.css가 뜨는 것을 확인할 수 있다.**
+
+* * *
+- 마지막으로, task_list.html에서 링크를 달아 task_detail.html로 연결할 수 있게 해보자. 각 할 일 카드마다 상세보기 링크를 넣어주는 것이다.
+```html
+{% extends "common.html" %}
+{% load pagination_tags %}
+
+{% block content %}
+<div class="row row-cols-2 row-cols-md-4 g-4 mt-2">
+    {% for item in paging %}
+    <div class="col">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-header">{{ item.type }}</div>
+            <div class="card-body">
+                <h5 class="card-title">{{ item.title }}</h5>
+                <p class="card-text">
+                    <span class="badge bg-light text-dark">
+                        {{ item.due|date:'Y년 m월 d일 H시 i분' }}까지
+                    </span> 
+                </p>
+            </div>
+
+            <!-- 상세보기 링크  -->
+            <div class="card-footer">
+                <a href="{% url 'view-task' item.id %}">
+                    <button class="btn btn-dark float-right">보기</button>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+...
+```
+
+- 이렇게 상세보기 링크를 만들어준다. view-task라는 이름의 url이 상세페이지를 요청하는 path name이니까 설정해준다.
 
 
