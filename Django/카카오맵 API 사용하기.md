@@ -122,5 +122,28 @@ def hotel(request):
 {% endblock %}
 ```
 
+* * *
+### 관련 페이지 및 블로그
+- https://haries.tistory.com/6?category=885610
+=> 해당 블로그에 카카오 API 관련 글들 다 보기!!
+
+- https://apis.map.kakao.com/web/guide/
+=> 카카오맵 API 기본적인 가이드
+
+- https://developers.kakao.com/
+=> 카카오 개발자 페이지 - 여기서 REST API KEY를 확인할 수 있다.
+
+- https://developers.kakao.com/docs/latest/ko/local/dev-guide#search-by-keyword
+=> 카카오 개발자 페이지에 나와있는 문서/개발 가이드 중, 키워드로 장소 검색하는 방법
+
+- https://velog.io/@devmin/kakao-login-basic
+=> django로 구현하는 소셜 로그인 기능 관련 블로그인데, 여기세 헤더로 담아서 보내는 방법이 나와있음 
+
+- https://m.blog.naver.com/kiddwannabe/221812712712
+=> 이것도 카카오맵 API 키워드 장소 검색하는 방법이 나와있는 블로그
+
+
+
+REST API KEY가 노출되면 안되는데 github에 어떻게 올리지..?
 
 
