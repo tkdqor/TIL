@@ -144,7 +144,7 @@ def index(request):
 - 해당 url인 https://www.juso.go.kr/addrlink/addrLinkApi.do를 그냥 브라우저에 입력해보면(GET방식도 가능하다고 했으니) XML 포맷의 형태로 검색되지 않았다는 내용이 출력된다.
   - **다음과 같이 전달하고자 하는 데이터를 HTML tag 비슷한 형태로 구성해서 전달하는 방식이 XML 방식이다.**
   - API 가이드에 나와있듯이, resultType이라는 요청변수의 기본값이 xml로 되어있고 이 변수를 JSON으로 지정해주면 JSON 형태의 HTTP Response를 전달받을 수 있다.
-    - 실험으로 브라우저에 위에 url에다가 요청변수를 추가할 때에는, 즉 GET 방식에서 추가적인 요쳥변수, 파라미터를 전달할 때에는 -> url 맨 끝에다가 ?를 적고 부수적으로 전달하고자 하는 데이터인 파라미터 이름을 적으면 된다. 그리고 그 값을 =로 적어주면 된다. ex) https://www.juso.go.kr/addrlink/addrLinkApi.do?resultType=json
+    - **실험으로 브라우저에 위에 url에다가 요청변수를 추가할 때에는, 즉 GET 방식에서 추가적인 요쳥변수, 파라미터를 전달할 때에는 -> url 맨 끝에다가 ?를 적고 부수적으로 전달하고자 하는 데이터인 파라미터 이름을 적으면 된다. 그리고 그 값을 =로 적어주면 된다. ex) https://www.juso.go.kr/addrlink/addrLinkApi.do?resultType=json**
 
 <img width="794" alt="image" src="https://user-images.githubusercontent.com/95380638/155287629-f6da9c96-9d47-43a1-b30d-0067c89e2e7a.png">
 
@@ -152,7 +152,7 @@ def index(request):
 
 - 그러면 위와 같이 응답 데이터는 똑같은데, 포맷이 XML에서 JSON으로 변경된 걸 확인할 수 있다.
 
-- 추가로, keyword라는 요청변수를 이용해서 검색어를 전달해보자. GET 방식에서 여러 개의 파라미터를 전달할 때는 ? 뒤에 첫번째 파라미터=값 적고 &를 적고 두번째 파라미터=값을 적으면 된다.      
+- **추가로, keyword라는 요청변수를 이용해서 검색어를 전달해보자. GET 방식에서 여러 개의 파라미터를 전달할 때는 ? 뒤에 첫번째 파라미터=값 적고 &를 적고 두번째 파라미터=값을 적으면 된다.**      
   ex) https://www.juso.go.kr/addrlink/addrLinkApi.do?resultType=json&keyword=강서
   - 그런데, 이렇게 입력해서 보면 승인되지 않은 KEY라고 나온다. 그 이유는 이 도로명주소 API를 사용하기 위해서는, 반드시 승인키를 전달해줘야 하기 때문이다. 그래서 confmKey 요청변수에 승인키를 담고 다시 하자.     ex) https://www.juso.go.kr/addrlink/addrLinkApi.do?resultType=json&keyword=강서&confmKey=...
 
