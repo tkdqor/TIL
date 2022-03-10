@@ -110,7 +110,7 @@ def hotel(request):
             infowindow.open(map, marker);
         });
     }
-    </script>
+</script>
 
     {% for document in documents %}
     <p>{{ document.place_name }}</p>
