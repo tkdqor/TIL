@@ -131,3 +131,35 @@
 
 - **그리고 추가로 사이즈가 md, 즉 medium 사이즈인 중간 사이즈라면 card를 한 줄에 2개씩 보여줄 수도 있다. 그러려면 한 column의 크기를 6으로 설정해주면 된다.**
   - 그래서 class="col-lg-3 col-md-6" 이렇게 설정해주면 크기에 따라 한 줄에 보여주는 항목의 개수가 달라진다.
+
+* * *
+### Bootstrap Example 사용해보기
+- Bootstrap 사이트에서 Example를 클릭해보면 다양한 웹 사이트 구성들이 있다. 해당 예제 사이트들은 전부 Bootstrap의 컴포넌트들을 이용해서 만들었다. 우리는 이 예제들을 가져다가 사용할 수 있다.
+- 마음에 드는 사이트 하나를 클릭하고 우클릭 -> 페이지 소스 보기(View page source)를 클릭해보면, 해당 사이트를 만들기 위해 사용된 모든 소스코드들이 다 나온다. 
+  - 그래서 예시로, 해당 코드들을 전체 선택하고 복사한 다음 프로젝트에 붙여넣기를 해보자.
+  - 그리고나서 바꿔줘야 할 부분들이 있다.
+
+```html
+<!-- Bootstrap core CSS -->
+<link href="/docs/5.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+```
+
+- **위와 같이 해당 CSS는 부트스트랩 내부에서 사용한 것이기 때문에 href 앞에 http가 없다. 그래서 해당 1 줄의 link 코드는 전부 삭제하고, 우리가 처음에 bootstrap 적용할 때 복사하는 CSS 코드를 붙여주면 된다.**
+
+```html
+<!-- Bootstrap core CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+```
+
+- 이렇게 대체해주면 된다. 그리고 코드 끝부분에는 
+```html
+<script src="/docs/5.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+```
+
+- **다음과 같이 자바스크립트 코드가 있는데, 마찬가지로 http가 짤려있다. 그래서 해당 코드를 삭제하고 Bootstrap 처음 시작할 때 복사하는 JS 코드를 붙여주자.**
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+```
+
+- 그러면, 해당 예시 구조를 전부 자기의 프로젝트로 가져와서 사용할 수 있게 된다.
