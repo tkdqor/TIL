@@ -24,7 +24,7 @@ def hotel(request):
 
     url = 'https://dapi.kakao.com/v2/local/search/keyword.json?query={}'.format(search)   
     # url이라는 변수를 따로 정의해서 카카오 API를 저장 / 이 때 검색할 장소인 query의 값은 위의 search로 대체
-    result = requests.get(url, headers={"Authorization" : "KakaoAK 537c71004ec6bb642b90b8bdf96180e5"})
+    result = requests.get(url, headers={"Authorization" : "KakaoAK REST API 키 입력"})
     # 카카오 API로 HTTP Request를 GET방식으로 전송 / 헤더에 REST API 키 전달 / API 전송 결과를 result 변수에 저장
     result_dictionary = result.json()
     # API 전송 결과를 json() 형태로 바꾸고 result_dictionary 변수에 저장
