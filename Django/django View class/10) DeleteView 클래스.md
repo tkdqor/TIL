@@ -24,7 +24,7 @@ class ChecklistDeleteView(DeleteView):
   - 지금까지는 Checklist를 삭제하는 View 이었다. 이제는 Task를 삭제하는 View를 만들어보자.
   
 
-```
+```python
 # DeleteView 상속받아서 Task 삭제 클래스 생성
 class TaskDeleteView(DeleteView):
     model = Task
