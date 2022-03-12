@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, FormView, CreateView, ListView, D
 from django.urls import reverse
 
 ...
-# DeleteView 상속받아서 클래스 생성
+# DeleteView 상속받아서 Checklist 삭제 클래스 생성
 class ChecklistDeleteView(DeleteView):
     model = ChecklistItem
     pk_url_kwarg = 'check_id'
