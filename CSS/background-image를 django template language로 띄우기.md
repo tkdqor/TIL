@@ -31,3 +31,6 @@
 - 위와 같이 div element에 style 속성을 넣고, background-image url에 travel.image.url과 같이 django template language를 사용할 수 있다.
   - 즉, Travel 모델 객체의 image를 가져올 수 있다.
 - 추가로, 해당 background-image가 지정된 div를 감싸는 a element를 설정하면 클릭할 수 있게 설정할 수 있다.
+
+* * *
+- 관련 블로그 : https://heinafantasy.com/168
