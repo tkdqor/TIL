@@ -48,7 +48,7 @@ class TaskDetailView(SingleObjectMixin, ListView):
   
 - **SingleObjectMixin의 구현체를 command 클릭으로 따라가보자. 그러면, 상위 클래스로 이동하더라도 어느 Mixin 클래스이건 GET 요청을 핸들링하는 GET 메소드가 없다는 점이 기존 View 클래스들과 차이점이라고 할 수 있다. get_object 메소드는 있지만, 그냥 get 메소드는 없다.**
   - **django에서 Mixin 클래스는 -> GET이나 POST같이 직접적으로 request를 받아서 처리하는 패턴의 메소드가 없다. 그런데, ListView는 GET이나 이런식의 실제로 요청을 받아서 직접적으로 처리하는 녀석이 존재하는 클래스이다.** 
-  - **django에서 Mixin은 어떤 특성을 받아서 쓸 수 있다고 했는데, django에서 이를 잘 구현하기 위해서 객체지향의 Mixin 패턴에서는 실제로 어떤 로직이 실행되고 진입점이 되는 GET이나 POST같은 요청을 처음으로 받아서 실제 주체가 되서 수행되는 메소드는 ListView와 같이 구체화된 Generic Class에서 실행이 된다. Mixin Class에서는 보조적으로 GET이나 POST에서 사용되는 여러 참조되는 필드나 인터페이스들을 제공하는 역할만 하게 되는 것이다.
+  - **django에서 Mixin은 어떤 특성을 받아서 쓸 수 있다고 했는데, django에서 이를 잘 구현하기 위해서 객체지향의 Mixin 패턴에서는 실제로 어떤 로직이 실행되고 진입점이 되는 GET이나 POST같은 요청을 처음으로 받아서 실제 주체가 되서 수행되는 메소드는 ListView와 같이 구체화된 Generic Class에서 실행이 된다. Mixin Class에서는 보조적으로 GET이나 POST에서 사용되는 여러 참조되는 필드나 인터페이스들을 제공하는 역할만 하게 되는 것이다.**
   - 그래서 위의 예시코드처럼 get_queryset 메소드를 override하게 되면 ListView의 GET에서 실행이 될 때, get_queryset이 알아서 호출이 된다던가 해서 실행이 되는 것이다.
 
 
