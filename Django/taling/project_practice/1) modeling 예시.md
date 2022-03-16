@@ -21,6 +21,86 @@
     - 이렇게 가입이 완료된 시점에 바로 검증이 끝나는 것이 아니라, 가입이 완료가 되면 그 시점에 메일을 하나 보내서 거기에 검증문자를 합친 어떠한 링크를 생성한다. 그래서 그 링크가 담긴 이메일이 발송이 되어 사용자가 그걸 받아보고, 거기에 담긴 링크를 클릭하면 -> 우리 django의 특정 페이지로 이동해서 우리가 query parameter로 고유한 문자를 받아서 그 검증한 값이 사용자에 저장된 검증 키랑 일치하면 -> 그 때서야 인증과정이 끝나는 것이다. 
   - 그리고 **SNS로 로그인을 할 경우,** SNS 계정에서 보통 이메일 정보를 가져올 수 있다. 이 이메일을 이메일 회원가입처럼 그대로 User 모델의 계정 이름으로 쓰되, 인증은 완료된것으로 간주하고 SNS 계정에 대한 고유 정보를 저장할 SNS 계정 모델을 구성해야 한다. 카카오로 로그인을 하든, 네이버나 구글로 로그인을 하든, 이메일 정보가 동일하다면 하나의 유저에 여러 SNS 정보가 연결된 형태로 저장될 수 있고 또는 하나씩 구성이 되더라도 네이버나 구글, 카카오의 경우에는 이메일 가입과는 다르게 부가적인 정보를 필요로 하기 때문에, 그런식으로 하기 위해서 SNS계정과 관련된 모델을 따로 구성하게 된다.
 
-10:15
+
+### 실습해보기
+- table_bookings라는 이름의 프로젝트를 생성해보자. 프로젝트 이름에 그냥 - 은 들어갈 수 없다. 그리고 web이라는 이름의 App를 만들어준다.
+- 그리고나서 settings.py로 들어가 설치한 App이름을 적어주고, 
+```python
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+```
+
+- 이렇게 static 파일 디렉터리도 설정해준다. 그리고 이어서 web 디렉터리 안에 static, templates 라는 디렉터리를 만들어준다. templates 안에는 common.html를 만들어서
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}식당예약 사이트{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a href="/"><span class="navbar-brand mb-0 h1">TABLE BOOKING</span></a>
+
+            <ul class="nav justify-content-end">
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'booking-history' %}">예약 내역</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'review-history' %}">후기 내역</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'profile' %}">정보 수정</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">로그아웃</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">회원가입</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">로그인</a>
+                </li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </nav>
+
+    {% if messages %}
+    <div class="mt-2">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="mt-4 col-12 mb-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>
+```
+
+- 위와 같은 코드를 입력해준다.
 
 
