@@ -103,7 +103,8 @@ STATICFILES_DIRS = [
 
 - 위와 같은 코드를 입력해준다.
 
-- 또한, github를 하는 것을 대비해서 프로젝트 디렉터리 상위 디렉터리 안에다가 .gitignore라는 파일을 생성해주자. -> 나는 mytasklist에서 진행.
+- **또한, github를 하는 것을 대비해서 프로젝트 디렉터리 상위 디렉터리 안에다가 .gitignore라는 파일을 생성해주자. -> 나는 mytasklist에서 진행.**
+  - **보통은 프로젝트 디렉터리 내부안에 해당 파일을 생성한다. requirements.txt도 마찬가지이다.**
 ```
 # Created by https://www.toptal.com/developers/gitignore/api/django
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
