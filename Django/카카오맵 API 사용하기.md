@@ -339,6 +339,8 @@ def map(request):
 * * *
 ### 카카오맵 API 주소로 검색해서 지도에 띄우기
 - spot.html 코드로 View에서 넘겨준 search와 document 변수를 사용
+- **javascript, /javascript 이러한 자바스크립트 안에서 django template language를 사용하려면 ‘’ 작은따옴표를 사용하면 된다.**
+
 ```html
 <!-- 포토스팟 지도로 위치 보여주기 -->
         <div id="map" style="width:800px;height:500px; margin-bottom: 50px;"></div>
