@@ -2,7 +2,7 @@
 
 
 
-### 카카오맵 지도 API로 검색 시, 지도에 장소명이 나오게끔 하는 코드
+### 카카오맵 지도 API 키워드로 검색 시, 지도에 장소명이 나오게끔 하는 코드
 - base.html
 ```html
  <!-- 검색창 -->
@@ -336,6 +336,81 @@ def map(request):
 
 {% endblock %}
 ``` 
+* * *
+### 카카오맵 API 주소로 검색해서 지도에 띄우기
+```html
+- spot.html 코드로 View에서 넘겨준 search와 document 변수를 사용
+<!-- 포토스팟 지도로 위치 보여주기 -->
+        <div id="map" style="width:800px;height:500px; margin-bottom: 50px;"></div>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=자바스크립트 키 입력하기&libraries=services,clusterer,drawing"></script>
+        <script>
+            var container = document.getElementById('map');
+            var options = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 9
+            };
+    
+            var map = new kakao.maps.Map(container, options);
+
+            // 주소-좌표 변환 객체를 생성합니다
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            // 주소로 좌표를 검색합니다
+            geocoder.addressSearch('"제주도" + {{ search }}', function(result, status) {
+
+                // 정상적으로 검색이 완료됐으면 
+                if (status === kakao.maps.services.Status.OK) {
+
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+
+                    // django template language를 javascript 안에서 사용하려면 이렇게 '' 작은따옴표를 사용해보자
+                    '{% for document in documents %}' 
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:320px;text-align:center;padding:10px 0;">{{ document.address_name }}</div>'
+                    });
+                    infowindow.open(map, marker);
+                    '{% endfor %}'
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                } 
+            });    
+        </script>
+```
+
+- Views.py 코드
+```python
+# 포토스팟 디테일 페이지
+def spot(request, travel_id):
+
+    travel = Travel.objects.get(id=travel_id)   # 해당 travel_id 데이터를 조회해서 travel이라는 변수에 저장
+
+
+    # 지도 API 기능
+    search = travel.address
+    url = 'https://dapi.kakao.com/v2/local/search/address.json?query={}'.format(search)
+    result = requests.get(url, headers={"Authorization" : "KakaoAK REST API 키 적기"})
+    result_dictionary = result.json()
+    documents = result_dictionary.get('documents')
+
+
+    context = {
+        'search': search,
+        'travel': travel,
+        'documents': documents,
+    }
+
+    return render(request, 'travels/spot.html', context)
+```
+- Views.py에서는 DB에 저장된 Travel 모델의 주소인 travel.address를 search라는 변수에 저장하고, 해당 변수로 카카오맵 API request를 진행.
+
 
 
 * * *
