@@ -103,4 +103,27 @@ STATICFILES_DIRS = [
 
 - 위와 같은 코드를 입력해준다.
 
+- 또한, github를 하는 것을 대비해서 프로젝트 디렉터리 상위 디렉터리 안에다가 .gitignore라는 파일을 생성해주자. -> 나는 mytasklist에서 진행.
+```
+# Created by https://www.toptal.com/developers/gitignore/api/django
+# Edit at https://www.toptal.com/developers/gitignore?templates=django
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media
+```
+
+- 해당 파일은 내가 git init을 선언할 그 장소에다가 만들어둬야 한다. 또한, 나중에 배포할 때나 협업하기 위해서 
+```terminal
+pip freeze > requirements.txt
+```
+
+- 이렇게 명령어를 입력해서 requirements.txt 파일을 생성해주면 된다. 그 뒤에 migrations와 migrate까지 진행해주기.
+
 
