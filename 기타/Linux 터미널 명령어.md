@@ -30,6 +30,7 @@ clear
 
 - 그 다음은 clear 명령어이다. 터미널에 있는 모든 텍스트를 깔끔하게 청소해주는 명령어다. man clear로 clear에 대한 내용도 확인해보자.
 
+* * *
 
 ### Navigating file system
 - 이번에는 파일탐색기처럼 터미널에서 폴더와 파일들을 탐색할 수 있게 해주는 명령어들을 알아보자.
@@ -58,6 +59,33 @@ ls -la
 
 ```terminal
 cd 디렉터리 이름
+cd ..
+cd ~
+cd -
 ```
 
-- cd는 change directory의 약자로 현재 디렉터리 위치를 변경할 수 있다. 
+- cd는 change directory의 약자로 현재 디렉터리 위치를 변경할 수 있다. 그리고 cd .. 은 상위 경로를 의미한다. 
+- 또한, cd ~는 현재 설정된 사용자의 home 디렉터리로, 최상위 경로로 이동하게 된다.
+- 마지막으로 cd -를 입력하면, 지금 위치로 오기 전에 이전 경로로 이동하게 된다.
+
+```terminal
+find . -type file -name "*.txt"
+find . -type file -name "*.json"
+find . -type directory -name "*2"
+```
+
+- find 명령어는 파일 시스템에서 특정한 파일이나 디렉터리를 찾을 때 유용하게 사용할 수 있다. 내가 현재 있는 경로와 그 하위에 있는 모든 폴더에 한해서, 모든 텍스트 파일을 찾고 싶다면 -> find 다음 현재 경로에서부터 시작해서 type은 file이고 이름은 .txt 확장자로 끝나는 모든 파일들에 대해서 찾고 싶을 때 find . -type file -name "*.txt" 이렇게 사용한다. 
+  - 만약, 확장자가 json으로 끝나는 파일들을 찾고 싶다면 두번째 명령어를 입력해보자.
+
+- 그리고, 파일이 아니라 디렉터리, 폴더를 찾고 싶다면 find . -type directory -name "*2" 이렇게 해주면 된다. 이름은 2로 끝나는 폴더이다.
+
+```terminal
+which python3
+which code
+```
+
+- 그 다음 명령어는 which이다. which는 내가 지금 실행하고자 하는 프로그램이 어디에 설치되어져 있는지, 어디에 설정되어 있는지 경로를 확인할 때 사용할 수 있다. 그래서 which python3 하게 되면 python3의 실행 경로를 확인해볼 수 있다. which code는 VS code의 경로를 확인할 수 있다.
+
+* * *
+
+### ㅇㅇ
