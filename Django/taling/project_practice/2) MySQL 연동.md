@@ -42,8 +42,54 @@
 10) 위의 화면에서 Server Host라는 부분에다가 복사한 엔드포인트 주소를 넣어준다. 포트는 AWS와 DBeaver모두 MySQL인 3306으로 일치되어있다. 그리고 Username에는 우리가 아까 설정한 마스터 사용자 이름을 적고 Password에는 비밀번호를 적는다.
 11) 그런 다음, 좌측 하단에 Test Connection를 클릭하면 연결이 아직 되지 않는다..
 12) AWS에 다시 가서 연결&보안 탭 -> VPC 보안 그룹 부분을 클릭해서 들어가보자. 아까전에 우리가 퍼블릭으로 인터넷 연결이 외부에서 되도록 퍼블릭 엑세스를 설정했지만 추가로 설정해야 할 것들이 있다.
-    - 보안 그룹 부분이 방화벽 역할을 하게 된다. **방화벽이란, 어떤 데이터가 오고갈 때 어떤 포트만 열겠다 또는 어떤 주소만 열겠다, 어떤 데이터만 받겠다는 것처럼 벽을 세워놓는 것이다.** 그런데 기본적으로는 지금 다 막혀있다 보니까 
+    - 보안 그룹 부분이 방화벽 역할을 하게 된다. **방화벽이란, 어떤 데이터가 오고갈 때 어떤 포트만 열겠다 또는 어떤 주소만 열겠다, 어떤 데이터만 받겠다는 것처럼 벽을 세워놓는 것이다.** 그런데 기본적으로는 지금은 다 막혀있다. 
+    - 그래서 인바운드 규칙 클릭 -> 인바운드 규칙 편집을 클릭하면 설정해줄 수 있다. 첫번째 줄은 사용자 지정 TCP / 22번 포트 / 내 IP로 설정하기. 22번 포트는 ssh 접근용이니까 내 IP만 허용하는 것이다. 두번째 줄은 MySQL 관련해서 사용자 지정 TCP / 3306 포트 / 내 IP로 설정하기. 세번째 줄은 HTTPS / Anywhere-IPv4 이렇게 설정. 네번째 줄은 HTTP / Anywhere-IPv4 설정. 이렇게 설정하고 저장을 누르자.
 
+<img width="577" alt="image" src="https://user-images.githubusercontent.com/95380638/158738036-a01f6b5d-7e5b-4338-aabf-3ced5e1346bf.png">
 
+13) 그리고 위와 같은 화면에서 다른 보안 그룹과 헷갈리지 않도록 이름을 설정하기.
+14) 이 상태에서 다시 DBeaver 연결 화면으로 돌아가서 Test Connection를 클릭해보자. 그러면 Connection Test라는 창이 뜨면서 통과하게 되고 연결이 되었다는 의미이다. 그러면 이제 DBeaver의 좌측에 Database Navigator가 뜬다.
+15) 그리고 아까 말했듯이 이 데이터베이스 서버안에 개념상으로 데이터베이스를 하나 만들어줘야 한다. 그래서 좌측 Navigator안에 Databases를 우클릭하고 Create New Database를 클릭하자. 데이터베이스 이름은 tablebooking이라고 해놓고 Charset은 어떤 언어를 지원할 것이냐의 문제인데, 기본적으로 되어있는 것처럼 utf8를 써야한다. utf8이 글로벌용이기 때문에 한국어, 일본어, 중국어 등 모든 언어를 지원하는 Charset이다. 그리고 뒤에 mb4라고 붙어있는데, 이건 이모지까지 포함한 특수문자들도 다 들어가 있는 Charset이라고 보면 된다. 그래서 그냥 디폴트로 되어있는 **utf8mb4**를 사용하면 된다.
+    - 그리고 아래쪽에는 Collation이라고 나와있는데, 여기서는 **utf8mb4_unicode_ci** 를 선택하자. 이렇게 해줘야 문제가 없다. 이렇게 설정하고 확인하면 새로운 데이터베이스가 생성된다.
 
-17:39
+16) 그래서 좌측 Navigator에 생성된 tablebooking이라는 데이터베이스를 클릭해보면 Tables 라는 게 있는데, 여기에 이제 우리가 만들 모델과 하나씩 매핑이 되는 것이다. 
+
+* * *
+### django에서 데이터베이스 설정 수정하기
+- 위의 과정을 모두 거친 다음, 이제 다시 django로 돌아와서 데이터베이스 설정을 바꿔보자. settings.py로 가서 DATABASES라는 항목이 있다. 여기에 있는 default라는 딕셔너리를 수정하면 되는데, 원래 sqlite3라고 되어있는 ENGINE 부분을 mysql로 수정하자.
+
+```python
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'tablebookings.c1uzjwt0ilcb.ap-northeast-2.rds.amazonaws.com',
+        'PORT': 3306,
+        'NAME': 'tablebooking',
+        'USER': 'tablebookings',
+        'PASSWORD': 'qwaszxqwer1!',
+    }
+}
+```
+
+- 그리고 default라는 key의 value로 'HOST'를 추가하고 AWS에서 확인가능한 엔드포인트를 복사해서 붙여넣기를 한다.
+- 그 다음에는 'PORT'를 추가하고 3306으로 설정한다. 
+- 그리고 이미 있었던 'NAME' 이라는 부분은 값을 수정해주자. 우리가 만들어준 논리적 개념의 DB이름을 적는다. 여기서는 'tablebooking' 이라고 하자. (DBeaver에서 만든 이름)
+- 마지막으로 'USER'를 추가하고 우리가 만든 마스터 사용자 이름을 적고 'PASSWORD'를 추가해서 비밀번호를 적어준다.
+
+- 이 상태에서 추가로 또 진행해야 할 것이 있는데, django에서 해당 DB를 연결하려면 DB에 붙는 것을 도와주는 어댑터 역할, 콘센트 역할을 하는 무언가를 다운받아줘야 한다. 그걸 보통 클라이언트라고 한다.
+  - 우리가 생각하는 웹 브라우저도 클라이언트고, DB에 붙으려고 하는 콘센트 역할을 하는 것도 클라이언트의 입장이다. DB는 서버 입장이라고 볼 수 있다. 그래서 우리가 DB에 접속하는 입장에서는 클라이언트이기도 하지만, 이 클라이언트의 중간 단계에서 우리가 쉽게 통신할 수 있도록 도와주는 그런 모듈이 필요하다. 그래서 pip로 mysqlclient를 설치해야 한다.
+
+```terminal
+pip install mysqlclient
+```
+
+- DBeaver에 나는 없지만, 원래 생성되는 information_schema나 performance_schema 같은 것들은 mysql 엔진에서의 메타 데이터들이 담겨있는 테이블들도 있고 환경변수들도 들어가 있다. 그래서 기본 테이블의 정체에 대해서도 한 번 살펴보자. 물론 우리처럼 서비스를 개발하는 입장에서는 우리가 아까 만들어둔 tablebooking안에 있는 테이블만 접근하게 되지만 다른 부분들도 확인해보자.
+
+- mysqlclient가 다 설치된 이후에 이제 다시 python manage.py migrate 명령어를 입력하면 다시 진행이 된다.
+  - migrate가 진행되고 나서 다시 DBeaver에 가서 tablebooking 데이터베이스를 새로 고침하면 
+
+<img width="379" alt="image" src="https://user-images.githubusercontent.com/95380638/158742754-020eb1e5-63d1-40e8-a9cd-fef6e230d462.png">
+
+- 이렇게 django 자체에 있는 모델 테이블들이 업데이트 된다. **django 자체에서 그냥 migrate만 해도 10개 정도의 테이블이 생겨있다. 이걸로 봐서 우리가 유추를 해보자면, 10개 테이블이 생겼다는 것은 django에서 미리 구현이 되어있는 모델이 10개라는 의미가 된다.** 
+- 안에 있는 (auth앱의 user모델) auth_user 모델 테이블을 클릭해보면, 그 안에 column들이 어떤게 있는지 다 뜨게 된다.
