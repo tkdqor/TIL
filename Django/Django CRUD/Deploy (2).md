@@ -53,7 +53,7 @@ python manage.py runserver 0:8000
 
 ```terminal
 vim 프로젝트이름디렉터리/settings.py
-
+```
 
 
 - vim 프로젝트이름디렉터리/settings.py -> 이렇게 터미널에 입력하면 -> settings 모듈의 내용이 터미널에 뜨게 된다. 즉, 해당 내용을 수정할 수 있는 메모장 프로그램인 vim이 열린 것이다.
