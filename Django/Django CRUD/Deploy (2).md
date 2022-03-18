@@ -67,3 +67,9 @@ vim 프로젝트이름디렉터리/settings.py
 
 
 9:50
+
+
+
+* * *
+- 참고해볼 자료 : https://velog.io/@sj950902/DJANGO%EC%99%80-WSGI%EC%97%90-%EB%8C%80%ED%95%B4-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90
+- https://likelion.notion.site/Vim-218aa43cf8aa4b3bacfbfda1651554c8
