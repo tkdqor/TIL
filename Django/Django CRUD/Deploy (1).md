@@ -97,6 +97,18 @@
 
 - **우리가 Windows나 Mac에서 컴퓨터 처음 켜면 계정이 뜨고 비밀번호를 입력해서 로그인을 하듯이 -> Linux에도 계정이 있고 / EC2는 기본적으로 Ubuntu 운영체제를 사용하면 ubuntu라는 계정을 만들어주게 된다.** 그래서 ubuntu라는 계정으로 로그인을 하는 것이다. 여기까지 EC2를 발급받는 게 모두 완료되었다. SSH를 통해서 원격으로 접속한 이 EC2에서 빠져나올 때는 -> exit 이라고 입력하면 logout이 되면서 빠져나오게 된다. 그리고 원래처럼 우리 개인 컴퓨터의 터미널 화면으로 돌아온다.
 
-- 만약에, 다시 EC2 server로 접속하고 싶다면 -> 24:20
+- 만약에, 다시 EC2 server로 접속하고 싶다면 -> 아까 접속할 때 마지막에 입력했던 ssh -i "pem키" ubuntu@퍼블릭 DNS 주소 -> 이 명령어만 터미널에 다시 입력해주면 된다. 그러면 ubuntu Server에 다시 접속할 수 있다. 
+  - 그런데, 이 명령어를 항상 외우고 다닐수는 없을텐데, 그럴떄는 AWS에 접속해서 AWS Management Console에서 EC2를 검색한 다음 EC2 대시보드에서 "실행중인 인스턴스" 링크를 눌러서 현재 실행 중인 인스턴스를 확인할 수 있고, 여기서 우리가 접속하고자 하는 인스턴스를 체크한 다음 "연결" 버튼을 누르면 -> 접속하는데 필요한 명령어를 다시 확인할 수 있다.
+
+* * *
+- 지금까지 가상 컴퓨터를 발급받는 건 모두 끝났고, 이 server에 python, django, nginx, gunicorn이라는 각종 프로그램을 설치하기만 하면 된다.
+  - 문제는 Linux를 처음 사용해보는 것이고, 설치해야 하는 프로그램도 많은데 수많은 명령어들을 복사해서 터미널에 한줄씩 다 입력해줘야 한다.
+  - 그래서 이러한 코드들이 자동으로 순서대로 실행되게끔 스크립트 파일로 만들어두었다. log ... 이러한 코드를 제외하고 나머지 코드들은 다 실제 프로그램을 설치하는데 필요한 코드들이다. 
+    - sudo timedatectl set-timezone 'Asia/Seoul' -> 해당 코드는 서버의 시간대를 한국 시간대로 설정해주는 것이고, server에 이미 설치되어있는 기본적인 프로그램들을 최신 버전으로 업데이트 시켜준 다음 이후에 우리가 직접 설치할 프로그램들이 정상적으로 동작하기 위해 필요한 환경 변수나 설정값들을 저장할 수 있는 bash_profile이라는 파일을 생성해주는 코드를 입력하게 된다.
+    - 그 다음에는 Ubuntu에 python를 설치할 것인데 pyenv라는 프로그램을 통해서 python를 설치할 것이다. pyenv로 python를 실제로 설치하는데 필요한 각종 프로그램들도 설치한 다음 최종적으로 pyenv를 통해서 pytohn 3.9.2버전을 설치한다.
+    - 그 다음 밑에는, nginx라는 web server를 설치하는 코드가 있다. 그래서 python를 다 설치하면 python의 venv 모듈을 통해서 홈 디렉터리에 env라는 가상환경을 위한 디렉터리를 만들어준다. 그리고 그렇게 만든 env 디렉터리 내부로 이동한 다음, python package installer인 pip를 업그레이드 해주고 django를 설치한다. 추가로 이미지 업로드를 위해서 Pillow를 설치하고 API 통신을 위해서 requests를 설치해준다. 그리고 마지막으로는 gunicorn이라는 라이브러리도 pip를 통해서 설치해준다.
+    - 그래서 설치가 모두 완료되면 installation Successful이라는 메세지가 터미널에 출력된다. 이러한 많은 명령어들을 한 줄 한 줄 복사해서 터미널에 입력할 필요는 없고, https://github.com/heeham/ubuntu-django-deploy -> 해당 github에 있는 ubuntu-django-deploy라는 github repository에 가서 README에 있는 source로 시작하는 명령어 한 줄을 복사한 다음, EC2에 접속한 터미널 상태에서 -> 터미널에 붙여넣고 enter를 하면 -> EC2서버에 nginx, python, django, gunicorn 등 서비스를 배포하는데 필요한 모든 프로그램들을 자동으로 한 번에 설치시켜준다.
+
+- 그래서 터미널 마지막에 [Nginx - Gunicorn - Python Django] Installation Successful -> 이러한 메세지를 봐야 정상적으로 설치가 된 것이라고 볼 수 있다.
 
 
