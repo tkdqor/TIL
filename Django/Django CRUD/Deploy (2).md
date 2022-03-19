@@ -63,11 +63,32 @@ vim 프로젝트이름디렉터리/settings.py
   
 - vim관련해서, command 모드에서 알파벳 gg를 누르면 -> 커서가 파일 맨 위로 이동하게 된다. shift + g를 눌러보면 -> 커서가 파일의 맨 하단으로 이동하게 된다. 그리고 command 모드에서 이동하고자 하는 라인의 숫자를 입력한 다음 gg를 입력해보자. ex) 28gg -> 그러면 바로 28번째 줄로 순간이동하게 된다.
 
-- 이제 ALLOWED_HOSTS라는 리스트 변수에다가 커서를 둔 다음, i키 혹은 a키를 눌러서 값을 입력할 수 있는 insert 모드로 변경해준다. 그리고 이 리스트 내부에다가 우리의 EC2 인스턴스 IP 주소를 추가해주면 된다.
+- 이제 ALLOWED_HOSTS라는 리스트 변수에다가 커서를 둔 다음, i키 혹은 a키를 눌러서 값을 입력할 수 있는 insert 모드로 변경해준다. 그리고 이 리스트 내부에다가 우리의 EC2 인스턴스 IP 주소를 추가해주면 된다. EC2 인스턴스의 IP주소인 퍼블릭 IPv4 주소를 복사해 
+```python
+ALLOWED_HOSTS = ['13.xxx.xxx.xx'] 
+```
+
+- 이런식으로 문자열로 넣어주자. 그리고 insert 모드를 종료하기 위해 esc키를 누르고 command 모드를 빠져나온 다음 변경한 내용을 저장하기 위해 :wq 를 입력하고 엔터를 누르면, 저장과 동시에 vim이 종료된다.
+- 이제 다시 터미널에서 python manage.py runserver 0:8000으로 서버를 실행시키면 우리의 프로젝트가 보이게 된다.
+  - 문제는 우리가 이 터미널을 끄는 순간, django server도 shut down 되면서 서비스에 사용자들이 접근할 수 없게 된다. **그래서 runserver 명령어를 통해서 우리가 django server를 실행시키는 것이 아니라, django 프로세스 매니저를 통해서 django server를 대신 실행하게끔 만들고 -> 우리가 터미널을 종료하더라도 django가 알아서 항상 떠있게끔 만들어줘야 한다.**
+  - 그래서 이제 우리가 직접 server를 구동시키는 것이 아니라, gunicorn이라는 프로그램을 사용해서 django server를 대신 구동하게끔 만들어주자.
+
+* * *
+### WSGI
+- **gunicorn은 python을 위한 WSGI인데 Web Server Gateway Interface를 의미한다. gunicorn은 nginx와 같은 web server와 django라는 프로그램이 서로 소통할 수 있게끔 해주는 인터페이스이다. 즉, 브릿지 역할을 해준다.**
+- 그래서 이러한 인터페이스를 사용하기 위해 gunicorn이라는 프로그램을 사용하는 건데 다른 프로그램도 있다. 이 인터페이스를 통해서 nginx와 django를 연동시킬 수 있는데 반대로 말하면 nginx라는 web server와 통신하는 인터페이스대로 동작하는 프로그램이라면 꼭 django가 아니더라도 python의 Flask처럼 다른 프로그램을 연동해서 사용할 수도 있다.
+- 우리가 작업한 프로젝트 디렉터리 -> 프로젝트 이름의 디렉터리 내부에 wsgi.py라는 파일이 있다. 해당 파일이 있기 때문에 wsgi라는 인터페이스를 사용할 수 있고 그 결과, gunicorn이라는 인터페이스의 구현체를 통해서 web server와 우리의 django 프로그램이 서로 통신할 수 있게 되는 것이다.
+- 이러한 gunicorn를 사용하기 위해서는, django 프로젝트 루트 디렉터리에 들어간 터미널 상태에서
+```terminal
+gunicorn 프로젝트이름으로된디렉터리.wsgi --bind 0:8000
+```
+
+- gunicorn 한칸 띄고 wsgi.py가 있는 경로를 점을 기준으로 적어주면 된다. 그리고 gunicorn를 사용할 때도 host binding를 해줘야 하는데 --bind라고 적고 한 칸 띄우고 0:8000 이라고 적어주면 된다. -> 그러면 django server가 gunicorn를 통해서 간접적으로 대신 실행이 된다. 브라우저를 확인하면 정상적으로 서비스가 서빙되는 것을 확인할 수 있다.
+  - **그런데 우리가 runserver로 직접 server를 구동시켰을 때는 색깔이 적용되었는데 지금은 되지 않는다. 개발자도구를 키고 Network를 선택하고 새로고침을 해보면 style.css 2개가 빨간색으로 에러가 발생한 것을 확인해볼 수 있다. 우리가 작성한 CSS 파일들이 import가 되지 않았다는 것이다.**
+  - **static파일과 관련된 것들은 nginx가 직접 담당해서 서빙할 것이다라고 했는데, 지금 링크에 실패한 CSS 파일을 비롯해서 static 파일이 정상적으로 연동되려면 nginx까지 우리가 설정을 해줘야만 한다. 참고로 django development 모드의 server를 사용했을 때처럼 django 하나만 사용해도 static 파일을 서빙하는 게 불가능한 것은 아니지만, nginx와 같은 web server가 static 파일 서빙과 관련해서는 성능이 훨씬 좋기 때문에 -> production 환경에서는 nginx와 django를 같이 섞어서 연동해서 쓰는 게 일반적이다. (CSS파일, 사진 파일, javascript 파일 등등)** 
 
 
-9:50
-
+16:00
 
 
 * * *
