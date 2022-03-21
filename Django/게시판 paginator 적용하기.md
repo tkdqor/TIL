@@ -99,3 +99,9 @@ def index(request):
 
 ### 더 고민해봐야 할 문제
 - 위의 예시로 페이지 번호가 계속 늘어날 수 있지만, 늘어나는 페이지 번호를 제한하는 방법은 없을까. 예를 들어, 12345 다음에 글이 생기면 678910이 보여지게끔 하는 방법을 생각해보자.
+
+
+### 관련 자료
+- https://jupiny.com/2016/11/22/limit-pagination-page-numbers-range/
+- https://docs.djangoproject.com/ko/4.0/topics/pagination/
+- https://ssungkang.tistory.com/entry/Django-11-Pagination-%EC%9D%84-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90#recentComments
