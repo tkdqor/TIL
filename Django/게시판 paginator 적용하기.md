@@ -94,7 +94,7 @@ def index(request):
 
 - 부트스트랩을 이용해서 paginator 적용
 - 위의 코드와 달리, 게시판의 글이 많아져서 페이지가 생성되면 자동으로 페이지 번호가 늘어나게끔 설정
-  - {% for i in page_range %} -> range로 설정된 변수에서 for문으로 하나씩 뽑아서 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li> 이렇게 페이지 번호와 href를 설정해서 자동으로 페이지 번호를 생성할 수 있음
+  - {% for i in page_range %} -> range로 설정된 변수에서 for문으로 하나씩 뽑아서 i라는 변수를 페이지 번호와 href로 설정해서 자동으로 페이지 번호를 생성할 수 있음
 
 
 ### 더 고민해봐야 할 문제
