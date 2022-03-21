@@ -61,6 +61,7 @@ def index(request):
 - 페이지 버튼의 href element는 GET방식으로 page라는 변수에 페이지 숫자가 들어가게끔 설정.
 - view에서 설정한 posts라는 변수에 -> .has_previous / .previous_page_number / .number / .paginator.num_pages / .next_page_number 와 같은 메소드를 활용해서 pagination 적용
 
+* * *
 
 - **부트스트랩 paginator 이용**
 ```html
