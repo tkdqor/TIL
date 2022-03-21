@@ -87,8 +87,33 @@ gunicorn 프로젝트이름으로된디렉터리.wsgi --bind 0:8000
   - **그런데 우리가 runserver로 직접 server를 구동시켰을 때는 색깔이 적용되었는데 지금은 되지 않는다. 개발자도구를 키고 Network를 선택하고 새로고침을 해보면 style.css 2개가 빨간색으로 에러가 발생한 것을 확인해볼 수 있다. 우리가 작성한 CSS 파일들이 import가 되지 않았다는 것이다.**
   - **static파일과 관련된 것들은 nginx가 직접 담당해서 서빙할 것이다라고 했는데, 지금 링크에 실패한 CSS 파일을 비롯해서 static 파일이 정상적으로 연동되려면 nginx까지 우리가 설정을 해줘야만 한다. 참고로 django development 모드의 server를 사용했을 때처럼 django 하나만 사용해도 static 파일을 서빙하는 게 불가능한 것은 아니지만, nginx와 같은 web server가 static 파일 서빙과 관련해서는 성능이 훨씬 좋기 때문에 -> production 환경에서는 nginx와 django를 같이 섞어서 연동해서 쓰는 게 일반적이다. (CSS파일, 사진 파일, javascript 파일 등등)** 
 
+* * *
+- **동작하고 있던 gunicorn은 일단 컨트롤 + c로 종료시키고, nginx를 설정해보자.**
+- nginx의 설정파일들이 기본적으로 구성되어있는 형태가 있다.
+  - 모든 설정의 베이스가 되는 nginx.conf 파일이 있다.(configuration) 
+```terminal
+sudo apt-get install nginx
+```
 
-16:00
+- Ubuntu에서 이러한 명령어를 통해서 nginx를 설치하게 되면 -> /etc/nginx/ 라는 경로에 nginx가 설치된다. 
+```terminal
+cd /etc/nginx/
+```
+
+- 이렇게 cd 명령어로 해당 경로로 들어가 준다. 이 상태에서 ls 명령어로 내부를 확인해보면, nginx.conf 라는 모든 설정의 베이스가 되는 기본 설정 파일이 있는데 
+```terminal
+vim nginx.conf
+```
+
+- 이렇게 vim으로 내용물을 확인해보면 -> 다양한 설정이 복잡하게 작성되어있다. 이 파일에서는 nginx라는 web server 자체에 대한 설정을 구성하는데, 사용자가 접속했을 때 server의 로그는 어디에다 남길지, 에러 로그는 어디에다 남길지, 최대 몇개의 커넥션을 허용할지 등을 설정할 수 있다.
+- 그리고 설정파일의 하단부분을 보면, include라는 키워드를 통해서 다른 경로에 있는 별도의 설정 파일의 내용을 포함시켜 사용하겠다 라고 코드가 작성되어 있다. 그래서 /etc/nginx/conf.d/*.conf; 이렇게 이름이 뭐가 되었든 .conf로 끝나는 설정 파일은 내가 다 가져다 쓰겠다 라고 하는 것이다.
+- 그리고 그 다음줄에는, include /etc/nginx/sites-enabled/*; -> 이렇게 sites-enabled라는 디렉터리 내부에 있는 이름이 뭐가 되었든 설정 파일이 있기만 한다면 그걸 가져다 쓰겠다라는 의미가 된다.
+  - 여기서 우리가 서비스를 배포하는 과정에서 고쳐야할 부분은, sites-enabled 정도이다.
+
+- 우리의 웹사이트를 서빙하기 위한 nginx 설정을 구성하는 방법은 -> 하나의 nginx web server내에서는 여러 개의 웹사이트를 운영할 수 있는데 -> sites-available이라는 디렉터리 내부에 해당 web server에서 서빙하고자 하는 여러 웹사이트들에 대한 설정을 사이트별로 구분해서 별도의 파일로 작성한다. ex) 하나의 web server에서 likelion.com이나 example.com도 서빙할 수 있다. 즉, 서빙가능한 사이트의 목록을 의미한다.
+- 이중에서 실제로 어떤걸 연동해서 사용할지, 하나만 사용할지 아니면 여러개를 사용할지에 대한 내용을 sites-enabled 라는 디렉터리에 구성하는데, 주로 여기에서는 Linux의 symbolic link라는 것을 활용한다. Window 운영체제의 바로가기라고 생각하면 된다.
+  - **사이트 자체에 대한 설정은 sites-available 디렉터리 내부에 넣어두고 실제로 적용하고자 하는 대상은 sites-enabled에 symbolic link의 형태로 바로가기의 형태로 지정해주는 것이다.**
+  - **그래서 sites-enabled에 default라는 이름을 가진 바로가기를 만들었는데 이 바로가기가 가리키는 대상은 sites-available 디렉터리 내부에 있는 likelion.com이라는 설정 파일이다.(예를 들어..) 그 결과, 최종적으로는 nginx.conf 파일은 -> sites-enabled안에 있는 모든 걸 포함하니까 default를 포함하게 되고, -> default가 sites-available 안에 있는 likelion.com을 가리키니까 -> 최종적으로는 likelion.com이라는 설정 파일이 nginx.conf 파일에 포함이 된다고 보면 된다.**
 
 
 * * *
