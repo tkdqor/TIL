@@ -26,11 +26,74 @@ def index(request):
    return render(request, 'posts/posts.html', context)
 ```
 
+- **공식문서 참고한 template 코드**
+```html
+   <!-- 페이지네이터 코드 -->
+   <div class="container" id="paginator_container">
+    <!-- 이전 페이지 버튼 -->
+    {% if posts.has_previous %}
+        <a class="page_button" href="?page=1">맨 앞으로</a>
+        <a class="page_button" href="?page={{ posts.previous_page_number }}">이전으로</a>
+    {% else %}
+        <a class="page_button" href="?page=1">맨 앞으로</a>
+        <a class="page_button" href="?page=1">이전으로</a>   
+    {% endif %} 
+
+    <!-- 페이지 숫자 나타내기 -->
+    {% if posts.has_previous %}
+    <span>{{ posts.previous_page_number }}</span>
+    {% endif %}
+    <span>{{ posts.number }}</span>
+    <span>|</span>
+    <span>{{ posts.paginator.num_pages }}</span>
+
+    <!-- 다음 페이지 버튼 -->
+    {% if posts.has_next %}
+        <a class="page_button" href="?page={{ posts.next_page_number }}">다음으로</a>
+        <a class="page_button" href="?page={{ posts.paginator.num_pages }}">맨 뒤로</a>
+    {% else %}
+        <a class="page_button" href="?page={{ posts.paginator.num_pages }}">다음으로</a>
+        <a class="page_button" href="?page={{ posts.paginator.num_pages }}">맨 뒤로</a>    
+    {% endif %}    
+   </div>
+```
+
+- 페이지 버튼의 href element는 GET방식으로 page라는 변수에 페이지 숫자가 들어가게끔 설정.
+- view에서 설정한 posts라는 변수에 -> .has_previous / .previous_page_number / .number / .paginator.num_pages / .next_page_number 와 같은 메소드를 활용해서 pagination 적용
 
 
+- **부트스트랩 paginator 이용**
+```html
+<!-- 페이지네이터 코드 -->
+   <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+            <!-- 이전 페이지 버튼 -->    
+                {% if posts.has_previous %}    
+                <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page=1">Previous</a></li>
+                {% endif %}
+            
+            <!-- 페이지 숫자 나타내기 -->    
+                {% for i in page_range %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endfor %}
+            
+            <!-- 다음 페이지 버튼 -->    
+                {% if posts.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Next</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+   </div>
+```
 
-
-
+- 부트스트랩을 이용해서 paginator 적용
+- 위의 코드와 달리, 게시판의 글이 많아져서 페이지가 생성되면 자동으로 페이지 번호가 늘어나게끔 설정
+  - {% for i in page_range %} -> range로 설정된 변수에서 for문으로 하나씩 뽑아서 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li> 이렇게 페이지 번호와 href를 설정해서 자동으로 페이지 번호를 생성할 수 있음
 
 
 ### 더 고민해봐야 할 문제
