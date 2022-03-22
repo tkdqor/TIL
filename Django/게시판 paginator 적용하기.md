@@ -67,25 +67,29 @@ def index(request):
 ```html
 <!-- 페이지네이터 코드 -->
    <div>
-        <nav aria-label="Page navigation example">
+        <nav aria-label="Page navigation example" id="paginator_container">
             <ul class="pagination">
             <!-- 이전 페이지 버튼 -->    
                 {% if posts.has_previous %}    
-                <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ posts.previous_page_number }}" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                 {% else %}
-                <li class="page-item"><a class="page-link" href="?page=1">Previous</a></li>
+                <li class="page-item disabled"><a class="page-link" href="?page=1" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
                 {% endif %}
             
             <!-- 페이지 숫자 나타내기 -->    
                 {% for i in page_range %}
+                {% if i == posts.number %}
+                <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% else %}
                 <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
                 {% endfor %}
             
             <!-- 다음 페이지 버튼 -->    
                 {% if posts.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ posts.next_page_number }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
                 {% else %}
-                <li class="page-item"><a class="page-link" href="?page={{ posts.paginator.num_pages }}">Next</a></li>
+                <li class="page-item disabled"><a class="page-link" href="?page={{ posts.paginator.num_pages }}" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>
                 {% endif %}
             </ul>
         </nav>
@@ -93,8 +97,39 @@ def index(request):
 ```
 
 - 부트스트랩을 이용해서 paginator 적용
+
+```terminal
+<!-- 페이지 숫자 나타내기 -->  
+{% for i in page_range %}
+{% if i == posts.number %}  
+<li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+{% else %}
+<li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+{% endif %}
+{% endfor %}
+```               
 - 위의 코드와 달리, 게시판의 글이 많아져서 페이지가 생성되면 자동으로 페이지 번호가 늘어나게끔 설정
   - {% for i in page_range %} -> range로 설정된 변수에서 for문으로 하나씩 뽑아서 i라는 변수를 페이지 번호와 href로 설정해서 자동으로 페이지 번호를 생성할 수 있음
+  - 그리고 다음 {% if i == posts.number %} if문은 예를 들어 2번 페이지를 클릭했을 때, 2번이 현재 페이지이니까 색깔이 있는 버튼으로 변경하게끔 설정한 코드이다.
+
+* * *
+
+- **CSS파일은 다음과 같다.**
+```css
+/* paginator 버튼 */
+.pagination > li > a {
+   background-color: white;
+   color: #141414;
+}
+
+.pagination > .page-item.active > a {
+   background-color: #EA6A6B;
+   border: solid 1px #EA6A6B;
+}
+```
+- **다음과 같이 Bootstrap 요소의 색깔을 바꾸기 위해서는 만들어져있는 구조를 하나씩 따라가서 지정해주면 된다.**
+  - Ex) pagination 클래스 > li element > a element 
+  - Ex) pagination 클래스 > page-item active 클래스 > a element
 
 
 ### 더 고민해봐야 할 문제
