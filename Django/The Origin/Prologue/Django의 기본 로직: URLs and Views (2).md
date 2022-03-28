@@ -101,3 +101,87 @@ def calculator(request):
 ```
 
 - 이렇게 다른 로그가 남겨진다.
+
+* * *
+- **html에서 데이터를 출력하기 위해서는 View에서 데이터를 넘겨줘야 한다.**
+- 그래서 우리가 Views.py에서 설정한 result라는 변수값을 template으로 넘겨주자.
+
+```python
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+
+def calculator(request):
+
+    # 1. 데이터 확인
+    num1 = request.GET.get('num1')
+    num2 = request.GET.get('num2')
+    operators = request.GET.get('operators')
+
+    # 2. 계산
+    if operators == '+':
+        result = num1 + num2
+    elif operators == '-':
+        result = num1 - num2
+    elif operators == '*':   
+        result = num1 * num2 
+    elif operators == '/':   
+        result = num1 / num2     
+    else:
+        result = 0    
+
+
+    # 3. 응답
+
+    return render(request, 'calculator.html', {'result': result})
+```
+
+- 넘겨줄 때는 render 함수의 3번째 인자로 입력한다. 여기서 딕셔너리를 활용해 result라는 변수를 key와 value로 정해준다.
+  - 그러면 html에서 result라는 값을 result라는 변수 이름으로 사용할 수 있는 것이다.
+
+
+- 다시 calculator.html로 돌아와서 django template language를 사용하자.
+```html
+...
+    <form action="">
+        <input type="text" name="num1">
+        <input type="text" name="num2">
+        <input type="text" name="operators">
+        <input type="submit">
+        <br/>
+        결과값 : {{ result }}
+    </form>
+```
+
+- 이렇게 result 변수값을 출력해줄 수 있다. 
+- 그리고나서 브라우저에서 1,3,+를 입력하면 결과값으로 13이 나오게 된다.
+  - 다시 views.py를 보면, 
+
+```python
+num1 = request.GET.get('num1')
+num2 = request.GET.get('num2')
+...
+```
+
+- **이렇게 우리가 받아온 값들이 숫자가 아닌 텍스트로 받은 것이다. 지금은 '1' + '3' 이 되어 13이 출력되었으나, 우리가 원하는 건 1 + 3 = 4 이렇게 되는 것을 원하는 것이다.**
+  - 그래서 num1, num2를 integer로 타입변환을 해주자.
+
+```python
+...
+    # 2. 계산
+    if operators == '+':
+        result = int(num1) + int(num2)
+    elif operators == '-':
+        result = int(num1) - int(num2)
+    elif operators == '*':   
+        result = int(num1) * int(num2) 
+    elif operators == '/':   
+        result = int(num1) / int(num2)     
+    else:
+        result = 0    
+        ...
+```
+
+- 원래는 사용자가 입력한 값이 텍스트로 넘어오게 된다. **클라이언트가 server로 데이터를 보낼 때 --> 무조건 텍스트(문자형)를 기준으로 들어오게 된다.** 따라서, 숫자로 계산하고 싶다면 타입을 변환시켜주면 된다.
+- 이제는 브라우저를 새로고침해서 값을 입력해보면 정상적으로 계산기 기능이 작동하는 것을 확인할 수 있다.
