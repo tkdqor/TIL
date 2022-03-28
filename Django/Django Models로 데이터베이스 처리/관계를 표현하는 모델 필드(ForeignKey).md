@@ -298,3 +298,7 @@ class Comment(models.Model):
 ```
 
 - 이런식으로 설정하면 Comment add 버튼 누르고 난 다음, Post에서 is_public이 True인 포스팅만 선택할 수 있게된다.
+
+* * *
+### 관련 블로그
+- https://whatisthenext.tistory.com/118
