@@ -185,3 +185,32 @@ num2 = request.GET.get('num2')
 
 - 원래는 사용자가 입력한 값이 텍스트로 넘어오게 된다. **클라이언트가 server로 데이터를 보낼 때 --> 무조건 텍스트(문자형)를 기준으로 들어오게 된다.** 따라서, 숫자로 계산하고 싶다면 타입을 변환시켜주면 된다.
 - 이제는 브라우저를 새로고침해서 값을 입력해보면 정상적으로 계산기 기능이 작동하는 것을 확인할 수 있다.
+
+* * * 
+- 프로그래밍을 할 때, **사용성**을 항상 고려해야 된다. 즉, 편하게 사용할 수 있게 만들어야 한다.
+- 다시 html로 가서 수정하자.
+
+```html
+<form action="">
+        <input type="text" name="num1">
+        <select name="operators">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" name="num2">
+        <input type="submit">
+        <br/>
+        결과값 : {{ result }}
+</form>
+```
+
+- 우리가 1+1 이렇게 하듯이 input의 순서를 바꿔주었다. 그리고 가운데 연산자 부분은 선택을 할 수 있게 바꿔줘야 한다. 
+  - 그래서 select라는 tag를 사용해볼 수 있다. select tag 자체에 name를 operators로 설정하고, 선택을 해줘야하기 때문에 select안에 option tag가 들어가야 한다. 그리고 어떤 걸 선택했을 때 어떤 값을 넘겨줄지 value element에 설정할 수 있다.
+
+<img width="354" alt="image" src="https://user-images.githubusercontent.com/95380638/160320937-e067c9b1-01f8-4015-bcef-a74efb819a3f.png">
+
+- 그러면 이렇게 선택할 수 있게 해줄 수 있다.
+
+- **프로그래밍을 구성할 때, 주석을 사용해서 먼저 순서나 흐름을 만들어놓고 난 뒤에 코드를 입력하는 것이 훨씬 도움이 된다.**
