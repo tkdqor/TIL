@@ -207,7 +207,7 @@ num2 = request.GET.get('num2')
 ```
 
 - 우리가 1+1 이렇게 하듯이 input의 순서를 바꿔주었다. 그리고 가운데 연산자 부분은 선택을 할 수 있게 바꿔줘야 한다. 
-  - 그래서 select라는 tag를 사용해볼 수 있다. select tag 자체에 name를 operators로 설정하고, 선택을 해줘야하기 때문에 select안에 option tag가 들어가야 한다. 그리고 어떤 걸 선택했을 때 어떤 값을 넘겨줄지 value element에 설정할 수 있다.
+  - **그래서 select라는 tag를 사용해볼 수 있다. select tag 자체에 name를 operators로 설정하고, 선택을 해줘야하기 때문에 select안에 option tag가 들어가야 한다. 그리고 어떤 걸 선택했을 때 어떤 값을 넘겨줄지 value element에 설정할 수 있다.**
 
 <img width="354" alt="image" src="https://user-images.githubusercontent.com/95380638/160320937-e067c9b1-01f8-4015-bcef-a74efb819a3f.png">
 
