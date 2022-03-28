@@ -17,4 +17,54 @@
 
 
 ### HttpResponse 클래스
-- HttpResponse.status_code의 경우, 상태 코드를 의미한다.
+- HttpResponse.status_code의 경우, 상태 코드를 의미한다. 공식문서에서 각 코드가 어떤 의미인지 알려주고 있다.
+- 주로 우리가 데이터를 Response로 진행하기 때문에 속성들을 많이 활용하지는 않는다.
+
+
+
+### 공식문서 말고도 다른 방식으로 보는 방법
+- **다시 우리의 VSCode를 보면, View에 있는 request가 바로 --> HttpRequest 클래스로 만든 객체를 의미한다.**
+- 그래서 이 request라는 객체가 어떤 요소를 가지고 있어서 우리가 사용할 수 있는지 궁금하다면 print(request) 이렇게 터미널에 출력을 해봐도 된다.
+
+```python
+def calculator(request):
+    print(f'request = {request}')
+    print(f'request type = {type(request)}')
+...
+```
+
+- 이렇게 터미널에 출력해보면, 
+
+```terminal
+request = <WSGIRequest: GET '/calculator/'>
+request type = <class 'django.core.handlers.wsgi.WSGIRequest'>
+```
+
+- **이렇게 출력되는 것을 볼 수 있고, 여기에 WSGIRequest를 View에서 from django.core.handlers.wsgi import WSGIRequest 이렇게 import하고 command로 클릭해서 보면, 결국에는 WSGIRequest도 HttpRequest를 상속받았다는 것을 확인할 수 있다.**
+- **상속받는다는 것은, 부모 클래스를 자식 클래스가 변수,상수,함수 이런것들을 다 내려받는다는 것이다. 그래서 결국은 --> Request가 HttpRequest라는 의미이다.**
+
+
+```python
+print(f'request.__dict__ = {request.__dict__}')
+```
+
+- 한가지 더 print할 수 있는 방법은, 위와같이 request를 .__dict__으로 찍는 것이다. 즉, 접근할 수 있는 속성들을 모두 보여준다는 의미이다. 이렇게하고 새로고침을 하면 터미널에 엄청 많은 데이터들이 출력된다.
+
+```terminal
+request.__dict__ = {'environ': {'...': '...', 'HTTP_USER_AGENT': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.83 Safari/537.36',...}
+```
+
+- 여기에는 우리가 아까 봤던 HTTP_USER_AGENT도 있다. 이렇게 데이터들을 확인해볼 수 있다.
+
+* * *
+- 또 다른 디버깅 방법은, VSCode에서 **중단점**을 찍는 것이다. 파일 화면에서 내가 원하는 코드 위치가 있다면, 이 코드가 실행되기 전에 잠깐 멈춰서 뭔가를 보고싶다라고 했을 때, 그 코드 라인 옆에 빨간색의 중단점을 찍어준다.
+<img width="408" alt="image" src="https://user-images.githubusercontent.com/95380638/160336948-fbbbf4f9-6138-46f9-9175-7ff931671b5a.png">
+
+- 그리고나서 VSCode 좌측 네번째 버튼인 **실행 및 디버그** 버튼이 있다. 여기를 클릭해준다. 그러면 launch.json 파일을 만들라고 하니까 클릭한다. 그러면 Select a debug configuration이 나오는데, 여기서 Django를 클릭하자. 
+
+<img width="229" alt="image" src="https://user-images.githubusercontent.com/95380638/160337507-9c881ae7-d330-4250-bce5-10dc296a64fa.png">
+
+- 그러면 최상위 디렉터리 위치에 .vscode가 생기고 그 안에 launch.json이라는 파일이 하나 생성된다.
+  - 이 
+파일
+
