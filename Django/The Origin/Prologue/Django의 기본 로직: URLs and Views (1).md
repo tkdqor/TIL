@@ -7,7 +7,7 @@
 - config는 설정파일들이 안에 있다고해서 config라는 이름을 지정했다.
   - **이렇게 config나 venv처럼 한 번 설정한 이름은 내가 임의로 수정하면 안 된다.** 즉, 명령어로 만든 폴더나 파일들은 내가 임의로 건들면 안 된다.
 
-- config안에 있는 python 파일들을 확인해보자.
+- **config안에 있는 python 파일들을 확인해보자.**
   - 던더init던더파일은 해당 디렉터리가 python package라고 선언해주는 약속과 같다. 그래서 이 파일이 들어가 있으면, 이 파일이 들어가 있는 폴더는 python package라고 약속되어있다. 안에는 아무것도 없다.
   - asgi.py와 wsgi.py는 배포와 관련이 있다.
   - settings.py는 정말 중요하다. django가 실행되는데 있어서 필요한 설정 변수, 값들을 다 확인할 수 있다.
@@ -15,7 +15,7 @@
 
 
 ### App 추가하기
-- 항상 명령어는 가상환경이 활성화 되어있고 + ls했을 때 manage.py가 있는 위치에서 해야한다.
+- **항상 명령어는 가상환경이 활성화 되어있고 + ls했을 때 manage.py가 있는 위치에서 해야한다.**
 - django 프로젝트는 django App들로 구성이 되어있다. 이번에는 계산기를 위한 App를 만들어보자.
 
 ```terminal
@@ -33,7 +33,7 @@ django-admin startapp demos
 - **그리고 App를 만들면 무조건 --> settings.py에 추가해줘야 한다.** 여기서 INSTALLED_APPS 부분에 우리가 만든 App이름을 추가해준다. 이 때 꼭 뒤에다가 콤마를 붙여주자.
 
 * * *
-- 계산기 기능을 만들기 위해, 먼저 demos 안에있는 views.py를 작성해보자.
+- **계산기 기능을 만들기 위해, 먼저 demos 안에있는 views.py를 작성해보자.**
 
 ```python
 from django.shortcuts import render
@@ -48,7 +48,7 @@ def calculator(request):
 - 프레임워크는 약속된 게 많은데, 이렇게 요청을 처리하고 기능을 수행하는 함수를 만들때는 --> request라는 인자를 꼭 넣어줘야 한다.
   - 그리고나서 model이나 template 사용없이 텍스트만 응답하기 위해서는 HttpResponse를 입력해야 한다. 그러기 위해서는 from django.http import HttpResponse 이렇게 이미 django안에 만들어져 있는 기능을 가져오는 것이다.
 
-- 이제는 메인 urls.py를 설정하자. django 프로젝트 폴더에 있는 urls.py이다.
+- **이제는 메인 urls.py를 설정하자. django 프로젝트 폴더에 있는 urls.py이다.**
 
 ```python
 from django.contrib import admin
@@ -70,7 +70,7 @@ urlpatterns = [
 - 그리고 이제는 template를 추가해보자. **우리가 만든 demos라는 디렉터리안에 templates라는 이름의 폴더를 만든다. --> 이것도 약속된 것이니까 폴더명이 변하면 안 된다.**
   - 그래서 이 templates 안에서 html를 응답해줄 수 있다. templates 내부에 calculator.html를 만든다. 그리고 간단하게 html element를 구성해놓는다.
 
-- 우리가 위에서 View에서 template를 가져다가 사용한다고 했는데, template는 당하는 파일이다. View에다가 어떤 template를 쓸지 알려줘야 한다.
+- **우리가 위에서 View에서 template를 가져다가 사용한다고 했는데, template는 당하는 파일이다. View에다가 어떤 template를 쓸지 알려줘야 한다.**
   - 다시 View에서 html로 응답해주는 것으로 바꾸는 것이다.
 
 ```python
