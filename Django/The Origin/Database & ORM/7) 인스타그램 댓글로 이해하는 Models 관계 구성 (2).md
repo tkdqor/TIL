@@ -51,5 +51,43 @@ class Comment(models.Model):
 - 이렇게 데이터베이스가 수정되었다면, 다시 한 번 migrations와 migrate를 해주면 된다. 
 - 하고나서 migrations 디렉터리를 보면, 0002파일이 생성되어있고 확인해보면 모델이 생성되고 필드가 수정되었다는 내용이 담겨져있다.
 
-* * *
 - **우리가 이전 수업에서 세팅했던 VSCode의 SQLITE EXPLORER를 세로고침 해보면, Post와 Comment 모델이 생성된 것을 확인할 수 있다.**
+
+
+### python Shell로 데이터 생성하기
+- 터미널에서 python shell 들어가기
+
+```terminal
+python manage.py shell
+
+Python 3.9.1 (v3.9.1:1e5d33e9b9, Dec  7 2020, 12:44:01) 
+[Clang 12.0.0 (clang-1200.0.32.27)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> 
+```
+
+- 이렇게 입력하면 python에 들어오게 된다. 이제 여기서 Post모델을 가져와서 데이터를 생성해보자.
+- 루트 디렉터리를 기준으로 생각해서 posts 앱의 models의 Post모델을 import한다.
+
+```terminal
+>>> from posts.models import Post
+>>> Post.objects.create(content='Shell를 통한 데이터 생성')
+<Post: Post object (1)>
+```
+
+- 이렇게 입력하면 Post모델에 데이터가 생성된다. 그리고 모든 데이터를 조회할 때는,
+
+```terminal
+>>> Post.objects.all()
+<QuerySet [<Post: Post object (1)>, <Post: Post object (2)>, <Post: Post object (3)>]>
+```
+
+- **이렇게 python interpreter를 사용해서 데이터 생성 및 조회를 해봤다.** 그래서 VSCode 왼쪽에 sqlite explorer를 새로고침해서 다시 Post 모델을 보면 VSCode 화면에 테이블안에 데이터가 있는 것을 확인할 수 있다.
+<img width="672" alt="image" src="https://user-images.githubusercontent.com/95380638/161304797-e58862e6-bee6-41a3-a310-5ffd43a53c92.png">
+
+- **여기서 Post모델의 writer 필드의 경우, User모델과 1:N으로 설정을 했는데 필드 이름이 writer_id라고 되어있다. 실질적으로 해당 필드는 ForeignKey로 writer의 ID번호가 들어가는 것이기 때문에 필드 이름이 이렇게 설정되어있다.**
+
+
+
+
