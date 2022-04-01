@@ -39,7 +39,7 @@ class Comment(models.Model):
 - **Comment 모델은 Post 모델과 1:N관계를 설정해야 하기 때문에, post라는 필드를 설정하고 ForeignKey를 설정해줘야 한다.** 그리고 게시글이 삭제될 때 댓글도 다 삭제될 수 있도록 CASCADE를 설정한다.
 - **그리고 Comment 모델의 작성자 필드를 추가해서 User모델과도 1:N관계를 설정해주자.** 
   - **여기서는 우리가 django에 만들어져 있는 사용자 모델을 가져와야 하는데, 가장 좋은 방법은 django.contrib에 auth라는 패키지가 있는데 get_user_model이라는 함수가 있다. 그래서 이 함수로 
-    User = get_user_model() --> 이렇게 User를 정의해준다.
+    User = get_user_model() --> 이렇게 User를 정의해준다.**
   - 우리가 나중에 가면 User모델을 커스텀하게 될텐데, 그 때도 이 코드를 변경하지 않고 그대로 사용할 수 있는 방법이라고 보면 된다. 그래서 auth라는 인증시스템에서 정의된 get_user_model()로 모델을 가져와라라고 하는 것이고, User=get_user_model() 이렇게 모델을 생성해준다. 그리고 이 모델을 Comment모델의 writer로 설정해주는 것이다.
 
 
