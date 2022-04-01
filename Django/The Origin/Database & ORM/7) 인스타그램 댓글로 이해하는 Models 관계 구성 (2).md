@@ -17,17 +17,18 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class Post(models.Model):
-    image = models.ImageField(verbose_name='이미지')
-    content = models.TextField('내용')
-    created_at = models.DateTimeField('작성일')
-    view_count = models.IntegerField('조회수')
+    image = models.ImageField(verbose_name='이미지', null=True, blank=True)
+    content = models.TextField(verbose_name='내용')
+    created_at = models.DateTimeField(verbose_name='작성일', auto_now_add=True)
+    view_count = models.IntegerField(verbose_name='조회수', default=0)
+    writer = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class Comment(models.Model):
     content = models.TextField(verbose_name='내용')
     created_at = models.DateTimeField(verbose_name='작성일')
     post = models.ForeignKey(to='Post', on_delete=models.CASCADE)
-    writer = models.ForeignKey(to=User, on_delete=models.CASCADE)    
+    writer = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True, blank=True)
 ```
 
 - **class Comment(models.Model)**: --> **이 부분은 python은 객체지향 프로그래밍 언어이기 때문에 클래스라는 개념이 존재하게 되는데, 여기서 models.Model 이렇게 넣어주게 되면 --> Model이라는
@@ -40,3 +41,15 @@ class Comment(models.Model):
   - **여기서는 우리가 django에 만들어져 있는 사용자 모델을 가져와야 하는데, 가장 좋은 방법은 django.contrib에 auth라는 패키지가 있는데 get_user_model이라는 함수가 있다. 그래서 이 함수로 
     User = get_user_model() --> 이렇게 User를 정의해준다.
   - 우리가 나중에 가면 User모델을 커스텀하게 될텐데, 그 때도 이 코드를 변경하지 않고 그대로 사용할 수 있는 방법이라고 보면 된다. 그래서 auth라는 인증시스템에서 정의된 get_user_model()로 모델을 가져와라라고 하는 것이고, User=get_user_model() 이렇게 모델을 생성해준다. 그리고 이 모델을 Comment모델의 writer로 설정해주는 것이다.
+
+
+- 이제 마지막으로 속성들을 설정해주기. ImageField, DateTimeField
+  - 추가적으로 Post 모델에서 작성자가 들어가야 된다. 그래서 ForeignKey를 넣어주고 User 모델과 1:N관계를 설정해준다. 지금은 일단 null=True, blank=True로 설정해주자.
+  - **null은 데이터베이스에 실질적으로 null값을 넣을 것인지에 대한 설정이라고 한다면 / blank는 공백을 허용할 것인가, 유효성 검사에서 없어도 허용할 것인가에 대한 의미가 있다.**
+
+
+- 이렇게 데이터베이스가 수정되었다면, 다시 한 번 migrations와 migrate를 해주면 된다. 
+- 하고나서 migrations 디렉터리를 보면, 0002파일이 생성되어있고 확인해보면 모델이 생성되고 필드가 수정되었다는 내용이 담겨져있다.
+
+* * *
+- **우리가 이전 수업에서 세팅했던 VSCode의 SQLITE EXPLORER를 세로고침 해보면, Post와 Comment 모델이 생성된 것을 확인할 수 있다.**
