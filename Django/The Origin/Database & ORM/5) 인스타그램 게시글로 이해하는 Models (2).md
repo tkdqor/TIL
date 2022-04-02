@@ -3,7 +3,7 @@
 - 그리고 liongram에 들어가있는 상태에서 python, 가상환경, django를 다시 설치해주자.
 
 ```terminal
-python3 -V
+python3 -V   
 python3 -m venv venv
 ```
 
