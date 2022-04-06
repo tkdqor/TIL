@@ -62,4 +62,6 @@ admin.site.register(Comment)
 
 <img width="980" alt="image" src="https://user-images.githubusercontent.com/95380638/162008043-548cf88a-2e07-4c64-9860-74d836976c63.png">
 
-- 이렇게 게시글 담당자 
+- 이렇게 게시글 담당자 그룹을 설정해줄 수 있다. 
+- 그래서 게시글 담당자는 어드민 페이지에 들어가면 --> 게시글 담당만 볼 수 있기 때문에 Post 모델만 볼 수 있게된다. 
+- 이렇게 상황에 맞게 권한을 부여해줄 수 있다.
