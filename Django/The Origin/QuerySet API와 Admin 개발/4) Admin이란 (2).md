@@ -58,4 +58,8 @@ admin.site.register(Comment)
 
 <img width="941" alt="image" src="https://user-images.githubusercontent.com/95380638/162007791-a985a7f3-3b69-4a20-b169-e4725aa31d2a.png">
 
-- 그리고 
+- 그리고나서 다시 User 모델에 들어가서 User 1명을 클릭해보면,
+
+<img width="980" alt="image" src="https://user-images.githubusercontent.com/95380638/162008043-548cf88a-2e07-4c64-9860-74d836976c63.png">
+
+- 이렇게 게시글 담당자 
