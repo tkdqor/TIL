@@ -176,3 +176,6 @@ Shell를 통한 데이터 생성23
 - **DBeaver 설치하기 https://dbeaver.io/**
 - 설치가 완료되었다면, DBeaver 좌측 화면에서 우클릭하고 create 선택 -> connection 클릭하면 다양한 DBMS를 선택할 수 있는 화면이 나온다. 우리는 지금 sqlite3 이기 때문에 해당 DBMS를 선택하고 다음을 눌러주자.
 - 그리고 **Connect to a database** 라는 화면에서 Path부분에 --> 우리 프로젝트의 db.sqlite3 파일을 업로드 해주면 된다.
+
+
+20분
