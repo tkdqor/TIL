@@ -65,7 +65,7 @@ Post object (5)
 ```
 
 * * *
-- **이번에는 count() API를 사용해보자.**
+- **ex) 이번에는 count() API를 사용해보자.**
 
 ```terminal
 >>> Post.objects.all().count()
@@ -77,6 +77,75 @@ Post object (5)
 ```terminal
 >>> Post.objects.filter(content='Shell를 통한 데이터 생성')
 <QuerySet [<Post: Post object (1)>]>
+
+>>> Post.objects.filter(content='Shell를 통한 데이터 생성').count()
+1
 ```
 
-- filter를 사용해서 해당 텍스트와 동일한 것만 출력해준다.
+- filter를 사용해서 해당 텍스트와 동일한 것만 출력해준다. 그리고 끝에 count()를 붙여서 개수를 출력받을 수 있다.
+
+
+- **ex) 이번에는 order_by() API를 사용해보기.**
+
+```terminal
+>>> Post.objects.all().order_by('id')
+<QuerySet [<Post: Post object (1)>, <Post: Post object (2)>, <Post: Post object (3)>, <Post: Post object (4)>, <Post: Post object (5)>]>
+
+>>> Post.objects.all().order_by('-id')
+<QuerySet [<Post: Post object (5)>, <Post: Post object (4)>, <Post: Post object (3)>, <Post: Post object (2)>, <Post: Post object (1)>]>
+```
+
+- **order_by('id')는 id 필드 기준 오름차순으로 기존과 동일하다. 그리고 order_by('-id')를 해주게 되면 반대가 되어 내림차순이 된다. 이렇게 내림차순을 해주면 --> 어떠한 데이터들을 최신 생성된 기준으로 역순으로 보여줄 수 있다.**
+  - 같은 의미일 수 있겠지만, created_at 이라는 생성일자가 빠른 순으로도 데이터 정렬을 해볼 수 있다.
+
+```terminal
+>>> Post.objects.all().order_by('-created_at')
+<QuerySet [<Post: Post object (5)>, <Post: Post object (4)>, <Post: Post object (3)>, <Post: Post object (2)>, <Post: Post object (1)>]>
+```
+
+
+- **ex) 이번에는 first(), last() 사용해보기**
+
+```terminal
+>>> Post.objects.first()
+<Post: Post object (1)>
+
+>>> Post.objects.last()
+<Post: Post object (5)>
+```
+
+- **first()는 우리가 일반적으로 데이터를 조회했을 때, 가장 앞에 있는 데이터가 조회된다. 그리고 last()는 가장 끝에 있는 데이터가 조회된다.**
+
+
+
+### django Shell에서 QuerySet API로 데이터 수정하기
+
+```terminal
+>>> first_post = Post.objects.first()
+>>> first_post
+<Post: Post object (1)>
+>>> first_post.content
+'Shell를 통한 데이터 생성'
+```
+
+- 먼저 데이터 1번째 값을 first_post라는 변수로 위와같이 정의해준다.
+
+```terminal
+>>> first_post.content = '수정한 첫 글입니다.'
+>>> first_post.content
+'수정한 첫 글입니다.'
+>>> first_post.save()
+
+>>> for post in Post.objects.all():
+...     print(post.content)
+... 
+수정한 첫 글입니다.
+Shell를 통한 데이터 생성11
+Shell를 통한 데이터 생성23
+첫번째 글 작성입니다. 쿼리셋 API 사용
+쿼리셋 실습 중!
+```
+
+
+- **그리고 이렇게 =이라는 등호를 사용하여 데이터를 바꿔줄 수 있다. 그리고 이 바뀐 데이터를 실질적으로 데이터베이스에 저장하려면 --> save()라는 함수를 사용해줘야 한다.
+- save() 함수를 사용한 다음 for문으로 확인해보면 바뀐 것을 알 수 있다.
