@@ -112,4 +112,99 @@ class PostModelAdmin(admin.ModelAdmin):
 
 <img width="1137" alt="image" src="https://user-images.githubusercontent.com/95380638/162113901-74c29708-6da4-441d-b93f-fc21784fdc14.png">
 
-- Post 모델 데이터 클릭하면 내부에 댓글 
+- Post 모델 데이터 클릭하면 내부에 댓글이 자동으로 연결되어 표시가 된다. 마찬가지로 https://docs.djangoproject.com/en/4.0/ref/contrib/admin/#django.contrib.admin.InlineModelAdmin 공식문서에 더 많은 옵션들이 있다.
+- 아니면 코드를 통해 확인할 수도 있다.
+  - 위의 코드 중 TabularInline 이라는 부분을 command로 클릭해보면 class TabularInline(InlineModelAdmin): 이렇게 나오고 여기서 InlineModelAdmin를 한번 더 command로 클릭하면
+
+```python
+class InlineModelAdmin(BaseModelAdmin):
+    """
+    Options for inline editing of ``model`` instances.
+
+    Provide ``fk_name`` to specify the attribute name of the ``ForeignKey``
+    from ``model`` to its parent. This is required if ``model`` has more than
+    one ``ForeignKey`` to its parent.
+    """
+
+    model = None
+    fk_name = None
+    formset = BaseInlineFormSet
+    extra = 3
+    min_num = None
+    max_num = None
+    template = None
+    verbose_name = None
+    verbose_name_plural = None
+    can_delete = True
+    show_change_link = False
+    checks_class = InlineModelAdminChecks
+    classes = None
+    ...
+```
+
+- **이렇게 InlineModelAdmin이 클래스로 정의되어있다.**
+
+- admin.py에서 CommentInline만 다시 수정해보면,
+
+```python
+# 어드민 페이지에서 Post 모델과 같이 볼 수 있게 CommentInline 클래스 설정
+class CommentInline(admin.TabularInline):
+    model = Comment
+    extra = 1
+    min_num = 3
+    max_num = 5
+    verbose_name = '댓글'
+    verbose_name_plural = '댓글'
+```
+
+- **extra**라는 속성을 사용해서 1로 주면, 기본적으로 모든 Post 데이터가 1개의 댓글창을 가지게 된다.
+- 그리고 **min_num과 max_num**이 있다. min_num은 1개의 글에 최소 댓글이 3개가 있게끔 설정하는 것이다. 그래서 댓글을 삭제하다가 3개가 되면 더 이상 삭제할 수 없게끔 설정한다. 그리고 max_num도 5개라면 5개인 상태에서는 더 이상 댓글을 추가할 수 없게끔 설정해준다.
+- **verbose_name**은 댓글은 나타내는 제목이 영어가 아닌 '댓글'로 수정된다. **verbose_name_plural**까지 설정해주면 댓글이 여러개일 때 복수형으로 댓글S 가 아니라, '댓글'이렇게 띄우게 된다.
+
+
+```python
+# 어드민 페이지에서 Post 모델과 같이 볼 수 있게 CommentInline 클래스 설정
+class CommentInline(admin.StackedInline):
+    model = Comment
+    extra = 5
+    min_num = 3
+    max_num = 5
+    verbose_name = '댓글'
+    verbose_name_plural = '댓글'
+```    
+
+
+
+- **지금까지는 CommentInline 클래스가 TabularInline이라는 클래스를 상속받아 정의했는데, 이게 아니라 StackedInline을 상속받는 경우를 해보자.**
+  - 이렇게 수정하면, post 데이터 내부에 댓글 표시 부분이 세로 방향 정렬 중심으로 변하게 된다. 
+  - 우리가 직전에 했던 TabularInline 클래스는 가로 방향 정렬 중심으로 보여준다.
+
+
+### Post 모델 필드 중, 작성일자 나타내기
+- 기본적으로 우리가 Post 모델 필드들을 정의할 때, created_at 필드는 auto_now_add=True 속성을 주었기 때문에 자동으로 데이터가 기록된다. 그래서 어드민 페이지에서는 우리가 따로 볼 수 없다. 수정을 할 수 없게 막아져 있기 때문이다. 
+- 이러한 필드는 "읽기 전용"이라고 해서 속성을 주면 볼 수 있다.
+
+```python
+# Post 모델 등록
+@admin.register(Post)
+class PostModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'image', 'content', 'created_at', 'view_count', 'writer')
+    # list_editable = ['content', )
+    list_filter = ('created_at', )
+    search_fields = ('id', 'writer__username')
+    search_help_text = '게시판 번호 및  작성자 검색이 가능합니다.'
+    readonly_fields = ('created_at', )
+    inlines = [CommentInline]
+```
+
+- 이렇게 **readonly_fields = ('created_at', )** 라고 속성을 추가하고 post 데이터 1개씩 들어가보면 
+
+<img width="780" alt="image" src="https://user-images.githubusercontent.com/95380638/162116261-62d2407d-7e40-46b2-ab09-64beebd173a9.png">
+
+- 작성일이 추가된 것을 확인할 수 있다. 다만 수정은 할 수 없다.
+
+
+### 어드민 페이지 액션 추가하기
+<img width="868" alt="image" src="https://user-images.githubusercontent.com/95380638/162116669-a8044eb1-3363-49c3-a14d-24d2907f4c83.png">
+
+- 지금은
