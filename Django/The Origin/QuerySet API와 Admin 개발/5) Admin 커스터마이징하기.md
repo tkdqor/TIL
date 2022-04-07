@@ -17,7 +17,7 @@ from .models import Post, Comment
 @admin.register(Post)
 class PostModelAdmin(admin.ModelAdmin):
     list_display = ('id', 'image', 'content', 'created_at', 'view_count', 'writer')
-    list_editable = ['content', )
+    list_editable = ('content', )
     list_filter = ('created_at', )
     search_fields = ('id', 'writer__username')
     search_help_text = '게시판 번호 및  작성자 검색이 가능합니다.'
