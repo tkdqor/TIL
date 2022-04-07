@@ -27,7 +27,7 @@ class PostModelAdmin(admin.ModelAdmin):
 - **해당 클래스는 admin App - ModelAdmin이라는 클래스를 상속받았고, 그 내부에 list_display라는 속성을 정의해준다. --> 그러면 어드민 페이지에서 데이터를 id와 content 필드에 맞게 나타내준다.**
   - 즉, list_display 속성에 해당 모델 필드를 설정해주면 필드에 맞게 데이터가 출력이 된다.
 
-- 또 다른 속성은, **list_editable**이라는 속성인데 이걸 설정한 필드는 데이터를 보는 화면에서 바로 수정할 수 있도록 화면이 바뀐다. 그래서 데이터 1개씩 조회할 필요 없이 바로 수정하고 저장할 수 있다.**
+- 또 다른 속성은, **list_editable**이라는 속성인데 이걸 설정한 필드는 데이터를 보는 화면에서 바로 수정할 수 있도록 화면이 바뀐다. 그래서 데이터 1개씩 조회할 필요 없이 바로 수정하고 저장할 수 있다.
 
 - **list_filter**라는 속성도 있다. 그래서 특정 필드를 리스트한테 설정해주면 --> 그 필드 기준으로 필터가 생긴다.
   - list_editable이나 list_filter 모두 [ ] 이렇게 리스트 형태나 ('..', ) 이렇게 튜플 형태로 둘 다 상관없지만, 실제로 ModelAdmin 클래스를 command로 클릭해봤을 때 --> 해당 속성들이 
@@ -114,7 +114,7 @@ class PostModelAdmin(admin.ModelAdmin):
 
 - Post 모델 데이터 클릭하면 내부에 댓글이 자동으로 연결되어 표시가 된다. 마찬가지로 https://docs.djangoproject.com/en/4.0/ref/contrib/admin/#django.contrib.admin.InlineModelAdmin 공식문서에 더 많은 옵션들이 있다.
 - 아니면 코드를 통해 확인할 수도 있다.
-  - 위의 코드 중 TabularInline 이라는 부분을 command로 클릭해보면 class TabularInline(InlineModelAdmin): 이렇게 나오고 여기서 InlineModelAdmin를 한번 더 command로 클릭하면
+  - **위의 코드 중 TabularInline 이라는 부분을 command로 클릭해보면 class TabularInline(InlineModelAdmin): 이렇게 나오고 여기서 InlineModelAdmin를 한번 더 command로 클릭하면**
 
 ```python
 class InlineModelAdmin(BaseModelAdmin):
