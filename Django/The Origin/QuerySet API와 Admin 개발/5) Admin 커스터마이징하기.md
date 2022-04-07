@@ -76,4 +76,40 @@ class ModelAdmin(BaseModelAdmin):
 
 * * * 
 ### 어드민 페이지에서 Post 모델 데이터 클릭 시 댓글 데이터도 연동시키기
-- ㅇㅇ
+- 일단 Comment 모델은 굳이 따로 어드민 페이지에서 표시할 필요가 없기 때문에 admin.py에서 제거해주자.
+- **ModelAdmin에 정의되어있는 inlines 라는 속성을 PostModelAdmin 내부에 사용해보자.**
+  - **그러기 위해서는 먼저 CommentInline이라는 클래스를 정의해줘야 한다.**
+
+```python
+from django.contrib import admin
+from .models import Post, Comment
+
+# Register your models here.
+
+# 어드민 페이지에서 Post 모델과 같이 볼 수 있게 CommentInline 클래스 설정
+class CommentInline(admin.TabularInline):
+    model = Comment
+
+
+# Post 모델 등록
+@admin.register(Post)
+class PostModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'image', 'content', 'created_at', 'view_count', 'writer')
+    # list_editable = ['content', )
+    list_filter = ('created_at', )
+    search_fields = ('id', 'writer__username')
+    search_help_text = '게시판 번호 및  작성자 검색이 가능합니다.'
+    inlines = [CommentInline]
+
+
+# Comment 모델 등록
+# admin.site.register(Comment)
+
+```
+
+- **CommentInline이라는 클래스를 정의하고, Post 모델 클래스 내부에서 inlines 라는 속성을 통해 CommentInline 클래스를 연결해주는 것이다.**
+- 그러면 이렇게
+
+<img width="1137" alt="image" src="https://user-images.githubusercontent.com/95380638/162113901-74c29708-6da4-441d-b93f-fc21784fdc14.png">
+
+- Post 모델 데이터 클릭하면 내부에 댓글 
