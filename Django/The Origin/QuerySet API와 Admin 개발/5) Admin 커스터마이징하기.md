@@ -204,7 +204,65 @@ class PostModelAdmin(admin.ModelAdmin):
 - 작성일이 추가된 것을 확인할 수 있다. 다만 수정은 할 수 없다.
 
 
+* * *
 ### 어드민 페이지 액션 추가하기
 <img width="868" alt="image" src="https://user-images.githubusercontent.com/95380638/162116669-a8044eb1-3363-49c3-a14d-24d2907f4c83.png">
 
-- 지금은
+- 지금은 액션 부분을 클릭했을 때 삭제하는 기능밖에 나와있지 않다. 그런데 ModelAdmin 클래스를 command로 봤을 때 
+
+```python
+class ModelAdmin(BaseModelAdmin):
+    """Encapsulate all admin options and functionality for a given model."""
+    ...
+    
+    # Actions
+    actions = []
+    action_form = helpers.ActionForm
+    actions_on_top = True
+    actions_on_bottom = False
+    actions_selection_counter = True
+    checks_class = ModelAdminChecks
+    ...
+```
+
+
+- 이렇게 Actions라는 부분이 정의되어있다. 그리고 actions가 리스트 형태로 되어있다. 그래서 다시 admin.py로 돌아가 actions 관련 내용을 입력해보자.
+
+```python
+# Post 모델 등록
+@admin.register(Post)
+class PostModelAdmin(admin.ModelAdmin):
+    list_display = ('id', 'image', 'content', 'created_at', 'view_count', 'writer')
+    # list_editable = ['content', )
+    list_filter = ('created_at', )
+    search_fields = ('id', 'writer__username')
+    search_help_text = '게시판 번호 및  작성자 검색이 가능합니다.'
+    readonly_fields = ('created_at', )
+    inlines = [CommentInline]
+
+    # 액션 추가하기
+    actions = ['make_published']
+    
+    def make_published(modeladmin, request, queryset):
+        for item in queryset:
+            item.content='운영 규정 위반으로 인한 게시글 삭제 처리.'
+            item.save()
+```
+
+
+
+
+- **actions를 리스트로 정의하고 우리가 함수를 따로 만들어서 추가할 수 있다. 이 함수는 https://docs.djangoproject.com/en/4.0/ref/contrib/admin/actions/ 여기에도 나와있고,
+  기본적으로**
+
+```python
+def make_published(modeladmin, request, queryset):
+    queryset.update(status='p')
+``` 
+- **이러한 구조를 갖고 있다.** 여기서 **queryset이란, 우리가 어드민 페이지에서 액션을 하기전에 체크한 데이터들에 대한 정보를 담은 것이다.**
+- 그래서 for문을 사용해 체크한 데이터 1개씩 content 필드를 수정하게끔 할 수 있다.
+
+<img width="468" alt="image" src="https://user-images.githubusercontent.com/95380638/162118043-a527ad06-150f-494c-bdc6-32dc3262254b.png">
+
+- **이렇게 우리가 정의한 함수가 액션 리스트에 추가가 된 것을 확인할 수 있고, 실제로 해당 액션 선택하고 데이터를 체크해서 실행시키면 content가 바뀌는 것을 확인할 수 있다.**
+    
