@@ -42,14 +42,11 @@ class PostModelAdmin(admin.ModelAdmin):
 
 <img width="1155" alt="image" src="https://user-images.githubusercontent.com/95380638/162110135-3b4ed11a-0dde-41b7-9b8e-e729016d9b99.png">
 
-
+- 이렇게 위와 같이 기본 커스팀을 통해 어드민 페이지를 구성해볼 수 있다. 또한, 공식 문서인 https://docs.djangoproject.com/en/4.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields 해당 페이지에 다른 속성들(폼을 수정한다던지)도 있으니 참고해보자.
     
     
 
-
-
-
-- **ModelAdmin 클래스**를 command로 클릭해보면,
+- 참고로 **ModelAdmin 클래스**를 command로 클릭해보면,
 
 ```python
 class ModelAdmin(BaseModelAdmin):
@@ -75,3 +72,8 @@ class ModelAdmin(BaseModelAdmin):
 ```
 
 - **이렇게 우리가 상속받은 다음, 어드민 페이지에서 사용해볼 수 있는 속성들이 나열된다. 참고해서 보면 좋다.**
+
+
+* * * 
+### 어드민 페이지에서 Post 모델 데이터 클릭 시 댓글 데이터도 연동시키기
+- ㅇㅇ
