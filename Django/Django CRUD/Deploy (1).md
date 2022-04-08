@@ -20,8 +20,7 @@
 - 그래서 Production 환경에서는, 일반적으로 **gunicorn이라는 별도의 프로그램을 사용**한다.
   - 해당 프로그램은 server 리소스를 활용하여 퍼포먼스를 증대시킴과 동시에 django 프로세스를 모니터링하고 고가용성을 도모할 수 있게 한다.
 
-- 그리고 **web server인 nginx를 추가로 사용**해서 static 파일과 관련된 처리는 nginx가, 그 외의 나머지 트래픽은 gunicorn를 통해 django가 대신 처리할 수 있게끔 전달해줘서 조금 더 안정적으로 트래픽을
-  트래픽을 처리할 수 있게끔 만들어줄 수 있다.
+- 그리고 **web server인 nginx를 추가로 사용**해서 static 파일과 관련된 처리는 nginx가, 그 외의 나머지 트래픽은 gunicorn를 통해 django가 대신 처리할 수 있게끔 전달해줘서 조금 더 안정적으로 트래픽을 처리할 수 있게끔 만들어줄 수 있다.
   - ex) **(EC2 server -> nginx -> gunicorn -> django) -> RDBMS (Production 환경에 적합한 구조)**
     - **앞의 괄호까지는 django server / 뒤에는 RDBMS 전용 server**
 
