@@ -95,7 +95,7 @@ urlpatterns = [
     <title>Document</title>
 </head>
 <body>
-    <a href="fbv/">새로고침</a><br>
+    <a href="/fbv/">새로고침</a><br>
 
     <!-- GET 방식으로 보내기 -->
     <form action="" method="GET">
