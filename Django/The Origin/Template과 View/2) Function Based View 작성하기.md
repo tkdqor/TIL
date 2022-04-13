@@ -134,6 +134,8 @@ def url_view(request):
 
 
 ### View에서 데이터 받기
+
+### path url로 데이터 받기
 - View에서 데이터를 받을 때, 여러가지 경우가 있겠지만 url로 받거나, form으로 받거나, Http method로 봤을 때 GET도 있고 POST도 있다. 그래서 View에서 데이터를 받는 방법들을 알아보자.
 - 먼저 urls.py에 새로운 url를 추가해보자.
 
@@ -156,11 +158,45 @@ urlpatterns = [
 
 ```python
 def url_parameter_view(request, username):
-
-    return HttpResponse()
+    print('url_parameter_view()')
+    print(username)
+    return HttpResponse(username)
 ```
 
-- url에서 ㅇ
+- **url에서 보내준 username이라는 변수를 사용하기 위해서 함수의 파라미터에 추가로 입력을 해준다. 함수의 매개변수로 받을 수 있다.**
+- 실제로 변수를 받을 수 있는 게 맞는지 확인하기 위해 print함수에 넣기도 하고, HttpResponse에도 넣어보자.
+
+<img width="372" alt="image" src="https://user-images.githubusercontent.com/95380638/163116729-171aff38-8a55-4e2f-a64c-52a42a4cf8dd.png">
+
+- 그러면 이렇게 문자열이 들어와도 그대로 변수로 인식해서 출력이 된다. 터미널에도 마찬가지로 출력된다.
+
+
+### GET 방식 쿼리 파라미터로 받기(쿼리 스트링)
+- 우리가 네이버에서 어떤 걸 검색하게 되면 url에 ?다음으로 여러가지가 뜨는 데 이걸 쿼리 파라미터라고 한다.
+- 다시 View로 돌아와서
+
+```python
+def url_parameter_view(request, username):
+    print('url_parameter_view()')
+    print(username)
+    print(request.GET)
+    return HttpResponse(username)
+```
+
+- 이렇게 print(request.GET) 을 추가해주고, 우리가 브라우저에서 url 부분에다가 localhost:8000/문자열/?key=value 이렇게 한 다음 엔터를 치면, 
+
+```terminal
+<QueryDict: {'key': ['value']}>
+```
+
+- **터미널에 그대로 이렇게 출력이 된다. QueryDict은 클래스를 의미하는데, 딕셔너리로 봐도 된다. 즉, 딕셔너리 형태로 url에 입력된 내용을 GET 방식으로 받은 것이다.**
+- 이 상태에서 url에 localhost:8000/문자열/?key=value&abc=aaa 이렇게 &를 사용해서 추가로 넣어주면,
+
+```terminal
+<QueryDict: {'key': ['value'], 'abc': ['aaa']}>
+```
+
+- 이런식으로 데이터를 받을 수 있다. 
 
 
     
