@@ -55,7 +55,71 @@ def render(
 
 ```python
 def function_view(request):
+    print(f'request.method: {request.method}')
+    print(f'request.GET: {request.GET}')
+    print(f'request.POST: {request.POST}')
     return render(request, 'view.html')
 ```
 
-- 이렇게 render 다음에 request, template_name를 넣어주면 된다. 
+- **이렇게 render 다음에 request, template_name를 넣어주면 된다. 그리고 파악을 해보기 위해 request.method / request.GET / request.POST 를 print로 찍어보자.**
+  - **View에서 데이터를 받는 방법이 1) 경로에 변수를 지정하는 방법 / 2) ?를 사용해서 쿼리 스트링으로 key,value형식으로 받는 방법 / 3) 마지막으로 html form을 이용해서 POST방식으로 데이터를 쏠 수 있다.**
+
+- 이 상태에서 url pattern를 하나 더 추가해보자.
+
+```python
+from posts.views import url_view, url_parameter_view, function_view
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('url/', url_view),
+    path('url/<str:username>/', url_parameter_view),
+    path('fbv/', function_view),
+]
+```
+
+- path('fbv/', function_view) 이렇게 해서 위에서 만든 함수를 연결해주자.
+
+- **그 다음으로는 새로운 template를 만들어준다. posts App 내부에 templates 라는 디렉터리를 만들고 -> view.html 파일을 만들어준다.**
+  - 그리고 VSCode에서 html에서 !를 누르고 자동완성 되는 것을 눌러주면 기본적인 구조의 html 코드를 완성시켜준다.
+  - 이렇게 해주면 url에서 fbv/를 입력했을 때 빈 화면이 출력된다. 
+
+- view.html에 우리가 데이터를 받을 수 있도록 form element를 입력해보자.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <a href="fbv/">새로고침</a><br>
+
+    <!-- GET 방식으로 보내기 -->
+    <form action="" method="GET">
+        <input type="text" name="var">
+        <input type="submit" value="GET 제출">
+    </form>
+
+    <!-- POST 방식으로 보내기 -->
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" name="var">
+        <input type="submit" value="POST 제출">
+    </form>
+</body>
+</html>
+```
+
+- 새로고침 a element 하나 만들고, 2개의 form를 사용해서 하나는 GET / 하나는 POST 방식으로 설정하자.
+  - **새로고침 a element에서 href를 href="fbv/" 이게 아니라 --> href="/fbv/" 이렇게 앞에 슬래쉬를 꼭 붙여줘야 한다. 슬래쉬가 없이 시작하게 되면, 현재 경로에서 들어가는 것이기 때문에 되지 않는다.**
+- **POST방식일 때는, {% csrf_token %} 이렇게 토큰을 넣어줘야 한다.**
+
+<img width="294" alt="image" src="https://user-images.githubusercontent.com/95380638/163130778-1a4a2542-078d-411e-bae2-51c688b0fecc.png">
+
+- 그러면 다음과 같이 데이터를 받을 수 있게 된다.
+
+
+
