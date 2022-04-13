@@ -180,4 +180,54 @@ def get_queryset(self):
   - 그리고 queryset이나 model이 없으면 ImproperlyConfigured라는 에러가 발생하게 된다.
 
 
+* * *
+- **ListView를 진짜 기본적으로 쓸 때는 template_name이라는 속성도 필요없다.**
+  - template의 이름을 post_list.html이라고 수정한 다음 templates 디렉터리 내부에 posts라는 디렉터리를 만든 다음에 넣어주면, 그리고 view에서도 
 
+```python
+class class_view(ListView):
+    model = Post
+```
+
+- 여기까지만 작성하면, 우리가 template 이름도 적을 필요없이 알아서 post_list.html을 랜더링해준다. 그 이유는,
+
+- ListView를 command로 들어가고, MultipleObjectTemplateResponseMixin도 들어가보면 
+
+```python
+class MultipleObjectTemplateResponseMixin(TemplateResponseMixin):
+    """Mixin for responding with a template and list of objects."""
+
+    template_name_suffix = "_list"
+   ...
+```
+
+- **이렇게 기본적으로 template_name_suffix가 언더바 list라는 걸 받게 되어있다. 그래서 우리가 이름을 지정하지 않으면 이렇게 모델이름_list.html로 자동으로 설정이 된다.**
+
+* * *
+- **또한, ListView에서 order_by도 정해줄 수 있다.**
+
+```python
+class class_view(ListView):
+    model = Post
+    ordering = ['-id']
+    template_name = 'cbv_view.html'
+```
+
+- **이렇게 클래스 내부에 ordering = ['-id'] 다음과 같이 작성하면 인스턴스가 내림차순으로 출력이 된다.** 이것도 이렇게 사용할 수 있는 이유는,
+
+```python
+class MultipleObjectMixin(ContextMixin):
+    """A mixin for views manipulating multiple objects."""
+
+    allow_empty = True
+    queryset = None
+    model = None
+    paginate_by = None
+    paginate_orphans = 0
+    context_object_name = None
+    paginator_class = Paginator
+    page_kwarg = "page"
+    ordering = None
+```
+
+- **상속받은 클래스 내부에 ordering이라는 속성이 이미 정의되어 있기 때문이다. 즉, 이렇게 정의가 미리된 속성들을 우리가 수정해볼 수 있다.**
