@@ -109,7 +109,7 @@ class HttpResponseBase:
 
 
 * * *
-- views에서 추가로 JsonResponse도 사용해보자.
+- **views에서 추가로 JsonResponse도 사용해보자.**
 
 ```python
 from django.shortcuts import render
@@ -133,6 +133,7 @@ def url_view(request):
 - 이런식으로 JSON 형태로 바뀌는 걸 볼 수 있다. 페이지 소스 보기를 우클릭해서 봐도 변함이 없다.(그전에 HttpResponse로 응답했을 때는 html 코드가 보인다)
 
 
+* * *
 ### View에서 데이터 받기
 
 ### path url로 데이터 받기
