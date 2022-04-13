@@ -134,7 +134,34 @@ def url_view(request):
 
 
 ### View에서 데이터 받기
-- View에서 데이터를 받을 때, 여러가지 경우가 있겠지만 url로 받거나, form으로 받거나, Http method로 봤을 때 GET도 있고 POST도 있다.
+- View에서 데이터를 받을 때, 여러가지 경우가 있겠지만 url로 받거나, form으로 받거나, Http method로 봤을 때 GET도 있고 POST도 있다. 그래서 View에서 데이터를 받는 방법들을 알아보자.
+- 먼저 urls.py에 새로운 url를 추가해보자.
+
+```python
+from django.contrib import admin
+from django.urls import path
+from posts.views import url_view, url_parameter_view
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('url/', url_view),
+    path('url/<str:username>/', url_parameter_view),
+]
+```
+
+- **이렇게 url pattern에 변수를 만들 수 있다. 그리고 이렇게 url로 변수를 보내주면 View에서 어떻게 해야 사용할 수 있는지 알아보자.**
+
+
+- view에 새로운 함수를 추가한다.
+
+```python
+def url_parameter_view(request, username):
+
+    return HttpResponse()
+```
+
+- url에서 ㅇ
+
 
     
     
