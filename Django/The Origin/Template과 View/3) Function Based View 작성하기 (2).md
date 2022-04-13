@@ -116,10 +116,54 @@ urlpatterns = [
 - 새로고침 a element 하나 만들고, 2개의 form를 사용해서 하나는 GET / 하나는 POST 방식으로 설정하자.
   - **새로고침 a element에서 href를 href="fbv/" 이게 아니라 --> href="/fbv/" 이렇게 앞에 슬래쉬를 꼭 붙여줘야 한다. 슬래쉬가 없이 시작하게 되면, 현재 경로에서 들어가는 것이기 때문에 되지 않는다.**
 - **POST방식일 때는, {% csrf_token %} 이렇게 토큰을 넣어줘야 한다.**
+- **또한, input에 name이 key가 되는 것이고 / input에 value가 value가 되는 것이다.**
 
 <img width="294" alt="image" src="https://user-images.githubusercontent.com/95380638/163130778-1a4a2542-078d-411e-bae2-51c688b0fecc.png">
 
 - 그러면 다음과 같이 데이터를 받을 수 있게 된다.
+
+* * *
+- **이제 브라우저에서 GET 제출부분에 Username이라고 입력하고 제출 버튼을 누르게 되면**
+
+```terminal
+request.method: GET
+request.GET: <QueryDict: {'var': ['Username']}>
+request.POST: <QueryDict: {}>
+```
+
+- **이렇게 method는 GET이 되고 var이라는 key값으로 Username이라는 value가 GET방식으로 들어온 것이다.**
+
+- **그 다음, 브라우저에서 POST 제출부분에 PostVar라고 입력하고 제출 버튼을 누르게 되면**
+
+```terminal
+request.method: POST
+request.GET: <QueryDict: {}>
+request.POST: <QueryDict: {'csrfmiddlewaretoken': ['vVrPPRMPNrQiDL2n3dEHqNGS8k5UbAvFiFpgBjp0Xy2FiafxxPPqLnXfLOrYCxWM'], 'var': ['PostVar']}>
+```
+
+- **이렇게 method는 POST가 되고 csrfmiddlewaretoken이라는 것이 생겼다. 보안 관련해서 토큰이 생성된 것이다.**
+  - **그리고 var이라는 key값으로 PostVar이라는 value가 POST방식으로 들어왔다.**
+
+- **GET방식은 일반적으로 데이터를 받을 때, 가져올 때 사용한다. POST방식은 데이터를 추가하거나 수정, 삭제할 때 사용하게 된다.**
+  - 그래서 단순 검색기능일 때는 GET / 회원가입을 위해 데이터를 받을 때는 POST 방식을 사용한다.
+
+
+### FBV에서 method에 따라 다르게 처리
+- views 코드를 조금 수정해본다.
+
+```python
+def function_view(request):
+    print(f'request.method: {request.method}')
+    if request.method == 'GET':
+        print(f'request.GET: {request.GET}')
+    elif request.method == 'POST':
+        print(f'request.POST: {request.POST}')
+    return render(request, 'view.html')
+```
+
+- **이런식으로 if문을 사용해서 request.method가 GET인지 POST인지에 따라서 다르게 처리해줄 수도 있다. 그러면 GET일때는 GET만 출력되고 POST일때는 POST만 출력이 된다.**
+  - **이렇게 if문으로 분기 처리를 해줄 수 있다.** 
+  - ex) 회원가입 페이지를 보여줄 때는 GET / 회원가입 처리를 해줄 때는 POST
 
 
 
