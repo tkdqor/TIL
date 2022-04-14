@@ -27,4 +27,7 @@ TEMPLATES = [
 - **이렇게 'DIRS': [BASE_DIR / 'templates'] 이런식으로 넣어준다. 즉, 워크스페이스(루트 디렉터리 위치)의 templates 위치를 의미한다. 그래서 liongram 안에서 새폴더를 만들고 templates라고
   이름을 지어주자.**
   - **그리고나서 templates 하위에다가 앱명인 posts로 디렉터리를 만들어주자. 그 다음에 posts 하위에는 post_list.html를 만든다.**
-  - 그 다음 차례대로 post_detail.html, post_form.html, post_confirm.delete.html까지 복사해서 만들어준다.
+  - 그 다음 차례대로 post_detail.html, post_form.html, post_confirm_delete.html까지 복사해서 만들어준다.
+
+
+### posts App 내부 Views.py 코드 추가하기
