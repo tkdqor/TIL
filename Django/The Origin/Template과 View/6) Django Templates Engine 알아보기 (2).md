@@ -62,6 +62,8 @@ def post_delete_view(request, id):
 from django.urls import path
 from .views import post_list_view, post_create_view, post_update_view, post_detail_view, post_delete_view
 
+app_name = 'posts'
+
 urlpatterns = [
     path('', post_list_view),
     path('new/', post_create_view),
@@ -72,9 +74,12 @@ urlpatterns = [
 ```
 
 - **우리가 정의한 View에 맞게 path를 5개 추가해주기. 그리고나서 앱 내부의 urls.py가 아닌 config 디렉터리 안에 있는 urls.py에 이걸 연결해줘야 한다.**
+- **그리고 app_name을 정의해줘야 나중에 url를 이름으로 설정해줄 수 있다.**
+
 
 ```python
 from django.urls import path, include
+from posts.views import index, url_view, url_parameter_view, function_view, class_view
 ...
 
 urlpatterns = [
@@ -84,11 +89,53 @@ urlpatterns = [
     path('fbv/', function_view),
     path('cbv/', class_view.as_view()),
 
+    # index 페이지 url
+    path('', index, name='index'),
     # posts 앱으로 연결 
-    path('posts/', include('posts.urls')),
+    path('posts/', include('posts.urls', namespace='posts')),
 ]
 ```
 
 - **include 함수를 import 해주고 path를 추가해서 include('App명.urls') 이렇게 연결해주면 된다.**
+  - **namespace는 뭐지...???**
+- **그리고 index 페이지를 연결하기 위한 path도 추가한다.**
 
 - 여기까지 작성한 다음 브라우저에서 localhost:8000/posts/ 했을 때 목록 화면을 보여주고, 다른 url도 정상적으로 화면을 보여주는 것을 확인할 수 있다.
+
+* * *
+### index 페이지 만들기
+- posts App에 있는 views.py에다가 index 함수를 추가해주자.
+
+```python
+# index 페이지 연결하기
+def index(request):
+    return render(request, 'index.html')
+...
+```
+
+- **이렇게 함수를 정의해주고 template은 render 함수에서 posts 디렉터리를 설정하지 않았으니까 --> 루트 디렉터리 - templates 하위에 바로 index.html를 만들어준다.(posts 디렉터리 내부가 아니다)**
+
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Page</title>
+</head>
+<body>
+    <h1>인덱스 화면</h1>
+    <ul>
+        <li><a href="{% url 'posts:post-list' %}">게시글 목록</a></li>
+    </ul>
+</body>
+</html>
+```
+
+- **이 때, a element에 url은 posts앱의 name으로 설정해줄 수 있다.**
+- **여기까지 설정한 다음, 브라우저에서 localhost:8000/ 까지만 입력하면 index 페이지가 뜨게 되고, 게시글 목록 버튼을 클릭하면 목록 페이지가 나오게 된다.**
+  - 그래서 url를 직접 하드코딩 하는 게 아니라, name만 정해주면 편리하게 설정할 수 있다.
+
+
+
