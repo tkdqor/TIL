@@ -47,7 +47,7 @@
 
 
 - **{% extends 'base.html' %} 이 tag는 상속을 해당 html파일에서 받겠다는 의미이다.**
-  - **그리고 {% block content %} 과 {% endblock %} 사이에 상속받는 html에만 들어가는 코드들을 입력해주면 된다. title도 {% block title %} 과 {% endblock %} 사이에 상속받는 html에만 들어가는 제목을 입력해주면 된다.
+  - **그리고 {% block content %} 과 {% endblock %} 사이에 상속받는 html에만 들어가는 코드들을 입력해주면 된다. title도 {% block title %} 과 {% endblock %} 사이에 상속받는 html에만 들어가는 제목을 입력해주면 된다.**
 
 - 여기까지 설정해주고 브라우저에 인덱스 페이지를 들어가면 상속이 잘 이루어진 것을 확인해볼 수 있다.
 
