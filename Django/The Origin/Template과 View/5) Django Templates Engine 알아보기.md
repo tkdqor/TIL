@@ -20,8 +20,10 @@
 
 ### Template 필터
 - date : 주어진 형식에 따라 날짜 형식을 지정 / {{ value|date:"D d M Y" }}
-- default : 값이 False로 평가되면 지정된 기본값을 사용. 그렇지 않으면 값을 사용 / {{ value|default:"nothing" }}
+- default : 값이 False로 평가되면, 즉 값이 없을 때 지정된 기본값을 사용. 값이 있으면 값을 사용 / {{ value|default:"nothing" }}
 - center : 주어진 너비의 필드에서 값을 가운데에 맞춘다. / {{ value|center:"15" }}
 - truncatechars : 정의한 문자수보다 긴 경우 문자열을 자른다. 잘린 문자열은 번역 가능한 줄임표 문자 ("...")로 끝난다. / {{ value|truncatechars:7 }}
 - intcomma : 정수 또는 부동 소수점(또는 둘 중 하나의 문자열 표현)을 세 자리마다 쉼표가 포함된 문자열로 반환 / {% load humanize %} {{ value|intcomma }}
+- 공식 문서 : https://docs.djangoproject.com/en/4.0/ref/templates/builtins/#built-in-filter-reference
+
 
