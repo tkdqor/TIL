@@ -15,8 +15,10 @@
     <title>{% block title %}{% endblock %} | 라이언그램</title>
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
 </body>
 </html>
 ```
@@ -26,4 +28,27 @@
   - title도 block을 사용해서 자식 html마다 다르게 설정할 수 있게 해보자.
   
 * * *
-- 이제 상속을 받는 자식 html에서는 
+- 이제 상속을 받는 자식 html에서는 어떻게 하는지 알아보자. 예시로 index.html의 코드를 수정해보자.
+
+```html
+{% extends 'base.html' %}
+
+<!-- title block -->
+{% block title %}인덱스{% endblock %}
+
+<!-- content block -->
+{% block content %}
+<h1>인덱스 화면</h1>
+    <ul>
+        <li><a href="{% url 'posts:post-list' %}">게시글 목록</a></li>
+    </ul>
+{% endblock %}
+```
+
+
+- **{% extends 'base.html' %} 이 tag는 상속을 해당 html파일에서 받겠다는 의미이다.**
+  - **그리고 {% block content %} 과 {% endblock %} 사이에 상속받는 html에만 들어가는 코드들을 입력해주면 된다. title도 {% block title %} 과 {% endblock %} 사이에 상속받는 html에만 들어가는 제목을 입력해주면 된다.
+
+- 여기까지 설정해주고 브라우저에 인덱스 페이지를 들어가면 상속이 잘 이루어진 것을 확인해볼 수 있다.
+
+- 이제 나머지 post_list.html / post_detail.html / post_form.html / post_confirm_delete.html도 전부 base.html을 상속받을 수 있도록 코드를 수정하자.
