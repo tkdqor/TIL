@@ -153,5 +153,36 @@ print(array)
 >>> [1, 4, 9, 16, 25, 36, 49, 64, 81]
 ```
 
+- **리스트 컴프리헨션은 코딩 테스트에서 2차원 리스트를 초기화할 때 유용하다. N X M 크기의 2차원 리스트를 초기화하는 경우이다.**
+```python
+# N X M 크기의 2차원 리스트 초기화
+n = 3
+m = 4
+array = [[0] * m for _ in range(n)]
+print(array)
+
+>>> [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+```
+
+- **python에서 언더바는 --> 반복을 수행하되 반복을 위한 변수의 값을 무시하고자 할 때 사용한다.**
+```python
+# 1부터 9까지 자연수를 더할 때
+summary = 0
+for i in range(1, 10):
+  summary += i
+print(summary)
+
+# Hello World 5번 출력하기
+for _ in range(5):
+  print("Hello World")
+
+>>> 45
+>>> Hello World
+>>> Hello World
+>>> Hello World
+>>> Hello World
+>>> Hello World
+```
+
 
 
