@@ -28,6 +28,7 @@
 - [CSS 추가 내용 및 유의사항](https://github.com/tkdqor/TIL/blob/main/CSS/CSS%20%EC%B6%94%EA%B0%80%20%EB%82%B4%EC%9A%A9%20%EB%B0%8F%20%EC%9C%A0%EC%9D%98%EC%82%AC%ED%95%AD.md) 
 - [드롭다운 기능](https://github.com/tkdqor/TIL/blob/main/CSS/%EB%93%9C%EB%A1%AD%EB%8B%A4%EC%9A%B4%20%EA%B8%B0%EB%8A%A5.md) 
 - [마우스 올릴 때 사진 흐릿하게 만들기](https://github.com/tkdqor/TIL/blob/main/CSS/%EB%A7%88%EC%9A%B0%EC%8A%A4%20%EC%98%AC%EB%A6%B4%20%EB%95%8C%20%EC%82%AC%EC%A7%84%20%ED%9D%90%EB%A6%BF%ED%95%98%EA%B2%8C%20%EB%A7%8C%EB%93%A4%EA%B8%B0.md) 
+- [background-image를 django template language로 띄우기] (https://github.com/tkdqor/TIL/blob/main/CSS/background-image%EB%A5%BC%20django%20template%20language%EB%A1%9C%20%EB%9D%84%EC%9A%B0%EA%B8%B0.md)
 
 
 
