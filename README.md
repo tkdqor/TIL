@@ -79,12 +79,6 @@
 
 
 
-### Database
-
-- dd
-
-
-
 ### 기타 : 개발과 관련된 모든 것들의 모음집
 
 - [Ubuntu](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Linux.md)
@@ -104,6 +98,9 @@
 
 - [github push 오류](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
 - [TypeError](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/TypeError.md)
+- ['ManyRelatedManager' object is not iterable](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/'ManyRelatedManager'%20object%20is%20not%20iterable.md)
+- [didn't return an HttpResponse object](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/didn't%20return%20an%20HttpResponse%20object.md)
+- [django template button OnClick 오류](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/django%20template%20button%20OnClick%20%EC%98%A4%EB%A5%98.md)
 
 
 
