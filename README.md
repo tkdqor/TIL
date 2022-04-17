@@ -107,4 +107,6 @@
 ### 코딩테스트 준비
 
 - [코드업 python 기초 100제](https://github.com/tkdqor/TIL/blob/main/%EC%BD%94%EB%94%A9%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%A4%80%EB%B9%84/%EC%BD%94%EB%93%9C%EC%97%85%20python%20%EA%B8%B0%EC%B4%88%20100%EC%A0%9C.md)
+- [백준 단계별로 풀어보기](https://github.com/tkdqor/TIL/blob/main/%EC%BD%94%EB%94%A9%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%A4%80%EB%B9%84/%EB%B0%B1%EC%A4%80%20%EB%8B%A8%EA%B3%84%EB%B3%84%EB%A1%9C%20%ED%92%80%EC%96%B4%EB%B3%B4%EA%B8%B0.md)
+- [이것이 코딩테스트다 with 파이썬](https://github.com/tkdqor/TIL/blob/main/%EC%BD%94%EB%94%A9%ED%85%8C%EC%8A%A4%ED%8A%B8%20%EC%A4%80%EB%B9%84/%EC%9D%B4%EA%B2%83%EC%9D%B4%20%EC%BD%94%EB%94%A9%ED%85%8C%EC%8A%A4%ED%8A%B8%EB%8B%A4%20with%20%ED%8C%8C%EC%9D%B4%EC%8D%AC.md)
 
