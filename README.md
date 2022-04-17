@@ -60,18 +60,22 @@
 
 ### Django
 
+- [Django Preview](https://github.com/tkdqor/TIL/blob/main/Django/Django%20Preview.md)
 - [admin.py](https://github.com/tkdqor/TIL/blob/main/Django/admin.py.md)
 - [render와 redirect](https://github.com/tkdqor/TIL/blob/main/Django/render%EC%99%80%20redirect.md)
 - [DRF(Django Rest Framework)](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework).md)
 - [DRF(Django Rest Framework) (2)](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework)%20(2).md)
 - [DB 관계 설정](https://github.com/tkdqor/TIL/blob/main/Django/DB%20%EA%B4%80%EA%B3%84%20%EC%84%A4%EC%A0%95.md)
 - [floatformat 필터](https://github.com/tkdqor/TIL/blob/main/Django/floatformat%20%ED%95%84%ED%84%B0.md)
-
-
-
-### 쇼핑몰 만들기
-
-- [쇼핑몰 만들기](https://github.com/tkdqor/TIL/tree/main/%EC%87%BC%ED%95%91%EB%AA%B0%20%EB%A7%8C%EB%93%A4%EA%B8%B0)
+- [1:N관계에 있는 모델 데이터 출력 시 유의사항](https://github.com/tkdqor/TIL/blob/main/Django/1:N%EA%B4%80%EA%B3%84%EC%97%90%20%EC%9E%88%EB%8A%94%20%EB%AA%A8%EB%8D%B8%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%B6%9C%EB%A0%A5%20%EC%8B%9C%20%EC%9C%A0%EC%9D%98%EC%82%AC%ED%95%AD.md)
+- [django template language 문자열 자르기](https://github.com/tkdqor/TIL/blob/main/Django/django%20template%20language%20%EB%AC%B8%EC%9E%90%EC%97%B4%20%EC%9E%90%EB%A5%B4%EA%B8%B0.md)
+- [게시판 paginator 적용하기](https://github.com/tkdqor/TIL/blob/main/Django/%EA%B2%8C%EC%8B%9C%ED%8C%90%20paginator%20%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0.md)
+- [게시판 번호 인덱스 순서대로 표시하기](https://github.com/tkdqor/TIL/blob/main/Django/%EA%B2%8C%EC%8B%9C%ED%8C%90%20%EB%B2%88%ED%98%B8%20%EC%9D%B8%EB%8D%B1%EC%8A%A4%20%EC%88%9C%EC%84%9C%EB%8C%80%EB%A1%9C%20%ED%91%9C%EC%8B%9C%ED%95%98%EA%B8%B0.md)
+- [댓글 기능](https://github.com/tkdqor/TIL/blob/main/Django/%EB%8C%93%EA%B8%80%20%EA%B8%B0%EB%8A%A5.md)
+- [댓글삭제 버튼 본인만 보이게 하기](https://github.com/tkdqor/TIL/blob/main/Django/%EB%8C%93%EA%B8%80%EC%82%AD%EC%A0%9C%20%EB%B2%84%ED%8A%BC%20%EB%B3%B8%EC%9D%B8%EB%A7%8C%20%EB%B3%B4%EC%9D%B4%EA%B2%8C%20%ED%95%98%EA%B8%B0.md)
+- [최신순, 인기순으로 데이터 정렬하기](https://github.com/tkdqor/TIL/blob/main/Django/%EC%B5%9C%EC%8B%A0%EC%88%9C%2C%20%EC%9D%B8%EA%B8%B0%EC%88%9C%EC%9C%BC%EB%A1%9C%20%EB%8D%B0%EC%9D%B4%ED%84%B0%20%EC%A0%95%EB%A0%AC%ED%95%98%EA%B8%B0.md)
+- [카카오맵 API 사용하기](https://github.com/tkdqor/TIL/blob/main/Django/%EC%B9%B4%EC%B9%B4%EC%98%A4%EB%A7%B5%20API%20%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0.md)
+- [회원가입 시 User - Profile 모델로 정보받기](https://github.com/tkdqor/TIL/blob/main/Django/%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85%20%EC%8B%9C%20User%20-%20Profile%20%EB%AA%A8%EB%8D%B8%EB%A1%9C%20%EC%A0%95%EB%B3%B4%EB%B0%9B%EA%B8%B0.md)
 
 
 
