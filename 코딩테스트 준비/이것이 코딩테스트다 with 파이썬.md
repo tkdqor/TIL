@@ -299,6 +299,51 @@ a[2] = 7
 * * *
 
 ### 사전 자료형(딕셔너리)
-- 사전 자료형은 키-
-ㄱㅏㅂ
+- 사전 자료형은 키-값 쌍을 데이터로 가진다는 점에서 우리가 원하는 변경 불가능한 데이터를 키로 사용할 수 있다. ex)수 자료형, 문자열 자료형, 튜플 자료형
+  - python의 사전 자료형은 내부적으로 '해시 테이블'을 이용하므로 O(1)의 시간에 처리할 수 있다. 따라서 데이터를 처리함에 있어 리스트보다 훨씬 빠르게 동작한다.
+
+- **사전 자료형에 특정한 원소가 있는지 검사할 때는 '원소 in 사전'의 형태를 사용할 수 있다. 이러한 방법은 리스트나 문자열, 튜플 등 원소들을 차례대로 반복할 수 있는 Iterable 자료형에서 모두 가능하다.**
+
+```python
+data = dict()
+data['사과'] = 'Apple'
+data['바나나'] = 'Banana'
+data['코코넛'] = 'Coconut'
+
+if '사과' in data:
+  print("'사과'를 키로 가지는 데이터가 존재합니다.")
+```
+
+- 사전 자료형 관련 함수도 있다. 키 데이터만 뽑아서 **리스트**로 이용할 때는 **keys() 함수**를 이용하고, 값 데이터만 뽑아서 **리스트**로 이용할 때는 **values() 함수**를 이용한다.
+
+```python
+data = dict()
+data['사과'] = 'Apple'
+data['바나나'] = 'Banana'
+data['코코넛'] = 'Coconut'
+
+# 키 데이터만 담은 리스트
+key_list = data.keys()
+
+# 값 데이터만 담은 리스트
+value_list = data.values()
+
+print(key_list)
+print(value_list)
+
+# 각 키에 따른 값을 하나씩 출력
+for key in key_list:
+  print(data[key])
+```
+```terminal
+dict_keys(['사과', '바나나', '코코넛'])
+dict_values(['Apple', 'Banana', 'Coconut'])
+Apple
+Banana
+Coconut
+```
+
+- 이렇게 리스트로 키나 값을 뽑아서 사용할 수 있다.
+
+
 
