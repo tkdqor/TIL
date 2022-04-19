@@ -161,11 +161,12 @@ class TaskPreviousListView(ListView):
     model = Task
     template_name = 'pages/task_previous_list.html'
     queryset = Task.objects.filter(due__lt=timezone.now()).order_by('-due')
-
+```
   
 - 이렇게 due date의 내림차순으로 설정. order_by에서 정렬할 기준 필드에 마이너스가 있으면 내림차순이고 없으면 오름차순이다.
   
 - 그리고 추가로 기존의 메인화면인 TaskListView에서는 현재 due date이 지나지 않은 것들만 보이게 해주자.
+
 ```python
 class TaskListView(TemplateView):
     template_name = 'pages/task_list.html'
