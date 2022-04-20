@@ -179,19 +179,71 @@ def index(request):
 {% block content %}
 <main>
     <div class="card-list">
-        {% include 'mixin/posts/post_card.html' %}
+        {% for post in post_list %}
+            {% include 'mixin/posts/post_card.html' %}
+        {% endfor %}
     </div>
 </main>
 {% endblock %}
+
 ```
 
+- for문을 사용해서 Post 데이터를 하나씩 뽑아준다.
 - **이렇게 include를 사용해서 post_card.html를 가져온다. 그래서 post_card.html를 들어가서 코드를 수정해준다.**
 
 ```html
-
-
-
-
+{% load static %}
+<div class="card">
+    <!-- 카드 헤더 부분 -->
+    <div class="card__header">
+        <img class="card__user-image" src="http://via.placeholder.com/32x32" alt="프로필이미지"/>
+        <a href="#">
+            <span class="card__user-name">{{ post.writer }}</span>
+        </a>
+    </div>
+    <!-- 카드 바디 부분 -->
+    <div class="card__body">
+        <!-- 포스트 이미지 -->
+        <div>
+            {% if post.image %}
+                <img class="card__image" src="{{ post.image.url }}">
+            {% else %}
+                <img class="card__image" src="http://via.placeholder.com/600x600">
+            {% endif %}    
+        </div>
+        <!-- 버튼 관련 -->
+        <div class="card__btn-group">
+            <div>
+                <img class="card__btn" src="{% static 'icons/favorite_outlined_black_36dp.svg' %}" alt="좋아요"/>
+                <img class="card__btn" src="{% static 'icons/mode_comment_outlined_black_36dp.svg' %}" alt="댓글"/>
+                <img class="card__btn" src="{% static 'icons/send_outlined_black_36dp.svg' %}" alt="공유하기"/>
+            </div>
+            <div>
+                <img class="card__btn" src="{% static 'icons/bookmark_outlined_black_36dp.svg' %}" alt="북마크"/>
+            </div>
+        </div>
+        <!-- 포스트 내용 -->
+        <div class="card_content">
+            <span class="card__like-num">좋아요 00개</span>
+            <div class="card__main-text">
+                <p><span
+                        class="card__user-name">{{ post.writer }}</span>{{ post.content|truncatechars:35 }}
+                    <span>더보기</span></p>
+            </div>
+            <div>
+                <p class="">댓글 {{ post.comment_set.all.count }}개 모두 보기</p>
+                <ul class="card__comment-group">
+                    <li><p><span class="card__user-name">likelion.official</span>댓글 내용...</p></li>
+                </ul>
+            </div>
+            <span class="card__created-at">2022년 3월 1일</span>
+        </div>
+    </div>
+</div>
+```
 
 
 - card의 header나 body 부분에 이미지도 post 인스턴스를 사용해서 출력한다.
+- {{ post.content|truncatechars:35 }} 이렇게 내용을 잘라서 보여줄 수도 있다.
+- **댓글 개수의 경우 --> Post 모델과 Comment 모델이 1:N이고 이 관계를 Comment에 설정했기 때문에 Post 에서는 역참조를 해야 한다.**
+  - **그래서 {{ post.comment_set.all.count }} --> 이런식으로 post 인스턴스에 comment를 언더바set으로 역참조하고 all한 다음 count 메소드로 개수만 가져올 수 있다.**
