@@ -230,13 +230,18 @@ def index(request):
                         class="card__user-name">{{ post.writer }}</span>{{ post.content|truncatechars:35 }}
                     <span>더보기</span></p>
             </div>
+             <!-- 댓글 개수 및 내용 표시 -->
             <div>
                 <p class="">댓글 {{ post.comment_set.all.count }}개 모두 보기</p>
                 <ul class="card__comment-group">
-                    <li><p><span class="card__user-name">likelion.official</span>댓글 내용...</p></li>
+                    {% for comment in post.comment_set.all %}
+                    <li>
+                        <p><span class="card__user-name">{{ comment.writer }}</span>{{ comment.content }}</p>
+                    </li>
+                    {% endfor %}
                 </ul>
             </div>
-            <span class="card__created-at">2022년 3월 1일</span>
+            <span class="card__created-at">{{ post.created_at|date:"Y년 m월 d일" }}</span>
         </div>
     </div>
 </div>
@@ -247,3 +252,25 @@ def index(request):
 - {{ post.content|truncatechars:35 }} 이렇게 내용을 잘라서 보여줄 수도 있다.
 - **댓글 개수의 경우 --> Post 모델과 Comment 모델이 1:N이고 이 관계를 Comment에 설정했기 때문에 Post 에서는 역참조를 해야 한다.**
   - **그래서 {{ post.comment_set.all.count }} --> 이런식으로 post 인스턴스에 comment를 언더바set으로 역참조하고 all한 다음 count 메소드로 개수만 가져올 수 있다.**
+  - **Post 모델 입장에서는 Comment 모델이 자기를 참조했기 때문에 --> 역참조라고 볼 수 있다.**
+
+- 댓글 표시 코드에서는 추가로 {% for comment in post.comment_set.all %} 이렇게 for문을 사용해서 댓글 1개씩 뽑아 관련 필드를 출력해준다.
+- **마지막으로 글 생성일은 template 필터를 이용해서 포멧팅을 해준다. {{ post.created_at|date:"Y년 m월 d일" }} 이런식으로 날짜만 나오게 하자.**
+
+
+* * *
+### 최신글이 맨 위로 올라오게 하기
+- views.py의 index 함수에서 
+
+```python
+# index 페이지 연결하기
+def index(request):
+    post_list = Post.objects.all().order_by('-created_at')   # Post 전체 데이터 조회
+    context = {
+        'post_list': post_list,
+    }
+
+    return render(request, 'index.html', context)
+```
+
+- **이렇게 Post 데이터를 가져올 때 all 뒤에 order_by로 생성일 기준 내림차순으로 가져올 수 있다.**
