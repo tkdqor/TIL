@@ -148,3 +148,21 @@ urlpatterns = [
 - post_list = Post.objects.filter(writer=request.user) 이 코드를 sql에서 확인하면 --> SELECT ••• FROM "auth_user" WHERE "auth_user"."id" = '1' LIMIT 21 이런식으로 쿼리문이 구현되어 데이터베이스에 요청이 가게 된다.
 
 
+### index View 수정하기
+- **이제는 views.py에 index 함수를 수정해보자.**
+
+```python
+...
+# index 페이지 연결하기
+def index(request):
+    post_list = Post.objects.all()   # Post 전체 데이터 조회
+    context = {
+        'post_list': post_list,
+    }
+    
+    return render(request, 'index.html', context)
+```
+
+- 이렇게 index 함수 내부에 Post 데이터를 전체 조회해준다. 
+
+- **그 다음에는 index.html로 가보자.**
