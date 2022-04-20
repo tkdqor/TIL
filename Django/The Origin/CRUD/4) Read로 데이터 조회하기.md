@@ -145,6 +145,6 @@ urlpatterns = [
     - **이러한 sql문은 우리가 views.py에서 post_list = Post.objects.all() 이런식으로 django ORM API를 날렸을 때마다 생성이 된다.**
     - **...all()과 post_list = Post.objects.filter(writer=request.user) 이 코드를 둘 다 활성화시키고 새로고침을 해보면, all이 없는 것으로 보인다. django ORM에서는 ORM 캐싱이라는 것을 제공해준다. 그래서 처음에 all()이라는 것을 사용했지만, 만약 실질적으로 지금 사용이 되지 않았다면 그냥 데이터를 갖고 있다가 나중에 실제 사용될 때 그걸 쿼리를 최소한 적게 날리기 위해서 저장하는 과정이라고 볼 수 있다.**
 
-
+- post_list = Post.objects.filter(writer=request.user) 이 코드를 sql에서 확인하면 --> SELECT ••• FROM "auth_user" WHERE "auth_user"."id" = '1' LIMIT 21 이런식으로 쿼리문이 구현되어 데이터베이스에 요청이 가게 된다.
 
 
