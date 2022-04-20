@@ -63,3 +63,52 @@ urlpatterns = [
 - 그리고 첫번째 div에는 이미지를 위한 label과 input를 설정해준다. type은 file로 설정.
 - 두번째 div는 글 내용을 입력하기 위한 코드이다. 여기서는 input이 아니라 textarea element를 사용한다. 우리가 Post 모델의 content 필드를 TextField로 했기 때문에 긴 글이 필요하다.
 - 마지막 div는 데이터를 보내기 위해 input의 type를 submit으로 수정해준다.
+- csrf_token은 --> 간혹 서버에서 form를 응답해준 게 아니고, 다른 사람들이 위조한 페이지가 응답되는 경우가 있다. 또는, 내가 의도치 않게 어떤 서버에게 요청을 날리게 되는 경우도 있다. 특정 서버로 보내게 만들어버린다. 그래서 그게 보내져서 로그인도 되고 다양한 행위에 대한 요청이 이루어진다. 그럼 서버에서는 그냥 응답해준다. 근데 사실 컴퓨터가 날린 것이지 그 사람이 날린 것인지는 모르기 때문에 위험하다. 이런 문제를 csrf_token으로 막아주는 것이다. 이렇게 csrf_token를 추가하고 브라우저 개발자도구를 보게 되면,
+
+<img width="457" alt="image" src="https://user-images.githubusercontent.com/95380638/164242426-8138bf17-1165-4ee2-a5be-79647d578a61.png">
+
+- **이렇게 input element가 hidden으로 생기게 된다. 즉, 서버가 응답해준 것이라고 해서 확인하는 토큰을 여기에 실어준 것이다.** 그래서 이 토큰이 들어가야 데이터 생성을 수행할 수 있다.
+
+
+### View 수정하기
+- post_create_view 같은 경우에는 GET 요청일 경우, 글 생성 페이지를 보여주고 POST 요청일 경우 글을 생성할 수 있는 기능을 구현해야 한다. 그래서 posts 앱 내부에 views.py에 가서 수정해보자.
+
+```python
+from django.shortcuts import render, redirect
+
+...
+def post_create_view(request):
+    if request.method == 'GET':
+        return render(request, 'posts/post_form.html')
+    else:
+        image = request.FILES.get('image')             # 이미지 파일을 받을 경우, request.FILES로 사용
+        content = request.POST.get('content')
+        print(image)
+        print(content)
+        return redirect('index')
+```
+
+
+- 이렇게 GET 요청인 경우 post_form.html를 랜더링 해주면 된다. 그리고 POST일 경우에는 지금만 redirect로 index페이지를 보여준다.
+  - POST요청, 즉 입력된 데이터를 받는 코드를 작성해보자.
+  - **이 때, image의 경우 --> 파일이기 때문에 reqeust.FILES 이렇게해서 받아줘야 한다.**
+    - **그리고 이미지를 사용자로부터 받을 때는, form element에서 다른 방식으로 인코딩을 해줘야 한다. HTTP로 우리가 데이터를 통신하는데 데이터를 어떤 형태로 보내줄 것이냐에 대한 정의를 해줘야 한다. 데이터가 어떤 식으로 인코딩되서 날라갈 것인지 말이다. 우리가 구글이나 네이버에서 검색할 때, url에 퍼센트나 다른 문자들로 바뀌는 경우가 있다. 그게 인코딩되서 날아가는 형태인 것이다.
+    - 그래서 이미지 파일으 보낼 때는 인코딩 방식이 필요하다. 그래서 post_form.html를 보면,
+
+```html
+h1>Post 입력 화면</h1>
+<form action="{% url 'posts:post-create' %}" method="POST" enctype="multipart/form-data">
+...
+```
+
+- **form element에서 enctype라는 속성을 넣어주고, 우리가 파일을 입력할 때는 multipart/form-data 라는 것을 사용해줘야 한다.**
+
+
+- 여기까지 하고나서 form에서 이미지와 텍스트를 넣고 데이터를 보내보면, 
+
+```terminal
+[20/Apr/2022 13:37:18] "POST /posts/create/ HTTP/1.1" 302 0
+[20/Apr/2022 13:37:18] "GET / HTTP/1.1" 200 497
+```
+
+- **이런식으로 POST로 보내고 302번이 뜬다. 이건 제출 버튼을 눌렀을 때 우리가 redirect 해줬기 때문이다.**
