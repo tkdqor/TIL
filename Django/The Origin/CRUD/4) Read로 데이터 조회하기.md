@@ -165,4 +165,33 @@ def index(request):
 
 - 이렇게 index 함수 내부에 Post 데이터를 전체 조회해준다. 
 
-- **그 다음에는 index.html로 가보자.**
+
+### index.html 수정하기
+- **그 다음에는 index.html로 가보자. index.html로 가면**
+
+```html
+{% extends 'base.html' %}
+
+<!-- title block -->
+{% block title %}홈{% endblock %}
+
+<!-- content block -->
+{% block content %}
+<main>
+    <div class="card-list">
+        {% include 'mixin/posts/post_card.html' %}
+    </div>
+</main>
+{% endblock %}
+```
+
+- **이렇게 include를 사용해서 post_card.html를 가져온다. 그래서 post_card.html를 들어가서 코드를 수정해준다.**
+
+```html
+
+
+
+
+
+
+- card의 header나 body 부분에 이미지도 post 인스턴스를 사용해서 출력한다.
