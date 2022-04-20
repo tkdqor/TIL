@@ -112,3 +112,116 @@ h1>Post 입력 화면</h1>
 ```
 
 - **이런식으로 POST로 보내고 302번이 뜬다. 이건 제출 버튼을 눌렀을 때 우리가 redirect 해줬기 때문이다.**
+
+
+* * *
+
+### 데이터 생성하기
+- Views.py에서 코드를 추가해서 데이터를 생성할 수 있게 해보자. post_create_view에서,
+
+```python
+...
+def post_create_view(request):
+    if request.method == 'GET':
+        return render(request, 'posts/post_form.html')
+    else:
+        image = request.FILES.get('image')             # 이미지 파일을 받을 경우, request.FILES로 사용
+        content = request.POST.get('content')
+        print(image)
+        print(content)
+        Post.objects.create(image=image, content=content) # writer=request.user 추가 필요
+        return redirect('index')
+```
+
+- **else 구문에서 Post 모델을 가져와서 create 함수를 사용하면 Post 모델에 데이터가 추가된다.**
+  - **writer 필드는 지금 로그인된 유저를 뜻하는 request.user로 넣어준다.** 하지만, 실제로 지금 상태에서 데이터를 보내면 에러가 난다. 우리가 로그인을 하지 않았기 때문이다. 그래서 일단은 주석처리를 해주자.
+  - 데이터를 보내면 데이터베이스에 추가가 될 것이다. 어드민 페이지에 들어가서 Post 모델을 보면 추가가 되어있다.
+  - **참고로, request.user에서 user는 User 모델의 인스턴스, 객체이다.**
+
+
+### 이미지 업로드 가능하게 하기
+- 먼저 settings.py로 가서 static처럼 파일 설정을 추가해줘야 한다.
+- **static은 서비스 제공자인 회사에서 업로드를 하는 파일이고 / media는 사용자들이 업로드 하는 파일이라고 보면 된다.**
+- static 부분 밑에다가,
+
+```python
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+```
+
+
+- **MEDIA_ROOT는 이 파일들이 어디에 들어가 있는지를 쓰는 것이다. STATICFILES_DIRS와 똑같다고 보면 된다.** 
+  - 이렇게 설정하고 liongram 내부에 media라는 폴더를 만들어줘야 한다.
+
+- **그리고나서 만약 사용자가 form에서 이미지를 업로드하고 요청을 날려야 할텐데, 그 설정이 필요하다.**
+  - media 파일도 요청을 날려줘야 한다. config 디렉터리 내부에 urls.py에서 코드를 추가하자.
+
+```python
+...
+from django.conf import settings      # settings.py 값들 가져오기
+from django.conf.urls.static import static
+...
+# 이미지 파일 url 설정
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+
+- **from django.conf import settings 이렇게 conf 패키지에서 settings를 import 해주면 --> settings.py에 있는 값들을 다 가져올 수 있다.**
+- 또한, from django.conf.urls.static import static 이렇게 static도 가져와준다. **static() 함수는 static 파일 url 경로를 만들어주는 개념이다.**
+- 그리고 urlpatterns에 추가를 해주는 것이다.
+  - urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) 이렇게 설정 해준다.
+
+- **이렇게 설정한 다음, 그 전에는 이미지가 루트 디렉터리 내부에 그냥 쌓였다면 --> 이제는 media 디렉터리 내부에 쌓이게 될 것이다.**
+  - 그리고 어드민 페이지에서도 이미지를 클릭하면 브라우저에 뜨게 된다.
+
+
+* * *
+
+### 로그인 되었을 경우에만 기능 가능하게 하기
+- View에서 decorator를 사용하면 로그인이 되었을 경우에만 기능을 가능하게 할 수 있다. views.py의 post_create_view를 그렇게 설정해보자.
+
+```python
+from django.contrib.auth.decorators import login_required
+...
+
+@login_required                  # 로그인 되었을 경우에만 가능하게 하기
+def post_create_view(request):
+    if request.method == 'GET':
+        return render(request, 'posts/post_form.html')
+    else:
+        image = request.FILES.get('image')             # 이미지 파일을 받을 경우, request.FILES로 사용
+        content = request.POST.get('content')
+        print(image)
+        print(content)
+        Post.objects.create(image=image, content=content, writer=request.user) # writer=request.user 추가 필요
+        return redirect('index')
+```
+
+- **먼저 login_required를 import 해주고, @login_required 라는 것을 함수 위에 추가해주면 --> 해당 함수는 로그인을 했을 때만 처리를 해주는 함수로 바뀐다.**
+- login_required를 command로 클릭해보면,
+
+```python
+def login_required(
+    function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url=None
+):
+    """
+    Decorator for views that checks that the user is logged in, redirecting
+    to the log-in page if necessary.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.is_authenticated,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name,
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+```
+
+- **이렇게 login_required라는 함수가 정의되어있다. 그래서 post_create_view 함수가 실행이 되기 전에 이 함수가 먼저 실행이 되는 것이다. 그래서 유저가 로그인 되었는지 먼저 확인하고, 안 되었다면 login_url이라고 해서 account/login이라는 url로 redirect 해준다.**
+- 이렇게 설정하면, admin으로 로그인을 해야 생성 페이지로 들어갈 수 있게 된다.
