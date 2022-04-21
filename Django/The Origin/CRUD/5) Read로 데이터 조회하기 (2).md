@@ -97,4 +97,53 @@ def post_detail_view(request, id):
 
 * * *
 
-### 댓글도 
+### 댓글도 슬라이싱으로 보여주기
+- post_card.html에서 댓글 부분을 나타내는 코드에서도 비슷하게 if문을 사용한다.
+
+```html
+ <!-- 댓글 개수 및 내용 표시 -->
+            <div>
+                <p class="">댓글 {{ post.comment_set.all.count }}개 모두 보기</p>
+                <ul class="card__comment-group">
+                    {% if not detail %}
+                        {% for comment in post.comment_set.all|slice:":2" %}
+                        <li>
+                            <p><span class="card__user-name">{{ comment.writer }}</span>{{ comment.content }}</p>
+                        </li>
+                        {% endfor %}
+                    {% else %}
+                        {% for comment in post.comment_set.all %}
+                            <li>
+                                <p><span class="card__user-name">{{ comment.writer }}</span>{{ comment.content }}</p>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+```
+
+
+- **디테일 페이지일 때는, {% for comment in post.comment_set.all %} 이렇게 댓글 전체를 다 보여주면 되고 / 디테일 페이지가 아닐 때는 {% for comment in post.comment_set.all|slice:":2" %} 이런식으로 슬라이싱을 사용해서 2개만 보여주게끔 설정할 수 있다.**
+
+
+* * *
+
+### 추가로 고려할 사항
+- 지금은 상세 페이지로 들어가게 되면, url에 http://localhost:8000/posts/8/ 이렇게 뜨게 되는데, 이걸 사용자가 맘대로 20으로 바꿔버리면 DoesNotExist라는 에러를 띄우게 된다. 그래서 만약에 없는 경우를 대비해서 예외 처리를 해줘야 한다. views.py - post_detail_view에서
+
+```python
+def post_detail_view(request, id):
+    try:
+        post = Post.objects.get(id=id)        # 게시글 1개에 대한 데이터 가져오기
+    except Post.DoesNotExist:
+        return redirect('index')
+            
+    context = {
+        'post': post,
+    }
+
+    return render(request, 'posts/post_detail.html', context)
+```
+
+- **이런식으로 try와 except를 사용해서 Post.DoesNotExist 해당 에러가 발생했을 때는 index 페이지를 보여주게끔 설정한다.**
+
