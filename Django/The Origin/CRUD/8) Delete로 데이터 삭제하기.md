@@ -68,7 +68,7 @@ def post_delete_view(request, id):
 {% endblock %}
 ```
 
-- 위의 코드처럼 form element를 사용해서 POST로 보내주고 / include를 사용해서 우리가 만든 card template를 가져온다.
+- **위의 코드처럼 form element를 사용해서 POST로 보내주고 / include를 사용해서 우리가 만든 card template를 가져온다.**
   - 돌아가기 버튼을 만들어주기.
 
 - 여기까지 삭제를 하는 화면에 관련해서만 코드를 입력해주었다.
