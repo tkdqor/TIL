@@ -1,6 +1,6 @@
 ## Update로 데이터 수정하기
 - Update의 경우, Create와 Detail이 합쳐졌다고 보면 된다.
-- **views.py의 post_delete_view 함수를 수정해주자.**
+- **views.py의 post_update_view 함수를 수정해주자.**
 
 ```python
 ...
@@ -23,7 +23,7 @@ def post_update_view(request, id):
 
 
 
-- 추가로 post_card.html에는 수정하기 버튼을 만들어주자.
+- **추가로 post_card.html에는 수정하기 버튼을 만들어주자.**
 
 ```html
 <!-- 카드 헤더 부분 -->
