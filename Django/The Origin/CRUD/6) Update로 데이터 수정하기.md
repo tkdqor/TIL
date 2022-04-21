@@ -55,18 +55,25 @@ def post_update_view(request, id):
 {% block content %}
 <h1>Post 입력 화면</h1>
 <!-- 이미지 전송을 위한 인코딩 방식 추가 -->
-<form action="{% url 'posts:post-create' %}" method="POST" enctype="multipart/form-data"> 
+<form action="" method="POST" enctype="multipart/form-data"> 
     {% csrf_token %}
     <!-- 이미지 입력 -->
     <div>
         <label for="id_image">이미지</label>
-        <input type="file" name="image" accept="image/*" id="id_image">
+        {% if post.image %}
+        <p>현재 : <a href="{{ post.image.url }}">{{ post.image.name }}</a></p>
+        <p>변경 : <input type="file" name="image" accept="image/*" id="id_image"></p>
+        {% else %}
+            <input type="file" name="image" accept="image/*" id="id_image">
+        {% endif %} 
     </div>
     <!-- 내용 입력 -->
     <div>
         <label for="id_content">내용</label>
         <textarea name="content" id="id_content" cols="30" rows="10">
-            {{ post.content }}
+            {% if post %}
+                {{ post.content }}
+            {% endif %}    
         </textarea>
     </div>
     <!-- 데이터 전송  -->
@@ -77,4 +84,8 @@ def post_update_view(request, id):
 {% endblock %}
 ```
 
-- 이렇게 textarea element에서 {{ post.content }} ㅇ
+- **이렇게 textarea element에서 {{ post.content }} 내용이 들어가있도록 설정하자. 다만, post_form.html가 글을 생성할 때도 랜더링되는 페이지이기 때문에, {% if post %}로 글을 수정하는 경우에만 content가 뜨도록 설정하자.**
+- **이미지 부분도 해당 게시글의 이미지가 있는 경우에는 --> a element가 뜨고 클릭하면 사진을 볼 수 있게끔 하고, 이미지가 있든 없든 input element로 사진을 넣을 수 있게 설정해준다.**
+- 그리고 form의 action은 공백으로 두어서 post_form.html로 보낼 수 있도록 하면 된다.
+
+
