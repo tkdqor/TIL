@@ -30,8 +30,106 @@
 
 
 ### 실습해보기
+- 우리가 페이지네이션을 하기 위해서는, JSON을 리턴하는 별도의 View를 main.py에 구현을 해줘야 한다. 그러면 기존에 있던 코드들과 중복이 된다. 그래서 검색하고 필터링하는 로직 자체는 동일하기 때문에 하나의 함수로 빼주도록 하자. 기존의 SearchView 위쪽에 search라는 함수를 만들어준다.
+
+```python
+from django.views.generic import TemplateView, View
+...
+
+# Ajax를 위한 JSON 리턴 함수
+def search(keyword, category_id, weekday, start_time, end_time, page_number):
+    category = None
+
+    query_sets = Restaurant.objects.filter(visible=True).order_by('-created_at') 
+    if keyword:
+        query_sets = query_sets.filter(Q(name__istartswith=keyword) | Q(address__istartswith=keyword))   # Q 오퍼레이터로 or 조건해주기
+    if category_id:
+        # category = Category.objects.get(pk=int(category_id))   기존의 방식
+        category = get_object_or_404(Category, id=int(category_id))    # get_object_or_404를 활용한 방식
+        query_sets = query_sets.filter(category=category)
+
+    relation_conditions = None
+
+    if weekday:
+        # SELECT * FROM Restaurant r INNER JOIN RestaurantTable rt ON rt.restaurant_id = r.id
+        # WHERE rt.weekday = :weekday
+        relation_conditions = Q(restauranttable__weekday=weekday)
+
+    if start_time:
+        start_time = datetime.time.fromisoformat(start_time) # 12:00:00
+        if relation_conditions:
+            relation_conditions = relation_conditions & Q(restauranttable__time__gte=start_time)
+        else:
+            relation_conditions = Q(restauranttable__time__gte=start_time)
+
+    if end_time:
+        end_time = datetime.time.fromisoformat(end_time) # 12:00:00
+        if relation_conditions:
+            relation_conditions = relation_conditions & Q(restauranttable__time__lte=end_time)
+        else:
+            relation_conditions = Q(restauranttable__time__lte=end_time)
+    
+    if relation_conditions:
+        query_sets = query_sets.filter(relation_conditions)
+
+    
+    restaurants = query_sets.distinct().all()
+    paginator = Paginator(restaurants, 12)
+
+    paging = paginator.get_page(page_number)
+
+    # include한 search_bar.html를 위해 변수 생성
+    # categories = Category.objects.all()
+
+    return {
+        'paging': paging,
+        'selected_keyword': keyword,
+        'selected_category': category,
+        # 'categories': categories, 
+        'selected_weekday': weekday,
+        'selected_start': datetime.time.isoformat(start_time) if start_time else '',
+        'selected_end': datetime.time.isoformat(end_time) if end_time else '',
+    }
 
 
+# 검색기능을 위한 View
+class SearchView(TemplateView):
+    template_name = 'main/search.html'
+
+    def get_context_data(self, **kwargs):
+        page_number = self.request.GET.get('page', '1')
+        keyword = self.request.GET.get('keyword')
+        category_id = self.request.GET.get('category')
+
+        weekday = self.request.GET.get('weekday')
+        start_time = self.request.GET.get('start')
+        end_time = self.request.GET.get('end')
+
+        return search(keyword, category_id, weekday, start_time, end_time, page_number)
+
+
+# JSON을 리턴해주는 SearchView
+class SearchJsonView(View):
+    def get(self, request):
+        page_number = self.request.GET.get('page', '1')
+        keyword = self.request.GET.get('keyword')
+        category_id = self.request.GET.get('category')
+
+        weekday = self.request.GET.get('weekday')
+        start_time = self.request.GET.get('start')
+        end_time = self.request.GET.get('end')
+        
+        data = search(keyword, category_id, weekday, start_time, end_time, page_number)
+```
+
+
+- **그리고나서 SearchView에 정의된 코드 중, category = None 이 부분부터 return 끝까지 모두 복사해서 search 함수에 붙여넣고 SearchView에서는 삭제하자. 그리고 SearchView에서는 return값으로 search 함수를 넣어준다. 이런식으로 중복되는 로직을 하나의 함수로 뺄 수 있다.**
+
+- **그 다음으로 SearchView 밑에 JSON을 리턴해주는 SearchView를 하나 더 SearchJsonView라고 해서 만들어준다.** 이건 View를 상속받는 거니까 get과 request를 받아서 SearchView에서 데이터 받는 것과 비슷하게 코드를 작성해준다. 
+  - 이 상태에서 이 값들을 JSON으로 변환을 해주는 것이다. 
+
+
+8:11
 
 
 
