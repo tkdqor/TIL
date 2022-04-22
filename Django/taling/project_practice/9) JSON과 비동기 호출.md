@@ -34,6 +34,7 @@
 
 ```python
 from django.views.generic import TemplateView, View
+from django.http import JsonResponse     # JSON 응답을 위해 import
 ...
 
 # Ajax를 위한 JSON 리턴 함수
@@ -120,16 +121,60 @@ class SearchJsonView(View):
         end_time = self.request.GET.get('end')
         
         data = search(keyword, category_id, weekday, start_time, end_time, page_number)
+        
+        results = list(
+            map(lambda restaurant: {
+                "id": restaurant.id,
+                "name": restaurant.name,
+                "address": restaurant.address,
+                "image": restaurant.main_image.image_url,
+                "category_name": restaurant.category.name, 
+            }, data.get('paging'))
+        )
+        
+        return JsonResponse(results)
 ```
 
 
 - **그리고나서 SearchView에 정의된 코드 중, category = None 이 부분부터 return 끝까지 모두 복사해서 search 함수에 붙여넣고 SearchView에서는 삭제하자. 그리고 SearchView에서는 return값으로 search 함수를 넣어준다. 이런식으로 중복되는 로직을 하나의 함수로 뺄 수 있다.**
 
 - **그 다음으로 SearchView 밑에 JSON을 리턴해주는 SearchView를 하나 더 SearchJsonView라고 해서 만들어준다.** 이건 View를 상속받는 거니까 get과 request를 받아서 SearchView에서 데이터 받는 것과 비슷하게 코드를 작성해준다. 
-  - 이 상태에서 이 값들을 JSON으로 변환을 해주는 것이다. 
+  - **이 상태에서 이 값들을 JSON으로 변환을 해주는 것이다.** list() 함수 내부에서 map() 함수를 사용하고 lambda를 사용한다. **lambda는 iterable 하게 돌 수 있는 변수(리스트 등)를 가지고, 하나의 아이템을 어떤 데이터로 변환할 것인가를 정할 수 있다.** 우리가 작성한 코드 중에서 paging이라는 변수가 iterable 변수에 해당하기 때문에 이걸 다른 데이터로 변환할 수 있는 로직을 구현할 수 있다. 그래서 lambda 다음에는 iterable 변수에서 1개를 뺀 변수를 바로 입력해주면 된다. 지금은 restaurant이다.
+  - 그리고 1개의 restaurant를 딕셔너리 형태로 바꿔주게 된다. **results 부터의 코드는 --> lambda식을 쓰는데, 먼저 data = search(keyword, category_id, weekday, start_time, end_time, page_number) 해당 코드의 오른쪽은 return 값이 딕셔너리이다. 그리고 lambda식을 쓸 때 이 딕셔너리 중에서, 어떤 데이터를 돌면서 변환을 할 것인가를 지정해줘야 하니까 --> data.get('paging') 이렇게 data라는 딕셔너리에 있는 paging이라는 key에 연결된 값, 객체를 가지고 오라고 설정한 것이다.** 
+  - **그래서 paging에 있는 아이템을 하나씩 꺼내서 restaurant이라고 명명해서 꺼내와서 이걸 딕셔너리로 매핑을 해주는 것이다.** 즉, for restaurant in data.get('paging')과 같은 느낌이다. 
 
+- 마지막에 return을 해서 JsonResponse를 설정해주면 되는데, 먼저 from django.http import JsonResponse 이렇게 import를 해주자. return 다음에 results를 넘겨주면 우리가 위에서 설정한 데이터들이 JSON 형태로 변환되서 내려가게 된다. JsonResponse를 command로 클릭해보면,
 
-8:11
+```python
+class JsonResponse(HttpResponse):
+    """
+    An HTTP response class that consumes data to be serialized to JSON.
+
+    :param data: Data to be dumped into json. By default only ``dict`` objects
+      are allowed to be passed due to a security flaw before ECMAScript 5. See
+      the ``safe`` parameter for more information.
+    :param encoder: Should be a json encoder class. Defaults to
+      ``django.core.serializers.json.DjangoJSONEncoder``.
+    :param safe: Controls if only ``dict`` objects may be serialized. Defaults
+      to ``True``.
+    :param json_dumps_params: A dictionary of kwargs passed to json.dumps().
+    """
+
+    def __init__(self, data, encoder=DjangoJSONEncoder, safe=True,
+                 json_dumps_params=None, **kwargs):
+        if safe and not isinstance(data, dict):
+            raise TypeError(
+                'In order to allow non-dict objects to be serialized set the '
+                'safe parameter to False.'
+            )
+        if json_dumps_params is None:
+            json_dumps_params = {}
+        kwargs.setdefault('content_type', 'application/json')
+        data = json.dumps(data, cls=encoder, **json_dumps_params)
+        super().__init__(content=data, **kwargs)
+```
+
+- 이렇게 나오듯이, JsonResponse는 인자로 data를 받고나서, data = json.dumps(data, cls=encoder, **json_dumps_params) 이렇게 json dumps라는 메소드를 써서 직렬화를 해준다. 근데 이 dumps를 command로 보면, 첫번째 인자인 object가 serialization이 가능해야 한다. 그게 가능해지려면 우리가 직접 JSONDecoder, serializer를 구현해도 되고 / 간단한 방법으로는, 딕셔너리를 넘겨버리면 serializer를 직접 구하지 않더라도 즉, 정확하게는 JSON을 어떻게 보여줄지를 매핑시키는 추가적인 로직을 구현하지 않고도, 우리가 전달한 딕셔너리 형태를 그대로 JSON형태로 변환하는 그런 로직이 실행되게 된다.** 그래서 이렇게 딕셔너리 형태로 하나씩 꺼내 변환을 해서 그걸 넘겨주는데, 문제없이 직렬화가 되서 JSON으로 넘어가게 하는 방법이라고 보면 된다.
 
 
 
