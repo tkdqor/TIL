@@ -202,7 +202,7 @@ class SearchJsonView(View):
             }, data.get('paging'))
         )
         
-        return JsonResponse(results)
+        return JsonResponse(results, safe=False)
 ```
 
 - JsonResponse에 safe도 설정해줘야 한다. 이 safe를 False로 두면, JsonResponse를 command로 클릭하면 나오는데, 딕셔너리 object가 직렬화가 될 것 같을 때만 이 safe를 수행하겠다라고 하는 것이다. 우리가 사실 실질적으로 딕셔너리가 아니라 results라는 리스트를 넣어주는 것이기 때문에, 혹시나 문제가 될 수 있기 때문에 딕셔너리가 아니지만 리스트를 넘겨주니까 safe를 False로 넘겨줘야지 리스트를 받을 수 있게 되는 것이다.
