@@ -176,5 +176,162 @@ class JsonResponse(HttpResponse):
 
 - 이렇게 나오듯이, JsonResponse는 인자로 data를 받고나서, data = json.dumps(data, cls=encoder, **json_dumps_params) 이렇게 json dumps라는 메소드를 써서 직렬화를 해준다. 근데 이 dumps를 command로 보면, 첫번째 인자인 object가 serialization이 가능해야 한다. 그게 가능해지려면 우리가 직접 JSONDecoder, serializer를 구현해도 되고 / 간단한 방법으로는, 딕셔너리를 넘겨버리면 serializer를 직접 구하지 않더라도 즉, 정확하게는 JSON을 어떻게 보여줄지를 매핑시키는 추가적인 로직을 구현하지 않고도, 우리가 전달한 딕셔너리 형태를 그대로 JSON형태로 변환하는 그런 로직이 실행되게 된다.** 그래서 이렇게 딕셔너리 형태로 하나씩 꺼내 변환을 해서 그걸 넘겨주는데, 문제없이 직렬화가 되서 JSON으로 넘어가게 하는 방법이라고 보면 된다.
 
+- 다시 View로 돌아가면, 
+
+```python
+# JSON을 리턴해주는 SearchView
+class SearchJsonView(View):
+    def get(self, request):
+        page_number = self.request.GET.get('page', '1')
+        keyword = self.request.GET.get('keyword')
+        category_id = self.request.GET.get('category')
+
+        weekday = self.request.GET.get('weekday')
+        start_time = self.request.GET.get('start')
+        end_time = self.request.GET.get('end')
+        
+        data = search(keyword, category_id, weekday, start_time, end_time, page_number)
+        
+        results = list(
+            map(lambda restaurant: {
+                "id": restaurant.id,
+                "name": restaurant.name,
+                "address": restaurant.address,
+                "image": restaurant.main_image.image_url,
+                "category_name": restaurant.category.name, 
+            }, data.get('paging'))
+        )
+        
+        return JsonResponse(results)
+```
+
+- JsonResponse에 safe도 설정해줘야 한다. 이 safe를 False로 두면, JsonResponse를 command로 클릭하면 나오는데, 딕셔너리 object가 직렬화가 될 것 같을 때만 이 safe를 수행하겠다라고 하는 것이다. 우리가 사실 실질적으로 딕셔너리가 아니라 results라는 리스트를 넣어주는 것이기 때문에, 혹시나 문제가 될 수 있기 때문에 딕셔너리가 아니지만 리스트를 넘겨주니까 safe를 False로 넘겨줘야지 리스트를 받을 수 있게 되는 것이다.
 
 
+### 코드 정리
+- 다른 클래스를 만들어서 검색 역할을 하는 클래스를 만들고 그 클래스를 믹스인에서 호출하도록 하면 search 코드를 분리할 수 있다. 
+- 그래서 views 디렉터리 안에 service라는 패키지를 만들어준다. 그리고 그 안에 search.py라는 파일을 하나 만들어준다. 이 파일 안에서는,
+
+```python
+import datetime
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
+from ...models import Restaurant, Category
+from django.db.models import Q
+
+class RestaurantSearch:
+    # Ajax를 위한 JSON 리턴 함수
+    def search(self, keyword, category_id, weekday, start_time, end_time, page_number):
+        category = None
+
+        query_sets = Restaurant.objects.filter(visible=True).order_by('-created_at') 
+        if keyword:
+            query_sets = query_sets.filter(Q(name__istartswith=keyword) | Q(address__istartswith=keyword))   # Q 오퍼레이터로 or 조건해주기
+        if category_id:
+            # category = Category.objects.get(pk=int(category_id))   기존의 방식
+            category = get_object_or_404(Category, id=int(category_id))    # get_object_or_404를 활용한 방식
+            query_sets = query_sets.filter(category=category)
+
+        relation_conditions = None
+
+        if weekday:
+            # SELECT * FROM Restaurant r INNER JOIN RestaurantTable rt ON rt.restaurant_id = r.id
+            # WHERE rt.weekday = :weekday
+            relation_conditions = Q(restauranttable__weekday=weekday)
+
+        if start_time:
+            start_time = datetime.time.fromisoformat(start_time) # 12:00:00
+            if relation_conditions:
+                relation_conditions = relation_conditions & Q(restauranttable__time__gte=start_time)
+            else:
+                relation_conditions = Q(restauranttable__time__gte=start_time)
+
+        if end_time:
+            end_time = datetime.time.fromisoformat(end_time) # 12:00:00
+            if relation_conditions:
+                relation_conditions = relation_conditions & Q(restauranttable__time__lte=end_time)
+            else:
+                relation_conditions = Q(restauranttable__time__lte=end_time)
+        
+        if relation_conditions:
+            query_sets = query_sets.filter(relation_conditions)
+
+        
+        restaurants = query_sets.distinct().all()
+        paginator = Paginator(restaurants, 12)
+
+        paging = paginator.get_page(page_number)
+
+        # include한 search_bar.html를 위해 변수 생성
+        # categories = Category.objects.all()
+
+        return {
+            'paging': paging,
+            'selected_keyword': keyword,
+            'selected_category': category,
+            # 'categories': categories, 
+            'selected_weekday': weekday,
+            'selected_start': datetime.time.isoformat(start_time) if start_time else '',
+            'selected_end': datetime.time.isoformat(end_time) if end_time else '',
+        }
+```
+
+
+- **먼저 코드를 위한 라이브러리 및 모델 등을 import 해준다. 그리고 RestaurantSearch 라는 클래스르 정의하고 그 안에 main.py에 있던 search 함수 자체를 가져와서 붙여준다. main.py에서는 아예 삭제시킨다. 그리고 클래스 내부의 함수이니까 def search(self, keyword, category_id, weekday, start_time, end_time, page_number) 이렇게 첫 인자를 self로 넣어준다.**
+
+- **그 다음, 다시 main.py로 가서 SearchView 클래스가 우리가 방금 생성한 클래스를 상속받게끔 하자.**
+
+```python
+from service.search import RestaurantSearch  # RestaurantSearch 클래스를 상속받기 위함
+...
+
+# 검색기능을 위한 View
+class SearchView(TemplateView, RestaurantSearch):
+    template_name = 'main/search.html'
+
+    def get_context_data(self, **kwargs):
+        page_number = self.request.GET.get('page', '1')
+        keyword = self.request.GET.get('keyword')
+        category_id = self.request.GET.get('category')
+
+        weekday = self.request.GET.get('weekday')
+        start_time = self.request.GET.get('start')
+        end_time = self.request.GET.get('end')
+
+        return self.search(keyword, category_id, weekday, start_time, end_time, page_number)
+
+
+# JSON을 리턴해주는 SearchView
+class SearchJsonView(View, RestaurantSearch):
+    def get(self, request):
+        page_number = self.request.GET.get('page', '1')
+        keyword = self.request.GET.get('keyword')
+        category_id = self.request.GET.get('category')
+
+        weekday = self.request.GET.get('weekday')
+        start_time = self.request.GET.get('start')
+        end_time = self.request.GET.get('end')
+
+        data = self.search(keyword, category_id, weekday, start_time, end_time, page_number)
+
+        results = list(
+            map(lambda restaurant: {
+                "id": restaurant.id,
+                "name": restaurant.name,
+                "address": restaurant.address,
+                "image": restaurant.main_image.image_url,
+                "category_name": restaurant.category.name, 
+            }, data.get('paging'))
+        )
+
+        return JsonResponse(results, safe=False)
+```
+
+- 그러기 위해 먼저 RestaurantSearch를 Import 해준다.
+- 그리고 class SearchView(TemplateView, RestaurantSearch) 이렇게 RestaurantSearch를 상속받고, 그냥 return search가 아니라 상속받은 클래스의 함수이니까 return self.search라고 수정해주자.
+- 또한, 그 밑에 있는 JSON을 리턴해주는 SearchView인 SearchJsonView도 똑같이 수정해준다.
+
+
+### Ajax 호출 구현해보기
+
+18:19
