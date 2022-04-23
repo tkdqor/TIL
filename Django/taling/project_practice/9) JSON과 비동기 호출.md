@@ -333,5 +333,93 @@ class SearchJsonView(View, RestaurantSearch):
 
 
 ### Ajax 호출 구현해보기
+- template 디렉터리 내부 - main 디렉터리 - search.html로 가자. 검색결과 section 위에 Ajax 페이징 시 기존 쿼리정보를 저장해두는 input type hidden를 구현해준다.
 
-18:19
+```html
+{% extends "common.html" %}
+{% load static %}
+{% load search_tags %}
+...
+
+<!-- Ajax 페이징 시 기존 쿼리정보 -->
+<input type="hidden" id="result-keyword" value="{{ selected_keyword }}">
+<input type="hidden" id="result-category" value="{{ selected_category.id }}">
+<input type="hidden" id="result-weekday" value="{{ selected_weekday }}">
+<input type="hidden" id="result-start" value="{{ selected_start }}">
+<input type="hidden" id="result-end" value="{{ selected_end }}">
+
+<section class="mt-4">
+    <h4>검색 결과</h4>
+    <div class="row" id="search_result">
+...
+```
+
+- **이렇게 입력하면, 이 페이지에서 input 값들을 자바스크립트에서 접근할 수 있게 만들기 위해 input 태그를 hidden으로 설정해주는 것이다.** 이건 Ajax를 구현할 때 기본적으로 많이 사용하는 방식이다.
+  - 이렇게 hidden으로 해두면 사용자 눈에는 안 보이지만, 자바스크립트는 이 값을 가져갈 수 있으니까 이 값을 읽어서 다음 페이징을 연결해서 호출할 때 쿼리 파라미터를 붙일 수 있게 해준다.
+- 그리고 해당 html 위쪽에 load static를 해준다. 강의 자료의 search.js를 가져와준다.
+  - 해당 파일을 보면, Ajax를 호출하는 함수를 만들어놓았다. 똑같이 result-keyword 등 검색결과들을 다 가져오는 코드이다. 
+
+```javascript
+var currentPage = 1;
+var isEndOfScroll = false;
+
+window.onload = function() {
+  window.addEventListener('scroll', function(event)
+  {
+      var element = window.document.scrollingElement;
+      if (element.scrollHeight - element.scrollTop === element.clientHeight && !isEndOfScroll)
+      {
+          fetchData();
+      }
+  });
+};
+
+function fetchData() {
+    var keyword = document.getElementById('result-keyword').value;
+    var category = document.getElementById('result-category').value;
+    var start = document.getElementById('result-start').value;
+    var end = document.getElementById('result-end').value;
+    var weekday = document.getElementById('result-weekday').value;
+
+    currentPage ++;
+
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.addEventListener("load", (e) => {
+        var jsonResponse = JSON.parse(e.target.responseText);
+        console.log(jsonResponse)
+        jsonResponse.forEach(data => appendItem(data));
+        if (jsonResponse.length < 8) isEndOfScroll = true;
+    });
+    httpRequest.open("GET", "/search/json/?page=" + currentPage
+        + "&keyword=" + keyword + "&category=" + category + "&start=" + start + "&end=" + end + "&weekday=" + weekday);
+    httpRequest.send();
+}
+
+function appendItem(data) {
+    var template = document.getElementById("restaurant-template");
+    var body = document.getElementById("search-result")
+    var clone = template.content.cloneNode(true);
+    clone.querySelector(".item-category").textContent = data.category_name;
+    clone.querySelector(".item-name").textContent = data.name;
+    clone.querySelector(".item-address").textContent = data.address;
+
+    if (clone.querySelector(".item-link") != null) {
+        var link = clone.querySelector(".item-link").href;
+        link = link.replace("/0/", "/" + data.id + "/");
+        clone.querySelector(".item-link").href = link;
+    }
+
+    var finalUrl = data.image.replace("/media/https%3A", "https:/"); // 외부 url 대응
+    clone.querySelector(".item-image").src = finalUrl;
+
+    body.appendChild(clone);
+}
+```
+
+- ddd
+
+
+
+
+
+
