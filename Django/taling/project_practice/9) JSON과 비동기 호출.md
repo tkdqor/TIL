@@ -508,5 +508,26 @@ class RestaurantSearch:
 
 - **weekday의 문자열 길이가 0보다 컸을 때 까지도 검새를 해줘야 된다.** 그리고 start_time 함수문에서도 똑같이 수정해준다. end_time도 마찬가지이다. keyword 부분과 category_id도 동일하게 수정해준다. 이렇게 제약 조건을 하나씩 두는 것이다.
 
+* * *
+- 그리고 이제 urls.py를 추가로 설정해준다. table_booking 디렉터리 내부에 urls.py로 가서, 
+
+```python
+from web.views.main import IndexView, SearchView, SearchJsonView
+...
+
+urlpatterns = [
+    ...
+     # Ajax 관련 URL
+    path('search/json/', SearchJsonView.as_view(), name='search-json'),
+]
+```
+
+- **먼저 SearchJsonView를 가져와준다. 그리고, SearchJsonView에 as_view함수를 사용해서 호출해준다.**
+
+* * * 
+## 페이지네이션 실습
+- 실제 우리가 페이지네이션을 보려면 데이터가 많아야 한다. 먼저 DBeaver로 들어가보자. 그 중에서도 web의 restaurant 모델을 클릭해보자. 여기서 동일한 내용을 엄청 복사해서 총 23개의 행이 되도록 해보자.
+- 또한, 이미지도 많이 만들어줘야 한다. 그래서 restaurantimage 모델에 클릭해서 똑같은 개수만큼 데이터를 생성해준다. 그리고 restaurant id 도 굉장히 죽용하빈다.
+- 그리고 다시 web의 restaurant 모델에서 main_image_url를 순서대로 넣어주자.
 
 
