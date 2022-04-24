@@ -626,4 +626,58 @@ class RestaurantSearch:
 - 기본적으로 Ajax를 기반으로 이우어지는 Http 요청들은 교차출처, 그러니까 크로스 오리진을 허용하지 않는다. 즉, 지금 접속하고 있는 사이트가 아닌, 다른 사이트에 정보를 가져오거나, 데이터를 전송하는 걸 막고 있다. 
 - **이러한 이유는 바로 '보안'때문이다.** 만약 이걸 허용하게 된다면, 내가 만든 사이트의 정보를 다른 사이트에서 아무 문제 없이 사용자가 가져다 쓸 수 있게 된다. 
   - 특히, 클라이언트 요청의 경우 불특정 대다수의 IP로 접근하기 때문에 서버쪽에서 제어하기가 어렵다는 점이 있다.
-  - CORS는 이러한 기본정책을 허용하기 위해서 만들어진 약속으로, Http 응답 헤더에 accesscontrolalloworigin, acesscontrolallow 메소드 등의 데이터를 헤더에 추가해서 --> 허용된 사이트에서 Ajax 호출로 데이터에 접근할 수 있도록 한다.   
+  - **CORS는 이러한 기본정책을 허용하기 위해서 만들어진 약속으로, Http 응답 헤더에 accesscontrolalloworigin, acesscontrolallow 메소드 등의 데이터를 헤더에 추가해서 --> 허용된 사이트에서 Ajax 호출로 데이터에 접근할 수 있도록 한다.**   
+
+
+### CORS 동작 과정
+- 바탕화면 캡처 화면에서 웹 브라우저는 Ajax 호출을 진행하기전에 요청주소의 도메인이 현재 접속한 주소와 다르다면 get이나 post가 아닌 OPTIONS라는 특수한 요청 메소드로, 서버한테 Ajax 요청이 가능한지 물어본다. 마치 노크를 하는 것처럼 말이다. 
+- 이에 대해 서버는 CORS 정책을 내려준다. 이 데이터는 Http 응답 헤더에 포함해서 돌려주는데, 헤더 키 같은 데이터를 알려준다. 
+- 이렇게, 외부 사이트의 데이터를 가지고 오고 싶은 경우에는 CORS 정책을 허용하는 서버에서만 데이터를 받아올 수 있고, 기본적으로는 보안상의 이유로 같은 도메인의 주소로만 요청이 가능하다. 
+- 요즘은 프론트의 포싱되는 도메인과 백엔드의 도메인이 다른 경우가 많다. 그래서 특정 도메인에 대해서 CORS를 열어주려면 ..코드를 입력하면 된다.
+  - 이걸 실습으로 진행해보자.
+
+
+```terminal
+pip install django-cors-headers
+
+
+
+- 먼저 설치하기. 그리고 settings.에 가서 INSTALLED_APPS에다가 'corsheaders', 이렇게 추가해주기. 그 다음 # all auth 밑에다가는 
+
+```terminal
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+ORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE', 'GET', 'OPTIONS', 'POST', 'PUT'
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'origin',
+    'user-agent',
+    'x-csrftoken', 
+    'x-requested-with',
+]
+
+
+MIDDLEWARE = [ 
+    'corsheaders.middleware.CorsMiddleware'
+```
+
+
+- **이 리스트에 CORS를 허가할 외부의 도메인들을 기입해주면 된다. 즉, 내가 Ajax 요청을 받아줄 오리진, 클라이언트에서 랜더링하고 있는 페이지의 호스트 주소를 입력해주면 허가가 되는 것이다.** 
+- 그 다음에는 CORS_ALLOW_CREDENTIALS를 True로 해줘야 쿠키라던가 세션 공유들을 할 때 이걸 False로 하게 되면 --> CORS 요청할 때 세션이 유지되지 않는 문제가 있다. 그래서 쿠키나 세션을 CORS 요청해서도 어느정도 공유가 되도록 하기 위해서 해당 변수를 True해주면 좋다.
+- 그 다음 MIDDLEWARE 쪽에는 'corsheaders.middleware.CorsMiddleware' 이렇게 추가한다. 그래야 세팅이 완료된다. 
+- 만약, WHITELIST를 구상하고 싶지 않다면 ORS_ORIGIN_ALLOW_ALL = True --> 이렇게 하면 도메인을 지정하지 않고도 모든 요청에 대해서 다 허용을 하게 한다. 
+- 그리고 또 하나는, CORS_ALLOW_METHODS 라는 게 있다. 여기서는 내가 CORS 요청을 허용할 메소드들을 정리할 수 있다. 
+- 그리고 또, CORS_ALLOW_HEADERS 것도 있다. Ajax를 교차출처로 요청하는 경우에 헤더 값들도 제한을 둘 수 있는 것이다. 그래서 몇몇 정해진 헤더값 외에는 보낼 수가 없게 되어있어서 그런 예외적인 헤더를 보내게 되면 또 블락킹이 된다. 그래서 이걸 막아주기 위해 설정. 내가 허용하고 싶은 헤더값들도 명시할 수 있다.
