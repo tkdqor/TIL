@@ -416,10 +416,97 @@ function appendItem(data) {
 }
 ```
 
-- ddd
+- **search_bar.html에 있는 form에 있는 데이터를 읽어오면 안되냐고 생각할 수 있는데, 여기 있는 걸 읽어오게 되면 기존의 검색결과를 가지고 페이지네이션 하는 게 아니라, 사용자가 여기 값을 키워드를 바꿀 수도 있고 시간을 바꿀 수도 있다. 그렇기 때문에 다른 페이지네이션이 되게 된다. 그래서 그걸 사용자가 건들지 못하는 hidden 필드에 숨겨놓고 불러오는 것이다.**
+- 위의 코드를 설명하면, fetchData() 함수에서 키워드에 대한 검색 조건들을 불러와서 currentPage ++; 이렇게 페이지를 하나 더한 다음에, var httpRequest = new XMLHttpRequest(); 이렇게 Ajax 요청을 보낸다. 그리고 httpRequest.open("GET", "/search/json/?page=" + currentPage + "&keyword=" + keyword + "&category=" + category + "&start=" + start + "&end=" + end + "&weekday=" + weekday); 이렇게 쿼리를 만드는 코드가 있다. 그리고 마지막은 function appendItem(data) { 이것 이하로 template를 사용해서 데이터를 받고 clone를 한 다음에 원하는 값들을 채워준다.
+- 앞쪽에는 window 로드를 할 때, 스크롤이 될 때 마다 이벤트를 받아서 그 값이 스크롤이 맨 밑까지 내려왔을 때, fetchData(); 가 실행되도록 설정.
+- 이 해당 파일을 web 내부 static 디렉터리 내부에 search.js라고 해서 만들어준다.
 
+* * *
+- **그 다음으로는 search.html에다가 section 아래쪽에 script를 넣어준다.**
 
+```html
+    </div>
+</section>
 
+<script src="{% static 'search.js' %}"></script>
+<template id="restaurant-template">
+    <div class="col-sm-3 mb-2 mt-2">
+        <div class="card">
+            <div class="card-header item-category">
+            </div>
+            <img src="" class="card-img-top item-image">
+            <div class="card-body">
+                    <h5 class="card-title itme-name"></h5>
+                    <p class="card-text item-address"></p>
+            </div>
+        </div>
+    </div>
+</template>
+```
+
+- **이렇게 js파일을 불러오고, template 요소를 사용할 것들을 미리 구성해야 한다. 그래서 template 태그를 사용하고 그 안에는 기존의 card 코드를 재사용해준다. class값도 조금 더 추가해주었다.** 
+- Ajax를 쓰다보면, 자바스크립트를 보면 Ajaxf를 호출할 때, + "&keyword=" + keyword + "&category=" + category + "&start=" + start + "&end=" + end + "&weekday=" + weekday); **이렇게 Ajax를 호출할 때, 값을 어쩄든 쿼리 파라미터로 보내주긴 한다. 그런데 여기에 keyword나 category, start 이런애들이 공백문자열로 올 수가 있다.** 
+  - 그래서 추가적인 처리가 필요하다. search.py에 RestaurantSearch 클래스 내부에있는 weekday만 있는게 아니라, and 조건으로 
+
+```python
+class RestaurantSearch:
+    # Ajax를 위한 JSON 리턴 함수
+    def search(self, keyword, category_id, weekday, start_time, end_time, page_number):
+        category = None
+
+        query_sets = Restaurant.objects.filter(visible=True).order_by('-created_at') 
+        if keyword and len(keyword) > 0:
+            query_sets = query_sets.filter(Q(name__istartswith=keyword) | Q(address__istartswith=keyword))   # Q 오퍼레이터로 or 조건해주기
+        if category_id and len(category_id) > 0:
+            # category = Category.objects.get(pk=int(category_id))   기존의 방식
+            category = get_object_or_404(Category, id=int(category_id))    # get_object_or_404를 활용한 방식
+            query_sets = query_sets.filter(category=category)
+
+        relation_conditions = None
+
+        if weekday and len(weekday) > 0:
+            # SELECT * FROM Restaurant r INNER JOIN RestaurantTable rt ON rt.restaurant_id = r.id
+            # WHERE rt.weekday = :weekday
+            relation_conditions = Q(restauranttable__weekday=weekday)
+
+        if start_time and len(start_time) > 0:
+            start_time = datetime.time.fromisoformat(start_time) # 12:00:00
+            if relation_conditions:
+                relation_conditions = relation_conditions & Q(restauranttable__time__gte=start_time)
+            else:
+                relation_conditions = Q(restauranttable__time__gte=start_time)
+
+        if end_time and len(end_time) > 0:
+            end_time = datetime.time.fromisoformat(end_time) # 12:00:00
+            if relation_conditions:
+                relation_conditions = relation_conditions & Q(restauranttable__time__lte=end_time)
+            else:
+                relation_conditions = Q(restauranttable__time__lte=end_time)
+        
+        if relation_conditions:
+            query_sets = query_sets.filter(relation_conditions)
+
+        
+        restaurants = query_sets.distinct().all()
+        paginator = Paginator(restaurants, 12)
+
+        paging = paginator.get_page(page_number)
+
+        # include한 search_bar.html를 위해 변수 생성
+        # categories = Category.objects.all()
+
+        return {
+            'paging': paging,
+            'selected_keyword': keyword,
+            'selected_category': category,
+            # 'categories': categories, 
+            'selected_weekday': weekday,
+            'selected_start': datetime.time.isoformat(start_time) if start_time else '',
+            'selected_end': datetime.time.isoformat(end_time) if end_time else '',
+        }
+```
+
+- **weekday의 문자열 길이가 0보다 컸을 때 까지도 검새를 해줘야 된다.** 그리고 start_time 함수문에서도 똑같이 수정해준다. end_time도 마찬가지이다. keyword 부분과 category_id도 동일하게 수정해준다. 이렇게 제약 조건을 하나씩 두는 것이다.
 
 
 
