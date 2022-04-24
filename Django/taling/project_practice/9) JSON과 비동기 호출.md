@@ -527,7 +527,103 @@ urlpatterns = [
 * * * 
 ## 페이지네이션 실습
 - 실제 우리가 페이지네이션을 보려면 데이터가 많아야 한다. 먼저 DBeaver로 들어가보자. 그 중에서도 web의 restaurant 모델을 클릭해보자. 여기서 동일한 내용을 엄청 복사해서 총 23개의 행이 되도록 해보자.
-- 또한, 이미지도 많이 만들어줘야 한다. 그래서 restaurantimage 모델에 클릭해서 똑같은 개수만큼 데이터를 생성해준다. 그리고 restaurant id 도 굉장히 죽용하빈다.
+- 또한, 이미지도 많이 만들어줘야 한다. 그래서 restaurantimage 모델에 클릭해서 똑같은 개수만큼 데이터를 생성해준다. 그리고 restaurant_id 필드에 순서대로 번호를 채워준다.
 - 그리고 다시 web의 restaurant 모델에서 main_image_url를 순서대로 넣어주자.
 
+- 오류가 날 수 있는 부분들을 잡고가자. main.py에서 
 
+```python
+from .service.search import RestaurantSearch  # RestaurantSearch 클래스를 상속받기 위함
+...
+
+# JSON을 리턴해주는 SearchView
+class SearchJsonView(View, RestaurantSearch):
+    def get(self, request):
+        page_number = self.request.GET.get('page', '1')
+        keyword = self.request.GET.get('keyword')
+        category_id = self.request.GET.get('category')
+
+        weekday = self.request.GET.get('weekday')
+        start_time = self.request.GET.get('start')
+        end_time = self.request.GET.get('end')
+
+        data = self.search(keyword, category_id, weekday, start_time, end_time, page_number)
+
+        results = list(
+            map(lambda restaurant: {
+                "id": restaurant.id,
+                "name": restaurant.name,
+                "address": restaurant.address,
+                "image": str(restaurant.main_image.image),
+                "category_name": restaurant.category.name, 
+            }, data.get('paging'))
+        )
+
+        return JsonResponse(results, safe=False)
+```
+
+
+- **이렇게 RestaurantSearch를 가지고 오기 위해서 점을 1개 찍어야 하고, SearchJsonView에서는 "image": str(restaurant.main_image.image), 이렇게 image 데이터 관련해서, imageField 같은 경우에는 우리가 string으로 변환해주지 않으면 오류가 나게 된다.** 
+
+
+- 그리고 자바스크립트 파일을 보면,
+
+```javascript
+function fetchData() {
+    var keyword = document.getElementById('result-keyword').value;
+    var category = document.getElementById('result-category').value;
+    var start = document.getElementById('result-start').value;
+    var end = document.getElementById('result-end').value;
+    var weekday = document.getElementById('result-weekday').value;
+
+    currentPage ++;
+
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.addEventListener("load", (e) => {
+        var jsonResponse = JSON.parse(e.target.responseText);
+        console.log(jsonResponse)
+        jsonResponse.forEach(data => appendItem(data));
+        if (jsonResponse.length < 4) isEndOfScroll = true;
+    });
+    httpRequest.open("GET", "/search/json/?page=" + currentPage
+        + "&keyword=" + keyword + "&category=" + category + "&start=" + start + "&end=" + end + "&weekday=" + weekday);
+    httpRequest.send();
+}
+```
+
+- 위에서 if (jsonResponse.length < 4) isEndOfScroll = true; 이렇게 JsonResponse가 4보다 작으면, 사실상 페이지의 끝이라고 판단하는 로직이 있다. 
+  - 그래서 추가로 search.py로 가서 class RestaurantSearch: 부분을 수정한다. 한 페이지당 4페이지가 보이게끔 해준다.
+
+```python
+class RestaurantSearch:
+    # Ajax를 위한 JSON 리턴 함수
+    def search(self, keyword, category_id, weekday, start_time, end_time, page_number):
+        category = None
+        
+    restaurants = query_sets.distinct().all()
+    paginator = Paginator(restaurants, 4)
+
+    paging = paginator.get_page(page_number)
+    ...
+```
+
+* * *
+### 서버 구동하기
+- **위의 설정을 모두 마친 후, 서버를 가동해보자. 사이트의 첫페이지에서 그냥 검색을 해보면, 4개씩 스크롤 할 때마다 떠야 하는데 나는 안된다...**
+- 만약 해상도가 크게 되면, 스크롤이 안되는 경우가 있다. 왜냐면 화면의 모든 영역이 이미 다 보여지고 있으니까 스크롤이 안되서 스크롤 이벤트가 발생이 안되고 그러면 Ajax로 인한 페이지네이션이 발생이 안되게 된다. 이 부분은 해결해보자.
+  - 다시 자바스크립트에서 **if (jsonResponse.length < 8) isEndOfScroll = true;** 이렇게 8로 수정 --> 이렇게 하면 이제 8개씩 보여줄 것이기 때문에 8개 보다 적은 개수가 로딩이 되나면, 이제 스크롤이 끝났다 라고 볼 수 가 있는 것이다.
+  - 그리고 "페이지네이션"이라는 객체는 큰 값이 들어왔을 때, 페이지가 오버가 되면 그냥 가장 라스트 페이지를 보여주는 그런 이슈가 있다. search.py에 RestaurantSearch 클래스 내부에 정의되어 있는 paginator = Paginator(restaurants, 8) 객체 입니다. 8을 넣어주는 것으로 감사하다.
+
+
+- 자바스크립트 같은 경우에는, 브라우저에 캐시가 남아서 자동으로 우리가 수정한 코드가 맵 브라우저에 갱신이 안 된다. 그래서 개발자도구를 켜서 네트워크 - "캐시사용 중지"를 누르고 다시 서버를 가동시키면 8개씩 로딩이 되어야 하는데 나는 안 된다.
+
+
+### CORS
+- 우리가 지금 Ajax를 배웠는데, 추가로 알아야 하는 개념이 더 있다. 
+- 기본적으로 Ajax 요청을 교차 출처를 허용하지 않는다. 하지만 교차 출처 요청에서도 자원을 공유할 수 있도록 정책을 설정하는 것을 CORS라고 한다.
+
+- **현재 랜더링되고 있는 호스트에서 다른 외부 도메인으로 Ajax 요청을 보내게 될 경우, Ajax 요청이 실패하는 경우가 있다. 이 때 이걸 허용해주기 위한 개념이 CORS라고 되는 것이다.** '교차 출처 리소스 공유' 라는 뜻으로 서로 다른 도메인이나 웹사이트 등에서 생성된, 제한된 데이터를 공유할 수 있도록 하는 동작방식이다. 
+- 기본적으로 Ajax를 기반으로 이우어지는 Http 요청들은 교차출처, 그러니까 크로스 오리진을 허용하지 않는다. 즉, 지금 접속하고 있는 사이트가 아닌, 다른 사이트에 정보를 가져오거나, 데이터를 전송하는 걸 막고 있다. 
+- **이러한 이유는 바로 '보안'때문이다.** 만약 이걸 허용하게 된다면, 내가 만든 사이트의 정보를 다른 사이트에서 아무 문제 없이 사용자가 가져다 쓸 수 있게 된다. 
+  - 특히, 클라이언트 요청의 경우 불특정 대다수의 IP로 접근하기 때문에 서버쪽에서 제어하기가 어렵다는 점이 있다.
+  - CORS는 이러한 기본정책을 허용하기 위해서 만들어진 약속으로, Http 응답 헤더에 accesscontrolalloworigin, acesscontrolallow 메소드 등의 데이터를 헤더에 추가해서 --> 허용된 사이트에서 Ajax 호출로 데이터에 접근할 수 있도록 한다.   
