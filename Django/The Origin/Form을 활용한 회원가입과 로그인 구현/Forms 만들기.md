@@ -49,6 +49,9 @@ def post_create_form_view(request):
 
 - 기존의 post_create_view 밑에 post_create_form_view를 새롭게 정의하자. 
 - **우리가 여기에서 GET, POST 둘 다 form를 적용해야 하는데 먼저 PostBaseForm를 Import 해준다. 그리고 GET 방식일 때 form이라는 변수로 PostBaseForm 클래스를 호출한다. 그 다음 이 form 변수를 template에 넘겨주는 것이다.**
+- 그리고 template은 새롭게 생성 할 post_form2.html로 설정하자.
+
+
 
 - **그리고 URL 설정을 urls.py에서 해준다.**
 
@@ -64,6 +67,8 @@ urlpatterns = [
 ]
 ```
 
+
+
 - **여기까지 설정을 해놓고 이제 template도 수정을 해봐야 하는데, 기존의 post_form.html을 복사해서 post_form2.html를 생성해보자.**
 
 ```html
@@ -78,7 +83,11 @@ urlpatterns = [
 <!-- 이미지 전송을 위한 인코딩 방식 추가 -->
 <form action="" method="POST" enctype="multipart/form-data"> 
     {% csrf_token %}
-    
+
+    <!-- forms.py 사용 -->
+    <div>
+        {{ form.as_p }}
+    </div>
     <!-- 데이터 전송  -->
     <div>
         <input type="submit">
@@ -87,7 +96,35 @@ urlpatterns = [
 {% endblock %}
 ```
 
-- 그 안에 input submit 빼고는 다 지워준다.
+- 그 안에 input submit 빼고는 다 지워준다. **대신에 {{ form.as_p }} 이러한 template language를 입력해주기.**
+  - **그리고나서 서버를 구동시켜보면, 우리가 template에 입력하지 않아도 form이 뜨게 되고 forms.py에 정의한 필드들만 데이터를 받을 수 있게 설정해준다.**
+  - **우리는 django에서 제공해주는 form이라는 클래스를 가지고서 template에 form를 랜더링할 수 있게 된 것이다.**
+
+<img width="233" alt="image" src="https://user-images.githubusercontent.com/95380638/165698495-b662ba26-0d72-4913-8d51-79069ef6803b.png">
+
+* * *
+
+### django Widgets
+- 이 forms.py와 관련해서 우리는 widgets를 사용할 줄 알아야 한다. 공식문서는 https://docs.djangoproject.com/en/4.0/ref/forms/widgets/ 다음과 같다. 
+- 우리가 작성한 forms.py를 다시 보면,
+
+```python
+from django import forms
+
+
+class PostBaseForm(forms.Form):
+    image = forms.ImageField()
+    content = forms.CharField(widget=forms.Textarea)
+```
+
+- 여기서 content는 CharField인데, CharField에서 위젯만 바꿀 수 있다. **위젯이라는 건, html의 input 태그의 type이라고 생각하면 된다. 따라서 위젯이 변함에 따라 input의 형태가 달라진다.**
+- content = forms.CharField(widget=forms.Textarea) 이렇게 수정하고 다시 브라우저를 보면, 
+
+<img width="399" alt="image" src="https://user-images.githubusercontent.com/95380638/165700142-d988135d-81c1-452c-9333-fde48df86420.png">
+
+- 이렇게 textarea로 바꿔준다.
+
+
 
 
 
