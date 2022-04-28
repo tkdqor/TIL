@@ -137,7 +137,69 @@ class PostBaseForm(forms.Form):
   - 우리가 지금까지 사용했던 건, {{ form.as_p }}로 \<p\> 태그를 사용해서 form안에 들어가서 쓰는 것이다. 그런데 이것 말고도 위의 공식문서를 보면, 다양한 옵션이 있다. 
   - {{ form.as_ul }}은 form안에 li 태그로 들어가게 된다. 또는 {{ form.as_table }}를 사용하면 table로 들어가게 된다. 
 
+- **또는, form를 for문을 사용해서 반복적으로 쓸 수도 있다.** post_form2.html에서,
 
+```html
+...
+<form action="" method="POST" enctype="multipart/form-data"> 
+    {% csrf_token %}
+
+    <!-- forms.py 사용 -->
+    <div>
+        <!-- {{ form.as_table }} -->
+        {% for field in form %}
+            {{ field.label }}
+            {{ field }}
+        {% endfor %}
+    </div>
+    <!-- 데이터 전송  -->
+    <div>
+        <input type="submit">
+    </div>
+</form>
+{% endblock %}
+```
+
+- 이런식으로 {% for field in form %} 필드를 하나씩 빼서 필드 라벨과 자체를 출력할 수 있다. 
+
+* * *
+
+### 실제로 데이터 입력 시, 사용할 수 있도록 View 설정하기
+- 다시 views.py에서 post_create_form_view를 수정해서 데이터가 실제로 입력되었을 때 받을 수 있도록 해보기. if문으로 GET이 아닐 때,
+
+```python
+# forms.py를 이용해서 View 설정
+def post_create_form_view(request):
+    if request.method == 'GET':
+        form = PostBaseForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'posts/post_form2.html', context)
+    else:
+        form = PostBaseForm(request.POST, request.FILES)
+
+        # form 자체에 대한 유효성 검사
+        if form.is_valid():
+            Post.objects.create(image=form.cleaned_data['image'], content=form.cleaned_data['content'], writer=request.user) 
+        else:
+            return redirect('posts:post-create')
+        
+        return redirect('index')
+```
+
+- **POST방식일 때는, form = PostBaseForm(request.POST) 이렇게 request의 POST라고 해줘야 한다.**
+  - form = PostBaseForm()처럼 --> 양식을 제공하기 위해서는 인자에다가 아무것도 넣지 않으면 GET 방식으로 양식을 제공해준다. 
+  - 반면 POST로 데이터를 받았을 때는 form = PostBaseForm(request.POST) 이렇게 값을 넣어준다. 그러면 사용자가 입력한 content 내용을 받을 수 있다. (반면 image는 POST가 아니라 FILES로 가져오는 것이기 때문에 request에는 없다.) 
+  - **이미지를 받으려면 form = PostBaseForm(request.POST, request.FILES) 이렇게 추가해주면 된다.**
+
+- **이렇게 가져온 데이터를 사용해서 Post 모델 데이터에 추가하려면, Post.objects.create(image=form.cleaned_data['image'], content=form.cleaned_data['content'], writer=request.user) --> 이런식으로 cleaned_data를 사용해서 값을 이용할 수 있다.**
+  - cleaned_data란, Form에서는 랜더링을 제공해줄 뿐만 아니라 유효성 검사도 해주고 제대로 수행되었을 때도 처리를 해줄 수 있다. 그래서 cleaned_data는 유효성 검사가 완료되었다는 의미로 사용한다. 그래서 예를 들어, integer인데 파일이 들어오면 잘못된 것이고 image인데 그냥 text만 들어와도 잘못된 것이다. 이러한 유효성 검사들을 우리가 작성한 forms.py를 기반으로 해서 django가 대신 해주는 것이다.
+  - **그런데, 우리가 forms.py에서 cleaned_data를 사용하려면 --> forms.py에서 작성한 form이 유효한지를 판단하는 함수를 먼저 호출해줘야 한다.** if form.is_valid(): 이렇게 호출하면 되는데, is_valid라는 함수는 우리가 받은 필드들이 유효성 검사가 적합한지를 판단해서, 적합하다면 True 아니면 False를 반환해준다. 그래서 위의 코드에서는 적합하다면 Post 모델 데이터를 저장해준다.
+
+- **이렇게 forms.py를 작성해서 우리가 직접 유효성 검사를 하지 않아도, django Form에서 대신해서 하게 해준다. 그래서 우리가 django Form을 쓸 때는 크게 2가지 기능을 위해 사용한다고 보면 된다.**
+  - 우리가 html에서 form를 랜더링시키기 위한 form 태그를 만들어주는 역할 
+  - 우리가 사용자한테 데이터를 받을 때, 해당 데이터의 유효성 검사를 해주는 역할
 
 
 
