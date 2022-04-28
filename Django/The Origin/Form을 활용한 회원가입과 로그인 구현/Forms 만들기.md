@@ -113,16 +113,29 @@ from django import forms
 
 
 class PostBaseForm(forms.Form):
-    image = forms.ImageField()
-    content = forms.CharField(widget=forms.Textarea)
+    CATEGORY_CHOICES = [
+        ('1', '일반'),
+        ('2', '계정'),
+    ]
+
+    image = forms.ImageField(label='이미지')
+    content = forms.CharField(label='내용', widget=forms.Textarea, required=True)
+    category = forms.ChoiceField(label='카테고리', choices=CATEGORY_CHOICES)    
 ```
 
 - 여기서 content는 CharField인데, CharField에서 위젯만 바꿀 수 있다. **위젯이라는 건, html의 input 태그의 type이라고 생각하면 된다. 따라서 위젯이 변함에 따라 input의 형태가 달라진다.**
-- content = forms.CharField(widget=forms.Textarea) 이렇게 수정하고 다시 브라우저를 보면, 
+- content = forms.CharField(widget=forms.Textarea) 이렇게 수정하고 다시 브라우저를 보면, textarea로 바꿔준다.
 
 <img width="399" alt="image" src="https://user-images.githubusercontent.com/95380638/165700142-d988135d-81c1-452c-9333-fde48df86420.png">
 
-- 이렇게 textarea로 바꿔준다.
+- **또한, category = forms.ChoiceField(choices=CATEGORY_CHOICES) 이렇게 ChoiceField를 사용해서 입력하고 Form 클래스 밑에 딕셔너리로 미리 정의를 해놓기만 해도 --> 브라우저에서 실제로 카테고리를 선택할 수 있게 화면이 바뀐다.**
+  - **이렇게 우리가 django에서 form를 정의하고 --> View에서 template으로 변수를 넘겨주면 form를 쉽게 html form tag를 자유롭게 다룰 수 있게 된다.**
+  - https://docs.djangoproject.com/en/4.0/ref/forms/fields/ 여기에 보면 "핵심 필드 인수" 라는 부분도 있다. content 필드에 required=True라는 속성을 주고 모든 필드에 label 속성을 주게 되면 --> 실제로 html의 label 태그가 추가된 것 처럼 앞에 label이 추가된다. required=True는 기본값으로 무조건 해당 필드에 값이 있어야 한다는 점이다. 
+  - 그래서 이러한 forms.py를 사용하면 html에서 랜더링하는 것을 쉽게 도와줄 수 있다.
+
+- **또한, django template에서 Form rendering과 관련된 여러가지 옵션들이 있다.** https://docs.djangoproject.com/en/4.0/topics/forms/#working-with-form-templates (참고)
+  - 우리가 지금까지 사용했던 건, {{ form.as_p }}로 \<p\> 태그를 사용해서 form안에 들어가서 쓰는 것이다. 그런데 이것 말고도 위의 공식문서를 보면, 다양한 옵션이 있다. 
+  - {{ form.as_ul }}은 form안에 li 태그로 들어가게 된다. 또는 {{ form.as_table }}를 사용하면 table로 들어가게 된다. 
 
 
 
