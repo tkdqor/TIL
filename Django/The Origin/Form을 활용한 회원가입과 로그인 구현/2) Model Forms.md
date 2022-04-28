@@ -72,13 +72,26 @@ class PostBaseForm(forms.ModelForm):
 
 class PostCreateForm(PostBaseForm):
     class Meta(PostBaseForm.Meta):
-        s
+        fields = ['image', 'content']
+
+
+class PostUpdateForm(PostBaseForm):
+    class Meta(PostBaseForm.Meta):
+        fields = ['image', 'content']
+
+
+class PostDetailForm(PostBaseForm):
+    pass
     
 ```
 
 - **위에서보면, PostCreateForm은 바로 위에 있는 PostBaseForm를 상속받고 있는 구조이다. 그래서 내부의 Meta 클래스도 PostBaseForm의 Meta를 상속받는다.**
+  - 그리고 본인이 원하는 필드만 설정해줄 수 있다. 
+
+- **그래서 이렇게 하나의 BaseForm를 정의해서 그걸 상속받아 다양하게 활용할 수 있다.**
+  - PostDetailForm를 예를 들면, View의 post_detail_view에서 content로 form를 넘겨주고, template에서 {{ form.as_p }} 이렇게 사용하면 폼이 띄워진다. 
 
 
-5:25
+11:29
 
 
