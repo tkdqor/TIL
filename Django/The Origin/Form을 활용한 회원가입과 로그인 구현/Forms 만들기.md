@@ -38,7 +38,7 @@ def post_create_form_view(request):
         context = {
             'form': form,
         }
-        return render(request, 'posts/post_form.html', context)
+        return render(request, 'posts/post_form2.html', context)
     else:
         
         Post.objects.create(image=image, content=content, writer=request.user) # writer=request.user 추가 필요
@@ -64,7 +64,30 @@ urlpatterns = [
 ]
 ```
 
-- **여기까지 설정을 해놓고 이제 post_form.html도 수정을 해보자.**
+- **여기까지 설정을 해놓고 이제 template도 수정을 해봐야 하는데, 기존의 post_form.html을 복사해서 post_form2.html를 생성해보자.**
+
+```html
+{% extends 'base.html' %}
+
+<!-- title block -->
+{% block title %}글 입력{% endblock %}
+
+<!-- content block -->
+{% block content %}
+<h1>Post 입력 화면 - Form 사용</h1>
+<!-- 이미지 전송을 위한 인코딩 방식 추가 -->
+<form action="" method="POST" enctype="multipart/form-data"> 
+    {% csrf_token %}
+    
+    <!-- 데이터 전송  -->
+    <div>
+        <input type="submit">
+    </div>
+</form>
+{% endblock %}
+```
+
+- 그 안에 input submit 빼고는 다 지워준다.
 
 
 
