@@ -81,7 +81,10 @@ class PostUpdateForm(PostBaseForm):
 
 
 class PostDetailForm(PostBaseForm):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(PostDetailForm, self).__init__(*args, **kwargs)
+        for key in self.fields:
+            self.fields[key].widget.attrs['disabled'] = 'disabled'
     
 ```
 
@@ -92,6 +95,6 @@ class PostDetailForm(PostBaseForm):
   - PostDetailForm를 예를 들면, View의 post_detail_view에서 content로 form를 넘겨주고, template에서 {{ form.as_p }} 이렇게 사용하면 폼이 띄워진다. 
 
 
-11:29
+
 
 
