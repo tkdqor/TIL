@@ -84,7 +84,7 @@ class PostDetailForm(PostBaseForm):
     def __init__(self, *args, **kwargs):
         super(PostDetailForm, self).__init__(*args, **kwargs)
         for key in self.fields:
-            self.fields[key].widget.attrs['disabled'] = 'disabled'
+            self.fields[key].widget.attrs['disabled'] = True
     
 ```
 
@@ -93,6 +93,19 @@ class PostDetailForm(PostBaseForm):
 
 - **그래서 이렇게 하나의 BaseForm를 정의해서 그걸 상속받아 다양하게 활용할 수 있다.**
   - PostDetailForm를 예를 들면, View의 post_detail_view에서 content로 form를 넘겨주고, template에서 {{ form.as_p }} 이렇게 사용하면 폼이 띄워진다. 
+
+* * *
+
+### django template language에서도 주석 처리가 있다. 
+
+```html
+{# {{ form.as_p }} #}
+```
+
+- **기존의 html 방식으로 <! -- ... -- > 이런식으로 주석처리를 하게 되었을 때는 크롬의 개발자 도구로 봤을 때 코드가 나와있는 걸 확인할 수 있는데, 위의 방식으로 주석처리를 하게 되면 코드가 아예 나오지 않는다. html 방식은 일단 서버에서 django template 언어를 가져오고 그 다음에 html쪽에서 주석 처리를 하는 거니까 코드가 나와있게 된다.**
+
+- 결론적으로, 
+
 
 
 
