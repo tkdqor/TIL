@@ -19,7 +19,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 ```
 
-- 위와 같이 AUTH_PASSWORD_VALIDATORS라는 변수가 정의되어 있다. 사용자 속성과 관련된 부분, 최소길이, 섞어서 써야하는 패스워드 등이 있는데, 
+- 위와 같이 AUTH_PASSWORD_VALIDATORS라는 변수가 정의되어 있다. 사용자 속성과 관련된 부분, 최소길이, 섞어서 써야하는 패스워드 등 관련된 것들이 나와있다.
 
 - **[django 공식 Github 레포지토리](https://github.com/django/django) 가 있다. django가 오픈소스이기 때문에 모든 코드가 이렇게 공개되어 있다.**
   - **여기서 django - contrib - auth - common-passwords.txt.gz 이라고하는 파일이 있다. 해당 파일은 zip 파일이어서 다운을 받고 열어봐야 한다. 이걸 열어보면 텍스트 파일이 있는데, 그 안에는
