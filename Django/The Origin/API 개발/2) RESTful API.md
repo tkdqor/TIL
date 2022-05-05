@@ -53,4 +53,34 @@
 1. URI = {Resource}/ , HTTP Method = POST , CRUD = Create , 비고 = 생성 , ex) posts/ 
 2. URI = {Resource}/ , HTTP Method = GET , CRUD = Read , 비고 = 조회(전체 조회) , ex) posts/ 
 3. URI = {Resource}/{Identity}/ , HTTP Method = GET , CRUD = Read , 비고 = 조회(부분 조회) , ex) posts/3/
+4. URI = {Resource}/{Identity}/ , HTTP Method = PUT , CRUD = Update , 비고 = 전체 수정 , ex) posts/5/
+5. URI = {Resource}/{Identity}/ , HTTP Method = PATCH , CRUD = Update , 비고 = 부분 수정 , ex) posts/5/
+6. URI = {Resource}/{Identity}/ , HTTP Method = DELETE , CRUD = Delete , 비고 = 삭제 , ex) posts/3/
+
+- 오픈된 API도 이렇게 RESTful하게 작성되어있는 경우가 굉장히 많다. 
+- **그렇지만 특정 서비스의 모든 URL의 API가 restful하게 짜여져 있지는 않다. ex) 우리가 로그인/회원가입 경우에는 accounts/login 이렇게 앱이름을 넣는 경우도 있다.**
+
+
+
+## URI와 URL
+- URI : Uniform Resource Identifier로, 특정 리소스를 식별하는 통합 자원 식별자를 의미. 인터넷에 있는 자원을 나타내는 유일한 주소.
+- URL : Uniform Resource Locator로, 흔히 웹 주소라고도 하며 컴퓨터 네트워크 상에서 리소스가 어디 있는지 알려주기 위한 규약 
+
+
+## URI와 URL 구분
+1. www.naver.com -> URI : O / URL : O (URI이면서 URL이다)
+2. www.naver.com/posts/ -> URI : O / URL : O
+3. www.naver.com/posts/3/ -> URI : O / URL : X (3번처럼 보통 해당 자리는 id나 pk값을 사용하게 되는데, 이 때 이 값 자체는 URL이라고 부르지 않고 URI라고 부른다. 아이덴티티가 들어가기 때문이다.)
+4. www.naver.com/posts/?id=3/ -> URI : O / URL : X
+5. www.naver.com/static/image/ -> URI : O / URL : O (정적 파일을 불러올 때 image 폴더 안에 있는 것들은 URL이기도 하면서 URI이다)
+6. www.naver.com/static/image/logo.png -> URI : O / URL : X  (image 폴더 안에 있는 파일 자체는 URI이지만 URL은 아니다)
+
+
+## URI 명칭
+- http://www.example.com:80/path/to/myfile.html?key1=value1&key2=value2#SomewhereInTheDocument
+  - 여기서 http는 프로토콜(https, ssh 등) / www.example.com은 도메인 네임 / 80은 포트 
+  - /path/to/myfile.html은 Path to the file / ?key1=value1&key2=value2은 Parameters 또는 쿼리스트링 / #SomewhereInTheDocument은 Anchor(html에 특정 위치로 이동하기 위한 기능을 수행해주는 것)
+
+
+
 
