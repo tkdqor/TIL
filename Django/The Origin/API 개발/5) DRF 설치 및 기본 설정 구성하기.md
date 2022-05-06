@@ -9,10 +9,12 @@
 - https://www.django-rest-framework.org/tutorial/quickstart/ 해당 공식문서에 나와있는 과정이다. 
 
 ```terminal
-pip install djangorestframework
+pip install djangorestframework 
+
+pip3 install djangorestframework
 ```
 
-- 먼저 설치를 해준다. 이 상태에서 pip list를 해보면 DRF가 추가되었다. 그리고나서 settings.py에 추가를 해줘야 한다.
+- 먼저 설치를 해준다.(나는 pip3로 설치해야 오류가 나지 않았다.) 이 상태에서 pip list를 해보면 DRF가 추가되었다. 그리고나서 settings.py에 추가를 해줘야 한다.
 
 ```python
 INSTALLED_APPS = [
