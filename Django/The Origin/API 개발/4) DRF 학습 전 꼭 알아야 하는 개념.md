@@ -52,8 +52,7 @@ class UserList(generics.ListCreateAPIView):
     사용할 수 있다. 즉, RESTful하게 구현이 되어있는 View이다. 
     
     
-- API Guide - Viewsets를 가보자.
-  - Viewsets는 View가 모여있는 것이라고 보면 된다. 
+- **API Guide - Viewsets를 가보자. Viewsets는 View가 모여있는 것이라고 보면 된다.**
 
 ```python
 from django.contrib.auth.models import User
@@ -116,6 +115,7 @@ class UserViewSet(viewsets.ViewSet):
 - 그리고 get_permissions라는 함수를 사용해서, 요청에 따라 권한을 다르게 설정할 수 있다. 
   - 예를 들어, 우리 서비스의 회원 전체 데이터를 보는 것은 admin만 가능하게하고 그게 아니면 자기 자신만 볼 수 있게 할 수 있다. 
 
+
 - **또한, 클래스 내부에  @action(detail=True, methods=['post']) / def set_password(self, request, pk=None): 이렇게 @action이라고 사용하는 경우가 있다.**
   - 이 경우는 별도로 우리가 RESTful하게 짜면서 뒤에 계층을 나눠가는 경우가 있다. 예를 들어서 특정 사용자가 작성한 포스트 게시글을 다 가져와라 라고 했을 때는, users에 id값 넣고 posts를 넣게 되면
     이 @action으로 정리를 해야된다. 
@@ -144,4 +144,63 @@ class UserViewSet(viewsets.ModelViewSet):
 - **그래서 위의 경우에는, users에 set_password 라고 해서 --> url을 users/3/set_password 이렇게 만들지 않았을까 싶다.** 그래서 url를 그렇게 구성하면, set_password라는 함수를 호출하게 된다.
 
 
+- **그 다음, API Guide - Routers를 보자.**
+  - 이건 url 관련된 부분이라고 보면 된다. 
+
+<img width="454" alt="image" src="https://user-images.githubusercontent.com/95380638/167109250-9b625cbe-6b23-4cc9-b5a4-6b5e433df5e5.png">
+
+- 위에는 공식문서 내용인데, 이렇게 url을 만들어준다고 보면 된다. 
+- **그리고 Routers 공식문서를 보면, SimpleRouter쪽으로 많이 참고해보자.** 
+  - **여기서나오는 prefix는 resource라고 생각하면 된다. 그리고 lookup는 id값이라고 보면 된다.** 
+  - DRF에서도 URL Name이 필요한 이유는, 페이지네이션을 생각하면서 다음 글 데이터를 가져오는 API 주소를 보내줘야 하는 경우가 생기는데 그 때 이용이 된다.  
+
+- **공식문서에 나와있는 "pk"는 Primary Key라고 해서 id값이랑 똑같다고 보면 된다.**
+
+
+### Serializers
+- **API Guide - Serializers를 들어가보자.**
+- django의 form과 비슷한 개념이라고 보면 된다. 
+
+```python
+from rest_framework import serializers
+
+class CommentSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    content = serializers.CharField(max_length=200)
+    created = serializers.DateTimeField()
+```
+
+- **이렇게 Serializer를 상속해서 클래스를 선언해주는 것이다. 즉, Serializer를 정의해준다.** 
+- 그리고나서, Serializer는 모델을 JSON으로 / JSON를 모델로 전환해주기 때문에 
+
+```python
+serializer = CommentSerializer(comment)
+serializer.data
+# {'email': 'leila@example.com', 'content': 'foo bar', 'created': '2016-01-27T15:17:10.375877'}
+```
+
+- **이렇게 특정 모델, 여기서는 Comment라는 모델을 인자로 넣어서 변수로 정의하고 .data 메소드를 사용하면 JSON 형태로 데이터를 바꿔줄 수 있다.** 그래서 이렇게 "직렬화"를 할 수 있다는 점이 DRF의 가장 큰 장점이다. 
+
+- 또한, DRF도 유효성 검사를 해준다. 
+
+```python
+serializer = CommentSerializer(data={'email': 'foobar', 'content': 'baz'})
+serializer.is_valid()
+# False
+serializer.errors
+# {'email': ['Enter a valid e-mail address.'], 'created': ['This field is required.']}
+```
+
+- 이렇게 코드 예시가 나와있는데, 실제로는 request된 데이터를 CommentSerializer의 변수로 넣어주면서 유효성 검사를 진행하게 된다.
+
+- **또한, ModelSerializer가 가장 중요한 개념일 것이다.**
+
+```python
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['id', 'account_name', 'users', 'created']
+```
+
+- 이렇게 ModelSerializer를 상속받아서 클래스를 정의하고, Meta 클래스에다가 JSON 형태로 변환하고 싶은 모델을 입력하고 우리가 사용할 필드만 적어준다. 
 
