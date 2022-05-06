@@ -6,6 +6,40 @@
 
 ## Django REST Framework 설치하기
 - 새로 만든 liongram-api에 들어와있는 상태에서 DRF를 설치해보자.
+- https://www.django-rest-framework.org/tutorial/quickstart/ 해당 공식문서에 나와있는 과정이다. 
 
-5:00
+```terminal
+pip install djangorestframework
+```
+
+- 먼저 설치를 해준다. 이 상태에서 pip list를 해보면 DRF가 추가되었다. 그리고나서 settings.py에 추가를 해줘야 한다.
+
+```python
+INSTALLED_APPS = [
+    ...
+    'rest_framework',
+]
+```
+
+- 즉, DRF도 외부 패키지라고 보면 된다. 
+
+
+- **지금 가상환경이 어떤 경로인지 확인하려면, VSCode 메뉴에서 View - Command Palette - Python Select Interpreter - venv에 들어가서 python 선택.**
+
+* * *
+- 그리고 liongram-api 내부안에 새로운 App인 posts를 만들어준다. 
+
+```python
+django-admin startapp posts
+```
+
+### Serializer 만들기
+- models.py를 키고 우리가 liongram의 posts App에서 했던 모델 코드들을 그대로 가져와보자.
+- **그리고 posts라는 App안에다가 serializers.py라는 파일을 만들어준다. 그리고 해당 파일 안에다가 다음과 같은 코드를 추가해준다.**
+
+```python
+
+
+
+
 
