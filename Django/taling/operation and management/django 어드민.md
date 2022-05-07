@@ -54,4 +54,67 @@ class Category(models.Model):
 
 <img width="720" alt="image" src="https://user-images.githubusercontent.com/95380638/167235672-f1725656-4bb6-432b-9bef-42e71600eac6.png">
 
-- 위에 화면 
+- **위에 화면에서 카테고리는 바뀌었지만, restaurant 모델의 필드들도 설정할 수 있다.**
+
+```python
+...
+
+class Restaurant(models.Model):
+    name = models.CharField(max_length=200, db_index=True, verbose_name=_('이름'))
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1, verbose_name=_('카테고리'))
+    main_image = models.ForeignKey('RestaurantImage', related_name='main_image', null=True, on_delete=models.CASCADE, verbose_name=_('메인 이미지'))
+    address = models.CharField(max_length=300, db_index=True, verbose_name=_('주소'))
+    phone = models.CharField(max_length=20, verbose_name=_('연락처'))
+    visible = models.BooleanField(default=True, verbose_name=_('표시 여부'))
+    latitude = models.FloatField(null=True, default=None, verbose_name=_('위도'))
+    longitude = models.FloatField(null=True, default=None, verbose_name=_('경도'))
+    created_at = models.DateTimeField(auto_now_add=True, null=False, verbose_name=_('생성일시'))
+    updated_at = models.DateTimeField(auto_now=True, verbose_name=_('수정일시'))
+    menu_info = models.TextField(null=True, verbose_name=_('메뉴 정보'))
+    description = models.TextField(null=True, verbose_name=_('설명'))
+```
+
+- **이렇게 models.py에서 모델을 정의할 때, 필드 속성에다가 verbose_name이라는 것을 선언해주면 된다. 여기서도 gettext_lazy를 사용해서 나중에 번역할 때를 대비해서 선언해주면 나중에 좋을 것이다.**
+- 위에 처럼 name필드를 수정해보면 실제로 '이름'이라고 바뀐다. 그래서 위와 같이 Restaurant 모델의 필드들에 전부 verbose_name이라는 것을 선언해주면 어드민 페이지에서 확인할 때 모든 필드들이 해당 글로 뜨게 된다. 
+- **그리고 기본적으로, 모델을 수정했으니까 migration과 migrate도 해줘야 한다.**
+
+
+### 어드민 페이지 모델 클릭 시, 리스트 화면 수정하기
+- 지금은 restaurant 모델을 클릭하면 그냥 Restaurant object (23) 이렇게 pk값만 나오게 된다. 
+- 이걸 수정하기 위해서는, admin.py에서 수정해주면 된다.
+
+```python
+from django.contrib import admin
+from .models import Restaurant
+
+# Register your models here.
+class RestaurantAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'category', 'address')
+    fieldsets = [
+        ('주요정보', {'fields': ['name', 'category', 'address', 'phone', 'visible']}),
+        ('상세정보', {'fields': ['menu_info', 'description']})
+    ]
+
+admin.site.register(Restaurant, RestaurantAdmin) 
+
+```
+
+- **여기서 list_display라는 필드를 설정해주면 된다.**
+  - 참고로 이러한 필드가 어떤것이 있는지 알고 싶다면, **ModelAdmin를 command로 클릭**해보면 해당 클래스 내부에 우리가 사용해볼 수 있는 변수들이 나와있다. 
+
+- **list_display는 튜플로 들어가게 된다. 여기서 리스트에 보여지길 원하는 필드들을 나열하면 된다.**
+
+- **또한, 그냥 fields가 아니라 fieldsets라는 것을 사용해볼 수도 있다.**
+  - 리스트 내에 튜플로 설정해서 여러 필드들을 묶음으로 처리할 수 있다. 그 안에 어떤 필드들을 묶을지는 딕셔너리로 표현해준다.
+  - **fieldsets은 ModelAdmin에서도 이미 정의되어있는 건데, 여기에 어떤 값을 리스트로 넣어주게 된다. 그리고 여기 안에 들어가있는 튜플의 개수만큼 그룹을 지어준다. 여러 필드들을 한 묶음으로 화면에 표시하도록 그룹을 지어준다. 그 그룹의 이름을 처음에 튜플의 0번째 항목으로 넣어주는 것이다. 그 다음 튜플의 1번째 항목으로 속성들을 딕셔너리로 넣어준다. 여기서 키인 fields는 어떤 필드들을 묶을 것인지 정의하는 것이고 값에 리스트를 넣어주는 것이다.** 
+
+<img width="1110" alt="image" src="https://user-images.githubusercontent.com/95380638/167236627-d990050b-840e-4070-af30-4167dfd470ae.png">
+
+<img width="773" alt="image" src="https://user-images.githubusercontent.com/95380638/167236635-141929a4-29d2-43a8-a983-6e876a996f45.png">
+
+- 위와 같이 설정하고 다시 어드민 페이지를 보면 이렇게 리스트에서는 우리가 정의한 필드들이 출력된다. 그리고 pk를 눌러서 들어가게 되면 "주요정보"와 "상세정보"로 묶음이 되어서 정보를 나눠서 보여준다.
+
+
+
+
+
