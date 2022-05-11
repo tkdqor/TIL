@@ -38,5 +38,94 @@
 <img width="724" alt="image" src="https://user-images.githubusercontent.com/95380638/167805181-51fe7b76-6b27-4768-8eb8-de85cf186f1e.png">
 
 
+- **이런식으로 만들어놓고 나랑 협업하는 개발자간의 소통을 할 수도 있다. 내가 프론트엔드 개발자한테 "제가 Post - List API 만들었습니다. 한 번 사용해주세요!" 이렇게 얘기해주면 된다.**
+  - **그러면 postman API 화면에 method 나오고 URL 나오고 인증이나 Headers, 파라미터 등 내가 정해놓은 것들을 나혼자 쓰는 게 아니고 나랑 같이 하는 동료들과 소통할 수 있고 API 명세서라고 해서 API 문서 대체용으로 이 postman을 남겨놓고 나중에 오는 사람들이 사용할 수 있도록 문서화를 시킬 수가 있다.**
 
+
+### API 문서화
+- 요즘에는 postman를 쓰기도 하지만 그러지 않고 일반 문서로 만드는 경우도 굉장히 많다. 
+- 또한, 최근에 굉장히 인기있는 swagger라는 코드베이스로 해서 API 명세서를 만들어주는 것도 있다. 
+
+
+
+### liongram-api에 계산기 만들기 - 함수 기반 API View
+- liongram-api 내부 posts 앱에 있는 views.py에 코드를 추가해보자.
+
+```python
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+...
+
+@api_view()
+# 계산기 기능 / DRF로 구성
+def calculator(request):
+    # 1. 데이터 확인
+    num1 = request.GET.get('num1', 0)
+    num2 = request.GET.get('num2', 0)
+    operators = request.GET.get('operators')
+
+    # 2. 계산
+    if operators == '+':
+        result = int(num1) + int(num2)
+    elif operators == '-':
+        result = int(num1) - int(num2)
+    elif operators == '*':
+        result = int(num1) * int(num2)    
+    elif operators == '/':
+        result = int(num1) / int(num2)        
+    else:
+        result = 0    
+    
+    data = {
+        'type': 'FBV',
+        'result': result,
+    }
+    
+    # 3. 응답
+    return Response(data)
+    
+```
+
+- **이렇게 함수 기반 뷰를 만드는데, return에 Response를 사용한다. Response는 DRF에서 제공해주는 것을 사용한다. 여기에 딕셔너리 형태로 넣어주면 들어가게 된다.** 
+- 계산기 코드를 생성하고 data라는 딕셔너리를 Response에 넣어주자. Response를 command로 클릭하면 처음으로 들어가야할 인자가 data이다.
+
+* * *
+- **그 다음으로는 urls.py가서 코드를 추가한다.**
+
+```python
+from posts.views import PostModelViewSet, calculator
+...
+
+# DRF routers 설정
+router = routers.DefaultRouter()
+router.register('posts', PostModelViewSet)
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('admin/', admin.site.urls),
+    # 계산기 기능
+    path('calculator/', calculator, name='calculator'),
+]
+```
+
+- **이렇게 추가해주기. 그리고나서 다시 postman에서 http://localhost:8000/calculator/ 이 url로 GET으로 날려보면,**
+
+```terminal
+{
+    "type": "FBV",
+    "result": 0
+}
+```
+
+- **이런식으로 JSON 형태의 데이터를 응답해준다. 추가로, postmnan에서 Params인 파라미터에 num1과 num2, operators를 추가해주고 값을 넣고 요청을 날리게 되면,**
+
+<img width="870" alt="image" src="https://user-images.githubusercontent.com/95380638/167813103-0083fa60-bddb-4536-a1b0-63b30dc759b8.png">
+
+- 이렇게 result에 8이 출력되는 것을 확인할 수 있다. 여기서 신기한 점은 우리가 postman에서 http://localhost:8000/calculator/ 여기까지만 입력했는데 위의 캡처를 보면 -> 추가로 생겨났다. 파라미터의 경우 url에 쿼리스트링으로 들어가기 때문에 추가가 되는 것이다.
+- 우리가 POST로 요청을 날릴 경우에는 이렇게 되지 않는다. 
+
+
+- **여기까지가 함수 기반으로 API View를 작성하는 기본적인 코드 및 방법이다. 이렇게 하면 단순히 모델 데이터가 아닌, 우리가 직접 코드를 작성해서 원하는 정보들을 API로 요청했을 때 응답해줄 수 있다.**
+  - **@api_view()는 api형태로 전환해주는 역할을 한다. command로 들어가 보자.** 
+  - **그리고 기존 함수기반 View와 응답 코드가 다르다. 전에는 render를 사용해서 html 파일 자체를 응답했다. 지금은 Django REST Framework에서 제공해주는 Response로 응답을 하는데, 여기에 딕셔너리를 넣어주었다.**
   
