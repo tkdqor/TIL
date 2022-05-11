@@ -129,3 +129,115 @@ urlpatterns = [
   - **@api_view()는 api형태로 전환해주는 역할을 한다. command로 들어가 보자.** 
   - **그리고 기존 함수기반 View와 응답 코드가 다르다. 전에는 render를 사용해서 html 파일 자체를 응답했다. 지금은 Django REST Framework에서 제공해주는 Response로 응답을 하는데, 여기에 딕셔너리를 넣어주었다.**
   
+* * *   
+  
+### liongram-api에 계산기 만들기 - 클래스 기반 API View
+- 이제는 클래스 기반 View로 만들어보자.
+
+```python
+from rest_framework.views import APIView
+...
+
+# 계산기 기능 / 클래스 기반 API View
+class CalculatorAPIView(APIView):
+    def get(self, request):
+        # 1. 데이터 확인
+        num1 = request.GET.get('num1', 0)
+        num2 = request.GET.get('num2', 0)
+        operators = request.GET.get('operators')
+
+        # 2. 계산
+        if operators == '+':
+            result = int(num1) + int(num2)
+        elif operators == '-':
+            result = int(num1) - int(num2)
+        elif operators == '*':
+            result = int(num1) * int(num2)    
+        elif operators == '/':
+            result = int(num1) / int(num2)        
+        else:
+            result = 0    
+        
+        data = {
+            'type': 'CBV',
+            'result': result,
+        }
+        
+        # 3. 응답
+        return Response(data)
+
+```
+
+- **먼저 기본적인 APIView를 Import 해준다. 이 APIView는 다른것들에 다 상속을 받는 건데, command로 보면 다양한 게 많지만 우리가 핵심으로 알아야 할 것은, 클래스 기반 View에서 GET 요청을 어떻게 처리할지가 중요하다.**
+  - **이 때는 get이라는 함수를 만들어서 위의 계산기 기능을 동일하게 시켜주면 된다. 위의 코드를 가져와서 get 함수 내부에 위치시켜주자.**
+
+- 그리고 urls.py에서 추가로,
+
+```python
+from posts.views import PostModelViewSet, calculator, CalculatorAPIView
+...
+
+urlpatterns = [
+    path('', include(router.urls)),
+    path('admin/', admin.site.urls),
+    # 계산기 기능 / 함수 기반 API View
+    # path('calculator/', calculator, name='calculator-fbv'),
+    # 계산기 기능 / 클래스 기반 API View
+    path('calculator/', CalculatorAPIView.as_view(), name='calculator-cbv'),
+]
+```
+
+- **이렇게 CalculatorAPIView를 연결시켜준다. 그 다음에 postman으로 똑같은 url로 요청을 보내면 type이 CBV로 변한것을 확인할 수 있다.**
+
+- 그리고 추가로 CalculatorAPIView 내부에 def post(self, request):로 하게 되면 -> POST 요청일 때를 적어줄 수 있다.
+  - **여기에 항상 self가 들어가는 이유는, 클래스 내부에 있는 함수이기 때문에 self를 꼭 넣어줘야 한다. 그리고 지금은 두번째 인자로 request가 들어가야 한다.**
+
+```python
+# 계산기 기능 / 클래스 기반 API View    
+class CalculatorAPIView(APIView):
+    def get(self, request):
+        # 1. 데이터 확인
+        num1 = request.GET.get('num1', 0)
+        num2 = request.GET.get('num2', 0)
+        operators = request.GET.get('operators')
+
+        # 2. 계산
+        if operators == '+':
+            result = int(num1) + int(num2)
+        elif operators == '-':
+            result = int(num1) - int(num2)
+        elif operators == '*':
+            result = int(num1) * int(num2)    
+        elif operators == '/':
+            result = int(num1) / int(num2)        
+        else:
+            result = 0    
+        
+        data = {
+            'type': 'CBV',
+            'result': result,
+        }
+        
+        # 3. 응답
+        return Response(data)
+    
+
+    def post(self, request):
+
+        data = {
+            'type': 'CBV',
+            'method': 'POST',
+            'result': 0,
+        }
+        
+        # 3. 응답
+        return Response(data)
+```
+
+
+- 이렇게 코드를 추가하고 Postman에서 POST로 날려보면 다르게 출력이 된다. 
+
+
+
+
+
