@@ -70,6 +70,52 @@ class PostModelViewSet(ModelViewSet):
 - 이렇게 PostListModelSerializer를 설정해주면 된다.
 
 
-4:47
+* * *
+- admin.py에 Post 모델 추가
+
+```python
+from django.contrib import admin
+from .models import Post
+
+
+# Register your models here.
+@admin.register(Post)
+class PostModelAdmin(admin.ModelAdmin):
+    pass
+```
+
+- 그리고 admin 페이지 들어가서 Post 모델 데이터의 작성자를 설정해주기. 그리고 DRF를 보면,
+
+<img width="538" alt="image" src="https://user-images.githubusercontent.com/95380638/168135042-efa4b57b-c46c-4613-b695-277a97a2482c.png">
+
+- **이렇게 writer에는 아이디 값만 뜨게 된다.**
+
+
+- **그래서 serializers.py에 있는 PostListModelSerializer 클래스 내부에다가 설정을 추가하자.**
+
+```python
+...
+
+# PostBaseModelSerializer 상속받아서 설정
+class PostListModelSerializer(PostBaseModelSerializer):
+    class Meta(PostBaseModelSerializer.Meta):
+        # 부모에서 모델과 필드가 있기 때문에 적지 않아도 됨
+        fields = [
+            'id', 
+            'image',
+            'created_at',
+            'view_count',
+            'writer',
+        ]
+        # exclude = ['content', ]
+        depth = 1
+```
+
+- 이렇게 내부에 depth = 1를 넣어주면, 
+
+<img width="946" alt="image" src="https://user-images.githubusercontent.com/95380638/168135606-48869dde-3e48-43f7-8875-a7b731ee6275.png">
+
+- **이런식으로 원래는 user의 id값만 나왔던게 지금은 User 모델의 데이터를 다 불러오게 된다.**
+  - ex) 게시글의 댓글을 가져올 때도 이렇게 설정하면 훨씬 더 편리할 것이다. 
 
 
