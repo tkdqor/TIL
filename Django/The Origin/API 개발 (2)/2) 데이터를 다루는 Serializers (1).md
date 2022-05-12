@@ -105,4 +105,14 @@ class AccountSerializer(serializers.ModelSerializer):
         fields = ['url', 'groups']
 ```
 
-- 해당 예시처럼, 
+- 해당 예시처럼, ModelSerializer를 이용해서 필드를 새롭게 추가해줄 수도 있다. ex) url, groups
+
+
+### 공식문서 - API Guide - Serializer fields
+- Serializer에서 사용할 수 있는 필드와 필드의 속성을 알려준다. 
+- 이러한 부분도 Form과 비슷하다.
+
+
+* * *
+
+- **Serializer는 DRF에서 View를 작성하기 이전에, serializers.py에다가 Serializer를 먼저 정의해주고  -> View에서 사용할 수 있도록 해준다.**
