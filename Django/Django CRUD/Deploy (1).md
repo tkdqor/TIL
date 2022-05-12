@@ -21,7 +21,8 @@
   - 해당 프로그램은 server 리소스를 활용하여 퍼포먼스를 증대시킴과 동시에 django 프로세스를 모니터링하고 고가용성을 도모할 수 있게 한다.
 
 - 그리고 **web server인 nginx를 추가로 사용**해서 static 파일과 관련된 처리는 nginx가, 그 외의 나머지 트래픽은 gunicorn를 통해 django가 대신 처리할 수 있게끔 전달해줘서 조금 더 안정적으로 트래픽을 처리할 수 있게끔 만들어줄 수 있다.
-  - ex) **nginx(웹서버) -> gunicorn(WSGI) -> django(EC2 server, 즉 앱서버) -> RDBMS (Production 환경에 적합한 구조)**
+  - ex) **<nginx(웹서버) -> gunicorn(WSGI) -> django(EC2 server, 즉 앱서버)> -> RDBMS (Production 환경에 적합한 구조)**
+    - <...> 이렇게 표시한 3개는 실습에서 하나의 EC2에 모두 설치했음
 
 - 이 상태에서 우리의 웹서비스가 더욱 성장해서 훨씬 더 많은 트래픽이 발생한다면 어떻게 될까? 우리의 서비스가 커질수록 EC2 server 한 대로는 감당하기 어려워진다.
 
