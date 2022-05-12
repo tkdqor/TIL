@@ -62,4 +62,47 @@ serializer.errors
 
 - 또한, 이렇게 유효성 검사에 False로 실패한 경우에는, .errors 메소드를 사용해서 왜 틀렸는지 파악할 수 있다. 
 
+* * * 
 
+### ModelSerializer
+- 우리가 일반적으로 데이터를 생성하게 되면 CRUD 행위들을 굉장히 많이 하게 된다. ModelSerializer는 일반적인 Serializer와 비슷하지만 더 쉽게 직렬화를 할 수 있게 해준다.
+  - **일반 Serializer의 경우, 필드를 다 정의를 했었어야 했는데 / ModelSerializer 같은 경우에는,**
+
+```python
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['id', 'account_name', 'users', 'created']
+```
+
+- **이렇게 모델 이름을 입력해주면 모델의 필드를 가져올 수 있다. 모델에 정의되어있는 필드들을 그대로 가져와서 진행을 해준다.**
+- 기본적으로 ModelSerializer는 모든 필드를 다 가지고 있지만, exclude를 사용해서 특정 필드를 제외할 수도 있다. 
+
+
+- **중첩 직렬화 지정이란**
+  - python은 객체 지향 언어이기 때문에 클래스안에 클래스, 객체안에 객체가 들어간다. 그래서 이 객체를 포함하는 형식의 코드가 있다. 
+
+```python
+class AccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Account
+        fields = ['id', 'account_name', 'users', 'created']
+        depth = 1
+ ```
+ 
+ - 이러한 예시가 있을 때, fields에 있는 'users'는 다른 객체일 것이다. Account라는 모델이 있을 것이고 User는 사용자 정보를 위한 모델일 것이다. 
+   - 이 때, Serializers에서 depth를 정해주게 되면 -> Account의 필드들 이외에도 users라는 객체와 관련된 필드들도 들어가게 된다. 
+
+
+- **기존 모델의 필드 이외에 필드를 추가**
+```python
+class AccountSerializer(serializers.ModelSerializer):
+    url = serializers.CharField(source='get_absolute_url', read_only=True)
+    groups = serializers.PrimaryKeyRelatedField(many=True)
+
+    class Meta:
+        model = Account
+        fields = ['url', 'groups']
+```
+
+- 해당 예시처럼, 
