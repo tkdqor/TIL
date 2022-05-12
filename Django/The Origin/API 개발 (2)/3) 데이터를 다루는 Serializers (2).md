@@ -119,3 +119,67 @@ class PostListModelSerializer(PostBaseModelSerializer):
   - ex) 게시글의 댓글을 가져올 때도 이렇게 설정하면 훨씬 더 편리할 것이다. 
 
 
+
+### HyperlinkedModelSerializer
+- **우리 프로젝트의 serializers.py에서 HyperlinkedModelSerializer를 추가로 import 해보자.**
+- **그리고 맨 밑에 CommentHyperlinkedModelSerializer 클래스를 새롭게 만들어서 HyperlinkedModelSerializer를 상속받게 해보자.**
+
+```python
+from rest_framework.serializers import ModelSerializer, HyperlinkedModelSerializer
+...
+
+class CommentHyperlinkedModelSerializer(HyperlinkedModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+```
+
+
+- **그리고 View에서 CommentHyperlinkedModelSerializer를 사용해서 routers를 설정.**
+
+```python
+from .serializers import PostBaseModelSerializer, PostListModelSerializer, CommentHyperlinkedModelSerializer
+...
+
+# Post모델 ViewSet
+class PostModelViewSet(ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostListModelSerializer
+
+
+# Comment모델 ViewSet
+class CommentModelViewSet(ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentHyperlinkedModelSerializer
+```
+
+- **그 다음으로는, urls.py에 패턴을 추가해주자.**
+
+```python
+from posts.views import PostModelViewSet, calculator, CalculatorAPIView, CommentModelViewSet
+...
+
+# DRF routers 설정
+router = routers.DefaultRouter()
+router.register('posts', PostModelViewSet)        # Post 모델
+router.register('comments', CommentModelViewSet)  # Comment 모델
+```
+
+- 이렇게 routers에서 Comment 모델과 관련된 url를 설정하기.
+
+- 그러면, 이제 API ROOT 에서도 
+
+<img width="503" alt="image" src="https://user-images.githubusercontent.com/95380638/168140185-abde2d08-91dc-4696-83d4-48f7cb5e90a5.png">
+
+- 이렇게 추가된 것을 확인할 수 있고, comment 관련 url은 오류가 또 난다... 강의에서 해결도 안함.
+
+
+
+
+
+
+
+
+
+
+
