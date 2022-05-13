@@ -117,9 +117,110 @@ urlpatterns = [
 
 
 ### Template의 일부를 잘라서 캐시 적용하기
-- ㅇㅇ
+- 우리가 templates - restaurant - detail.html로 들어가보면, 후기가 뜨는 곳이 있다. 여기에 캐시를 먹여보자.
+  - 이 페이지 전체를 먹이는 건 아니다.
+
+```html
+{% load cache %}
+...
+
+<!-- 리뷰리스트 보여주기 -->
+<section class="mt-4">
+    <div class="row">
+        <div class="col-12 list-group">
+            <!-- 별점 평균 -->
+            <h6>후기
+                {% if ratings.ratings__avg %}
+                | {{ ratings.ratings__avg }}    
+                {% endif %}
+            </h6>
+
+            <!-- 후기 리스트를 캐시로 감싸기 -->
+            {% cache 60 detail-reviews restaurant.id %}
+            <!-- 리스트 출력 -->
+            <div class="list-group">
+                {% if reviews %}
+                    {% for review in reviews %}
+                    <div class="list-group-item list-group-item-action">
+                        평점: {{ review.ratings }}<br>
+                        {{ review.comment }}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="list-group-item list-group-item-action">
+                        후기가 없습니다.
+                    </div>
+                {% endif %}
+            </div>
+            {% endcache %}
+        </div>
+    </div>
+</section>
+              
+```
+
+- 처음에 일단 {% load cache %}로 가져온다.
+- {% cache 60 detail-reviews restaurant.id %} 이렇게 후기 리스트가 나오는 부분 위쪽에 코드를 작성해준다. cache라는 걸 사용할 수 있고 60초로 설정 / detail-reviews라는 이름으로 캐시를 남길 것이다. 이 캐시에 추가적으로 restaurant.id에 따라서 키가 달라지도록 파라미터를 붙일 수 있다. 이렇게 하면 detail-reviews라는 이름과 id가 조합되어서 캐시의 키가 완성이 된다.
+- 디테일 페이지가 레스토랑마다 다르게 떠야 하니까 그래서 레스토랑마다 다른 키로 캐시가 먹이도록, 레스토랑마다 캐시가 따로 저장이 되도록 구현을 한 것이다.
+- 그리고 마지막으로  {% endcache %} 로 닫아준다. 그래서 해당 부분만 캐시로 지정이 된다. 
 
 
+- 실제로 리뷰 부분을 브라우저로 들어가고 redis 서버를 확인해보면 --> 1) ":1:template.cache.detail-reviews.247730f9d0d2eaad265a470e32aa0cdf" 이렇게 detail 관련 키가 나온다.
+- 이걸 위와 같이 GET :1:template.cache.detail-reviews.247730f9d0d2eaad265a470e32aa0cdf 이렇게 입력해보면 --> 일부분만 캐시로 들어간걸 볼 수 있다. 
+
+
+### 데이터베이스 캐시
+- 이 데이터베이스 캐시는 우리가 적합하게 쓸 곳이 있다. 바로 검색 결과 부분이다. service - search.py로 가서 RestaurantSearch 클래스가 있는데 여기서 구현을 해보자.
+
+```python
+from django.core.cache import cache
+...
+
+class RestaurantSearch:
+    def create_cache_key(self, keyword, category_id, weekday, start_time, end_time, page_number):
+        return "%s:%s:%s:%s:%s:%s" % (keyword, category_id, weekday, start_time, end_time, page_number)
+        
+        
+    # Ajax를 위한 JSON 리턴 함수
+    def search(self, keyword, category_id, weekday, start_time, end_time, page_number):
+        cache_key = self.create_cache_key(keyword, category_id, weekday, start_time, end_time, page_number)
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return cached_data
+```
+
+- RestaurantSearch 클래스 내부에 메소드를 하나 더 생성한다. create_cache_key라는 메소드로 캐시 키를 생성하는 메소드이다. 똑같이 search 메소드에서 받는 인자들을 받는 것으로 해준다. 그래서 받는 인자들의 조합으로 캐시 키를 만들면 된다.
+- return "%s:%s:%s:%s:%s:%s" 이렇게 인자들의 조합으로 키를 6개 붙여가지고 캐시 키를 만들면 된다. 
+- 그리고 기존의 search 메소드 내부에 넣어준다.
+  - cache_key라는 변수를 정의하고 create_cache_key 메소드를 호출해서 가져온다. 그리고 cached_data가 있는지 체크한다. cached_data = cache.get(cache_key) 이렇게 cache의 get를 사용해서 캐시 키로 조회를 한다. 
+  - **그래서 cached_data가 있으면 그대로 return 해주면 -> 굳이 밑에 있는 DB를 히트치는 로직을 하지 않고도 데이터를 조회할 수 있게 된다.**
+  - 그리고 캐시가 없을 경우에는 -> 밑에 로직들을 따라가서 데이터를 다 조합한 다음에 마지막에 return 하기전에 캐시에 저장하는게 나와있다. 
+  - 일단 보내는 변수들을 바로 return 하지말고 
+
+```python
+result = {
+            'paging': paging,
+            'selected_keyword': keyword,
+            'selected_category': category,
+            # 'categories': categories, 
+            'selected_weekday': weekday,
+            'selected_start': datetime.time.isoformat(start_time) if start_time else '',
+            'selected_end': datetime.time.isoformat(end_time) if end_time else '',
+}
+
+cache.set(cache_key, result, 60)
+
+return result
+
+```
+
+- 이렇게 result에 할당을 해준다. 그리고나서 코드를 추가해서 캐시에 set이라는 명령어를 사용해서 cache_key 라는 이름으로 result를 60초의 제한시간으로 저장을 해준다. 
+- 그리고 마지막에 result를 return 해준다.
+
+- **여기까지 검색결과를 캐시로 먹이게 된 것이고, 이건 직접 우리가 코드상으로 캐시를 하는 방법을 구현한 것이다.** 데이터베이스 캐시같은 경우 지금같이 많이 작업을 한다. 
+
+- **실제로 브라우저에서 요일과 시작시간, 종료시간을 설정하고 검색을 해보고 / redis 서버에서 다시 키를 조회하면 -> 1) ":1:\xec\x84\x9c\xec\x9a\xb8::THU:10:00:00:13:00:00:1" 이렇게 새로운 키가 있는 것을 확인할 수 있다.** 이것을 GET :1:\xec\x84\x9c\xec\x9a\xb8::THU:10:00:00:13:00:00:1 이렇게 조회해보면 캐시된 데이터를 확인할 수 있다. 
+- **그래서 이 상태로 다시 검색 버튼을 누르면, 그 캐시 데이터가 그대로 오기 때문에 훨씬 빠른 속도로 검색이 되는 걸 확인할 수 있다.**
 
 
 
