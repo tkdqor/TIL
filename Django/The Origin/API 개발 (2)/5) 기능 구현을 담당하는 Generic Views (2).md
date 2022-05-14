@@ -93,8 +93,8 @@ class PostRetrieveUpdateView(generics.RetrieveAPIView, generics.UpdateAPIView, g
 
 
 - **그리고 추가로, views의 PostListCreateView같은 경우, 우리가 이걸 작성했을 때 생성자를 넣어줘야 한다.** 생성자를 넣어주는 가장 간단한 방법은, 오버라이딩을 해주는 것이다.
-  - CreateAPIView를 command로 보면, post라는 메소드가 정의되어있다. 그리고 그 메소드는 create 메소드를 호출한다. 우린 이 코드를 불러와서 수정을 하는 것이다. 
-  - 그래서 일단 post 메소드를 가져온다. 그리고 create 메소드 코드도 가져와서 붙여넣어준다.
+  - **CreateAPIView를 command로 보면, post라는 메소드가 정의되어있다. 그리고 그 메소드는 create 메소드를 호출한다. 우린 이 코드를 불러와서 수정을 하는 것이다.** 
+  - **그래서 일단 post 메소드를 가져온다. 그리고 create 메소드 코드도 가져와서 붙여넣어준다.**
 
 ```python
 from rest_framework import status
@@ -112,20 +112,23 @@ class PostListCreateView(generics.ListAPIView, generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         # self.perform_create(serializer)
-        instance = serializer.save(writer=request.user)
-        instance.save()
+        # 로그인 여부 판단해주기
+        if request.user.is_authenticated:
+            instance = serializer.save(writer=request.user)
+            # instance.save()
+        else:
+            serializer.save()
+
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 ```
 
-- 이런식으로 가져와준다. status는 Import 해준다. 그래서 실질적으로 post, create 코드가 돌기 때문에 CreateAPIView가 작동하는 것이다. 그래서 post로 요청이 오면 그대로 create가 실행이 될 것이고, create가 실행이 되면 여기서 serializer를 가져오고, 유효성 검사도 하고 생성해준다. 
+- **이런식으로 가져와준다. status는 Import 해준다. 그래서 실질적으로 post, create 코드가 돌기 때문에 CreateAPIView가 작동하는 것이다. 그래서 post로 요청이 오면 그대로 create가 실행이 될 것이고, create가 실행이 되면 여기서 serializer를 가져오고, 유효성 검사도 하고 생성해준다.**
 - self.perform_create(serializer)란 코드가 있는데 --> 이걸 command로 클릭해보면 perform_create라는 메소드가 serializer.save() 라는 코드를 실행시켜주고 있다.
   - 그래서 해당 부분을 주석처리하고 serializer.save()를 가져와줘도 된다. 
-  - 그리고 다시 instance = serializer.save(writer=request.user) 이렇게 코드를 수정해주자. 이렇게 수정하고나서 instance.save() 처럼 세이브를 한 번 더해줘야 오류가 나지 않는다. (강의에서는 주석처리 하는데 그러면 CSRF 오류가 발생한다)
+  - 그리고 다시 instance = serializer.save(writer=request.user) 이렇게 코드를 수정해주자. 
   - 이렇게 POST로 데이터를 생성할 때 작성자를 따로 받지 않았지만 --> serializer에서 save를 할 때 writer=request.user 이런식으로 값을 넣어주면 같이 save가 된다. 그래서 로그인된 유저가 자동으로 writer의 값이 된다. 따라서 로그인을 하지 않았을 경우에 POST로 날리면 오류가 발생하게 된다.
-
-
-20:42
+  - 여기에 추가로 로그인을 했으면 writer를 추가하고 / 로그인을 안 했으면 그냥 데이터를 저장하게끔 if문을 만들어줄 수 있다. 이렇게 수정하고 로그인을 하지 않을 때 POST로 생성해보면 writer는 null로 표시되고 데이터가 생성된다.
 
 
 
