@@ -1,0 +1,62 @@
+## HTTP Method와 ViewSets (2)
+- **urls.py에서 2개 패턴 잠깐 주석처리 해주고, router를 설정한 것을 다시 주석 해제하기.**
+
+```python
+# DRF routers 설정
+router = routers.DefaultRouter()
+router.register('posts', PostModelViewSet)        # Post 모델
+
+
+urlpatterns = [
+    path('', include(router.urls)),
+    ...
+]
+```
+
+- **이렇게 router 관련 코드를 살려주고 Views.py로 가서**
+
+```python
+...
+# Post모델 ViewSet
+class PostModelViewSet(ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostListModelSerializer
+```
+
+- **해당 viewset를 살려준다. 여기까지 설정하고 다시 서버를 실행해보면, http://localhost:8000/를 입력했을 때 Api Root가 잘 뜨는 것을 확인할 수 있다.**
+
+
+### ModelViewSet
+- 해당 클래스를 command로 들어가보면, 
+
+```python
+class ModelViewSet(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.UpdateModelMixin,
+                   mixins.DestroyModelMixin,
+                   mixins.ListModelMixin,
+                   GenericViewSet):
+    """
+    A viewset that provides default `create()`, `retrieve()`, `update()`,
+    `partial_update()`, `destroy()` and `list()` actions.
+    """
+    pass
+```
+
+- 이렇게 다양한 클래스들을 상속받고 있다. 생성/상세/수정/삭제/리스트 와 관련된 클래스이다. 여기서 CreateModelMixin와 ListModelMixin만 pk값이 안 들어가고 나머지는 다 pk값이 필요하다.
+- **그리고 마지막에는 GenericViewSet이라는 클래스를 상속받는다.** 
+
+```python
+class GenericViewSet(ViewSetMixin, generics.GenericAPIView):
+    """
+    The GenericViewSet class does not provide any actions by default,
+    but does include the base set of generic view behavior, such as
+    the `get_object` and `get_queryset` methods.
+    """
+    pass
+```
+
+- **이 GenericViewSet은 ViewSet의 역할을 할 수 있게 해주는 기본적인 클래스이기 때문에 중요하다. 그래서 다른 클래스를 상속받아도 이 GenericViewSet을 상속받아야 ViewSet의 기능을 할 수 있다.**
+
+
+
