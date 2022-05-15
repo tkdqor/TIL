@@ -41,7 +41,34 @@ def login_view(request):
 
 
 * * *
-- 이제 이걸 urls.py에 가서 연결을 해주자.
+- **이제 이걸 urls.py에 가서 연결을 해주자.**
+
+```python
+from accounts.views import login_view
+...
+
+urlpatterns = [
+    path('login/', login_view),
+    ...
+]
+```
+
+- **이렇게 accounts 앱의 login_view를 가져와서 연결해준다.**
+  - 그전에, settings.py에 
+
+```python
+INSTALLED_APPS = [
+    ...
+    'rest_framework.authtoken'
+]
+```
+
+- 이렇게 추가해줘야 한다.
 
 
-6:25
+- **그리고 postman을 이용해서 http://localhost:8000/login/ 해당 url로 POST 방식으로 Body를 클릭해서 username / password라는 KEY를 만들고 admin 계정의 데이터를 넣어주면 --> 
+
+
+
+
+
