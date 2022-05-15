@@ -11,7 +11,10 @@ django-admin startapp accounts
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 ...
+
+@api_view(['POST'])      # View 함수를 API 서버로 사용하기 위해 설정
 def login_view(request):
     username = request.POST['username']
     password = request.POST['password']
@@ -21,8 +24,7 @@ def login_view(request):
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key})
     else:
-        pass
-
+        return Response(status=401)
 
 ```
 
@@ -31,3 +33,15 @@ def login_view(request):
   - **그리고 get_or_create로 토큰이 없으면 생성해준다.** 
   - login_view 함수의 return 값을 주기 위해 from rest_framework.response import Response 이렇게 입력을 먼저 해준다. 
   - 그런다음, return Response({'token': token.key}) 이렇게 token의 key를 return 값으로 준다.
+
+- 로그인을 못했을 때는, 401 에러를 주기 위해 return Response(status=401) 코드 입력.
+
+- **그리고 해당 함수 View는 API 서버로 사용하는 것이기 때문에, from rest_framework.decorators import api_view 이걸 가져와준다.**
+  - **그리고 해당 함수를 어떤 method로 사용할지 이 @api_view 데코레이터 괄호 안에다가 적어줘야 한다.**
+
+
+* * *
+- 이제 이걸 urls.py에 가서 연결을 해주자.
+
+
+6:25
