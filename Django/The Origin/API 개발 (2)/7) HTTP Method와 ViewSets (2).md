@@ -85,7 +85,7 @@ class GenericViewSet(ViewSetMixin, generics.GenericAPIView):
 
 
 ### View 실습
-- 우리의 VIew에서 PostModelViewSet 클래스를 수정해보자.
+- **우리의 VIew에서 PostModelViewSet 클래스를 수정해보자.**
 
 ```python
 from rest_framework.decorators import action
@@ -97,14 +97,56 @@ class PostModelViewSet(ModelViewSet):
     serializer_class = PostListModelSerializer
 
     @action(detail=True, methods=['get'])
-    def get_comment(self, request, pk=None):
-        self.get_object()
+    def get_comment_all(self, request, pk=None):
+        post = self.get_object()
+        comment_all = post.comment_set.all()
+        return Response()
 ```
 
 - 여기서 먼저 action를 Import 해준다. 
 - 그리고 action 데코레이터를 사용해서 코드를 추가해준다. 
+  - get_comment함수는 POST의 pk값을 가져와서 comment를 가져오겠다는 것이다. 
+  - post 1개의 comment는 역관계이니까 comment_all = post.set_comment.objects.all() 이렇게 설정해주기.
+  - **그래서 이렇게 코드를 입력하고 serializers.py에서 Comment와 관련된 것을 만들어주자.**
 
-26:14
+
+```python
+class CommentListModelSerializer(ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+```
+
+- 이렇게 serializers.py에서 만들어준다.
+
+- **여기까지 설정한 다음에 브라우저에서 http://localhost:8000/posts/2/get_comment_all/ 이렇게 입력해보면 아직 아무것도 없지만 페이지를 출력해준다.**
+
+* * *
+
+- **이제는 실제로 데이터를 안에 넣어보자. views.py에서 우리가 serializers.py에서 만든 CommentListModelSerializer를 가져오자.**
+
+```python
+from .serializers import PostBaseModelSerializer, PostListModelSerializer, PostRetrieveModelSerializer, CommentListModelSerializer
+...
+
+# Post모델 ViewSet
+class PostModelViewSet(ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostListModelSerializer
+
+    @action(detail=True, methods=['get'])
+    def get_comment_all(self, request, pk=None):
+        post = self.get_object()
+        comment_all = post.comment_set.all()
+        serializer = CommentListModelSerializer(comment_all, many=True)
+        return Response(serializer.data)
+```
+
+- **우리가 만든 CommentListModelSerializer를 가져와서 comment 데이터들을 전부 넣어주고 serializer라는 변수를 만들고, 이걸 .data 메소드를 사용해서 JSON 형태로 변환한 다음, Response에 넣어준다.**
+
+- **그리고나서 어드민 페이지에서 2번 게시물에 Comment 모델의 데이터를 2개 정도 만들어주고, 다시 브라우저에서 http://localhost:8000/posts/2/get_comment_all/ 이렇게 들어가보면** 
+  - **2번 게시물에 대한 comment 데이터들을 확인할 수 있게 된다.**
+
 
 
 
