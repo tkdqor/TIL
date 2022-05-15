@@ -57,6 +57,15 @@ class GenericViewSet(ViewSetMixin, generics.GenericAPIView):
 ```
 
 - **이 GenericViewSet은 ViewSet의 역할을 할 수 있게 해주는 기본적인 클래스이기 때문에 중요하다. 그래서 다른 클래스를 상속받아도 이 GenericViewSet을 상속받아야 ViewSet의 기능을 할 수 있다.**
+  - 여기에서 ViewSetMixin은 as_view라는 메소드를 내부에 정의하고 있다. 그래서 우리가 urls.py에서 이 함수를 호출할 때 이것이 호출되는 것이다.
+  - 그 다음 GenericAPIView는 실질적으로 API가 수행하기 위해서 필요한 queryset이나 serializer_class, get__queryset 이런것들이 정의되어 있다. 
+  - **우리가 ModelViewSet이 상속받고 있는 ListModelMixin 클래스를 예로 들어보면, ListModelMixin을 command로 보면 -> ListAPIView가 호출되면 -> ListModelMixin이 호출이 될 것이고, list라는 메소드가 작동이 될 것이다. 그럼 그 안에 self.get_queryset이라는 게 호출이 된다. 그러면 그 때 -> GenericAPIView 안에 있는 get_queryset 메소드가 호출이 되는 것이다.**
+  - queryset이라는 것을 우리가 views.py에서 queryset = Post.objects.all() 이렇게 정의를 해놓았다. 그래서 GenericAPIView에서 get_queryset은 이걸 가져오라는 의미이다. 
+  - 그리고 if isinstance(queryset, QuerySet): 이렇게 QuerySet 클래스의 인스턴스가 맞는지 확인한다. 그 다음 이제 queryset를 응답해주는 게 GenericAPIView의 get_queryset 메소드이다.
+
+
+
+- 10:50 -> 디버깅 관련 내용
 
 
 
