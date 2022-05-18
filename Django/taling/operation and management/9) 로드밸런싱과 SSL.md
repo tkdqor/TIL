@@ -73,8 +73,65 @@
   - 예를 들면, 첫번째 EC2 서버에서 오리 사진을 하나 올렸는데, 나중에 다른 요청이 들어와서 오리 사진을 조회해보니까 3번째 EC2 서버에는 없다. 오리 사진은 그냥 첫번째 서버의 파일로 안에만 생긴 것이기 때문이다. 이걸 방지하기 위해 멀티 인스턴스 환경에서는 오리 사진을 S3라는 공유 저장소에 올려두고 모든 EC2 서버가 접근할 수 있게 만드는 것이다. 
 
 
-### S3 파일 업로그
+### S3 파일 업로드 진행하기
+- S3 라는 것 자체가 AWS에서 제공하는 클라우드 스토리지 서비스이다. 그래서 이걸 사용하면 멀티 인스턴스 환경에서 중앙 저장소 역할을 할 무언가를 만들게 되는 것이다. AWS를 안 쓰는 경우도 있다. 그래도 중앙에 어떤 공유 스토리지 서버를 지금처럼 사용하게 되니까 개념은 거의 비슷하다. 
 
+1) 먼저 AWS에서 S3라고 입력하기 - 그리고 "버킷 만들기" 클릭
+2) 버킷 이름은 "taling-bucket" / AWS 리전은 "아시아 태평양(서울) ap-northeast-2" 선택, 객체 소유권은 "ACL 활성화됨"을 선택, 그리고 "모든 퍼블릭 엑세스 차단"에 체크를 해제해준다. 이렇게 해서 버킷 만들기를 눌러주면 된다. 그러면 이 버킷 단위로 스토리지가 저장된다. 
+3) 그래서 Amazon S3 - 버킷을 누르면 상세화면이 나온다. 
+4) 그 다음은 AWS에서 IAM을 입력하고 클릭한다. 그래서 접근 토큰과 시크릿 키를 얻어와야 한다. IAM 메뉴에서 "사용자"를 클릭하고 사용자를 추가해준다. 사용자 이름은 "taling-user"라고 만들고 AWS 엑세스 유형 선택은 "엑세스 키 - 프로그래밍 방식 엑세스"를 선택해준다. / 권한 설정에서는 기존 정책 직접 연결을 클릭해서 "SES"라고 검색하기. 그래서 AmazonSESFullAccess를 체크, 그리고 "S3" 라고 검색해서 AmazonS3FullAccess 체크하고 넘어가기.
+5) 마지막 "검토"화면에서 권한 요약에 2개가 추가된 것을 확인할 수 있다. 그러면 이제 사용자 추가가 완료되었고 .csv 파일을 다운로드 해서 보관한다. 
+6) 이제 우리 코드 화면인 VSCode로 돌아와서 모듈 2개를 설치해야 한다. (ls했을 때 requirements.txt가 보이는 위치일듯하다)
 
+```terminal
+pip install boto3
+```
 
+- 이건 S3에 접근하기 위한 클라이언트 역할을 해주는 것이다.
+
+```terminal
+pip install django-storages
+```
+
+7) 이렇게 2개를 설치해준다. 이제 우리가 업로드 파일만 할 게 아니고, static 파일들도 공유 저장소에 올려놔야지, 로컬에서 쓰이는 파일로 끝나는 게 아니라 공유 저장소에서 서빙되서 멀티 인스턴스 상황에서 파일이 흩어지는 그런 상황이 안 나타나게 된다. 그래서 static 파일들도 S3에 올려주도록 하자.
+8) settings.py를 열어서 static url를 설정했던 부분 위쪽에 
+
+```python
+AWS_ACCESS_KEY_ID = 'AKIAXTIUUQ2YFAYQICPU'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_SES_REGION_NAME = 'ap-northeast-2'
+
+STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+```
+
+- 이렇게 이메일 전송 시 입력했던 부분들을 가져와준다.
+
+9) 여기서 AWS_ACCESS_KEY_ID는 아까 사용자 추가 화면에 있었던 "엑세스 키 ID"를 의미한다. 그래서 복사해서 붙여넣어주고, AWS_SECRET_ACCESS_KEY도 사용자 추가 화면의 "비밀 엑세스 키"를 의미하니까 복사해서 붙여 넣어준다. 그리고 INSTALLED_APPS에 'storages'를 추가해준다. 그리고 다시 static 쪽으로 와서 
+
+```python
+AWS_ACCESS_KEY_ID = 'AKIAXTIUUQ2YFAYQICPU'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_SES_REGION_NAME = 'ap-northeast-2'
+
+AWS_STORAGE_BUCKET_NAME = 'taling-bucket'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400'
+}
+AWS_DEFAULT_ACL = 'public-read'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+STATIC_URL = 'https://%s/static/' % AWS_S3_CUSTOM_DOMAIN
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+```
+
+- 이렇게 AWS_STORAGE_BUCKET_NAME = 'taling-bucket' 버킷의 이름을 넣어준다. 그리고 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME 이렇게 도메인을 합쳐준다. 그 다음에 AWS_S3_OBJECT_PARAMETERS로 브라우저에 파일이 내려갈 때 CacheControl를 지정해주게 되어있어서 이걸 86400초로 지정해서 캐시값도 미리 정의를 한다. 우리가 여길 통해서 업로드를 할 때 브라우저 캐시는 얼마나 먹여야 하는지를 여기서 정의하는 것이다. 한 번 브라우저가 S3에서 파일을 다운로드 받으면, 86400초 만큼은 기존 파일을 재사용하게 된다. 
+- AWS_DEFAULT_ACL = 'public-read' -> 이건 내가 파일을 새롭게 올릴 때 모든 사람이 read 권한을 가지도록, 전 세계에 이 파일을 서빙할 수 있도록 조취를 해주는 것이다.
+- STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' => STATICFILES_STORAGE의 모듈로 해당 모듈을 사용한다는 의미이다. 우리가 django 스토리지를 깔고 거기에 백엔드로 제공되는 모듈이다. 그래서 s3boto3 패키지 안에 있는 S3Boto3Storage이라는 모듈을 참조하게 되면, 여기를 통해서 업로드가 이루어지게 된다. 더 궁금하면 이 코드를 command로 들어가보자.
+- STATIC_URL = 'https://%s/static/' % AWS_S3_CUSTOM_DOMAIN -> 이렇게 수정해주기. 그러면 STATIC_URL의 접근할 때 full 호스트 네임은 -> https://taling-bucket.s3.amazonaws.com/static/sjdkfls.png 이런식으로 마지막에는 파일명이 들어가게 될 것이다. 나중에 CDN를 붙이면 이걸 수정해야 된다. 
 
