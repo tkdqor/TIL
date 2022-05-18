@@ -97,8 +97,8 @@ pip install django-storages
 8) settings.py를 열어서 static url를 설정했던 부분 위쪽에 
 
 ```python
-AWS_ACCESS_KEY_ID = 'AKIAXTIUUQ2YFAYQICPU'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = '....'
+AWS_SECRET_ACCESS_KEY = '....'
 AWS_SES_REGION_NAME = 'ap-northeast-2'
 
 STATIC_URL = 'static/'
@@ -112,8 +112,8 @@ STATICFILES_DIRS = [
 9) 여기서 AWS_ACCESS_KEY_ID는 아까 사용자 추가 화면에 있었던 "엑세스 키 ID"를 의미한다. 그래서 복사해서 붙여넣어주고, AWS_SECRET_ACCESS_KEY도 사용자 추가 화면의 "비밀 엑세스 키"를 의미하니까 복사해서 붙여 넣어준다. 그리고 INSTALLED_APPS에 'storages'를 추가해준다. 그리고 다시 static 쪽으로 와서 
 
 ```python
-AWS_ACCESS_KEY_ID = 'AKIAXTIUUQ2YFAYQICPU'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = '....'
+AWS_SECRET_ACCESS_KEY = '....'
 AWS_SES_REGION_NAME = 'ap-northeast-2'
 
 AWS_STORAGE_BUCKET_NAME = 'taling-bucket'
