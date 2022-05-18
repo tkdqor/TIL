@@ -134,4 +134,28 @@ STATICFILES_DIRS = [
 - AWS_DEFAULT_ACL = 'public-read' -> 이건 내가 파일을 새롭게 올릴 때 모든 사람이 read 권한을 가지도록, 전 세계에 이 파일을 서빙할 수 있도록 조취를 해주는 것이다.
 - STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' => STATICFILES_STORAGE의 모듈로 해당 모듈을 사용한다는 의미이다. 우리가 django 스토리지를 깔고 거기에 백엔드로 제공되는 모듈이다. 그래서 s3boto3 패키지 안에 있는 S3Boto3Storage이라는 모듈을 참조하게 되면, 여기를 통해서 업로드가 이루어지게 된다. 더 궁금하면 이 코드를 command로 들어가보자.
 - STATIC_URL = 'https://%s/static/' % AWS_S3_CUSTOM_DOMAIN -> 이렇게 수정해주기. 그러면 STATIC_URL의 접근할 때 full 호스트 네임은 -> https://taling-bucket.s3.amazonaws.com/static/sjdkfls.png 이런식으로 마지막에는 파일명이 들어가게 될 것이다. 나중에 CDN를 붙이면 이걸 수정해야 된다. 
+- STATICFILES_DIRS은 -> 기존의 루트 디렉터리 하위에 static 폴더를 위치시킨다는 의미이니까 그대로 두어도 된다. 
+
+10) 그 다음에는 터미널에 해당 명령어를 입력해서 requirements.txt를 갱신해준다. 
+
+```terminal
+pip freeze > requirements.txt
+```
+
+11) 그 다음에 실제 table_bookings 프로젝트 디렉터리로 들어가서(ls하면 manage.py가 보이는 위치)
+
+```terminal
+python manage.py collectstatic
+```
+
+- **다음과 같은 명령어를 입력한다. 그리고 yes를 입력한다. 그러면 100개가 넘는 static 파일이 업로드가 되었다고 뜨게 된다.**
+
+12) 실제로 우리가 AWS의 S3를 들어가서 우리가 만든 버킷을 클릭하면 -> "객체"라는 부분에 static 파일들이 올라간 모습을 확인할 수 있다. 하나 파일을 클릭해서 보면 "객체 URL" 이라는 것이 나와있고 이걸 클릭해보면 코드가 뜨는 것까지 볼 수 있다. 
+
+13) **실제로 python manage.py runserver로 실행을 해서 브라우저를 보자. 개발자 도구를 열어서 "네트워크"를 클릭해서 새로고침 해보면, "전체" 부분에 styles.css를 보면 오른쪽 헤더에 "요청 URL" 이라고 되어있는 부분이 우리가 저장한 S3의 저장소로 요청이 가는 것을 확인해볼 수 있다.**
+28:54
+
+
+
+
 
