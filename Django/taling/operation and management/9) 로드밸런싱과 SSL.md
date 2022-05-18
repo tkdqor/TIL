@@ -153,8 +153,40 @@ python manage.py collectstatic
 12) 실제로 우리가 AWS의 S3를 들어가서 우리가 만든 버킷을 클릭하면 -> "객체"라는 부분에 static 파일들이 올라간 모습을 확인할 수 있다. 하나 파일을 클릭해서 보면 "객체 URL" 이라는 것이 나와있고 이걸 클릭해보면 코드가 뜨는 것까지 볼 수 있다. 
 
 13) **실제로 python manage.py runserver로 실행을 해서 브라우저를 보자. 개발자 도구를 열어서 "네트워크"를 클릭해서 새로고침 해보면, "전체" 부분에 styles.css를 보면 오른쪽 헤더에 "요청 URL" 이라고 되어있는 부분이 우리가 저장한 S3의 저장소로 요청이 가는 것을 확인해볼 수 있다.**
-28:54
 
+14) 이제 업로드 media 수정을 해보자. table_bookings 루트 디렉터리(settings.py가 있는 디렉터리)안에 config.py라는 파일을 만들자. 여기에 우리가 media 업로드를 처리하기 위한 설정을 저장하고 있는 모듈을 만들 것이다. 
+
+```python
+from storages.backends.s3boto3 import S3Boto3Storage
+
+class MediaStorage(S3Boto3Storage):
+    location = 'media'
+    file_overwrite = False
+```
+
+- 일단 S3Boto3Storage은 static 파일을 업로드 하는 모듈이었다. 
+- 그리고 그 모듈을 상속받아서 MediaStorage라는 클래스를 정의해준다. location = 'media' 이렇게 해서 우리의 업로드된 파일들이 media라는 폴더에 저장이 되도록 한다. 그리고 file_overwrite = False라는 속성을 주면 파일들이 오버라이트 되지 않게 한다. 업로드할 때 똑같은 파일이 있으면 overwirte가 되지 않는다. 
+- 여기까지 하고 저장하고 다시 settings.py로 돌아간다.
+
+15) settings.py - MEDIA에 대한 설정을 바꿔줘야 한다. 기존의 
+
+```terminal
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = 'media'
+
+DEFAULT_FILE_STORAGE = 'table_bookings.config.MediaStorage'
+```
+
+- 해당 코드는 필요가 없을 것 같고, DEFAULT_FILE_STORAGE = 'table_bookings.config.MediaStorage' 이렇게 해서 우리가 위에서 새롭게 만들어준 그 클래스를 가져다 쓰기 위해 입력해준다. 그러면 업로드할 때는 우리가 작성한 MediaStorage라는 클래스의 설정값에 따라서 업로드가 될텐데, 우리가 추가로 작성한 설정은 location과 file_overwrite 설정이다. 
+
+16) 우리가 생각해보면, 사진을 띄워주는 부분들이 있다. web앱의 templates - restaurant - detail.html에도 있을 것이다. 아니면 office 앱의 templates - restaurant - list.html을 보면 있을 수도 있다. 즉, img 태그에서 src 속성을 django template language로 하는 게 아니라 '/media/..' 이런식으로 되어있는 부분이 있다면 수정해야 한다는 것이다. 
+
+17) 여기까지 한 다음, 서버를 껐다가 다시 켜보고 localhost:8000/office/로 가서 운영자 권한이 있는 계정으로 들어가면, "식당"이라는 메뉴가 뜰 것이다. 식당을 클릭해서 "추가하기"를 클릭해서 작성하면 이미지가 제대로 뜬다. 이걸 개발자 도구를 켜서 사진을 클릭해보면 -> src 속성이 AWS 버킷 주소로 잘 들어가 있다. 
+
+18) 그리고 AWS S3로 가서 버킷을 클릭해보면 -> media라는 폴더가 생겨있고 이 안에 방금 업로드 한 이미지가 뜨게 된다. 
+
+
+34:57
 
 
 
