@@ -71,7 +71,9 @@ ALLOWED_HOSTS = ['13.xxx.xxx.xx']
 - 이런식으로 문자열로 넣어주자. 그리고 insert 모드를 종료하기 위해 esc키를 누르고 command 모드를 빠져나온 다음 변경한 내용을 저장하기 위해 :wq 를 입력하고 엔터를 누르면, 저장과 동시에 vim이 종료된다.
 - 이제 다시 터미널에서 python manage.py runserver 0:8000으로 서버를 실행시키면 우리의 프로젝트가 보이게 된다.
   - 문제는 우리가 이 터미널을 끄는 순간, django server도 shut down 되면서 서비스에 사용자들이 접근할 수 없게 된다. **그래서 runserver 명령어를 통해서 우리가 django server를 실행시키는 것이 아니라, django 프로세스 매니저를 통해서 django server를 대신 실행하게끔 만들고 -> 우리가 터미널을 종료하더라도 django가 알아서 항상 떠있게끔 만들어줘야 한다.**
-  - 그래서 이제 우리가 직접 server를 구동시키는 것이 아니라, gunicorn이라는 프로그램을 사용해서 django server를 대신 구동하게끔 만들어주자.
+
+
+- **그래서 이제 우리가 직접 server를 구동시키는 것이 아니라, gunicorn이라는 프로그램을 사용해서 django server를 대신 구동하게끔 만들어주자.**
 
 * * *
 ### WSGI
