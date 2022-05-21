@@ -7,6 +7,7 @@
 
 - **swagger는 프로젝트 내 많은 API를 한꺼번에 문서화하여 볼 수 있게 하는 패키지이다.**
 - **drf-yasg란, Swagger를 사용하기 위해 설치하는 패키지로 django로 정의된 API를 문서화할 수 있는 패키지를 의미한다.**
+  - 관련 블로그 : https://life-with-coding.tistory.com/460
 
 * * *
 
