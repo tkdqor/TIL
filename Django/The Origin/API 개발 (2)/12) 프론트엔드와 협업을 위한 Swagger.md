@@ -56,6 +56,8 @@ urlpatterns = [
 
 - 여기까지 설정하면 연결 자체는 끝이 났다. 그리고나서 http://localhost:8000/swagger/ 라고 브라우저에 입력해보면
 <img width="728" alt="image" src="https://user-images.githubusercontent.com/95380638/169634622-ded315c1-a773-4780-afc4-6beac6896f13.png">
+<img width="1343" alt="image" src="https://user-images.githubusercontent.com/95380638/169634824-824daed0-8680-4974-9cc2-d2e9f10e841f.png">
+
 
 - **이렇게 swagger 화면이 보이게 된다.** 
   - 해당 화면을 보면 우리가 만들었던 calculator, login, posts 관련 API가 다 들어있다.
