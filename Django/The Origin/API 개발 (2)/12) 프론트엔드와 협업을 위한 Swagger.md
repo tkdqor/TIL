@@ -5,6 +5,9 @@
   - https://github.com/axnsan12/drf-yasg/ 여기를 보면 drf-yasg의 소스코드가 나와있다. 
   - 그리고 https://drf-yasg.readthedocs.io/en/stable/ 이렇게 공식문서가 따로 존재한다.
 
+- **swagger는 프로젝트 내 많은 API를 한꺼번에 문서화하여 볼 수 있게 하는 패키지이다.**
+- **drf-yasg란, Swagger를 사용하기 위해 설치하는 패키지로 django로 정의된 API를 문서화할 수 있는 패키지를 의미한다.**
+
 * * *
 
 - 해당 공식문서 Usage https://drf-yasg.readthedocs.io/en/stable/readme.html#usage 부분에 들어가면 사용방법이 나와있다. 
