@@ -137,8 +137,45 @@ def login_view(request):
 
 - **우리가 위에서 설정한 @swagger_auto_schema에 responses로 상태값을 넣어줘야 한다. @swagger_auto_schema(responses={200: TokenSerializers}) 이렇게 우리가 생성한 TokenSerializers를 넣어준다.**
 
+- 그리고 다시 serializers.py로 가서 LoginSerializers 클래스를 수정하자.
 
+```python
+from rest_framework import serializers
+from rest_framework.authtoken.models import Token
 
+class LoginSerializers(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+class TokenSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Token
+        fields = '__all__'
+```
+
+- username과 password를 추가해준다. 그 다음, views.py로 다시 가서
+
+```python
+from .serializers import TokenSerializers, LoginSerializers
+...
+
+@api_view(['POST'])      # View 함수를 API 서버로 사용하기 위해 설정
+@permission_classes([AllowAny])   # 누구나 접근할 수 있게 권한 설정
+@swagger_auto_schema(request_body=LoginSerializers, responses={200: TokenSerializers})
+def login_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password,)
+
+    if user:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response(status=401)
+```
+
+- **@swagger_auto_schema(request_body=LoginSerializers, responses={200: TokenSerializers}) 이렇게 request_body를 넣어준다.**
+  - 근데, 연결이 안 되고 있다.
 
 
 
