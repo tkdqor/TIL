@@ -65,5 +65,82 @@ urlpatterns = [
   - 우리가 이걸 만들기 위해 별도로 타이핑을 치지 않았기 때문에, 패키지 하나만 연동시켰는데 이렇게 간단하게 만들 수 있는 것이다.
 
 - 프론트엔드 개발자들은 이걸 보고 '아, posts 라는 것에 리스트를 가져올려면 이렇게 해야 되는구나, 그리고 이러한 데이터,필드값을 주는구나' 라고 알 수 있다. 
+  - **일일이 API 문서를 작성하거나 Postman에 입력하는 것 보다는, 이렇게 python 코드를 연동해서 swagger를 사용하는 것이 훨씬 생산성이 높다.**
+  - 여기서도 POST API 하나를 클릭해서 데이터를 넣고 API를 보내볼 수도 있다. 
+
+
+### swagger에서 API 보내기
+- 다만 설정을 해줘야 실제로 swagger에서도 API를 보내볼 수 있다. 즉, serializer를 잘 써줘야 한다.
+
+- 예시로, accounts 앱 내부 views.py에서 작성한 login_view 코드를 수정해주자.
+
+```python
+from drf_yasg.utils import swagger_auto_schema
+...
+
+@api_view(['POST'])      # View 함수를 API 서버로 사용하기 위해 설정
+@permission_classes([AllowAny])   # 누구나 접근할 수 있게 권한 설정
+@swagger_auto_schema()
+def login_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password,)
+
+    if user:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response(status=401)
+```
+
+- **이렇게 함수 위에다가 @swagger_auto_schema() 라고 관련 데코레이터를 입력해주기. 이걸 입력하기 위해 from drf_yasg.utils import swagger_auto_schema 이렇게 import.**
+  - **@swagger_auto_schema() 라는 어노테이션을 command로 들어가보면 되게 다양한 것들이 내포되어있다.** 
+
+
+- **또한, response해서 값을 줄 수도 있다.**
+  - **일단, accounts 앱의 serializers.py를 새롭게 생성해준다.** 
+
+```python
+from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+
+class LoginSerializers(serializers.Serializer):
+    pass
+
+class TokenSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Token
+        fields = '__all__'
+```
+
+- 그리고 다음과 같이 2개의 클래스를 만들어준다. 그리고나서 accounts 앱의 view에다가
+
+```python
+from .serializers import TokenSerializers
+...
+
+@api_view(['POST'])      # View 함수를 API 서버로 사용하기 위해 설정
+@permission_classes([AllowAny])   # 누구나 접근할 수 있게 권한 설정
+@swagger_auto_schema(responses={200: TokenSerializers})
+def login_view(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(request, username=username, password=password,)
+
+    if user:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({'token': token.key})
+    else:
+        return Response(status=401)
+
+```
+
+- **우리가 위에서 설정한 @swagger_auto_schema에 responses로 상태값을 넣어줘야 한다. @swagger_auto_schema(responses={200: TokenSerializers}) 이렇게 우리가 생성한 TokenSerializers를 넣어준다.**
+
+
+
+
+
+
 
 
