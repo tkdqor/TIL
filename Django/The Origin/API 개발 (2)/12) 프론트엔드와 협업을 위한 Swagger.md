@@ -172,10 +172,67 @@ def login_view(request):
         return Response({'token': token.key})
     else:
         return Response(status=401)
+        
+
+# 클래스 기반 뷰 하나 생성
+class LoginView(APIView):
+    permission_classes = [AllowAny]
+
+    @swagger_auto_schema(request_body=LoginSerializers, responses={200: TokenSerializers})
+    def post(self, request):
+        username = request.data['username']
+        password = request.data['password']
+        user = authenticate(request, username=username, password=password,)
+
+        if user:
+            token, _ = Token.objects.get_or_create(user=user)
+            return Response({'token': token.key})
+        else:
+            return Response(status=401)
 ```
 
 - **@swagger_auto_schema(request_body=LoginSerializers, responses={200: TokenSerializers}) 이렇게 request_body를 넣어준다.**
   - 근데, 연결이 안 되고 있다.
+  - **그래서 그 밑에 LoginView라는 이름의 클래스 기반 뷰를 이번에는 생성해보기.**
+  - username = request.data['username'] 이렇게 request.data라고 해야 swagger에서 login POST에서 생성이 가능하다.
+
+
+- 그 다음으로 urls.py로 가서
+
+```python
+from accounts.views import login_view, LoginView
+...
+
+urlpatterns = [
+    # path('login/', login_view),
+    path('login/', LoginView.as_view()),
+    ...
+]
+```
+
+- **이렇게 path('login/', LoginView.as_view()), LoginView를 연결해주기.**
+  - **클래스 기반 뷰로 바꿨더니 이제 swagger 페이지에서 login POST를 클릭했을 때**
+
+<img width="1344" alt="image" src="https://user-images.githubusercontent.com/95380638/169636101-a03d21f0-ce77-4948-9933-f1da0f93c2d2.png">
+
+- **이렇게 연동이 되는 것을 확인할 수 있다.**
+  - **그래서 login할 때 어떤 파라미터로 던져야 하는지, username/password 이런 걸 던져줘야 한다고 설명해줄 수 있다. 그리고 200이라는 응답이 떨어졌을 때는 Token를 어떻게 준다는 것을 설명해줄 수 있다.**
+  - 해당 Token 부분을 수정하고 싶으면, serializers.py에서
+
+```python
+...
+class TokenSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = Token
+        fields = ['key']
+ ```
+ 
+ - **TokenSerializers의 필드를 fields = ['key'] 이렇게 바꿔줄 수 있다.**
+ - 그리고 "Try it out" 이라는 버튼을 눌러보면 login POST로 생성도 가능하다.
+
+
+- **프론트엔드 개발자와 협력할 때, 필드 속성 하나만 바뀌어도 바로 알려줘야 소통 문제가 발생하지 않는다.**
+  - 그리고 DRF와 같은 API 서버를 구축할 때는 => API 명세서를 필수적으로 만들어줘야 한다. 나 혼자 사용하려고 만든 것이 아니기 때문이다.
 
 
 
