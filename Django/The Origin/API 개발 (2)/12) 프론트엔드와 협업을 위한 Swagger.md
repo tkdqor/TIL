@@ -6,5 +6,44 @@
   - 그리고 https://drf-yasg.readthedocs.io/en/stable/ 이렇게 공식문서가 따로 존재한다.
 
 
-1:38
+- 해당 공식문서 Usage https://drf-yasg.readthedocs.io/en/stable/readme.html#usage 부분에 들어가면 사용방법이 나와있다. 
+
+```terminal
+pip install -U drf-yasg
+```
+- 이렇게 먼저 설치. 그리고 settings.py에 install app에 추가.
+
+```python
+INSTALLED_APPS = [
+    ...
+    'drf_yasg',
+]
+```
+
+- 그 다음에는 urls.py에 코드 추가.
+
+```python
+# drf-yasg 설정
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+
+# drf-yasg 설정 코드
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Snippets API",
+        default_version='v1',
+        description="Test description",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
+)
+```
+
+- 영
+
 
