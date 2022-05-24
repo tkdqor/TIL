@@ -14,6 +14,7 @@
 ### DRF 처리 과정
 - 클라이언트가 API 서버로 요청하면 JSON 데이터 형태로 응답해준다
 - **django의 urls.py가 —> DRF에서는 Routers를 사용해서 URL 패턴을 정리한다**
+  - DRF에서는 router만 정해주면 알아서 url pattern이 정의된다
 
 - **django의 View가 —> DRF에서는 함수기반 View이면 @api_view() / 클래스기반 View이면 GenericAPIView를 상속 / 또는 ViewSet를 사용하게 된다**
   - View에서는 응답할 데이터의 Model를 설정해주고 serializer도 설정해준다
