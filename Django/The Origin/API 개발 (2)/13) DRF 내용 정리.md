@@ -18,7 +18,8 @@
 
 - **django의 View가 —> DRF에서는 함수기반 View이면 @api_view() / 클래스기반 View이면 GenericAPIView를 상속 / 또는 ViewSet를 사용하게 된다**
   - View에서는 응답할 데이터의 Model를 설정해주고 serializer도 설정해준다
-  - 인증/권한 : API 스럽게 인증/권한 기능을 설정할 수 있다 / get_permissions라는 함수를 사용
+  - **인증/권한 : API 스럽게 인증/권한 기능을 설정할 수 있다 / get_permissions라는 함수를 사용**
+    - 인증 방식은 크게 BasicAuthentication / TokenAuthentication / SessionAuthentication 이렇게 3가지로 나눌 수 있다.
   - 또한, 상속받은 View 내부의 함수들을 오버라이딩해서 사용할 수도 있다
   - django와 비슷하게 목록을 조회하는 ListAPIView / 상세 데이터 조회하는 RetrieveAPIView / 데이터 하나 삭제하는 DestroyAPIView / 데이터 하나 수정하는 UpdateAPIView 등이 있다
   - **Viewsets**는 View가 모여있는 것이라고 보면 된다 / 그래서 Viewset를 상속받으면 기본적으로 list / create / retrieve / update / partial_update / destroy와 같이 CRUD가 구현이 되어있는 것을 확인할 수 있다 
