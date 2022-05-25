@@ -87,3 +87,5 @@ def sign_up(request):
 
 - **그래서 다음과 같이 def sign_up(request): 바로 밑에 context = { 'cartItems': cartItems, } 를 입력해주면 오류가 해결된다.**
 
+* * *
+- [관련해서 읽어볼만한 블로그 : 지역변수, 전역변수, global](https://sikaleo.tistory.com/99)
