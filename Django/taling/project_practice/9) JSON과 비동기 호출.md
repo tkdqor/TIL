@@ -639,7 +639,7 @@ class RestaurantSearch:
 
 ```terminal
 pip install django-cors-headers
-
+```
 
 
 - 먼저 설치하기. 그리고 settings.에 가서 INSTALLED_APPS에다가 'corsheaders', 이렇게 추가해주기. 그 다음 # all auth 밑에다가는 
