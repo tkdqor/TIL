@@ -103,7 +103,9 @@
 - ['ManyRelatedManager' object is not iterable](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/'ManyRelatedManager'%20object%20is%20not%20iterable.md)
 - [didn't return an HttpResponse object](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/didn't%20return%20an%20HttpResponse%20object.md)
 - [django template button OnClick 오류](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/django%20template%20button%20OnClick%20%EC%98%A4%EB%A5%98.md)
-
+- [DBeaver connect timed out 에러](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/DBeaver%20connect%20timed%20out%20%EC%97%90%EB%9F%AC.md)
+- [Reverse for '...' with arguments '('',)' not found. 1 pattern(s) tried](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/Reverse%20for%20'~~~'%20with%20arguments%20'(''%2C)'%20not%20found.%201%20pattern(s)%20tried.md)
+- [UnboundLocalError 오류](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/UnboundLocalError%20%EC%98%A4%EB%A5%98.md)
 
 
 ### 코딩테스트 준비
