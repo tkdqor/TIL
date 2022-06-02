@@ -1,8 +1,8 @@
-# distribute
+# Distribute
 
 📖 **Contents**
 
-- distribute
+- Distribute
   - [django 배포 관련](#django-배포-관련)
 
 * * *
