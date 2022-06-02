@@ -6,6 +6,7 @@
   - [프로세스와 스레드](#프로세스와-스레드)
   - [non-blocking call이란](#non-blocking-call이란)
   - [커널](#커널)
+  - [데몬(daemon) 프로세스란](#데몬-프로세스란)
 
 
 * * *
@@ -78,4 +79,11 @@ ex) 프로세서는 요리사라고 가정한다면, 대량주문이 들어오�
 
 ## 커널
 - https://goodmilktea.tistory.com/23
+
+
+* * *
+
+## 데몬 프로세스란
+- https://blogger.pe.kr/770
+
 
