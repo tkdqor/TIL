@@ -81,18 +81,18 @@
 
 
 
-### 기타 : 개발과 관련된 모든 것들의 모음집
-
-- [Ubuntu](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Linux.md)
-- [Web](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Web%EC%9D%B4%EB%9E%80.md)
-- [git](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/git.md)
-- [github](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/github.md)
-- [Process & Thread](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Process%20%26%20Thread.md)
-- [Directory & Terminal](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/Directory%20%26%20Terminal.md)
-- [기술면접 기초 개념](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/%EA%B8%B0%EC%88%A0%EB%A9%B4%EC%A0%91%20%EA%B8%B0%EC%B4%88%20%EA%B0%9C%EB%85%90.md)
-- [비전공자를 위한 이해할 수 있는 IT지식](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/%EB%B9%84%EC%A0%84%EA%B3%B5%EC%9E%90%EB%A5%BC%20%EC%9C%84%ED%95%9C%20%EC%9D%B4%ED%95%B4%ED%95%A0%20%EC%88%98%20%EC%9E%88%EB%8A%94%20IT%EC%A7%80%EC%8B%9D.md)
-- [빅오(Big-O)표기법](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/%EB%B9%85%EC%98%A4(Big-O)%ED%91%9C%EA%B8%B0%EB%B2%95.md)
-- [컴파일러&인터프리터, 환경변수란](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%ED%83%80/%EC%BB%B4%ED%8C%8C%EC%9D%BC%EB%9F%AC%26%EC%9D%B8%ED%84%B0%ED%94%84%EB%A6%AC%ED%84%B0%2C%20%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98%EB%9E%80.md)
+### 기술 면접 대비 기본 개념 정리
+- 📖 **contents**
+  - [Data Structure](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Data%20Structure.md)
+  - [Database](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Database.md)
+  - [Network](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Network.md)
+  - [Operating System](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Operating%20System.md)
+  - [Security](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Security.md)
+  - [Design Pattern](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Design%20Pattern.md)
+  - [Distribute](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Distribute.md)
+  - [Python](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md)
+  - [Django](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Django.md)
+  - [ETC](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/ETC.md)
 
 
 
