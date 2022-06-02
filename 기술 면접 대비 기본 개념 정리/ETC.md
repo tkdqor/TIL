@@ -24,6 +24,8 @@
   - [try와catch 코드](#try와catch-코드)
   - [breakpoint](#breakpoint)
   - [SSD가 HDD보다 빠른 이유](#ssd가-hdd보다-빠른-이유)
+  - [컴퓨터에서 실수를 부동소수점 방식으로 처리](#컴퓨터에서-실수를-부동소수점-방식으로-처리)
+  - [유니코드란](#유니코드란)
   - [책 '비전공자를 위한 이해할 수 있는 IT지식' 요약](#책-요약-내용)
 
 * * *
@@ -881,6 +883,19 @@ git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
 - [관련 블로그](http://m.ddaily.co.kr/m/m_article/?no=125956)
   - [2](https://active12.tistory.com/15)
 
+
+* * *
+
+## 컴퓨터에서 실수를 부동소수점 방식으로 처리
+- https://velog.io/@hyungraelee/%EC%8B%A4%EC%88%98%EC%9D%98-%EB%B6%80%EB%8F%99-%EC%86%8C%EC%88%98%EC%A0%90-%EC%A0%80%EC%9E%A5-%EB%B0%A9%EC%8B%9D
+
+
+* * *
+
+## 유니코드란
+- https://sweetday-alice.tistory.com/179
+
+* * *
 
 
 ## 책 요약 내용
