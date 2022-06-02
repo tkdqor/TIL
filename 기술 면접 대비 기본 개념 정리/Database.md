@@ -5,6 +5,7 @@
 - Database
   - [데이터베이스 인덱싱 자료구조 B-Tree](#데이터베이스-인덱싱-자료구조-b-tree)
   - [결제와 취소과정 트랜잭션](#결제와-취소과정-트랜잭션)
+  - [웹에서 매핑이란](#웹에서-매핑이란)
 
 * * *
 
@@ -54,4 +55,11 @@
 
 - [관련 블로그](https://han.gl/nxfTO)
 - [결제 흐름 예시](https://han.gl/TAvUr)
+
+
+* * *
+
+## 웹에서 매핑이란
+- https://threeidiotscoding.tistory.com/26
+
 
