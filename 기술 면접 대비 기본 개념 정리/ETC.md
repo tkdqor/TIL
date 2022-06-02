@@ -7,6 +7,7 @@
   - [Linux 명령어](#linux-명령어)
   - [Git](#git)
   - [Git remote url 변경](#git-remote-url-변경)
+  - [버전관리에서 commit이란](#버전관리에서-commit이란)
   - [Github](#github이란)
   - [컴파일러 & 인터프리터](#컴파일러와-인터프리터)
   - [환경변수란](#환경변수란)
@@ -17,6 +18,12 @@
   - [JPG파일](#jpg파일)
   - [칼라값 ffffff](#칼라값-ffffff)
   - [\<a href\>](#a-element의-href)
+  - [call by reference란](#call-by-reference란)
+  - [Event Listener란](#event-listener란)
+  - [OOP에서 상속이란](#oop에서-상속이란)
+  - [try와catch 코드](#try와catch-코드)
+  - [breakpoint](#breakpoint)
+  - [SSD가 HDD보다 빠른 이유](#ssd가-hdd보다-빠른-이유)
   - [책 '비전공자를 위한 이해할 수 있는 IT지식' 요약](#책-요약-내용)
 
 * * *
@@ -510,7 +517,16 @@ git remote set-url origin 변경할url주소
 
 - 이렇게 remote url를 변경할 수 있다.
 
-- [참고 블로그](https://devpouch.tistory.com/23?category=1023131)
+- [관련 블로그](https://devpouch.tistory.com/23?category=1023131)
+
+* * *
+
+## 버전관리에서 commit이란
+- **commit은, 파일 및 폴더의 추가/변경 사항을 저장소에 기록하기 위해 commit이라는 버튼을 눌러서 변화에 대해 기록하는 것이다.** commit은 특정 소스가 변경된 이유를 메시지로 입력해 버전을 관리해 나갈 수 있다. 이러한 commit 기록을 관리하면 과거의 변경이력과 내용을 파악할 수 있다.
+
+- [관련 블로그](https://steady-coding.tistory.com/277)
+  - [2](https://backlog.com/git-tutorial/kr/intro/intro1_3.html)
+  - [3](https://sabarada.tistory.com/71)
 
 * * *
 
@@ -799,6 +815,72 @@ git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
 
 
 * * *
+
+## call by reference란
+- 함수의 호출 방법은 대표적으로 Call by value(값에 의한 호출)와 Call by reference(참조에 의한 호출)가 있다.
+- 함수 호출이란 말 그대로 정의된 함수를 호출하는 것으로 함수에 정의한 매개변수의 형태에 따라 Call by value 혹은 Call by reference인지 결정된다.
+- **Call by value란, 함수 호출 시 넘기는 인자(함수가 호출될 때 매개변수에 실제로 담기는 값)의 값이 매개변수에 복사(Copy)돼서 함수 내에서 매개변수(매개변수란, 함수를 정의할 때 사용되는 변수)에 직접적인 데이터 조작을 가해도 인자에 전혀 영향을 주지 않는 것이다. 즉, 값을 복사를 하여 처리한다는 것이다.**
+  - **매개변수는 그 값이 Stack에 할당**된다. Stack이란, 메모리의 스택(stack) 영역으로 함수의 호출과 관계되는 지역 변수와 매개변수가 저장되는 영역이다.
+  - **그래서 원래 값이 보존된다는 장점이 있다. 단, 복사하기 때문에 메모리 사용이 늘어난다.**
+
+- **Call by reference란, 인자의 값이 매개변수에 복사(Copy)된다는 점은 동일하다. 다만 복사되는 값이 데이터의 주소 값이라는 차이점이 존재한다. 쉽게 말하면 Call by reference란, 말 그대로 참조값으로 함수를 호출했단 뜻이다. 즉, 직접 참조를 하는 것이다.**
+  - 중요한 차이점은 함수를 정의할 때 매개변수가 포인터 변수로 정의되었단 점이다. 즉, 변수의 주소를 인자로 받는 것이다. 그래서 주소에 저장된 값에 직접 접근할 수 있게 된다.
+  - **그래서 직접 참조해 빠르다는 장점이 있다. 단, 원래 값에 영향을 받게 된다.**
+
+- [관련 블로그](https://kangworld.tistory.com/64)
+  - [2](https://bskyvision.com/795)
+  - [3](https://codingplus.tistory.com/29)
+
+* * *
+
+## Event Listener란
+- **JavaScript의 개념 중 하나로, 이벤트 리스너란 이벤트가 발생했을 때 그 처리를 담당하는 함수를 가리키며, 이벤트 핸들러(event handler)라고도 한다.**
+- DOM 객체에서 특정 이벤트가 발생하면 이벤트 리스너를 이용해서 특정 함수를 호출할 수 있다.
+  - DOM은 Document Object Model의 약자로 document라는 변수로 html 문서를 객체로 인식하여 문서 내 모든 요소에 접근할 수 있도록 하는 방법을 의미한다.
+
+- [관련 블로그](http://www.tcpschool.com/javascript/js_dom_concept)
+  - [2](http://www.tcpschool.com/javascript/js_event_eventListenerRegister)
+
+
+* * *
+
+## OOP에서 상속이란
+- 일단 **OOP란, Object Oriented Programming의 약자로 객체지향 프로그래밍을 의미**한다. 객체 지향 프로그래밍은 클래스와 객체를 사용하여 프로그램을 설계하는 방법론으로 특징으로는 캡슐화, 추상화, 다형성, 상속성을 가진다.
+- **그 중에서 상속이란, 기존 클래스의 속성과 메서드를 사용하여 새 클래스를 만드는 것으로 새롭게 만든 클래스에 기존 상위 클래스의 기능을 가져와서 재사용하거나 새로운 기능을 추가할 수 있게 만들어주는 개념이라고 볼 수 있다.**
+  - 이러한 상속은 코드 재사용에 상당히 유용하다.
+
+- [관련 블로그](https://limkydev.tistory.com/30)
+  - [2](https://ko.strephonsays.com/polymorphism-and-vs-inheritance-in-oop-12018)
+
+* * *
+
+## try와catch 코드
+- **JavaScript에서의 예외 처리**
+- **try/catch문은 코드 상의 논리적인 문제가 있어 '예외'가 발생하는 경우, 이러한 예외 처리를 명시적으로 표현할 수 있게 해주는 코드이다.**
+- 먼저 try 안의 코드가 실행되고 에러가 없다면 catch 블록을 건너뛰게 된다. 에러가 있다면 try안의 코드가 실행이 중단되고, catch 블록에서 해당 에러에 대한 처리를 진행해 나갈 수 있게 된다.
+
+- [관련 블로그](https://ko.javascript.info/try-catch)
+  - [2](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=mdown&logNo=221347592097)
+
+
+* * *
+
+## breakpoint
+- 디버깅할 때 breakpoint란, 디버깅을 목적으로 실행중인 디버깅 대상 프로세스를 의도적으로 멈추게 하는 장소를 가리킨다.
+- 프로세스가 멈추면 멈춘 시점의 변수나 스택 파라미터, 혹은 특정 메모리 지점의 값 등을 조사할 수 있다.
+
+- [관련 블로그](https://to-paz.tistory.com/106)
+
+* * *
+
+## SSD가 HDD보다 빠른 이유
+- **HDD는 데이터를 읽거나 쓸 때 스핀들 모터로 원판을 돌리고 헤드가 그 위를 헤집어야 하는 물리적 작동이 필요하지만, SSD는 그러한 과정이 생략되어 움직이는 부품이 없어 속도가 빠르고 전력 소모량이 적고 내구성과 신뢰성도 높다.**
+- HDD는 하드디스크드라이브(Hard Disk Drive), SSD는 솔리드스테이트드라이브(Solid State Drive)를 의미.
+- SSD는 컨트롤러가 낸드플래시 셀에서 정보를 바로 조회하기 때문에 속도가 빠름. 
+
+- [관련 블로그](http://m.ddaily.co.kr/m/m_article/?no=125956)
+  - [2](https://active12.tistory.com/15)
+
 
 
 ## 책 요약 내용
