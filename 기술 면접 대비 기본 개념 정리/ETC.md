@@ -2,7 +2,7 @@
 
 📖 **Contents**
 
-- Network
+- ETC
   - [Directory & Terminal](#디렉터리)
   - [Linux 명령어](#linux-명령어)
 
