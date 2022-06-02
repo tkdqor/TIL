@@ -7,6 +7,8 @@
   - [annotate와 aggregate 메서드](#annotate와-aggregate-메서드)
   - [Lazy-loading이란](#lazy-loading이란)
   - [django signal이란](#django-signal이란)
+  - [render와 redirect 관련](#render와-redirect-관련)
+  - [DRF 관련](#drf-관련)
 
 * * *
 
@@ -85,6 +87,16 @@ recommendations = Recommendation.objects.filter(visible=True).order_by('sort').s
 
 
 
+* * *
+
+## render와 redirect 관련
+- https://milooy.wordpress.com/2016/03/03/pass-data-through-redirect-in-django/
+
+
+* * * 
+
+## DRF 관련
+- https://url.kr/vl82fg
 
 
 
