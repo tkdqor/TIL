@@ -6,6 +6,7 @@
   - [django 배포 관련](#django-배포-관련)
   - [AWS EC2 ssh 연결하기](#aws-ec2-ssh-연결하기)
   - [uWSGI란](#uwsgi란)
+  - [Collectstatic 명령어](#collectstatic-명령어)
 
 * * *
 
@@ -49,6 +50,11 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
   - https://jhnyang.tistory.com/395
   - https://itholic.github.io/linux-jobs-bg-fg/
   - https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%B0%B1%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C_%EC%8B%A4%ED%96%89
+
+* * *
+
+## Collectstatic 명령어
+- https://crynut84.github.io/2016/11/14/django-static-file/
 
 
 
