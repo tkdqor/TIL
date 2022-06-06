@@ -40,6 +40,7 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 - https://gangpro.github.io/til/2020/02/20/til-til-djangoAWS04/
 - https://www.tuwlab.com/ece/26607
 - https://twpower.github.io/43-run-uwsgi-by-using-ini-file
+- https://blog.naver.com/PostView.nhn?isHttpsRedirect=true&blogId=parkjy76&logNo=221075843238&parentCategoryNo=&categoryNo=86&viewDate=&isShowPopularPosts=false&from=postView
 
 - **리눅스 백그라운드 관련 내용**
   - **리눅스에서 동작하는 프로세스는 백그라운드(background)/포그라운드(foreground) 중 하나로 동작한다. 우리가 일반적으로 실행하는 프로그램은 대부분 포그라운드로 실행시키는 것이고, & 키워드를 사용하면 특정 프로세스를 백그라운드로 동작하게 할 수 있다.**
