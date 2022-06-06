@@ -5,6 +5,7 @@
 - Distribute
   - [django 배포 관련](#django-배포-관련)
   - [AWS EC2 ssh 연결하기](#aws-ec2-ssh-연결하기)
+  - [uWSGI란](#uwsgi란)
 
 * * *
 
@@ -30,6 +31,14 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 
 - 그 다음에는 위와 같은 명령어를 입력해서 해당 EC2에 ssh로 접속하기
 
+
+* * *
+
+## uWSGI란
+- https://brownbears.tistory.com/16
+- https://gangpro.github.io/til/2020/02/20/til-til-djangoAWS04/
+- https://www.tuwlab.com/ece/26607
+- https://twpower.github.io/43-run-uwsgi-by-using-ini-file
 
 
 
