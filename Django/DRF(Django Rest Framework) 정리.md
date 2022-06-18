@@ -93,6 +93,7 @@ HTTP_500_INTERNAL_SERVER_ERROR
 - 우리가 앞으로 만들 Serializer는 직렬화와 역직렬화 기능을 동시에 갖고 있다. 즉, 클라이언트와 서버 API 간 데이터 양식을 맞춰주는 변환기라고 생각하면 된다.
   - [관련해서 좋은 글](https://velog.io/@jewon119/TIL136.-DRF-Serializer%EC%97%90-%EA%B4%80%ED%95%98%EC%97%AC)
 
-
+- **모델을 구성하고 View를 작성하기 전에, 이 단계에서 Serializers.py를 만들고 Serializer를 구상하게 된다.**
+  - 하나의 Serializer 클래스에는 모델과 같이 필드를 설정할 수 있고, 클래스 내부에 함수도 직접 정의할 수 있다.
 
 
