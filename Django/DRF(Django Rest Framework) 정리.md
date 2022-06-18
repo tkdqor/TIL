@@ -96,4 +96,40 @@ HTTP_500_INTERNAL_SERVER_ERROR
 - **모델을 구성하고 View를 작성하기 전에, 이 단계에서 Serializers.py를 만들고 Serializer를 구상하게 된다.**
   - 하나의 Serializer 클래스에는 모델과 같이 필드를 설정할 수 있고, 클래스 내부에 함수도 직접 정의할 수 있다.
 
+```python
+class BookSerializer(serializers.Serializer):
+    bid = serializers.IntegerField()
+    title = serializers.CharField(max_length=50)
+    author = serializers.CharField(max_length=50)
+    category = serializers.CharField(max_length=50)
+    pages = serializers.IntegerField()
+    price = serializers.IntegerField()
+    published_date = serializers.DateField()
+    description = serializers.TextField()
+
+    def create(self, validated_data):
+       return Book.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.bid = validated_data.get('bid', instance.bid)
+        instance.title = validated_data.get('title', instance.title)
+        instance.author = validated_data.get('author', instance.author)
+        instance.category = validated_data.get('category', instance.category)
+        instance.pages = validated_data.get('pages', instance.pages)
+        instance.price = validated_data.get('price', instance.price)
+        instance.published_date = validated_data.get('published_date', instance.published_date)
+        instance.description = validated_data.get('description', instance.description)
+        instance.save()
+        
+        return instance
+```
+
+- **시리얼라이저는 python 모델 데이터를 JSON으로 바꿔주는 변환기이기 때문에 모델 데이터의 어떤 속성을 JSON에 넣어줄지 선언을 해줘야 한다. 그래서 시리얼라이저에서 필드를 선언해주는 것이다.**
+- **그리고 create나 update와 같은 함수는 나중에 POST 요청으로 들어온 데이터를 다시 python 모델 형태로 역직렬화하여 데이터베이스에 접어넣을 때 사용되는 함수이다. 이렇게 선언하고 나중에 serializer.save() 이렇게 데이터를 저장할 수 있다.**
+
+<br>
+
+### serializers.ModelSerializer
+
+
 
