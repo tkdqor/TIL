@@ -23,7 +23,7 @@
 * * *
 
 ## API란
-- Application Programming Interface의 약자로, front-end가 back-end에 요청을 할 때 특정 규칙에 맞게 요청해야 하는데 이러한 사용 규칙을 제공하는 것을 API라고 한다. 웹 서버 따로 API 서버를 따로 구축할 수 있다.
+- Application Programming Interface의 약자로, front-end가 back-end에 요청을 할 때, 즉 클라이언트가 서버에게 요청할 때 특정 규칙에 맞게 요청해야 하는데 이러한 사용 규칙을 제공하는 것을 API라고 한다. 웹 서버 따로 API 서버를 따로 구축할 수 있다.
 
 ### open API
 - 누군가가 back-end를 만들어놓고 여기에 주소와 사용 규칙을 공개한 것을 의미. 
