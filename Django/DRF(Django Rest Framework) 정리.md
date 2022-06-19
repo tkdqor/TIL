@@ -241,6 +241,55 @@ class BookAPI(APIView):
 - 함수형 View와 기능적으로는 큰 차이가 없다. 
 - **차이점은 클래스 내에 get과 post를 따로 정의해주기 때문에 데코레이터가 필요없고 해당 요청이 GET인지 POST인지 조건문으로 따져볼 필요가 없다.**
 
+```python
+class TodosAPIView(APIView):
+    def get(self, request):
+        todos = Todo.objects.filter(complete=False)
+        serializer = TodoSimpleSerializer(todos, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        serializer = TodoCreateSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TodoAPIView(APIView):
+    def get(self, request, pk):
+        todo = get_object_or_404(Todo, id=pk)
+        serializer = TodoDetailSerializer(todo)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        todo = get_object_or_404(Todo, id=pk)
+        serializer = TodoCreateSerializer(todo, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DoneTodosAPIView(APIView):
+    def get(self, request):
+        dones = Todo.objects.filter(complete=True)
+        serializer = TodoSimpleSerializer(dones, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class DoneTodoAPIView(APIView):
+    def get(self, request, pk):
+        done = get_object_or_404(Todo, id=pk)
+        done.complete = True
+        done.save()
+        serializer = TodoDetailSerializer(done)
+        return Response(status=status.HTTP_200_OK)
+```
+
+- **위에는 Todo라는 모델 CRUD API를 APIView로 작성한 예시이다.**
+
+
 <br>
 
 ### URL 연결하기
