@@ -254,11 +254,50 @@ urlpatterns = [
 - **일반적으로 DRF로 API를 개발할 때 만들어야 하는 기능은 위의 5가지이다. 그래서 개발자들은 이를 최대한 편하고 쉽게 만들고자 mixins, generics, Viewset까지 발전해왔다.**
 
 
+<br>
 
+### DRF mixins
+- **우리가 위에서 작성한 클래스 기반 View를 다시보면 중복되는 코드들이 있다는 것을 알 수 있다. 그래서 이러한 중복을 제거하기 위해 DRF에서는 mixins라는 것을 미리 정의하고 있다.**
+  - **mixins는 APIView에서 request의 method마다 시리얼라이저 코드를 작성하는 것을 줄이기 위해 클래스 레벨에서 시리얼라이저를 등록하고 있다.**
+  - 그래서 각 method에는 시리얼라이저 코드를 작성하는 대신 각 method별 mixin에 연결하여 사용하기만 하면 된다.
 
+```python
+from rest_framework import generics
+from rest_framework import mixins
 
+class BooksAPIMixins(mixins.ListModelMixin, mixins.CreateModelMixin,generics.GenericAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
 
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
+class BookAPIMixins(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'bid'
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+    def put(self, request, *args, **kwargs): 
+        return self.update(request, *args, **kwargs) 
+    def delete(self, request, *args, **kwargs): 
+        return self.destroy(request, *args, **kwargs) 
+```
+
+- **이렇게 동일한 도서 정보 API를 mixins로 다시 만들어봤다.**
+- 우선 generics와 mixins를 import 해서 클래스를 만들 때 상속해준다.
+  - BooksAPIMixins 클래스의 경우, ListModelMixin과 CreateModelMixin을 상속하고 / BookAPIMixins 클래스의 경우, RetrieveModelMixin과 UpdateModelMixin 그리고 DestroyModelMixin를 상속하고 있다.
+  - 공통적으로는 generics.GenericAPIView를 상속하고 있다.
+
+- **그리고 공통적으로 Mixins 클래스 내부 변수에는 queryset과 serializer_class라는 변수가 있다.**
+  - queryset에는 모델에 질문을 보내 받아온 데이터가 들어가는데 일반적으로 그냥 모든 데이터를 불러온다. ex) queryset = Book.objects.all()
+  - 그리고 serializer_class에는 해당 API에서 사용할 시리얼라이저를 설정한다. ex) serializer_class = BookSerializer 이렇게 설정해준다.
+
+- **또한, 각 클래스 내부의 함수명은 메소드명과 동일하다. ex) def get**
+  - 이 부분은 클래스형 View와 동일하지만 함수의 내용이 없어지고 바로 return을 한다. 이 때, return 하는 부분을 보면 각각 다른 것을 반환하고 있는데, 이는 각 메소드 별 처리하는 기능에 따라, 상속받아 온 mixin 중 어떤 것에 연결할 것이냐에 따라 달라지게 된다.
 
 
 
