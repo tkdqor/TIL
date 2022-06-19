@@ -269,22 +269,22 @@ class BooksAPIMixins(mixins.ListModelMixin, mixins.CreateModelMixin,generics.Gen
     queryset = Book.objects.all()
     serializer_class = BookSerializer
 
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+    def get(self, request, *args, **kwargs):          # GET 메소드 처리 함수(전체 목록)
+        return self.list(request, *args, **kwargs)    # mixins.ListModelMixin과 연결
+    def post(self, request, *args, **kwargs):         # POST 메소드 처리 함수 (1권 등록)
+        return self.create(request, *args, **kwargs)  # mixins.CreateModelMixin과 연결
 
 class BookAPIMixins(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, generics.GenericAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    lookup_field = 'bid'
+    lookup_field = 'bid'                                 # django의 기본 모델 pk가 아닌 여기서는 bid를 pk로 사용하고 있으니 lookup_field로 설정
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
-    def put(self, request, *args, **kwargs): 
-        return self.update(request, *args, **kwargs) 
-    def delete(self, request, *args, **kwargs): 
-        return self.destroy(request, *args, **kwargs) 
+    def get(self, request, *args, **kwargs):             # GET 메소드 처리 함수(1권)
+        return self.retrieve(request, *args, **kwargs)   # mixins.RetrieveModelMixin과 연결
+    def put(self, request, *args, **kwargs):             # PUT 메소드 처리 함수(1권 수정)
+        return self.update(request, *args, **kwargs)     # mixins.UpdateModelMixin과 연결
+    def delete(self, request, *args, **kwargs):          # DELETE 메소드 처리 함수(1권 삭제)
+        return self.destroy(request, *args, **kwargs)    # mixins.DestroyModelMixin과 연결
 ```
 
 - **이렇게 동일한 도서 정보 API를 mixins로 다시 만들어봤다.**
@@ -299,6 +299,10 @@ class BookAPIMixins(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
 - **또한, 각 클래스 내부의 함수명은 메소드명과 동일하다. ex) def get**
   - 이 부분은 클래스형 View와 동일하지만 함수의 내용이 없어지고 바로 return을 한다. 이 때, return 하는 부분을 보면 각각 다른 것을 반환하고 있는데, 이는 각 메소드 별 처리하는 기능에 따라, 상속받아 온 mixin 중 어떤 것에 연결할 것이냐에 따라 달라지게 된다.
 
+- **이렇게 Mixin를 사용하면, API 테스트 화면에서 DRF가 함께 제공해주는 템플릿으로 일일이 JSON을 입력하지 않고 필드마다 입력할 수 있는 Form이 생성된다.**
 
+<br>
+
+### DRF generics
 
 
