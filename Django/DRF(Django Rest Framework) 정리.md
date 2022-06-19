@@ -343,6 +343,49 @@ class BookAPIGenerics(generics.RetrieveUpdateDestroyAPIView):
 - **결국, generics는 mixins를 조합하기만 해놓은 코드라고 할 수 있다.**
 
 
+<br>
+
+### DRF Viewset & Router
+- generics만으로 충분히 코드를 간소화했지만, 더 줄일 수 있는 부분이 있다. 
+- 지금까지는 하나의 클래스가 하나의 URL를 담당하는 방식이었다. URL마다 클래스를 만들고 처리할 수 있게 했다.
+- **그러다보니 queryset과 serializer_class 부분이 겹치게 되었다. 그래서 하나의 클래스로 하나의 모델을 전부 처리해줄 수 있다면 겹치는 부분이 사라질텐데 이게 바로 Viewset이다.**
+  - Viewset은 말그대로 View의 집합이다. 기본적인 모습은 클래스형 View의 기본형과 같다. 
+
+```python
+from rest_framework import viewsets
+
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+```
+
+- 이렇게 Book 모델 REST API가 4줄로 줄어들었다.
+- **ModelViewSet를 상속받아 클래스를 만들고 queryset과 serializer_class를 설정해주면 모델에 대한 기본적인 REST API가 완성된다.**
+  - 이러한 ModelViewSet의 내부 구조를 보자.
+
+```python
+class ModelViewSet(mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, mixins.ListModelMixin, GenericViewSet):
+...
+```
+
+- **이렇게 DRF 내부에서 ModelViewSet를 찾아보면, ViewSet도 결국엔 Mixin을 사용하고 있다는 것을 알 수 있다. 결국에는 앞서 배운 mixin을 기반으로 작성되었다.**
+
+- **이러한 ViewSet을 URL로 연결할 때는 조금 다르다.**
+
+```python
+from rest_framework import routers
+from .views import BookViewSet
+
+router = routers.SimpleRouter()
+router.register('books', BookViewSet)
+
+urlpatterns = router.urls
+```
+
+- **라우터 객체를 만들고 라우터에 우리의 ViewSet를 등록한다. 그리고 urlpatterns에는 router.urls를 include해서 작성하면 된다.**
+
+- **ㅇ
+- **라우터 객체를 만들고 라우터에 우리의 ViewSet를 등록한다. 그리고 urlpatterns에는 router.urls를 include해서 작성하면 된다.*
 
 
 
