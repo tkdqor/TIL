@@ -384,8 +384,9 @@ urlpatterns = router.urls
 
 - **라우터 객체를 만들고 라우터에 우리의 ViewSet를 등록한다. 그리고 urlpatterns에는 router.urls를 include해서 작성하면 된다.**
 
-- **ㅇ
-- **라우터 객체를 만들고 라우터에 우리의 ViewSet를 등록한다. 그리고 urlpatterns에는 router.urls를 include해서 작성하면 된다.*
+- **이렇게 ViewSet과 Router를 쓰는 것으로 얻을 수 있는 장점들이 있다.**
+  - 하나의 클래스로 하나의 모델에 대한 내용을 전부 작성할 수 있고 queryset이나 serializer_class 등 겹치는 부분을 최소화할 수 있다.
+  - 라우터를 통해 URL를 일일이 지정하지 않아도 일정한 규칙의 URL을 만들 수 있다.
 
 
 
