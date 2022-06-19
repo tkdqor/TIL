@@ -201,6 +201,49 @@ class BookAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 ```
 
+- 함수형 View와 기능적으로는 큰 차이가 없다. 
+- **차이점은 클래스 내에 get과 post를 따로 정의해주기 때문에 데코레이터가 필요없고 해당 요청이 GET인지 POST인지 조건문으로 따져볼 필요가 없다.**
+
+<br>
+
+### URL 연결하기
+- **함수형 View를 연결할 때는 다음과 같다.**
+
+```python
+urlpatterns = [
+    path("hello/", helloAPI),
+    path("fbv/books/", booksAPI),
+    path("fbv/book/<int:bid>/", bookAPI),
+]
+```
+
+- **그리고 클래스형 View를 연결할 때는 다음과 같다. 함수형 View와 달리 path에 등록할 때 .as_view()를 사용한다.**
+
+```python
+urlpatterns = [
+    path("hello/", helloAPI),
+    path("fbv/books/", booksAPI),
+    path("fbv/book/<int:bid>/", bookAPI),
+    path("cbv/books/", BooksAPI.as_view()),
+    path("cbv/book/<int:bid>/", BookAPI.as_view()),
+]
+```
+
+- **함수형 View이든, 클래스형 View이든 결국엔 각 request의 method(GET, POST 등)에 따라 처리할 수 있도록 작성된다.**
+  - ex) 127.0.0.1/books/ => GET(전체 목록) / POST(생성)
+  - ex) 127.0.0.1/books/1 => GET(가져오기) / PUT(수정) / DELETE(삭제)
+
+- **일반적인 DRF 개발 절차는 Model -> Serializers -> Views -> Urls 라고 볼 수 있다.**
+
+- **지금까지는 DRF의 기본 페이지로 API 테스트를 진행했지만, Insomnia라는 API 테스트 무료 툴도 존재한다.**
+
+
+
+
+
+
+
+
 
 
 
