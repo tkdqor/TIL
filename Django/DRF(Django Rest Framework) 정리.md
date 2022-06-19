@@ -147,9 +147,10 @@ class TodoDetailSerializer(serializers.ModelSerializer):
 class TodoCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
-        fields = ('title', 'description')
+        fields = ('title', 'description', 'important')
 ```
-- 이런식으로 시리얼라이저마다 다르게 필드를 설정할 수 있다.
+- **이런식으로 시리얼라이저마다 다르게 필드를 설정할 수 있다.**
+  - ex) TodoCreateSerializer는 Todo를 생성할 때 필요한 입력 값이 title과 description, important라서 3개의 필드만 정의한 것이다.
 
 
 <br>
@@ -157,6 +158,7 @@ class TodoCreateSerializer(serializers.ModelSerializer):
 * * *
 
 ## View 작성하기
+- **기본적으로 View 클래스를 기준으로 URL을 분리한다고 생각하면 편하다.**
 
 <br>
 
