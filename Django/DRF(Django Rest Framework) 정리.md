@@ -237,6 +237,22 @@ urlpatterns = [
 
 - **지금까지는 DRF의 기본 페이지로 API 테스트를 진행했지만, Insomnia라는 API 테스트 무료 툴도 존재한다.**
 
+<br>
+
+### DRF의 다양한 뷰
+- 일반적으로 URL과 Method의 조합은 크게 총 5개의 조합이 나온다.
+
+```python
+# 도서 전체 목록 가져오기 (GET /books/), (list)
+# 도서 1권 정보 등록하기 (POST /books/), (create)
+# 도서 1권 정보 가져오기 (GET /book/1/), (retrieve)
+# 도서 1권 정보 수정하기 (PUT /book/1/), (update)
+# 도서 1권 정보 삭제하기 (DELETE /book/1/), (destroy)
+```
+
+- **여기서 어떤 모델에 대해 retrieve를 한다고 하면 우리는 그 모델의 1개 객체 정보를 가져온다고 생각하면 된다.**
+- **일반적으로 DRF로 API를 개발할 때 만들어야 하는 기능은 위의 5가지이다. 그래서 개발자들은 이를 최대한 편하고 쉽게 만들고자 mixins, generics, Viewset까지 발전해왔다.**
+
 
 
 
