@@ -130,6 +130,77 @@ class BookSerializer(serializers.Serializer):
 <br>
 
 ### serializers.ModelSerializer
+```python
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ['bid', 'title', 'author', 'category', 'pages', 'price', 'published_date', 'description',]
+```
+
+- 위에서 보듯이 serializers.Serializer를 사용하게 되면 일일이 필드들을 정해주고 작성해야할 코드들이 많아진다. 그래서 개발자들은 더 나은 대안인 serializers.ModelSerializer를 사용한다.
+- **ModelSerializer는 모델의 내용을 기반으로 동작하는 시리얼라이저이다. 이를 통해 코드의 중복을 줄일 수 있고 필드 선언을 모델에서 이미 했기 때문에 ModelSerializer에서는 간단하게 작업할 수 있다.**
+
+<br>
+
+### APIView
+- django에서든 DRF에서든 View를 개발하는 것은 크게 함수 기반 View인 FBV와 / 클래스 기반 View인 CBV로 나눌 수 있다.
+- **DRF에서는 2가지를 모두 도와주는 APIView라는 것이 있다.**
+
+- **함수 기반 View에서는 @api_view와 같이 데코레이터 형태로 APIView를 사용할 수 있다.**
+```python
+@api_view(['GET', 'POST'])  # GET/POST 요청을 처리하게 만들어주는 데코레이터
+def booksAPI(request):
+    if request.method == 'GET':      # GET 요청일 때
+        books = Book.objects.all()   # Book 모델로부터 전체 데이터 가져오기
+        serializer = BookSerializer(books, many=True)                 # 시리얼라이저에 전체 데이터를 한 번에 집어넣기(직렬화, many=True) -> 이 때, python 데이터를 JSON 형태로 직렬화 한다는 것
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    elif request.method == 'POST':   # POST 요청일 때
+        serializer = BookSerializer(data=request.data)                # POST 요청으로 들어온 데이터를 시리얼라이저에 집어넣기
+        if serializer.is_valid():                                     # 유효한 데이터라면
+            serializer.save()                                         # 시리얼라이저의 역직렬화를 통해 save(), 이 때 ModelSerializer의 기본 create() 함수가 동작
+            return Response(serializer.data, status=status.HTTP_201_CREATED)   # 201 메시지를 보내며 성공
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST) # 400은 잘못된 요청일 경우 응답
+
+@api_view(['GET'])
+def bookAPI(request, bid):
+    book = get_object_or_404(Book, bid=bid)                           # bid = id인 데이터를 Book에서 가져오고 없으면 404 에러
+    serializer = BookSerializer(book)                                 # 시리얼라이저에 데이터를 집어넣기(직렬화)
+    return Response(serializer.data, status=status.HTTP_200_OK) 
+```
+- **/book/ 주소를 사용할 두 API에 대한 처리는 booksAPI()라는 함수에서 한 번에 처리한다.**
+  - 데코레이터로 GET, POST를 함께 처리할 수 있도록 설정했고 조건문을 통해 해당 요청이 GET인지 POST인지에 따라 다르게 처리한다.
+  - **GET 요청은 도서 전체 정보를 가져오니까 모델로부터 데이터를 가져와 시리얼라이저에 집어넣어서 -> 직렬화를 하고 그렇게 가공된 데이터를 결과로 응답한다. ex) serializer = BookSerializer(books, many=True)**
+  - **시리얼라이저에 넣을 때, many=True 옵션을 넣으면, 여러 데이터에 대한 처리를 할 수 있도록 해준다.**
+  - **POST 요청은 오히려 요청으로 들어온 데이터를 역직렬화하여 모델에 집어넣어야 하므로 -> 먼저 시리얼라이저에 serializer = BookSerializer(data=request.data) 이렇게 request.data를 넣어준다.**
+  - 그리고 시리얼라이저의 is_valid() 기능을 통해 들어온 데이터가 모델에 맞는 유효한 데이터라면 이를 저장한다.
+  - 마지막으로 serializer.save()는 기본적인 create() 함수를 실행시키는 ModelSerializer의 기능이다. 데이터가 잘 저장되었다면 201 메시지를 보내고 아니면 400 메시지를 보내서 마무리한다.
+
+- **bookAPI 함수도 마찬가지이다.**
+  - 특정 bid의 책 데이터를 가져와서 함수의 인자로 bid를 넘겨받아 모델에서 찾는다. 그리고 찾은 데이터를 serializer = BookSerializer(book) 이렇게 직렬화해준다.
+
+<br>
+
+- **그리고 클래스 기반 View에서는 APIView라는 클래스를 상속받는 클래스의 형태로 생성할 수 있다.**
+```python
+class BooksAPI(APIView):
+    def get(self, request):
+        books = Book.objects.all()
+        serializer = BookSerializer(books, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK) 
+    def post(self, request):
+        serializer = BookSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED) 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class BookAPI(APIView):
+    def get(self, request, bid):
+        book = get_object_or_404(Book, bid=bid)
+        serializer = BookSerializer(book)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+```
+
 
 
 
