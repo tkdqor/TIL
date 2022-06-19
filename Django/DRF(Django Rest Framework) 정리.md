@@ -304,5 +304,47 @@ class BookAPIMixins(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.D
 <br>
 
 ### DRF generics
+- mixins 방법은 REST API의 메인 기능을 코드 10여줄로 끝낸다는 점에서 획기적이고 간단했다. 그러나 이것마저도 귀찮다는 생각을 한 개발자들이 있었다. mixins 방법에서 사용할 mixins를 상속받는데 한 번에 2~3개씩 상속을 받아야 하기 때문이다.
+- **그래서 DRF에는 mixins를 조합해서 미리 만들어둔 일종의 mixins 세트가 있다. 총 9개의 조합 종류가 있다. 이 종류가 generics 하위에 존재한다.**
+
+```python
+# (1) generics.ListAPIView (전체 목록)
+# (2) generics.CreateAPIView (생성)
+# (3) generics.RetrieveAPIView (1개)
+# (4) generics.UpdateAPIView (1개 수정)
+# (5) generics.DestroyAPIView (1개 삭제)
+# (6) generics.ListCreateAPIView (전체 목록 + 생성)
+# (7) generics.RetrieveUpdateAPIView (1개 + 1개 수정)
+# (8) generics.RetrieveDestroyAPIView (1개 + 1개 삭제)
+# (9) generics.RetrieveUpdateDestroyAPIView (1개 + 1개 수정 + 1개 삭제)
+```
+
+- 그래서 우리가 앞서 만든 5가지의 기능을 generics로 만든다면, 6번과 9번을 사용하면 된다.
+
+```python
+from rest_framework import generics
+
+class BooksAPIGenerics(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+class BookAPIGenerics(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    lookup_field = 'bid'
+```
+
+- **위와 같이 여러 개의 mixins를 각각 상속하던 방식에서 이제는 mixins가 조합된 generics를 한 번만 상속받는 것으로 끝냈다.** 
+  - ex) class BookAPIGenerics(generics.RetrieveUpdateDestroyAPIView):
+- 그런데 return 구문도 아예 사라졌다. 앞서 여러 개의 mixins를 사용하던 방식에서는 각 mixins를 메소드에 매칭시키는 과정이 필요했고 그게 return 구문에 있었다. 
+- **이제는 mixins가 조합된 generics를 사용하다 보니 -> 어차피 List + Create 이면 GET과 POST 메소드가 사용된다는 것을 이미 알고 있는 것이다.**
+  - 실제로 DRF 내부의 generics.ListCreateAPIView의 코드를 보면, 내부에 def get / def post가 정의되어있다.
+
+- **결국, generics는 mixins를 조합하기만 해놓은 코드라고 할 수 있다.**
+
+
+
+
+
 
 
