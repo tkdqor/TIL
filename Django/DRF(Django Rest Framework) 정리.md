@@ -79,6 +79,12 @@ HTTP_500_INTERNAL_SERVER_ERROR
 
 <br>
 
+* * *
+
+## Serializer 작성하기
+
+<br>
+
 ### DRF Serializer
 - **Serializer의 사전적 의미는 직렬화이다. 직렬화는 Django 프로젝트에서 내가 만든 모델로부터 뽑은 queryset, 즉 모델 인스턴스를 JSON 타입으로 바꾸는 것이다.**
 - DRF 내에서 데이터가 저장될 때는 Django의 모델을 통해 저장된다. 따라서 Django에서의 데이터는 JSON과 같은 포맷이 아닌, python 객체의 형태로 저장이 된다.
@@ -163,6 +169,10 @@ class TodoCreateSerializer(serializers.ModelSerializer):
 
 
 <br>
+
+* * *
+
+## View 작성하기
 
 ### APIView
 - django에서든 DRF에서든 View를 개발하는 것은 크게 함수 기반 View인 FBV와 / 클래스 기반 View인 CBV로 나눌 수 있다.
