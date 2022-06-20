@@ -248,7 +248,7 @@ class BookAPI(APIView):
 
 - **Serializing과 Deserializing 비교**
   - **Serializing**은 Database로부터 Object를 가져와 Serializer의 instance 인자에 전달하여 dict 데이터로 변환한다. 이 dict 데이터를 JSON 포맷의 Byte로 변환하여 클라이언트에 전달하는 흐름이며, 이 과정에서 JSONRenderer가 사용된다.
-  - 반대로, Deserializing는 클라이언트로 전달받은 JSON 포맷의 Byte 데이터를 JSONParser의 parse 매서드를 통해 우선 dict 데이터로 변환한다. 이 dict 데이터를 바로 사용하는 것이 아닌, Serializer의 data 인자에 전달하여 is_valid 매서드로 유효성 검사를 진행한다. 유효성 검사에 문제가 있다면 errors의 에러 정보가 담기지만, 유효성 검사를 통과했다면 validated_data 속성에 데이터가 존재한다. validated_data를 만들고 나서야 이 데이터를 사용해서 모델에 전달해 인스턴스를 만들고, Database에 저장한다.
+  - 반대로, **Deserializing**는 클라이언트로 전달받은 JSON 포맷의 Byte 데이터를 JSONParser의 parse 매서드를 통해 우선 dict 데이터로 변환한다. 이 dict 데이터를 바로 사용하는 것이 아닌, Serializer의 data 인자에 전달하여 is_valid 매서드로 유효성 검사를 진행한다. 유효성 검사에 문제가 있다면 errors의 에러 정보가 담기지만, 유효성 검사를 통과했다면 validated_data 속성에 데이터가 존재한다. validated_data를 만들고 나서야 이 데이터를 사용해서 모델에 전달해 인스턴스를 만들고, Database에 저장한다.
 
 ```python
 class TodosAPIView(APIView):
