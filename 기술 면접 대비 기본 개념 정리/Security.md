@@ -68,6 +68,7 @@
 - 사용자가 우리 서비스에 접속해서 글을 작성하거나 글을 읽는다면, 우리의 서비스가 사용자를 대신해서 서비스 제공자(구글 등)의 달력에 날짜를 기록하는 등을 해줄 수 있다. 이러기 위해서 우리가 사용자로부터 사용자가 사용하고 있는 서비스 제공자에게 접근할 수 있도록 허가를 받아야 한다. 서비스 제공자의 사용자 id, 비밀번호가 있을 텐데, 그것들을 우리가 사용자로부터 전달받아서 우리가 사용자의 id와 비밀번호를 기억하고 있다가, 우리가 실제로 서비스 제공자쪽으로 접속할 때 그 id와 비밀번호를 이용하면 될 것이다. **근데, 사용자 입장에서는 위험하다. 자신의 구글, 페이스북의 id와 비밀번호를 처음 보는 웹서비스쪽에 맞겨야 되는 것이기 때문이다. 그래서 사용자는 우리의 서비스를 믿을 수 없다. 또, 구글이나 페이스북 입장에서도 자신들의 사용자의 id와 비밀번호를 신뢰할 수 없는 제 3자가 가지고 있다는 건 매우 불만족스러운 상황이다.** 바로 이러한 상황에서 우리가 OAuth를 이용하면 훨씬 더 안전하게 우리가 만든 서비스를 서비스 제공자와 사용할 수 있게 된다.  
   - OAuth에서는 대신에 사용자의 요청에 의해서 구글이나 페이스북이 id, 비밀번호 대신에 **accessToken**이라는 것을, 일종의 비밀번호를 발급해준다. 이 accessToken은 구글이나 페이스북의 id와 비밀번호가 아니라는 장점이 있다. 그리고 구글이나 페이스북이 갖고 있는 모든 기능이 아니라, 그 중에 우리의 서비스가 필요한 필수적인 기능만 부분적으로 허용하는 비밀번호이다. 그래서 우리의 서비스가 이 accessToken을 OAuth를 통해서 획득한 다음에, 우리가 이 accessToken를 통해서 구글이나 페이스북 서비스에 접근해서, 데이터를 가져오고 수정하고 생성하고 삭제하는 작업을 할 수 있게 되는 것이다. 
 
+<br>
 
 ### OAuth 등록절차 - Client가 Resource Server에 등록하는 과정
 - **클라이언트가 리소스 서버를 이용하기 위해서는, 리소스 서버의 승인을 사전에 받아놔야 한다. 이걸 이제 “등록”이라고 한다.** 
@@ -77,6 +78,7 @@
 
 - ex) **Google Cloud Platform**에 들어가서 새로운 프로젝트를 생성하고 Credentials이라는 제어할 자격을 얻기 위한 과정을 진행한다. OAuth client ID를 클릭하고 Configure consent screen 이라는, 사용자가 인증하는 과정에서 보여지는 화면을 설정한다. 그리고 OAuth Client ID를 생성하게 된다. 또한, Authorized redirect URIs를 적어주면 Client ID와 Client Secret이 생성된다.
 
+<br>
 
 ### OAuth Resource Owner의 승인 - Resource Owner의 인증과정
 - 우리가 위의 과정처럼 등록을 하게 되면, Resource Server와 Client는 양쪽 다 예를 들어서 Client ID : 1 / Client Secret : 2 / Authorized redirect URIs : https://~~~~ 이러한 정보를 resource Server가 알게 되고 / 동시에 Client도 그 정보를 알 수 있게 된다. 
@@ -98,6 +100,24 @@
 
 - **여기까지가 Resource Owner로부터 Client가 resource Server에 접속하는 것에 대한 동의를 구하는 과정이라고 할 수 있다.**
 
+<br>
+
+### OAuth Client의 정보 전달 및 Resource Server의 확인과정
+- 이전까지 Resource Owner가 이런 작업을 하는 것을 허용합니다라고 승인버튼을 눌렀을 때, 그 정보가 resource Server에 가서 user id : 1 / scope : b,c 이러한 정보를 받게 된다. 그 다음에는 Resource Server가 승인을 해줘야 한다.
+- **이 때, resource Server는 임시비밀번호인 authorization Code를 이용한다.**
+  - **Resource Owner가 승인 버튼을 눌렀을 때 => Resource Server는 이 authorization Code를 Resource Owner에게 전송한다.**
+  - Ex) Location : https://client/callback?code=3 이런식으로 전달하게 되는데, 앞에 Location이 붙어있는 것은 응답할 때 header라는 값으로 Location을 주면, 이걸 redirection 하라는 의미가 된다. **Resource Server가 Resource Owner의 웹브라우저한테 https://client/callback?code=3 이라는 주소로 이동하세요 라고 명령한 것이다. 여기서 ?code=3이라고 하는 값이 임시비밀번호 authorization Code가 3이라는 걸 의미한다.**
+  - Resource Owner의 웹브라우저는 Location Header 값에 의해서 Resource owner의 사용자가 인식조차 하지 못하게 https://client/callback?code=3이라는 주소로 이동하게 된다. 그럼 code=3이라는 값에 의해서 client는 authorization Code : 3이라는 데이터를 알게 된다.
+
+- **이제 client가 resource server에게 authorization code = 3이라고 하는 정보를 전송해주는 것이다. Client는 Resource Owner를 통하지 않고 Resource Server에게 직접 접속을 하게 된다. https://resource.server/token?grant_type=authorization_code&code=3&redirect_uri=https://client/callback&client_id=1&client_secret=2 이런식으로 접속하게 된다.**
+  - grant_type=authorization_code는 우리가 지금 authorization code를 통해서 3자간의 인증을 하고 있다는 의미이다.
+  - code=3은 이렇게 authorization code = 3이라는 값을 전송한다는 것이고
+  - redirect_uri=https://client/callback 이렇게 redirect_url 값도 전송한다.
+  - 그리고 client_id=1&client_secret=2 이렇게 client_id 값과 client_secret 값도 전송한다.
+  - **즉, authorization code와 client_secret이라고 하는 이 2개의 비밀정보를 결합해서 Resource Server에게 전송하게 되는 것이다.(즉, 클라이언트의 서버사이드에서 요청)**
+
+- 이제 Resource Server는 authorization code가 3번인 것을 확인하고서 -> 자기가 갖고 있는 authorization code 3번에 해당되는 정보와 일치하는지 확인하게 된다.
+  - **그리고 resource Server는 이 Client가 전송한 code=3과 client_id=1과 client_secret=2과 redirect_url의 값이 완전히 일치하는지를 확인하고 이 정보들이 모두 일치한다면 => 그 때, 다음 단계로 진행하게 된다.**
 
 
 
@@ -107,12 +127,7 @@
 
 
 
-
-
-
-
-
-
+ 
 
 
 
