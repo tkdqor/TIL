@@ -119,6 +119,40 @@
 - 이제 Resource Server는 authorization code가 3번인 것을 확인하고서 -> 자기가 갖고 있는 authorization code 3번에 해당되는 정보와 일치하는지 확인하게 된다.
   - **그리고 resource Server는 이 Client가 전송한 code=3과 client_id=1과 client_secret=2과 redirect_url의 값이 완전히 일치하는지를 확인하고 이 정보들이 모두 일치한다면 => 그 때, 다음 단계로 진행하게 된다.**
 
+<br>
+
+### OAuth Resource Server가 Client에게 AccessToken를 발급
+- 지금까지 Client가 Resource Owner를 통해서 authorization code 값을 받았다. 그 다음에 Client는 Resource Server에게 직접 관련정보(authorization code/Client_id/Client_secret/redirect_url 등)들을 전송했다. 그 중에서도 가장 중요한 건, Client_secret이라고 하는, 외부에 절대로 노출되서는 안되는 정보를 직접 Resoruce Server에게 전송한 것이다. authorization code값과 함께 말이다.
+- **이제 Resource server는 이미 authorization code 값을 통해서 Client를 인증했기 때문에 authorization code 값을 이제 지워버린다. Client 서버쪽에서도 지운다.**
+- **그 다음에 이제 Resource Server는 AccessToken를 Client에게 발급해서 응답해준다. ex) AccessToken=4 이런식으로 말이다.**
+  - 그러면 Client는 accessToken이 4라는 정보를 내부적으로 저장하게 된다.
+  - **그리고 이 accessToken은 무엇을 보장하냐면, 해당 Client가 4라고 하는 accessToken으로 접근을 하게 되면 Resource Server는 accessToken : 4를 보고 ‘아 이 4는 user_id 1번에 해당하는 사용자, 즉 resource Owner의 유효한 기능인 b와 c에 대해서 권한이 열려있는 accessKey이니까 ==> 기능 b와c에 대해서, user_id가 1번에 해당되는 resource Owner의 정보에 대해서 accessToken = 4를 가진 사람, 즉 Client에게 허용을 해야겠다’ 라고 생각하고 동작하게 된다.**
+
+<br>
+
+### OAuth Client의 API 호출 진행
+- **이제 이 accessToken를 활용해서 Client가 resource Server를 핸들링할 수 있게 된다.** 그런데 핸들링 및 조작하기 위해서는, Resource Server가 Client들에게 ‘우리를 사용하려면 이렇게 이렇게 하면 우리를 사용할 수 있어!’ 라고 알려주는 방식대로 해야 한다. 
+- **바로 그 방식을 우리는 'API’라고 부른다.(Application Programming Interface)**
+  - 우리 Client가 Resource server를 호출할 것인데, 이 때 Resource Server를 호출하는 그 접점에 있는 일종의 조작장치들을 API라고 부른다.
+
+- **ex) 우리가 구글 캘린더를 resource Server로 해서 제어하고 싶다면, 구글에 google calendar api라고 검색해보자.** 뜨는 사이트를 클릭하고 “참조”를 클릭하면 여러가지 API들이 나온다. 지금 우리가 필요한 건, 구글 캘린더에 있는 캘린더 리스트 정보들을 가져오고 싶은 것이다. 검색결과 중, 관련 주소를 복사해서 GET 방식으로 보낼 때 필요한 뒷부분 주소를 붙여주고 브라우저에 입력해 보면, 해당 주소가 바로 구글 캘린더의 리스트를 보여주는 API가 되는 것이다.
+- **그러면, 브라우저 화면에 JSON 형태로 데이터들이 나온다.. 지금은 로그인이 안되어있다고 뜬다. 즉, 인증이 필요한 API라는 것을 알 수 있다. 즉, OAuth / accessToken를 통해서 여기있는 데이터를 가져올 수 있게 된다.**
+  - **Ex) 구글의 경우, accessToken를 쿼리 파라미터로 보내거나 / Authorization: Bearer라고 하는 것을 HTTP header로 전송하는 방법이 있다.** 여기서는 전자의 방법으로, API 주소 뒤에다가 GET방식으로 ?하고 access_token=ya29PbkdfjMFLsdf32dkjtsl 이런식으로 해주면 된다. 
+  - 해당 주소로 브라우저에 입력하면 —> 이제는 JSON 형태의 구글 캘린더 데이터를 받을 수 있게 된다.
+  - 후자의 방법은 curl이라는 프로그램을 이용해서 사용할 수 있다. Ex) curl -H 라고 하게 되면, -H는 옵션으로 H 뒤에 따라오는 “Authorization: Bearer <access_token>” 이라는 정보는 Header 값이 되는 것이다. 즉, Authorization이라는 Header의 값으로 Bearer라고 하는 OAuth를 위해서 고안된 인증 방법을 앞에다 놓고 그 뒤에 access_token를 적어주면 된다. 그리고 그 뒤에다가 우리가 접속하고자 하는 API 주소를 적어주면 된다. 이렇게 접속해도 마찬가지로 JSON 형태의 데이터를 받을 수 있고 더 안전하게 통신할 수 있다.
+
+<br>
+
+### Refresh Token이란
+
+
+
+
+
+
+
+
+
 
 
 
