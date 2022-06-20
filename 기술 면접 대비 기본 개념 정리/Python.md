@@ -10,7 +10,7 @@
   - [Flask와 Django](#flask와-django)
   - [리스트와 튜플 그리고 딕셔너리의 차이](#리스트와-튜플-그리고-딕셔너리의-차이)
   - [리스트에서 중복 제거](#리스트에서-중복-제거)
-  - [call of value와 call of reference 차이](#call-of-value와-call-of-reference-차이)
+  - [call by assignment란](#call-by-assignment란)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
 
@@ -114,12 +114,36 @@ print(list(b))
 
 * * *
 
-## call of value와 call of reference 차이
-- call of value는 값에 의한 호출을 의미하고, call of reference는 참조(주소)에 의한 호출을 의미한다.
-- **Python에서는 call by assignment라는 개념이 적용된다.**
-  - Python은 명시적인 Call by Reference 혹은 Call by Value 라는 개념이 존재하지 않는다.
+## call by assignment란
+- Call-by-value는 값에 의한 호출을 의미하고, Call-by-reference는 참조(주소)에 의한 호출을 의미한다.
+  - **Call-by-reference**는 함수 호출시 인자로 전달되는 변수의 레퍼런스를 전달한다. 인자로 전달된 레퍼런스는 함수 내부에서 실제 값이 반영되며 C언어의 포인터가 대표적인 예시다. 따라서 실제 값이 바뀌면 인자로 전달된 값도 바뀐다.
+  - **Call-by-value**는 함수 호출시 전달되는 변수의 값을 복사해서 함수의 인자로 전달된다. 따라서 함수 안에서 인자 값이 변경되도 전달한 외부 변수에는 영향이 가지 않는다.
 
-- **Python의 function에 argument(인자)를 전달할 때, Manual에 따르면 call by assignment 라는 방식으로 전달된다.** 
+- **Python에서는 call-by-assignment 방식으로 인자를 전달한다.**
+  - Python은 명시적인 Call by Reference 혹은 Call by Value 라는 개념이 존재하지 않는다.
+  - Python의 function에 argument(인자)를 전달할 때, Manual에 따르면 call by assignment 라는 방식으로 전달된다.
+  - **Python은 2가지로 객체를 구분할 수 있다.**
+
+- **immnutable object**
+  - 변경 불가능한 객체라는 뜻으로 일반적인 자료형인 int, float, str과 tuple이 있다.
+  - immutable 객체는 값이 변경되면 객체 자체가 변경되며, 여기에 속한 객체는 **call-by-value** 이다.
+  - **따라서 변수를 복사 할 때 새로운 객체가 생성되며 변경이 일어날 때 기본 객체는 변하지 않는다.**
+
+```python
+def foo(a):
+    a += 2
+    print("local : " + str(a))
+    return a
+
+a = 10
+foo(a)
+print(a)
+
+# call-by-value로 기본 객체인 a는 10으로 변하지 않는다.
+local : 12
+10
+```
+
 
 
 
