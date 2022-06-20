@@ -10,6 +10,7 @@
   - [Flask와 Django](#flask와-django)
   - [리스트와 튜플 그리고 딕셔너리의 차이](#리스트와-튜플-그리고-딕셔너리의-차이)
   - [리스트에서 중복 제거](#리스트에서-중복-제거)
+  - [call of value와 call of reference 차이](#call-of-value와-call-of-reference-차이)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
 
@@ -110,6 +111,16 @@ print(list(b))
 
 - set 자료구조의 특징이 중복이 불가능하다는 점을 이용해서 -> 위와 같이 리스트 자료형을 set 타입으로 변경해서 중복을 제거할 수 있다.
 - 그 후에 다시 list() 함수를 사용해서 리스트 타입으로 데이터를 변경할 수 있다.
+
+* * *
+
+## call of value와 call of reference 차이
+- call of value는 값에 의한 호출을 의미하고, call of reference는 참조(주소)에 의한 호출을 의미한다.
+- **Python에서는 call by assignment라는 개념이 적용된다.**
+  - Python은 명시적인 Call by Reference 혹은 Call by Value 라는 개념이 존재하지 않는다.
+
+- **Python의 function에 argument(인자)를 전달할 때, Manual에 따르면 call by assignment 라는 방식으로 전달된다.** 
+
 
 
 * * *
