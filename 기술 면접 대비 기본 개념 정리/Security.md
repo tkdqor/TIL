@@ -68,11 +68,45 @@
 - 사용자가 우리 서비스에 접속해서 글을 작성하거나 글을 읽는다면, 우리의 서비스가 사용자를 대신해서 서비스 제공자(구글 등)의 달력에 날짜를 기록하는 등을 해줄 수 있다. 이러기 위해서 우리가 사용자로부터 사용자가 사용하고 있는 서비스 제공자에게 접근할 수 있도록 허가를 받아야 한다. 서비스 제공자의 사용자 id, 비밀번호가 있을 텐데, 그것들을 우리가 사용자로부터 전달받아서 우리가 사용자의 id와 비밀번호를 기억하고 있다가, 우리가 실제로 서비스 제공자쪽으로 접속할 때 그 id와 비밀번호를 이용하면 될 것이다. **근데, 사용자 입장에서는 위험하다. 자신의 구글, 페이스북의 id와 비밀번호를 처음 보는 웹서비스쪽에 맞겨야 되는 것이기 때문이다. 그래서 사용자는 우리의 서비스를 믿을 수 없다. 또, 구글이나 페이스북 입장에서도 자신들의 사용자의 id와 비밀번호를 신뢰할 수 없는 제 3자가 가지고 있다는 건 매우 불만족스러운 상황이다.** 바로 이러한 상황에서 우리가 OAuth를 이용하면 훨씬 더 안전하게 우리가 만든 서비스를 서비스 제공자와 사용할 수 있게 된다.  
   - OAuth에서는 대신에 사용자의 요청에 의해서 구글이나 페이스북이 id, 비밀번호 대신에 **accessToken**이라는 것을, 일종의 비밀번호를 발급해준다. 이 accessToken은 구글이나 페이스북의 id와 비밀번호가 아니라는 장점이 있다. 그리고 구글이나 페이스북이 갖고 있는 모든 기능이 아니라, 그 중에 우리의 서비스가 필요한 필수적인 기능만 부분적으로 허용하는 비밀번호이다. 그래서 우리의 서비스가 이 accessToken을 OAuth를 통해서 획득한 다음에, 우리가 이 accessToken를 통해서 구글이나 페이스북 서비스에 접근해서, 데이터를 가져오고 수정하고 생성하고 삭제하는 작업을 할 수 있게 되는 것이다. 
 
+
 ### OAuth 등록절차 - Client가 Resource Server에 등록하는 과정
-- 클라이언트가 리소스 서버를 이용하기 위해서는, 리소스 서버의 승인을 사전에 받아놔야 한다. 이걸 이제 “등록”이라고 한다. 
+- **클라이언트가 리소스 서버를 이용하기 위해서는, 리소스 서버의 승인을 사전에 받아놔야 한다. 이걸 이제 “등록”이라고 한다.** 
 - 이 등록을 하기 위해서는 **Client ID와 Client Secret 그리고 Authorized redirect URIs** 이 3가지 요소를 리소스 서버로부터 공통적으로 받는다. 
   - 여기서 client ID라고 하는 값은 우리가 만들고 있는 애플리케이션을 식별하는 식별자, ID라고 보면 된다. Client Secret이라고 하는 값은 위의 ID에 대한 비밀번호이다. 그래서 client ID는 외부에 노출될 수 있지만, Client Secret은 절대로 외부에 노출되면 안 된다. 
   - 그 다음으로 Authorized(권한이 부여된) redirect URIs라고 하는 것은, 리소스 서버가 우리에게 권한을 부여하는 과정에서 우리한테 **Authorized CODE**라는 값을 전달해 줄 것이다. 그 때, ‘이 주소로 전달해주세요!’ 라고 알려주는 것이다.
+
+- ex) **Google Cloud Platform**에 들어가서 새로운 프로젝트를 생성하고 Credentials이라는 제어할 자격을 얻기 위한 과정을 진행한다. OAuth client ID를 클릭하고 Configure consent screen 이라는, 사용자가 인증하는 과정에서 보여지는 화면을 설정한다. 그리고 OAuth Client ID를 생성하게 된다. 또한, Authorized redirect URIs를 적어주면 Client ID와 Client Secret이 생성된다.
+
+
+### OAuth Resource Owner의 승인 - Resource Owner의 인증과정
+- 우리가 위의 과정처럼 등록을 하게 되면, Resource Server와 Client는 양쪽 다 예를 들어서 Client ID : 1 / Client Secret : 2 / Authorized redirect URIs : https://~~~~ 이러한 정보를 resource Server가 알게 되고 / 동시에 Client도 그 정보를 알 수 있게 된다. 
+- 그리고 Client는 이  Authorized redirect URIs에 해당되는 페이지를 구현하고 준비를 해놓고 있어야 한다. 
+- 그리고 Resource Server가 갖고 있는 기능이 예를 들어 A,B,C,D 4개라면 ==> Client가 Resource Server의 모든 기능이 다 필요한 게 아니라, B와 C에 해당되는 2개의 기능만이 필요하다면, 모든 기능에 대해서 인증을 받는 것이 아니라 최소한의 기능에 대해서만 인증받는 것이 훨씬 더 좋다.
+- **이제 Resource Owner, 즉 유저는 우리의 애플리케이션에 접속을 할 것이다.**
+  - **근데 이 접속을 하는 과정에서 우리의 웹 서비스가 Resource Server를 사용해야 되는 상황이 있을 것이다. 예를 들면 페이스북에다가 글을 게시한다든지, 구글 캘린더에다가 날짜를 기록한다든지 이러한 작업을 해야된다면, 우리 웹 서비스는 Resource Owner에게 “소셜 로그인 화면”을 보여주게 된다. “페이스북으로 로그인하기” “구글로 로그인하기” 등 아니면 “귀하께서는 이 기능을 사용하기 위해 이 인증을 거쳐야 합니다..” 라는 메세지를 띄우게 된다. 뭐가 되었든 사용자가 동의를 해야지만 그 다음 과정으로 진행할 수 있다.** 
+  - “Login with Facebook” 이렇게 생긴 버튼들을 클릭한다는 것은, 그 동의를 하겠다는 의미이다. 이 버튼을 클릭했을 때, https://resource.server./?client_id=1&scope=B,C&redirect_uri=https://client/callback 이런식으로 **우리의 client_id값과 우리가 사용하고자 하는 기능, 그리고 redirect URIs이 담기게끔 GET방식으로 링크를 만들어 요청할 수 있게끔 해준다.**
+
+- 그래서 resource Owner가 해당 링크(해당 주소로)를 클릭해서 Resource Server에 접속하게 되면, resource Server에 현재 Owner가 로그인이 되어있는지 아닌지를 봐서, 로그인이 안되어 있으면 
+로그인을 하라는 화면을 보여주게 된다. 
+- **resource owner가 로그인을 해서 성공했다면 resource server는 그 때서야 client_id 값과 같은 client_id값이 있는지 확인하게 된다. 그리고 resource server가 갖고 있는 client_id인 1은 redirect_url이 ...인데, 지금 접속을 시도하는 버튼 클릭의 요청에 Redirect_url 값과 같은지 다른지를 확인해서 다르면 여기서 작업을 종료시킨다.**
+- **만약 같다면 이 resource Owner에게 이 scope=B,C에 해당하는 권한을 Client에게 부여할 것인지를 확인하는 메세지를 전송하게 된다.** 
+
+<img width="145" alt="image" src="https://user-images.githubusercontent.com/95380638/174522501-7b49e284-76bf-4d86-82c0-e6e19fdcbc76.png">
+
+- 여기서 이러이러한 권한을 어떤 Client가 지금 요청하고 있는데, 허용할것이냐라고 물어보고 있는 것이다. 여기서 허용버튼을 누르면 / 허용했다는 정보가 Resource Server로 전송이 된다. 
+  - **그러면 resource Server는 user id : 1 / scope : b,c 라는 정보를 수집하게 된다. User id 1번이 resource owner의 아이디 번호라고 해보자. 즉, user id 1번은 scope b와 c에 대한 작업을 허용하는 것에 동의했다는 것이다.**
+
+- **여기까지가 Resource Owner로부터 Client가 resource Server에 접속하는 것에 대한 동의를 구하는 과정이라고 할 수 있다.**
+
+
+
+
+
+
+
+
+
+
 
 
 
