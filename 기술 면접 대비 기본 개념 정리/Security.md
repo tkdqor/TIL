@@ -174,6 +174,13 @@ Content-Type : application/x-www-form-urlencoded
 - 이렇게 나와있는데, www.googleapis.com/ oauth2/v4/token 이라는 path로 위의 Content Type은 —> form에서 POST 방식으로 전송하라는 의미이다.
 - 그리고 이 때, client_id와 client_secret를 전송하고 / 보관하고 있었던 refresh_token 값도 전송한다. 그리고 grant_type이라고 하는 값을 전송하면 ==> 구글에서는 JSON 포맷으로 데이터를 리턴해준다. 여기에 새롭게 발급된 access Token값과 그 토큰이 얼마동안 유효한지에 대한 정보인 expires_in 값을 준다.
 
+<br>
+
+### OAuth 마무리
+- OAuth라는 인증 시스템은 인증 과정에 참여하고 있는 3자 —> Client / Resource Owner / Resource Server가 한 자리에 모일 수 없는 상황에서 어떻게 하면 서로를 신뢰할 수 있을까 라고하는 고민에서 출발한 기술이다.
+- OAuth의 가장 매력적인 부분은, 바로 Client의 입장에서 제3자인 resource server를 통해서 Resrouce Owner의 신원을 인증할 수 있다는 점이다.
+- OAuth를 이용하는 궁극의 목적은, API를 제어하는 것이다.
+
 
 
 
