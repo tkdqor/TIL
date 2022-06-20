@@ -833,6 +833,8 @@ git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
   - [2](https://bskyvision.com/795)
   - [3](https://codingplus.tistory.com/29)
 
+- [Python의 경우](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md#call-by-assignment%EB%9E%80)
+
 * * *
 
 ## Event Listener란
