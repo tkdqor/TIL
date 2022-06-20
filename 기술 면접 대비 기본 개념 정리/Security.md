@@ -144,24 +144,40 @@
 <br>
 
 ### Refresh Token이란
+- **Access Token은 일반적으로 1,2시간 길게는 60일, 90일 등 보통 수명이 있다. 그 수명이 끝나면 -> 우리가 그 API에 접속했을 때 API가 더이상 데이터를 주지 않는다.**
+- 그러면 우리가 이 accessToken를 다시 발급 받아야 하는데, 그 때 마다 사용자한테 위의 과정을 다시 거치게 하는 것이 힘들다.
+  - **이런 경우에 손쉽게 우리가 새로운 AccessToken를 발급받을 수 있는 방법이 바로 refresh Token이다.**
+
+- 구글 검색 창에 “OAuth 2.0 rfc” 라고 검색해보자. rfc는 인터넷과 관련된 여러가지 기술들의 표준안이라고 할 수 있다. RFC 6749를 클릭해보면 ==> “The OAuth 2.0 Authorization Framework” 라는 제목의 OAuth에 대한 설명이 들어가 있는 표준문서를 찾을 수 있다.
+  - 해당 문서에서 목차를 보면, Refresh Token이 있다. 그리고 문자만으로 그림을 그려놓았다.
+  - [여기에 보면](https://datatracker.ietf.org/doc/html/rfc6749#section-1.5) client가 있고 Authorization Server와 Resource Server가 있다.
+  - 지금까지의 설명에서는 Resource Server와 Authorization Server를 그냥 하나로 퉁 쳤었다. 여기서는 구분하고 있다.
+
+- 해당 그림을 분석해보면, 
+  - A -> 먼저 client가 Authorization Grant라고 해서 권한을 획득하는 과정을 요청한다.
+  - B -> **그리고 여러여러 과정을 거쳐서 access Token를 Authorization Server가 발급하게 된다. 근데 access Token를 발급할 때, 보통 함께 Refresh Token도 발급하는 경우가 많다.
+그러면 Client는 이 2개의 Token를 모두 저장해놓고 있게된다.**
+  - C -> API를 호출할 때는 Access Token를 제출하는 걸 통해서 
+  - D -> Resource server에 있는 Resource를 가져오게 된다. (Protected Resrouce는 보호되고 있는 자원을 의미)
+  - E -> 계속 이 토큰을 사용하다가 어느날, 
+  - F -> 갑자기 Invalid Token Error가 뜨게 된다.(유효하지 않은 토큰 에러) 즉, Access Token의 수명이 끝났다는 것을 의미한다.
+  - G -> **그럼 이제 우리의 Client는 우리가 보관하고 있었던 Refresh Token를 Authorization Server에게 전달**하면서 
+  - H -> Access Token를 다시 발급받게 된다. 이 때, refresh Token도 새롭게 발급해서 계속 갱신되는 경우가 있고 / refresh token은 갱신되지 않고 access Token만 갱신하는 경우가 있다.
+
+- **ex) 구글에서 access Token를 refreshing 하는 방법**
+```terminal
+POST / oauth2/v4/token HTTP/ 1.1
+Host : www.googleapis.com
+Content-Type : application/x-www-form-urlencoded
+```
+
+- 이렇게 나와있는데, www.googleapis.com/ oauth2/v4/token 이라는 path로 위의 Content Type은 —> form에서 POST 방식으로 전송하라는 의미이다.
+- 그리고 이 때, client_id와 client_secret를 전송하고 / 보관하고 있었던 refresh_token 값도 전송한다. 그리고 grant_type이라고 하는 값을 전송하면 ==> 구글에서는 JSON 포맷으로 데이터를 리턴해준다. 여기에 새롭게 발급된 access Token값과 그 토큰이 얼마동안 유효한지에 대한 정보인 expires_in 값을 준다.
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
- 
 
 
 
