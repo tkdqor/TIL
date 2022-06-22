@@ -6,6 +6,7 @@
   - [django 배포 관련](#django-배포-관련)
   - [AWS EC2 ssh 연결하기](#aws-ec2-ssh-연결하기)
   - [uWSGI란](#uwsgi란)
+  - [AWS Route53이란](#aws-route53이란)
   - [Collectstatic 명령어](#collectstatic-명령어)
 
 * * *
@@ -51,6 +52,19 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
   - https://jhnyang.tistory.com/395
   - https://itholic.github.io/linux-jobs-bg-fg/
   - https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%B0%B1%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C_%EC%8B%A4%ED%96%89
+
+* * *
+
+## AWS Route53이란
+- **Route53이란, AWS에서 제공하는 DNS(Domain Name Service) 서비스로 AWS 리소스(EC2, CloudFront, S3 등)와 연동이 가능하다.**
+- DNS는 일반적으로 도메인을 IP로 전환하여 IP 네트워크에 통신해서 목적지 IP를 찾아가는 과정을 의미한다. 즉, 도메인과 대응된 IP 주소를 알려준다.
+
+![image](https://user-images.githubusercontent.com/95380638/175040244-70b8c11e-258d-4e19-bbd6-668f6cbbafe1.png)
+
+- 일반적인 DNS의 작동방식은 위와 같다. 출처는 [다음](https://library.gabia.com/contents/domain/4146)과 같다.
+
+
+
 
 * * *
 
