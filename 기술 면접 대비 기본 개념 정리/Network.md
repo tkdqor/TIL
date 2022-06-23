@@ -117,6 +117,7 @@
   - 도메인의 총 관리는 ICANN에서 하기 때문에, DNS 서버도 최상위 도메인에서 개인 도메인의 서브 도메인까지 도메인 이름의 분류와 마찬가지로 디렉토리/계층 형태로 구분된다. 여기서 ICANN은 모든 인터넷 도메인과 DNS 서비스를 관리하는 기구이며, 일반적으로 ICANN - 레지스트리(Registry) - 레지스트라(Registrar) - 레지스트란트(Registrant)의 구조, 계층 형태를 가지게 된다.
   - **Root DNS Server** : ICANN이 직접 관리하는 서버로, TLD DNS 서버 IP들을 저장해두고 안내하는 역할을 한다.
   - **TLD(최상위 도메인) DNS Server** : 도메인 등록 기관(Registry)이 관리하는 서버로, Authoritative DNS 서버 주소를 저장해두고 안내하는 역할을 한다. 어떤 도메인 묶음이 어떤 Authoritative DNS Server에 속하는지 아는 이유는 도메인 판매 업체(Registrar)의 DNS 설정이 변경되면 도메인 등록 기관(Registry)으로 전달이 되기 때문이다.
+    - 도메인 등록 기관 : .com / .net / .kr 등
   - **Authoritative DNS Server** : 실제 개인 도메인과 IP 주소의 관계가 기록/저장/변경되는 서버이다. 그래서 권한의 의미인 Authoritative가 붙는 것이다. 일반적으로 도메인/호스팅 업체의 ‘네임서버’를 말하지만, 개인 DNS 서버 구축을 한 경우에도 여기에 해당한다.
   - **Recursive DNS Server** : 인터넷 사용자가 가장 먼저 접근하는 DNS 서버이다. 위 3개의 DNS 서버를 매번 거친다면 효율이 좋지 않기 때문에, 한 번 거친 후 얻은 데이터를 일정 기간(TTL/Time to Live) 동안 캐시라는 형태로 저장해 두는 서버이다. 직접 도메인과 IP 주소의 관계를 기록/저장/변경하지는 않고 캐시만을 보관하기 때문에, Authoritative와 비교되는 의미로 반복의 Recursive가 붙는다. 대표적인게 KT/LG/SK와 같은 ISP(통신사) DNS 서버가 있고, 브라우저 우회 용도로 많이 쓰는 구글 DNS, 클라우드플레어와 같은 Public DNS 서버가 있다.
   - **기본적으로 브라우저는 캐시가 저장된 Recursive 서버를 사용하고, 실제 네임서버를 설정하는 곳은 Authoritative 서버라는 점만 주의해서 이해하자. 나머지 두 서버는 컨트롤할 수 있는 영역도 아니고 언급되는 경우도 적으니 전반적인 이해를 위해서만 알고 있자.**
@@ -142,9 +143,13 @@
 
 ## AWS Route53이란
 - Route53이란, AWS에서 제공하는 DNS이다. 
-- **Route53에서는, AWS Route53에서 확인할 수 있는 NS(Name Server)레코더 정보를 확인하고 해당 정보를 => 도메인 등록 대행기관(ex. 가비아)에 네임서버 정보로 입력하게 된다.**
+- **Route53에서는, AWS Route53에서 확인할 수 있는 NS(Name Server)레코더 정보를 확인하고 해당 정보를 => 도메인 등록 대행기관(ex. 가비아)에 네임서버 정보로 입력하게 된다. 즉, Authoritative DNS 서버의 역할을 AWS Route53이 대신 해주는 의미가 된다.**
   - 그러면 이후에 도메인과 관련된 모든 작업을 AWS 내부에서만 수행할 수 있게 된다.
 
+- **Route 53의 특징**
+  - Public Host zone과 Private Host zone이 존재한다. Public Host zone은 일반 네임서버로 글로벌하게 동작하고, Private Host zone은 AWS내에서만 동작한다.
+  - 도메인 자체에 ALIAS(별칭)를 줄 수 있다.
+  - 특정 포트에 대한 모니터링이 가능하다.
 
 
 * * *
