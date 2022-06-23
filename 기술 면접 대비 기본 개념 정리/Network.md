@@ -7,6 +7,7 @@
   - [API서버](#api서버)
   - [Web이란](#web이란)
   - [DNS 그리고 DNS 서버란](#dns-그리고-dns-서버란)
+  - [AWS Route53이란](#aws-route53이란)
   - [HTTPS와 HTTP](#https와-http)
   - [쿠키와 세션](#쿠키와-세션)
   - [클라이언트 요청부터 서버 응답 과정](#클라이언트-요청부터-서버-응답-과정)
@@ -136,6 +137,14 @@
 
 
 - [참고 자료](https://goodgid.github.io/Server-DNS/)
+
+* * *
+
+## AWS Route53이란
+- Route53이란, AWS에서 제공하는 DNS이다. 
+- **Route53에서는, AWS Route53에서 확인할 수 있는 NS(Name Server)레코더 정보를 확인하고 해당 정보를 => 도메인 등록 대행기관(ex. 가비아)에 네임서버 정보로 입력하게 된다.**
+  - 그러면 이후에 도메인과 관련된 모든 작업을 AWS 내부에서만 수행할 수 있게 된다.
+
 
 
 * * *
