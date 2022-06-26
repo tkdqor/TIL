@@ -118,7 +118,7 @@
 ## SQL과 NoSQL
 - **NoSQL이란 : Not Only SQL 혹은 Not SQL의 의미이다. 그리고 NoSQL이 한가지 종류의 DB만을 의미하지는 않는다. 즉, 거대한 DB의 그룹들이라고 할 수 있다. 카테고리라고 보면 된다.**
 
-- SQL DB 종류 : MySQL, PostgreSQL, SQLite 등이 있다. 
+- **SQL 관련 : SQL DB 종류에는 대표적으로 MySQL, PostgreSQL, SQLite 등이 있다. 그리고 SQL DB는 relational하기 때문에 테이블이 존재하고 row와 column이 존재한다. 반면, NoSQL DB는 relational 하지 않다.**
 
 - **NoSQL의 3가지 카테고리**
   - (1) Document DB
