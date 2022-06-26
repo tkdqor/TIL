@@ -9,6 +9,7 @@
   - [인메모리 데이터베이스](#인메모리-데이터베이스)
   - [Redis](#redis)
   - [AWS RDS란](#aws-rds란)
+  - [SQL과 NoSQL](#sql과-nosql)
 
 * * *
 
@@ -111,5 +112,28 @@
   - EC2에 DB를 직접 설치하는 것은, 내가 직접 EC2 리눅스 위에 사용하려는 DB(oracle, MySQL, maria db, postgresql 등)를 설치하고 그위에 서비스하는 형태이다.
   - RDS를 사용하는 것은, EC2와 함께 사용하며 아마존에서 DB의 설정, 운영, 백업 등의 기능을 편하게 이용할 수 있게 해주는 EC2와 분리된 DB(데이터베이스) 전용서버이다. RDS를 사용하게 되면 => OS 및 데이터베이스의 설치 및 관리 그리고 업데이트를 따로 할 필요가 없어진다. 그리고 AWS 콘솔이나 AWS API를 통해 손쉽게 백업이나 복구(recovery)가 가능해진다.
     - 따라서 기업은 RDS를 사용해서 데이터베이스 도입 및 관리하는 데 있어서 시간과 노력을 줄일 수 있다.
+
+* * *
+
+## SQL과 NoSQL
+- **NoSQL이란 : Not Only SQL 혹은 Not SQL의 의미이다. 그리고 NoSQL이 한가지 종류의 DB만을 의미하지는 않는다. 즉, 거대한 DB의 그룹들이라고 할 수 있다. 카테고리라고 보면 된다.**
+
+- SQL DB 종류 : MySQL, PostgreSQL, SQLite 등이 있다. 
+
+- **NoSQL의 3가지 카테고리**
+  - (1) Document DB
+  - (2) Key Value DB
+  - (3) Graph DB
+
+
+- **Document DB**
+  - 해당 DB 종류의 가장 큰 예시는 mongoDB이다.
+  - 데이터를 JSON document 형태로 저장한다. 
+  - 보통의 SQL처럼 테이블이 있고 행과 열인 row와 column이 존재하는 것이 아니라 우리가 원하는 어떤 종류의 어떤 모양의 데이터든 저장할 수 있다. 
+  - 즉, SQL은 데이터의 구조가 엄격한 반면, mongoDB에서는 유연하다.
+
+
+
+
 
 
