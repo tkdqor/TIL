@@ -28,6 +28,7 @@
   - [컴퓨터에서 실수를 부동소수점 방식으로 처리](#컴퓨터에서-실수를-부동소수점-방식으로-처리)
   - [유니코드란](#유니코드란)
   - [코드 컨벤션](#코드-컨벤션)
+  - [pipenv란](#pipenv란)
   - [책 '비전공자를 위한 이해할 수 있는 IT지식' 요약](#책-요약-내용)
 
 * * *
@@ -932,6 +933,40 @@ git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
 
 - **snake_case # 스네이크 케이스**
   - 변수나 함수명의 띄어쓰기를 언더바를 통해 구분하는 방식. python에서는 클래스와 모델 이외에 모두 이렇게 적용
+
+* * *
+
+## pipenv란
+- **pipenv는 파이썬에서도 패키지를 프로젝트 단위로 관리를 할 수 있도록 도와주는 고급 패키지 관리 도구이다.**
+- 기본적으로 pip를 기반으로 동작하지만, 프로젝트 별로 격리된 가상 환경(virtual environment)과 프로젝트 단위의 패키지 관리 매커니즘을 제공한다. 즉, pip와 virtualenv가 합쳐진 것이다.
+  - requirements.txt를 작성할 필요 없이 Pipfile에 패키지와 라이브러리가 자동으로 추가된다.
+  - 또한, pipenv는 Pipfile.lock이라는 패키지 잠금 파일을 사용해서 Pipfile 파일에 정확한 버전이 명시되어 있지않더라도 항상 동일한 버전의 패키지를 설치할 수 있도록 해준다.
+
+- [관련 블로그](https://www.daleseo.com/python-pipenv/)
+
+- **pipenv 명령어**
+
+```terminal
+# 맥 사용자 설치
+brew install pipenv
+
+# 윈도우 사용자 설치
+pip install pipenv
+
+# 가상환경에서 사용할 python 버전 설정 ex) 3.7 버전
+pipenv --python 3.7
+
+# 가상환경 활성화 / 비활성화
+pipenv shell
+exit
+
+# 패키지 설치
+pipenv install requests
+
+# Git 저장소 clone 이후 Pipfile 파일과 Pipfile.lock 파일 확인하고 패키지 설치 하기
+pipenv install
+
+```
 
 * * *
 
