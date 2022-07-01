@@ -390,7 +390,7 @@ git checkout 브랜치명
 git add .
 ```
 
-- 현재 작업 내용을 저장한다.
+- **현재 작업 내용을 working directory에서 staging area에 올려놓고 저장한다.**
 
 ```terminal
 git commit -m "...." 
@@ -398,7 +398,7 @@ git commit -m "...."
 git commit
 ```
 
-- 그리고 commit를 진행하는데, 한 줄로 커밋 메시지를 전달할 때는 위의 명령어를 사용할 수 있고 미리 정해진 컨벤션이 있는 경우에는 아래 명령어를 입력하면 된다.
+- **그리고 commit를 진행하면 staging area에서 repository로 올라가게 된다. 한 줄로 커밋 메시지를 전달할 때는 위의 명령어를 사용할 수 있고 미리 정해진 컨벤션이 있는 경우에는 아래 명령어를 입력하면 된다.**
 
 ```terminal
 git push origin 브랜치명
