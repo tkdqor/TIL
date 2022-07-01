@@ -341,16 +341,52 @@ vim file1.txt
 
 **1. Git 저장소 만들기**   
 - 터미널을 이용해서 현재 폴더로 이동한 후,
+```terminal
+git init .
 ```
-git init
-```
-다음과 같이 입력하면 빈 저장소가 만들어졌다는 메시지가 뜬다. 즉, 해당 폴더가 git의 관리 하에 들어간 것이다.  
+다음과 같이 입력하면 빈 저장소가 만들어졌다는 메시지가 뜬다. 즉, 해당 폴더가 git의 관리 하에 들어간 것이다. 끝에 점을 입력하지 않으면 해당 디렉터리가 아닌 루트 디렉터리에 .git 폴더가 생성된다.
 그리고 나서는,
+```terminal
+git remote add origin 레포지토리 주소 
+
+git remote -v
 ```
-git config --global user.name "내 이름"
-git config --global user.email "내 이메일 주소"
+이렇게 입력해서 github 레포지토리를 연결해준다. 그리고 git remote -v로 연결되었는지 확인해준다.
+
+<br>
+
+**2. 브랜치 생성하기**
+```terminal
+git checkout -b feature/#1 # branch 이름이 feature/#1 이라고 가정할 때, 해당 브랜치를 생성하고 바로 전환
+git switch -c feature/#1   # 같이 의미로 사용할 수 있는 명령어
 ```
-이렇게 입력해주면 된다. 그러면 해당 폴더안에 .git 이라는 숨겨진 폴더가 생성된다. 
+- 이렇게 브랜치를 생성함과 동시에 해당 브랜치로 전환할 수 있다.
+
+```terminal
+git branch
+```
+
+- 그리고 위의 명령어로 내가 현재 어떤 브랜치에 속해있는지 확인해보자.
+
+<br>
+
+**3. commit 진행하기**
+- 3번부터의 과정은 commit를 진행하는 과정이다. 먼저 진행하기 전에, 수시로 현재 개발되고 있는 저장소의 코드를 바로바로 내 로컬에 반영해주는 것이 좋다.
+
+```terminal
+git pull origin main
+```
+
+- 기본 브랜치가 main이라면, 위의 명령어로 현재 로컬을 최신 코드로 반영해줄 수 있다.
+- 그 다음, commit 전에 새로운 브랜치가 필요하다면 브랜치를 생성해주고 commit를 진행하자. 아니면 기존의 다른 브랜치로 전환하자.
+
+```terminal
+git checkout 브랜치명
+```
+
+
+
+
 
 
 **2. 현재 시점을 저장하기**
