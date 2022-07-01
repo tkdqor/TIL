@@ -510,6 +510,7 @@ git remote set-url origin 변경할url주소
 - 해당 사항들을 선택하여 저장소를 생성.
   - Github repository의 url은 -> https://github.com/username/레파지토리명  이렇게 설정된다.
 
+<br>
 
 **2-1. Github에 소스 올리기**
 - 이제 자신의 프로젝트를 새로 생성한 레파지토리에 올려보자.
@@ -546,6 +547,7 @@ git remote
 ```
 다시 입력해보면, 이제는 origin이라는 추가한 원격 레파지토리의 이름이 나오게 된다.
 
+<br>
 
 **2-2. 변화된 내용을 다시 push하기**
 - 자신의 프로젝트에서 작업을 하고 변경된 내용을 github에 push해보자.
@@ -559,6 +561,7 @@ git push origin master
 ```
 라고 입력해주면 github에 추가된 내용을 확인할 수 있다. 
 
+<br>
 
 **3. 다루지 않을 파일 설정하기 - .gitignore**
 - 프로젝트를 진행할 때, Git으로 관리하고 Github에 올릴 필요가 없거나 오히려 그래서는 안 되는 파일들이 있을 수 있다.
@@ -580,7 +583,7 @@ git status
 ```
 라고 입력해봤을 때, 해당 파일은 commit 해야할 목록에서 없어진다. 이 상태에서
 ```
-git add -A
+git add .
 git commit -m "gitignore사용"
 ```
 이렇게 입력하고 
@@ -626,7 +629,7 @@ git pull 원격명 브랜치명        ex.) git pull origin master
 
 - 이렇게, Git과 Github을 사용해서 원격으로 협업할 때는 뭔가 작업하거나 push하기 이전에 먼저 해당 과정을 거쳐서 다운받아야 할 사항이 있는지 확인하고 있으면 pull를 해주고 작업을 하는 게 좋다.  
   - 팀원이 작업한 내용들을 꾸준히 업데이트 받아야 괜한 작업을 하거나 conflict가 나는 일을 방지할 수 있다.
-  - 그리고 Github에 다른 누군가가 올린 내역을 pull로 다 업데이트 받기 전까지는 내쪽에서 push를 할 수 없다. / 관련 [오류 링크](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
+  - **그리고 Github에 다른 누군가가 올린 내역을 pull로 다 업데이트 받기 전까지는 내쪽에서 push를 할 수 없다. / 관련 [오류 링크]**(https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
 
 
 **6. branch 주고받기**
