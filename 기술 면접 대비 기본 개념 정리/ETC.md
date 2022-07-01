@@ -12,6 +12,7 @@
   - [Github 및 .gitignore 설정](#github-및-gitignore-설정)
   - [컴파일러 & 인터프리터](#컴파일러와-인터프리터)
   - [환경변수란](#환경변수란)
+  - [django secret key 숨기기 ](#django-secret-key-숨기기 )
   - [1byte](#1byte는-8bit)
   - [1픽셀](#1픽셀은-3byte)
   - [2의10승이란](#2의10승이란)
@@ -705,6 +706,19 @@ git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
 
 - 이처럼, 다양한 용도로 각 환경마다의 값을 지정할 때 사용되는 게 환경변수이다. 환경이 꼭 컴퓨터를 의미하기 보다는 프로세스가 돌아가는 세분화된 공간이라고 생각하자.
   - python의 경우, 처음 설치 시 PATH 추가에 체크를 했다면 알아서 환경변수를 설정해주고 어떤 디렉토리에서든 python를 사용할 수 있게 된다.
+
+
+* * *
+
+## django secret key 숨기기 
+- 프로젝트 디렉터리 내부에 my_settings.py를 생성하고 변수설정
+  - django_secret = ‘여기에 settings.py의 secret key를 입력' 이렇게 내부에 작성
+
+- settings.py에서는 from .my_settings import django_secret 이렇게 my_settings.py를 가져오고 변수도 가져오기.
+  - 또한, settings.py에서 SECRET_KEY = django_secret 이런식으로 설정해주면 된다.
+
+- 마지막으로 .gitignore에서 /labq/my_settings.py 이런식으로 추가해주기.  
+
 
 
 * * *
