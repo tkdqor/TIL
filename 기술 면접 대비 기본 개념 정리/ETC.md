@@ -8,6 +8,7 @@
   - [Git](#git)
   - [Git remote url 변경](#git-remote-url-변경)
   - [버전관리에서 commit이란](#버전관리에서-commit이란)
+  - [Git 커밋 컨벤션이란](#git-커밋-컨벤션이란)
   - [Github](#github이란)
   - [컴파일러 & 인터프리터](#컴파일러와-인터프리터)
   - [환경변수란](#환경변수란)
@@ -529,6 +530,18 @@ git remote set-url origin 변경할url주소
 - [관련 블로그](https://steady-coding.tistory.com/277)
   - [2](https://backlog.com/git-tutorial/kr/intro/intro1_3.html)
   - [3](https://sabarada.tistory.com/71)
+
+* * *
+
+## Git 커밋 컨벤션이란
+- .git이 있는 디렉터리 안에서 터미널로 touch ~/.gitmessage.txt 이렇게 입력해서 파일을 생성할 수 있다. 
+- touch가 파일을 생성하는 명령어인데, ~/ 이렇게 설정하니까 Desktop 위의 경로인 ~경로에 .gitmessage.txt를 설치하게 된다. 그래서 터미널에서 ~ 여기서 ls -a를 입력하면 .gitconfig와 우리가 만든 .gitmessage.txt를 확인할 수 있게 된다.
+- **이렇게 설정을 해주면, 어떤 프로젝트 디렉터리에서든 같은 Git 커밋 템플릿을 사용할 수 있게 된다.**
+  - git add . 이후에 git commit 명령어만 입력하면 템플릿 작성 화면이 뜨게 되고 vim 수정을 해주면 된다.
+
+
+- [관련 블로그](https://velog.io/@bky373/Git-%EC%BB%A4%EB%B0%8B-%EB%A9%94%EC%8B%9C%EC%A7%80-%ED%85%9C%ED%94%8C%EB%A6%BF)
+
 
 * * *
 
