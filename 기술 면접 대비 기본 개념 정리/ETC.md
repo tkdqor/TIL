@@ -9,7 +9,7 @@
   - [Git remote url 변경](#git-remote-url-변경)
   - [버전관리에서 commit이란](#버전관리에서-commit이란)
   - [Git 커밋 컨벤션이란](#git-커밋-컨벤션이란)
-  - [Github](#github이란)
+  - [Github 및 .gitignore 설정](#github-및-gitignore-설정)
   - [컴파일러 & 인터프리터](#컴파일러와-인터프리터)
   - [환경변수란](#환경변수란)
   - [1byte](#1byte는-8bit)
@@ -482,7 +482,7 @@ git remote set-url origin 변경할url주소
 
 * * *
 
-## Github이란
+## Github 및 gitignore 설정
 - Git으로 관리한 내용들을 Github을 사용하여 온라인에 업로드해서 보관하고 다른 사람과 협업하는 과정을 다뤄보자.
 - Git에서 commit을 통해 -> 나의 프로젝트를 local 저장소에 반영했고 -> push를 통해 local 저장소의 내용을 원격 저장소에 반영하자.
 - Git을 사용해서 클라우드를 쓰듯이 소스들을 업로드해서 저장하고 다른 개발자들과 공유할 수 있는 Git 저장소들 중, 대표적인 것으로 Bitbucket, Gitlab, Github 등이 있다.
@@ -567,10 +567,12 @@ git push origin master
 - 이럴 때 사용되는 게 바로 **.gitignore 파일** 이다.
 
 1. 프로젝트 폴더 바로 안쪽, 최상위에 .gitignore라는 파일을 생성한다. 해당 파일은 숨김파일로 지정된다. 
-  - https://www.atlassian.com/git/tutorials/saving-changes/gitignore 여기에서 Git 관리에서 제외시킬 파일이나 폴더, 기타 요소를 지정하는 형식이 나와있다.
+  - https://www.atlassian.com/git/tutorials/saving-changes/gitignore 여기에서 Git 관리에서 제외시킬 파일이나 폴더, 기타 요소를 지정하는 형식이 나와있다. 해당 사이트에서 django를 검색한 다음 나오는 코드들을 입력한다.
 
-2. 새롭게 파일을 추가하고 해당 파일의 이름을 .gitignore라는 파일안에 입력해준다. **주의할 점은 .gitignore라는 파일을 생성한 다음에 추가된 파일에 대해서만 적용이 된다.**
-   - ex) .gitignore 파일안에 ajajaja.py 이렇게 입력
+
+2. 만약, .gitignore에 들어가는 파일이 특정 디렉터리 하위에 있다면 ex) /labq/my_settings.py 이런식으로 넣어주기.
+   - [해당 블로그](https://e2xist.tistory.com/744) 참고
+
 
 3. 그리고나서
 ```
