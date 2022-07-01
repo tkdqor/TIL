@@ -551,6 +551,19 @@ git remote set-url origin 변경할url주소
 - Git에서 commit을 통해 -> 나의 프로젝트를 local 저장소에 반영했고 -> push를 통해 local 저장소의 내용을 원격 저장소에 반영하자.
 - Git을 사용해서 클라우드를 쓰듯이 소스들을 업로드해서 저장하고 다른 개발자들과 공유할 수 있는 Git 저장소들 중, 대표적인 것으로 Bitbucket, Gitlab, Github 등이 있다.
 
+- **Github 레포지토리 issue 생성**
+  - 프로젝트를 진행하면서 발생하는 모든 이슈를 생성해서 관리할 수 있는 기능이다. 
+  - 해당 Issue에 대한 label도 추가할 수 있다. 또한, 해당 이슈에 대해 Assignees(책임자)를 부여할 수도 있다.
+  - [관련 블로그](https://yagom.net/forums/topic/github-issue-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0/), [관련 블로그 2](https://hbase.tistory.com/211)
+
+<br>
+
+- **Github 레포지토리 Projects 툴 생성**
+  - 칸반(Kanban)이라는 단계별 작업 현황을 열(column) 형식의 보드 형태로 시각화하는 프로젝트 관리 방법을 Github에서 사용하는 방식이다.
+  - 그래서, 생성한 이슈에서 projects를 설정할 수 있고 pull request할 때도 이슈와 프로젝트를 설정할 수 있다.
+  - [관련 블로그](https://velog.io/@younoah/%EA%B9%83%ED%97%88%EB%B8%8C-%ED%98%91%EC%97%85)
+
+
 * * * 
 
 **1. Github 저장소 만들기**
