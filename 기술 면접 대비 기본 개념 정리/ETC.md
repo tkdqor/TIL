@@ -30,6 +30,7 @@
   - [유니코드란](#유니코드란)
   - [코드 컨벤션](#코드-컨벤션)
   - [pipenv란](#pipenv란)
+  - [Homebrew란](#homebrew란)
   - [책 '비전공자를 위한 이해할 수 있는 IT지식' 요약](#책-요약-내용)
 
 * * *
@@ -921,6 +922,16 @@ pipenv install requests
 pipenv install
 
 ```
+
+* * *
+
+
+## Homebrew란
+- Homebrew란, Mac용 패키지 관리 도구이다.
+- Homebrew를 사용하면, Java와 같은 것들을 설치할 때 홈페이지에 가지 않고도 한 줄로 설치 가능
+  - Homebrew로 설치하는 경우 항상 최신 버전이 설치된다. 편리하지만, 커뮤니티 기반으로 운영되기 때문에 패키지의 안정성이 보장되지 않는다.
+
+- [관련 블로그](https://www.44bits.io/ko/keyword/homebrew)
 
 * * *
 
