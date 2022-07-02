@@ -71,6 +71,7 @@ HTTP_500_INTERNAL_SERVER_ERROR
 
 ### DRF Serializer
 - **Serializer의 사전적 의미는 직렬화이다. 직렬화는 Django 프로젝트에서 내가 만든 모델로부터 뽑은 queryset, 즉 모델 인스턴스를 JSON 타입으로 바꾸는 것이다.**
+  - **즉, serializer가 2개라면 View에서 2개의 객체를 보내줘야 한다.**
 - DRF 내에서 데이터가 저장될 때는 Django의 모델을 통해 저장된다. 따라서 Django에서의 데이터는 JSON과 같은 포맷이 아닌, python 객체의 형태로 저장이 된다.
 - 우리가 만들 API 서버는 이러한 데이터들을 클라이언트에게 보내주는 역할을 해야한다.
   - 이 때, 어떤 작업도 하지 않고 데이터를 그대로 보내준다면 클라이언트는 읽지도 못하는 python 데이터를 받게될 것이다.
