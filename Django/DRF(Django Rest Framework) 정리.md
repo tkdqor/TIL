@@ -484,6 +484,15 @@ urlpatterns = router.urls
   - 하나의 클래스로 하나의 모델에 대한 내용을 전부 작성할 수 있고 queryset이나 serializer_class 등 겹치는 부분을 최소화할 수 있다.
   - 라우터를 통해 URL를 일일이 지정하지 않아도 일정한 규칙의 URL을 만들 수 있다.
 
+<br>
+
+### SerializerMethodField
+- **Serializer 클래스 내부에 변수를 SerializerMethodField로 추가로 정의하면, 클래스 내부에 있는 메소드를 호출하게 된다.**
+- 만약 SerializerMethodField 인자에 아무것도 넣지 않는다면 “def get_필드이름” 이렇게 get_필드이름의 메소드를 호출하게 된다. 그래서 그 호출한 메소드의 값을 가져올 수 있게 된다.
+  - 해당 메소드는 self외에도 obj라는 argument를 받는다. obj는 직렬화되는 객체를 의미한다.
+
+- [참고 블로그](https://velog.io/@oen/SerializerMethodField-%EA%B3%B5%EC%8B%9D%EB%AC%B8%EC%84%9C-%EB%B2%88%EC%97%AD)
+
 
 
 
