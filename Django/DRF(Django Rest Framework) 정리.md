@@ -513,8 +513,32 @@ class ExampleView(APIView):
 ### 쿼리스트링을 받을 수 있는 URL 만들기
 - https://eunjin3786.tistory.com/274
 
+<br>
 
+### Serializer에서 시간 설정하기
+```python
+class GuNameModelSerializer(ModelSerializer):
+...
+rainfall_data = serializers.SerializerMethodField()
+sewer_pipe_data = serializers.SerializerMethodField()
 
+    def get_rainfall_data(self, obj):
+        rainfalls = obj.rainfall
+        datetime_info = self.context["datetime"]
+        rainfall_serializer = RainfallModelSerializer(rainfalls.filter(
+            receive_time__gte=datetime_info,
+            receive_time__lt=datetime_info + datetime.timedelta(minutes=10)
+        ), many=True)
+        return rainfall_serializer.data
 
-
-
+    def get_sewer_pipe_data(self, obj):
+        sewer_pipe = obj.sewer_pipe
+        datetime_info = self.context["datetime"]
+        sewer_pipe_serializer = SewerPipeModelSerializer(sewer_pipe.filter(
+            mea_ymd__gte=datetime_info,
+            mea_ymd__lt=datetime_info + datetime.timedelta(minutes=1)
+        ), many=True)
+        return sewer_pipe_serializer.data
+```
+- receive_time은 Rainfall 모델의 필드로, receive_time__gte는 greater than or equal의 약자로 >=를 의미한다. receive_time__lt은 less than으로 < 를 의미한다.
+- datetime.timedelta(minutes=10)는 10분을 의미하는 코드이다.
