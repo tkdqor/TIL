@@ -508,4 +508,13 @@ class ExampleView(APIView):
 
 - [관련해서 좋은 내용의 블로그](https://donis-note.medium.com/django-rest-framework-authentication-permission-%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EA%B6%8C%ED%95%9C-cc9b183fd901)
 
+<br>
+
+### 쿼리스트링을 받을 수 있는 URL 만들기
+- https://eunjin3786.tistory.com/274
+
+
+
+
+
 
