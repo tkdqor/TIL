@@ -407,6 +407,7 @@ git push origin 브랜치명
 ```
 
 - 마지막으로 위의 명령어를 입력하면 Pull Request가 된다. 저장소에서 해당 버튼을 누르면 PR이 날라간다. 
+- 여기서 origin은 remote repository의 URL short name이다. 따라서 'origin 브랜치명'이 remote repository에 있는 브랜치를 의미한다.
 
 <br>
 
