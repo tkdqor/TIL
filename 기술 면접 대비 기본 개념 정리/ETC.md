@@ -448,7 +448,8 @@ git branch -D 브랜치이름
 - **Staging Area(index)** : 코드 변경사항이 저장소에 커밋되기 전에 반드시 거쳐야 되는 중간단계를 의미. git add 명령어를 입력하면 해당 영역으로 이동하게 된다.
   - git add . 명령어를 입력한 다음 -> **git status**를 입력하면 Untracked files에서 new file 상태로 변경됨을 알 수 있다.
 - **Repository** : 스테이징 영역에 있는 소스 코드에서 git commit 명령어를 실행하면 최종적으로 Git의 저장소에 반영된다. 
-  - 더 자세히 살펴보면, **git commit** 명령어를 입력하는 것은 Git 저장소에 반영되기 전, 지금까지의 코드 변경 이력을 **local repository**에 기록하는 명령어이다. 
+  - 더 자세히 살펴보면, **git commit** 명령어를 입력하는 것은 Git 저장소에 반영되기 전, 지금까지의 코드 변경 이력을 **local repository**에 기록하는 명령어이다.
+  - **그런데 보통 git init . 으로 시작하기 때문에 본인의 Working Directory안에 .git 폴더가 생성되니까 본인의 Working Directory가 곧 local repository가 된다.** 
   - 반드시 **git push** 명령어를 입력해줘야 그동안의 코드 변경 이력이 **remote repository**에 반영된다.
 
 
