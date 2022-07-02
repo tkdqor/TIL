@@ -190,7 +190,7 @@ def HelloAPI(request):
 def booksAPI(request):
     if request.method == 'GET':      # GET 요청일 때
         books = Book.objects.all()   # Book 모델로부터 전체 데이터 가져오기
-        serializer = BookSerializer(books, many=True)                 # 시리얼라이저에 전체 데이터를 한 번에 집어넣기(직렬화, many=True) -> 이 때, python 데이터를 JSON 형태로 직렬화 한다는 것
+        serializer = BookSerializer(books, many=True)                 # 시리얼라이저에 전체 객체들을 한 번에 집어넣기(직렬화, many=True) -> 이 때, python 객체를 JSON 형태로 직렬화 한다는 것
         return Response(serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'POST':   # POST 요청일 때
         serializer = BookSerializer(data=request.data)                # POST 요청으로 들어온 데이터를 시리얼라이저에 집어넣기
@@ -202,19 +202,19 @@ def booksAPI(request):
 @api_view(['GET'])
 def bookAPI(request, bid):
     book = get_object_or_404(Book, bid=bid)                           # bid = id인 데이터를 Book에서 가져오고 없으면 404 에러
-    serializer = BookSerializer(book)                                 # 시리얼라이저에 데이터를 집어넣기(직렬화)
+    serializer = BookSerializer(book)                                 # 시리얼라이저에 객체를 집어넣기(직렬화)
     return Response(serializer.data, status=status.HTTP_200_OK) 
 ```
 - **/book/ 주소를 사용할 두 API에 대한 처리는 booksAPI()라는 함수에서 한 번에 처리한다.**
   - 데코레이터로 GET, POST를 함께 처리할 수 있도록 설정했고 조건문을 통해 해당 요청이 GET인지 POST인지에 따라 다르게 처리한다.
-  - **GET 요청은 도서 전체 정보를 가져오니까 모델로부터 데이터를 가져와 시리얼라이저에 집어넣어서 -> 직렬화를 하고 그렇게 가공된 데이터를 결과로 응답한다. ex) serializer = BookSerializer(books, many=True)**
-  - **시리얼라이저에 넣을 때, many=True 옵션을 넣으면, 여러 데이터에 대한 처리를 할 수 있도록 해준다.**
+  - **GET 요청은 도서 전체 정보를 가져오니까 모델로부터 객체들을 가져와 시리얼라이저에 집어넣어서 -> 직렬화를 하고 그렇게 가공된 데이터를 결과로 응답한다. ex) serializer = BookSerializer(books, many=True)**
+  - **시리얼라이저에 넣을 때, many=True 옵션을 넣으면, 여러 객체들에 대한 처리를 할 수 있도록 해준다.**
   - **POST 요청은 오히려 요청으로 들어온 데이터를 역직렬화하여 모델에 집어넣어야 하므로 -> 먼저 시리얼라이저에 serializer = BookSerializer(data=request.data) 이렇게 request.data를 넣어준다.**
   - 그리고 시리얼라이저의 is_valid() 기능을 통해 들어온 데이터가 모델에 맞는 유효한 데이터라면 이를 저장한다.
   - 마지막으로 serializer.save()는 기본적인 create() 함수를 실행시키는 ModelSerializer의 기능이다. 데이터가 잘 저장되었다면 201 메시지를 보내고 아니면 400 메시지를 보내서 마무리한다.
 
 - **bookAPI 함수도 마찬가지이다.**
-  - 특정 bid의 책 데이터를 가져와서 함수의 인자로 bid를 넘겨받아 모델에서 찾는다. 그리고 찾은 데이터를 serializer = BookSerializer(book) 이렇게 직렬화해준다.
+  - 특정 bid의 책 데이터를 가져와서 함수의 인자로 bid를 넘겨받아 모델에서 찾는다. 그리고 찾은 객체를 serializer = BookSerializer(book) 이렇게 직렬화해준다.
 
 <br>
 
