@@ -20,7 +20,9 @@ class Post(models.Model):
 
 - 다음과 같이, Post 모델의 경우 ForeignKey라는 함수를 사용해서 User라는 모델과 관계를 설정하고(User 모델과 연동)   
   -> Post 테이블에 User 모델의 Primary Key인 user_id라는 새로운 column이 생성되는 것이다.
-- 또한, 활용시에는 post.user 이렇게 사용하고 / 단순히 user_id만 담겨있는 것이 아니라 그 id에 해당하는 user 인스턴스 자체에 대한 정보가 담겨있다고 보면 된다.
+  
+* * *  
+### 또한, 활용시에는 post.user 이렇게 사용하고 / 단순히 user_id만 담겨있는 것이 아니라 그 id에 해당하는 user 인스턴스, 객체 자체에 접근한다고 생각하면 된다.
 
 - ForeignKey 함수의 두번째 인자인 on_delete=models.CASCADE는, 연동시킨 유저가 삭제되었을 때 해당 유저가 작성한 모든 게시글도 동시에 지워주는 설정이다.
 
@@ -34,17 +36,19 @@ class Post(models.Model):
 
 - 다시 Post 모델에서 user_id가 없으면 글이 생성되지 않게 하려면, null=False 값을 주고 다시 makemigrations 및 migrate를 해주면 된다.
 
-* * *
 ```html
 {{ post.user.get_username }}
 ```
 
 - html에서 Post 모델의 user 필드 데이터를 가져오려면 이러한 형식으로 불러오면 된다.
 
-* * * 
 
 - **1:N 관계가 맞는지 파악할 때는 -> FK를 설정한 테이블에서 1에 해당하는 테이블의 PK가 중복될 수 있는지 생각해보자.**   
   ex) Post 모델 테이블에서 User 모델의 PK는 중복될 수 있다. 1번 user가 여러 개의 글을 작성할 수 있기 때문이다.
+
+
+### 1:N 관계 예시
+- A라는 모델이 있고 A가 다른 B와 1:N / 그리고 A가 다른 C와도 1:N 관계를 맺을 수 있다.
 
 
 * * * 
