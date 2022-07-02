@@ -8,6 +8,7 @@
   - [uWSGI란](#uwsgi란)
   - [DNS, DNS 서버란](#dns-그리고-dns-서버란)
   - [Collectstatic 명령어](#collectstatic-명령어)
+  - [CI 예시](#ci-예시)
 
 * * *
 
@@ -101,7 +102,11 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 - https://crynut84.github.io/2016/11/14/django-static-file/
 
 
+* * *
 
+## CI 예시
+- 터미널에 테스트 커맨드를 CI에 입력해두면 → 푸쉬를 바탕으로 디펜던시 설치 후 커맨드 자체를 입력하게 되어 test.py 실행시키는 명령어가 실행된다.
+- Github 자체 로컬 공간에 환경을 구성해서 우리의 코드를 실행하게 된다.
 
 
 
