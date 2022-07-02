@@ -542,3 +542,6 @@ sewer_pipe_data = serializers.SerializerMethodField()
 ```
 - receive_time은 Rainfall 모델의 필드로, receive_time__gte는 greater than or equal의 약자로 >=를 의미한다. receive_time__lt은 less than으로 < 를 의미한다.
 - datetime.timedelta(minutes=10)는 10분을 의미하는 코드이다.
+- **filter() 라는 함수에서 조건을 여러 개 두고 싶으면, filter(A조건, B조건) 이렇게 해주면 된다.**
+  - [관련 블로그](https://django-orm-cookbook-ko.readthedocs.io/en/latest/and_query.html)
+
