@@ -407,7 +407,7 @@ git push origin 브랜치명
 ```
 
 - 마지막으로 위의 명령어를 입력하면 Pull Request가 된다. 저장소에서 해당 버튼을 누르면 PR이 날라간다. 
-- 여기서 origin은 remote repository의 URL short name이다. 따라서 'origin 브랜치명'이 remote repository에 있는 브랜치를 의미한다.
+- 여기서 origin은 remote repository의 이름을 의미한다.
 
 <br>
 
@@ -441,10 +441,15 @@ git branch -D 브랜치이름
 
 <img width="577" alt="image" src="https://user-images.githubusercontent.com/95380638/176939141-1cf41fb6-1ab2-4baf-83d6-f503fad4d16d.png">
 
-- **Working Directory** : 소스 코드를 작업하는 로컬을 의미.
-- **Staging Area** : 코드 변경사항이 저장소에 커밋되기 전에 반드시 거쳐야 되는 중간단계를 의미. git add 명령어를 입력하면 해당 영역으로 이동하게 된다.
+![image](https://user-images.githubusercontent.com/95380638/177001104-439c42f0-d9e4-442f-b665-9ddfc4083df8.png)
+
+
+- **Working Directory(workspace)** : 소스 코드를 작업하는 로컬을 의미.
+- **Staging Area(index)** : 코드 변경사항이 저장소에 커밋되기 전에 반드시 거쳐야 되는 중간단계를 의미. git add 명령어를 입력하면 해당 영역으로 이동하게 된다.
   - git add . 명령어를 입력한 다음 -> **git status**를 입력하면 Untracked files에서 new file 상태로 변경됨을 알 수 있다.
 - **Repository** : 스테이징 영역에 있는 소스 코드에서 git commit 명령어를 실행하면 최종적으로 Git의 저장소에 반영된다. 
+  - 더 자세히 살펴보면, **git commit** 명령어를 입력하는 것은 Git 저장소에 반영되기 전, 지금까지의 코드 변경 이력을 **local repository**에 기록하는 명령어이다. 
+  - 반드시 **git push** 명령어를 입력해줘야 그동안의 코드 변경 이력이 **remote repository**에 반영된다.
 
 
 * * * 
