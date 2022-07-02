@@ -17,6 +17,7 @@
   - [View에서 permission_classes로 인증과 권한 설정하기](#view에서-permission_classes로-인증과-권한-설정하기)
   - [쿼리스트링을 받을 수 있는 URL 만들기](#쿼리스트링을-받을-수-있는-url-만들기)
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
+  - [DRF 관련 읽어봐야 할 블로그](#drf-관련-읽어봐야-할-블로그)
 
 
 
@@ -569,7 +570,8 @@ sewer_pipe_data = serializers.SerializerMethodField()
 
 * * *
 
-### DRF 관련, 읽어봐야 할 블로그
+### DRF 관련 읽어봐야 할 블로그
 - https://whatisthenext.tistory.com/126
+- https://donis-note.medium.com/django-rest-framework-rest-api-%EC%84%9C%EB%B2%84%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90-7d28b0cf730e
 
 
