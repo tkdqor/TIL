@@ -493,7 +493,19 @@ urlpatterns = router.urls
 
 - [참고 블로그](https://velog.io/@oen/SerializerMethodField-%EA%B3%B5%EC%8B%9D%EB%AC%B8%EC%84%9C-%EB%B2%88%EC%97%AD)
 
+<br>
 
+### View에서 permission_classes로 인증과 권한 설정하기
+```python
+from rest_framework.permissions import IsAuthenticated
+class ExampleView(APIView):
+   permissions_classes = [IsAuthenticated]
+   
+   def get(self, request, format=None):
+       content = {'status' : 'request was permitted'}
+       return Response(content)
+```
 
+- [관련해서 좋은 내용의 블로그](https://donis-note.medium.com/django-rest-framework-authentication-permission-%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EA%B6%8C%ED%95%9C-cc9b183fd901)
 
 
