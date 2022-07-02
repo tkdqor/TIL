@@ -440,6 +440,11 @@ git branch -D 브랜치이름
 
 <img width="577" alt="image" src="https://user-images.githubusercontent.com/95380638/176939141-1cf41fb6-1ab2-4baf-83d6-f503fad4d16d.png">
 
+- **Working Directory** : 소스 코드를 작업하는 로컬을 의미.
+- **Staging Area** : 코드 변경사항이 저장소에 커밋되기 전에 반드시 거쳐야 되는 중간단계를 의미. git add 명령어를 입력하면 해당 영역으로 이동하게 된다.
+  - git add . 명령어를 입력한 다음 -> **git status**를 입력하면 Untracked files에서 new file 상태로 변경됨을 알 수 있다.
+- **Repository** : 스테이징 영역에 있는 소스 코드에서 git commit 명령어를 실행하면 최종적으로 Git의 저장소에 반영된다. 
+
 
 * * * 
 
