@@ -1,3 +1,25 @@
+📖 **Contents**
+
+- **DRF(Django Rest Framework) 정리**
+  - [DRF란](#drf란)
+  - [상태 코드](#상태-코드)
+  - [HTTP의 헤더](#http의-헤더)
+  - [Django VS DRF 차이점](#django-vs-drf-차이점)
+  - [Serializer 작성하기](#serializer-작성하기)
+  - [serializers.ModelSerializer](#serializers의-modelserializer)
+  - [View 작성하기](#view-작성하기)
+  - [APIView](#apiview)
+  - [URL 연결하기](#url-연결하기)
+  - [DRF mixins](#drf-mixins)
+  - [DRF generics](#drf-generics)
+  - [DRF Viewset & Router](#drf-viewset과-router)
+  - [SerializerMethodField](#serializermethodfield)
+  - [View에서 permission_classes로 인증과 권한 설정하기](#view에서-permission_classes로-인증과-권한-설정하기)
+  - [쿼리스트링을 받을 수 있는 URL 만들기](#쿼리스트링을-받을-수-있는-url-만들기)
+  - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
+
+
+
 ## DRF란
 - **Django REST Framework는 Django를 기반으로 REST API 서버를 만들기 위한 라이브러리이다.**
   - DRF는 어디까지나 Django를 기반으로 한 라이브러리이기 때문에 전반적으로 Django의 개발 흐름을 따라가게 된다.
@@ -120,7 +142,7 @@ class BookSerializer(serializers.Serializer):
 
 <br>
 
-### serializers.ModelSerializer
+### serializers의 ModelSerializer
 ```python
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
@@ -441,7 +463,7 @@ class BookAPIGenerics(generics.RetrieveUpdateDestroyAPIView):
 
 <br>
 
-### DRF Viewset & Router
+### DRF Viewset과 Router
 - generics만으로 충분히 코드를 간소화했지만, 더 줄일 수 있는 부분이 있다. 
 - 지금까지는 하나의 클래스가 하나의 URL를 담당하는 방식이었다. URL마다 클래스를 만들고 처리할 수 있게 했다.
 - **그러다보니 queryset과 serializer_class 부분이 겹치게 되었다. 그래서 하나의 클래스로 하나의 모델을 전부 처리해줄 수 있다면 겹치는 부분이 사라질텐데 이게 바로 Viewset이다.**
@@ -515,7 +537,7 @@ class ExampleView(APIView):
 
 <br>
 
-### Serializer에서 시간 설정하기
+### Serializer에서 filter 함수 사용하기
 ```python
 class GuNameModelSerializer(ModelSerializer):
 ...
@@ -544,4 +566,10 @@ sewer_pipe_data = serializers.SerializerMethodField()
 - datetime.timedelta(minutes=10)는 10분을 의미하는 코드이다.
 - **filter() 라는 함수에서 조건을 여러 개 두고 싶으면, filter(A조건, B조건) 이렇게 해주면 된다.**
   - [관련 블로그](https://django-orm-cookbook-ko.readthedocs.io/en/latest/and_query.html)
+
+* * *
+
+### DRF 관련, 읽어봐야 할 블로그
+- https://whatisthenext.tistory.com/126
+
 
