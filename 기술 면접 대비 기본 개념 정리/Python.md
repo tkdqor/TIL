@@ -14,6 +14,7 @@
   - [function에서 def와 lambda의 차이](#function에서-def와-lambda의-차이)
   - [클래스에서 self를 사용하는 이유](#클래스에서-self를-사용하는-이유)
   - [pip란](#pip란)
+  - [resolve 함수](#resolve-함수)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
 
@@ -202,6 +203,29 @@ print((lambda x,y: x + y)(10, 20))
 
 ## pip란
 - pip는 파이썬으로 작성된 패키지 라이브러리들을 관리해주는 시스템이다. 파이썬 개발 환경에 패키지들을 설치하기 위해서 pip 명령을 자주 사용하게 된다.
+
+* * *
+
+## resolve 함수
+```python
+# urls.py
+urlpatterns = [
+    path('jobpostings/', JobPostingsAPIView.as_view(), name='sangbaek'),
+    ...
+]
+```
+
+```python
+# views.py
+from django.urls import resolve
+
+match = resolve('/jobpostings/')
+print(match.url_name)
+
+>>> sangbaek
+```
+
+- **위와 같이 resolve 함수에 urls.py에 정의한 url path를 입력하고 url_name 메소드를 사용하면, urls.py에 정의한 url name를 반환해준다.**
 
 
 * * *
