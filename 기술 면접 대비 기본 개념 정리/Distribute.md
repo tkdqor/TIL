@@ -12,6 +12,7 @@
   - [컴파일이란](#컴파일이란)
   - [빌드란](#빌드란)
   - [MSA란](#msa란)
+  - [unittest 예시](#unittest-예시)
 
 * * *
 
@@ -164,10 +165,52 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 
 - [관련 블로그](https://wooaoe.tistory.com/57)
 
+* * *
+
+## unittest 예시
+```python
+import unittest              # unittest 라이브러리 import
+
+class SampleTests(unittest.TestCase):   # TestClass 만들고 unittest.TestCase class에서 상속
+
+# setUpClass와 tearDownClass은 Class 생성과 소멸 시 호출되는 함수
+@classmethod
+    def setUpClass(cls):  
+    ...
+    
+
+@classmethod
+    def tearDownClass(cls):
+    
+
+# Testcast에 대한 Texture 함수인 setUp(self)와 tearDown(self)를 구현  
+# setUp(self)와 tearDown(self) 함수는 객체의 값을 self로 통해서 접근 가능 / 각 TestCase 함수가 실행할 때마다 앞뒤로 호출
+
+# 여기서 우리가 정한 모델의 객체들을 샘플로 몇 개 create 하기
+def setUp(self):
+  ...
 
 
+def setUp(self):
+  ...
 
 
+# Testcase 함수를 구현 / 함수 이름이 test_ 로 시작하면 TestRunner가 알아서 실행
+
+# 여기서 Serializer 내부에 정의한 메소드들을 테스트
+# ex) 우리가 위에서 모델들의 객체들을 생성해 놨으니, 그 객체 하나를 objects.filter로 해서 가져오고, 실제로 Serialzer에 객체를 넣은 결과값과 vs 우리가 정의한 필드명 리스트와 같은지 비교
+
+def test_runs_1(self):
+  ...
+
+def test_runs_2(self):
+  ...
 
 
+# 마지막으로 unittest.main() 함수를 호출하여 TestRunner를 실행
+# 터미널에 python3 디렉터리/tests.py 이런식으로 입력해서 테스트 결과 확인
+if __name__ == '__main__':
+    unittest.main()
+    
+```
 
