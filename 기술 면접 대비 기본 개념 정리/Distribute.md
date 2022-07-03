@@ -169,9 +169,10 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 
 ## unittest 예시
 ```python
-import unittest              # unittest 라이브러리 import
+import unittest                               # unittest 라이브러리 import
+from django.test import TestCase, Client      # Client를 이용해서 클라이언트 Request의 응답을 확인할 수 있다
 
-class SampleTests(unittest.TestCase):   # TestClass 만들고 unittest.TestCase class에서 상속
+class SampleTests(unittest.TestCase):         # TestClass 만들고 unittest.TestCase class에서 상속
 
 # setUpClass와 tearDownClass은 Class 생성과 소멸 시 호출되는 함수
 @classmethod
@@ -188,6 +189,7 @@ class SampleTests(unittest.TestCase):   # TestClass 만들고 unittest.TestCase 
 
 # 여기서 우리가 정한 모델의 객체들을 샘플로 몇 개 create 하기
 def setUp(self):
+  self.client = Client()
   ...
 
 
@@ -213,6 +215,19 @@ def test_url_resolves_to_rain_fall_and_sewer_pipe_api_view(self):
         found = resolve('/api/data/v1/rainfall-and-sewerpipe-info/<gubn>/<datetime_info>/')
 
         self.assertEqual(found.func.__name__, RainfallAndSewerPipeInfoApiView.as_view().__name__)
+
+
+# ApiView의 GET 요청 test case
+def test_rain_fall_and_sewer_pipe_api_view_get_method(self):
+        '''RainfallAndSewerPipeInfoApiView으로 GET 요청 TEST'''
+
+        response = self.client.get('/api/data/v1/rainfall-and-sewerpipe-info/01/202112020112/')
+        response_json = json.loads(response.content)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(response_json['name'], '양천구')
+        self.assertEqual(len(response_json['rainfall_data']), 2)
+        self.assertEqual(len(response_json['sewer_pipe_data']), 2)
 
 
 # 마지막으로 unittest.main() 함수를 호출하여 TestRunner를 실행
