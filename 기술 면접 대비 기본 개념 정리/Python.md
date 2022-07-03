@@ -15,6 +15,7 @@
   - [클래스에서 self를 사용하는 이유](#클래스에서-self를-사용하는-이유)
   - [pip란](#pip란)
   - [resolve 함수](#resolve-함수)
+  - [\_\_name\__ 변수](#던더name던더-변수)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
 
@@ -230,6 +231,23 @@ print(match.url_name)
 - [django 공식문서](https://docs.djangoproject.com/ko/4.0/ref/urlresolvers/)
 - [관련 블로그](https://ugaemi.github.io/django/Django-reverse-and-resolve/)
 
+* * *
+
+## 던더name던더 변수
+- **\_\_name\__ 변수는 해당 python 파일의 이름, 즉 모듈의 이름을 담게되는 변수이다.**
+  - ex) function1.py의 \_\_name\__ 변수는 function1이 된다. \_\_name\__ == function1
+
+- **그런데, 해당 python 파일 안에서의 \_\_name\__ 변수는 ==> 모듈이름이 아닌, \_\_main\__ 이라는 이름의 값이 된다.**
+- 우리가 종종 볼 수 있는 
+
+```python
+if __name__ == "__main__":
+    함수이름()
+```
+
+- **이러한 코드의 의미는, 해당 함수를 꼭 해당 함수가 정의되어있는 파일에서만 실행할 수 있게끔 설정한 것이다. 즉, 다른 파일에서 import 했을 때, 그 모듈안에 있는 모든 코드들이 그대로 실행되는 것을 막아줄 수 있다.**
+
+- [관련 블로그](https://lovelydiary.tistory.com/297)
 
 * * *
 
