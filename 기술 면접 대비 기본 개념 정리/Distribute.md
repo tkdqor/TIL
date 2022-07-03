@@ -247,9 +247,55 @@ if __name__ == '__main__':
 
 ## Github Action이란
 - Github Action이란 Github 저장소를 기반으로 소프트웨어 개발 Workflow를 자동화 할 수 있는 도구이다. 
+- 즉, Github Action의 
 - Github 내부에서 프로젝트를 빌드, 테스트, 릴리즈 또는 배포를 지원하는 기능으로서, Github에서 제공하는 CI/CD 도구라고 생각하면 된다.
 
-### GitHub Action 4가지 주요 개념
+### GitHub Action 주요 개념
 - **Workflow**
-  - 
+  - **Workflow는 프로젝트를 빌드, 테스트, 패키지, 릴리스 또는 배포하기 위한 전체적인 프로세스이다.**
+  - Workflow는 여러개의 Job으로 구성되어있고 event기반으로 동작한다.
+  - Workflow는 최상위 개념이다.
+  - 나만의 동작을 정의한 Workflow file을 만들어 전달하면 Github Action이 실행한다.
+  - **Workflow 파일은 yml으로 작성되고, Github Repository의 .github/workflows 폴더 아래에 저장된다.**
+
+- **Event**
+  - **Workflow를 Trigger(실행)하는 특정 활동이나 규칙**
+  - 예를 들어 다음과 같은 상황을 사용할 수 있다.
+    - 특정 브랜치로 Push
+    - 특정 브랜치로 Pull Request
+    - 특정 시간대에 반복(Cron)
+    - Webhook을 사용해 외부 이벤트를 통해 실행
+
+- **Job**
+  - **Job은 여러 Step으로 구성되고, 가상 환경의 인스턴스에서 실행된다.**
+  - 다른 Job에 의존 관계를 가질 수 있고, 독립적으로 병렬 실행도 가능하다.
+
+- **Step**
+  - **Step은 순차적으로 명령어를 수행한다.**
+  - Task들의 집합으로, 커맨드를 날리거나 action을 실행할 수 있다.
+
+- **Action**
+  - **Workflow의 가장 작은 블럭**
+  - Job을 만들기 위해 Step들을 연결할 수 있다.
+  - 재사용이 가능한 컴포넌트
+  - 개인적으로 만든 Action을 사용할 수도 있고, Marketplace에 있는 공용 Action을 사용할 수도 있음(Github Marketplace와 Github Actions Repository에서 확인 가능)
+
+- **Runner**
+  - **Gitbub Action Runner 어플리케이션이 설치된 머신으로, Workflow가 실행될 인스턴스**
+  - **Github에서 호스팅해주는 Github-hosted runner와 직접 호스팅하는 Self-hosted runner로 나뉨**
+  - Github-hosted runner는 Azure의 Standard_DS2_v2로 vCPU 2, 메모리 7GB, 임시 스토리지 14GB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
