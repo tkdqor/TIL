@@ -11,6 +11,7 @@
   - [CI란](#ci란)
   - [컴파일이란](#컴파일이란)
   - [빌드란](#빌드란)
+  - [디펜던시란](#디펜던시란)
   - [MSA란](#msa란)
   - [unittest 예시](#unittest-예시)
   - [Github Action이란](#github-action이란)
@@ -139,6 +140,16 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 - 소스 코드 파일을 컴퓨터에서 실행할 수 있는 독립적인 형태로 변환하는 과정과 그 결과
 - 즉, 컴파일 된 코드를 실제 실행할 수 있는 상태로 만드는 일을 Build 라고 한다. 
   - 빌드 다음에 “테스트" ⇒ 그 다음에 “배포" 과정이 진행된다.
+
+
+* * *
+
+## 디펜던시란
+- **Dependency란, 의존성을 의미하는데 이는 "두 개의 컴포넌트 사이의 의존성이란 하나의 컴포넌트의 변경 사항이 다른 컴포넌트에도 영향을 미칠 가능성" 을 의미한다.**
+  - ex) 어떤 웹 프레임워크를 설치할 때, 해당 프레임워크에 디펜던시가 걸려있는 라이브러리들이 같이 설치
+
+- [python 애플리케이션 의존성 주입](https://www.humphreyahn.dev/blog/dependency-injector#a4763f1a-5544-4dc6-88fe-bd3eebe28c54)
+
 
 
 
