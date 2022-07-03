@@ -330,6 +330,7 @@ jobs:
 
 ### Python에 Github Action 적용 예시
 - https://zzsza.github.io/development/2020/06/06/github-action/
+  - pytest 적용 내용도 포함
 
 
 
