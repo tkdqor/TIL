@@ -13,6 +13,7 @@
   - [빌드란](#빌드란)
   - [MSA란](#msa란)
   - [unittest 예시](#unittest-예시)
+  - [Github Action이란](#github-action이란)
 
 * * *
 
@@ -240,3 +241,15 @@ if __name__ == '__main__':
 - **url과 view가 잘 매치되었는지 Test하는 코드에서는 resolve 함수로 해당 url path로 접근해서, 해당 url path가 실행시키는 함수의 \_\_name\__ 변수가 RainfallAndSewerPipeInfoApiView.as_view()처럼 실행시키는 APIview의 \_\_name\__변수와 같은지 검토하게 된다.**
 
 - [관련 블로그](https://live-jh.tistory.com/44)
+
+
+* * * 
+
+## Github Action이란
+- Github Action이란 Github 저장소를 기반으로 소프트웨어 개발 Workflow를 자동화 할 수 있는 도구이다. 
+- Github 내부에서 프로젝트를 빌드, 테스트, 릴리즈 또는 배포를 지원하는 기능으로서, Github에서 제공하는 CI/CD 도구라고 생각하면 된다.
+
+### GitHub Action 4가지 주요 개념
+- **Workflow**
+  - 
+
