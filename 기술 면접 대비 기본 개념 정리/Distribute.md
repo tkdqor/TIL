@@ -224,3 +224,4 @@ if __name__ == '__main__':
 
 - **url과 view가 잘 매치되었는지 Test하는 코드에서는 resolve 함수로 해당 url path로 접근해서, 해당 url path가 실행시키는 함수의 \_\_name\__ 변수가 RainfallAndSewerPipeInfoApiView.as_view()처럼 실행시키는 APIview의 \_\_name\__변수와 같은지 검토하게 된다.**
 
+- [관련 블로그](https://live-jh.tistory.com/44)
