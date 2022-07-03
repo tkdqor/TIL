@@ -328,6 +328,9 @@ jobs:
   - steps의 uses는 어떤 액션을 사용할지 지정한다. 이미 만들어진 액션을 사용할 때 지정한다.
 
 
+### Python에 Github Action 적용 예시
+- https://zzsza.github.io/development/2020/06/06/github-action/
+
 
 
 
