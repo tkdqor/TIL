@@ -206,6 +206,14 @@ def test_runs_1(self):
 def test_runs_2(self):
   ...
 
+# APIview의 url과 view가 잘 매치되었는지 test case
+def test_url_resolves_to_rain_fall_and_sewer_pipe_api_view(self):
+        '''url과 view가 잘 매치되었는지 Test'''
+
+        found = resolve('/api/data/v1/rainfall-and-sewerpipe-info/<gubn>/<datetime_info>/')
+
+        self.assertEqual(found.func.__name__, RainfallAndSewerPipeInfoApiView.as_view().__name__)
+
 
 # 마지막으로 unittest.main() 함수를 호출하여 TestRunner를 실행
 # 터미널에 python3 디렉터리/tests.py 이런식으로 입력해서 테스트 결과 확인
@@ -213,4 +221,6 @@ if __name__ == '__main__':
     unittest.main()
     
 ```
+
+- **url과 view가 잘 매치되었는지 Test하는 코드에서는 resolve 함수로 해당 url path로 접근해서, 해당 url path가 실행시키는 함수의 \_\_name\__ 변수가 RainfallAndSewerPipeInfoApiView.as_view()처럼 실행시키는 APIview의 \_\_name\__변수와 같은지 검토하게 된다.**
 
