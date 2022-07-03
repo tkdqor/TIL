@@ -227,6 +227,9 @@ print(match.url_name)
 
 - **위와 같이 resolve 함수에 urls.py에 정의한 url path를 입력하고 url_name 메소드를 사용하면, urls.py에 정의한 url name를 반환해준다.**
 
+- [django 공식문서](https://docs.djangoproject.com/ko/4.0/ref/urlresolvers/)
+- [관련 블로그](https://ugaemi.github.io/django/Django-reverse-and-resolve/)
+
 
 * * *
 
