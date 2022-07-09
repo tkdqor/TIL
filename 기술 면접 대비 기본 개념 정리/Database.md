@@ -176,6 +176,7 @@
 <img width="648" alt="image" src="https://user-images.githubusercontent.com/95380638/178094178-661d3825-ef75-4a6d-b988-16bab9b22b7f.png">
 - 다음과 같이 Department ID라는 컬럼을 기준으로 2개의 테이블이 결합되어 하나의 테이블이 만들어졌다.
 
+- [관련 블로그](https://velog.io/@ragnarok_code/DataBase-%EC%A1%B0%EC%9D%B8Join%EC%9D%B4%EB%9E%80)
 
 
 
