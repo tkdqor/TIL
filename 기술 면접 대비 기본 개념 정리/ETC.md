@@ -966,6 +966,9 @@ pre-commit install
 git add .
 
 pre-commit run
+
+# 이상이 없으면
+git commit
 ```
 - **위와 같이 pre-commit 라이브러리를 설치할 수 있다. 그리고 설치 후에는 git add . 이렇게 staging 영역에 올린 후, pre-commit run 명령어로 실행시킬 수 있다.**
   - pre-commit run 명령어 입력 전에, 루트 디렉터리 내부에 .pre-commit-config.yaml라는 파일을 생성해서 설정해놓아야 한다.
@@ -993,6 +996,8 @@ repos:
 
 - 위의 코드는 isort, black, flake8 적용 예시이다. rev에서 원하는 버전을 선택할 수 있다.
 
+- [관련 블로그](https://daco2020.tistory.com/291?category=996085)
+
 * * *
 
 ## Formatter란
@@ -1005,7 +1010,7 @@ repos:
   - black은 대표적인 코드 포멧터이다. 코드 스타일을 통일시켜 준다.
 
 - **isort**
-  - sdfa
+  - isort란, python에서 import하는 라이브러리들을 자동으로 정렬해주는 라이브러리이다.
 
 * * *
 
@@ -1015,6 +1020,7 @@ repos:
 
 - **flake8**
   - flake8은 코드 linter로 PEP8 규약을 지켰는지 검사해준다.
+  - flake8은 자동으로 코드를 수정해주지는 않으니 직접 수정을 해야한다.
 
 * * *
 
