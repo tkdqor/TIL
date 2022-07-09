@@ -1008,9 +1008,11 @@ repos:
 
 - **black**
   - black은 대표적인 코드 포멧터이다. 코드 스타일을 통일시켜 준다.
+  - [사용 예시](https://velog.io/@gyuseok-dev/Python.-Black-the-Code-Formatter)
 
 - **isort**
   - isort란, python에서 import하는 라이브러리들을 자동으로 정렬해주는 라이브러리이다.
+  - [isort 설치](https://pypi.org/project/isort/)
 
 * * *
 
@@ -1021,6 +1023,7 @@ repos:
 - **flake8**
   - flake8은 코드 linter로 PEP8 규약을 지켰는지 검사해준다.
   - flake8은 자동으로 코드를 수정해주지는 않으니 직접 수정을 해야한다.
+  - [flake8 설치](https://dev-yakuza.posstree.com/ko/django/flake8/)
 
 * * *
 
