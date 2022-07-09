@@ -10,6 +10,7 @@
   - [Redis](#redis)
   - [AWS RDS란](#aws-rds란)
   - [SQL과 NoSQL](#sql과-nosql)
+  - [JOIN이란](#join이란)
 
 * * *
 
@@ -149,5 +150,32 @@
 - **대부분의 경우, SQL DB를 많이 사용하게 된다. 반면 특별한 경우나 특별한 이슈에 더 잘 대응하기에 좋은 것은 NoSQL DB이다.**
 
 - [관련 블로그](https://khj93.tistory.com/entry/Database-RDBMS%EC%99%80-NOSQL-%EC%B0%A8%EC%9D%B4%EC%A0%90)
+
+
+* * *
+
+## JOIN이란
+- 관계형 데이터베이스의 구조적 특징으로 정규화를 수행하면 의미 있는 데이터의 집합으로 테이블이 구성되고 각 테이블끼리는 관계(Relationship)을 갖게 되는데, 그래서 서로 관계있는 데이터가 여러 테이블로 나뉘어서 저장된다. 
+- **이러한 상황에서 조인은, 여러 테이블의 레코드, 컬럼을 조합해서 하나의 새로운 테이블을 만들어내는 것을 의미한다.**
+
+- **내부 조인(INNER JOIN)**
+  - 내부 조인의 경우, 가장 대표적인 조인 방식으로 2개의 테이블의 컬럼 값을 결합해서 새로운 결과 테이블을 생성한다.
+
+<img width="806" alt="image" src="https://user-images.githubusercontent.com/95380638/178094080-28d706df-d5cb-4b47-afb7-9c36f8f6bb4e.png">
+- 위와 같이 테이블이 2개가 있다면,
+
+<img width="811" alt="image" src="https://user-images.githubusercontent.com/95380638/178094090-ba39e5fe-842b-46f3-aea1-b61a9408bafb.png">
+- 다음과 같이 내부 조인을 진행할 수 있다.
+
+<br>
+
+- **자연 조인(NATURAL JOIN)**
+  - **자연 조인의 경우, 동등 조인의 한 유형으로 동일한 컬럼명을 가진 2개의 테이블이 있을 때, 동일한 컬럼명의 각 쌍에 대한 하나의 컬럼만 각각 포함해서 새로운 테이블을 만들어낸다.**
+
+<img width="648" alt="image" src="https://user-images.githubusercontent.com/95380638/178094178-661d3825-ef75-4a6d-b988-16bab9b22b7f.png">
+- 다음과 같이 Department ID라는 컬럼을 기준으로 2개의 테이블이 결합되어 하나의 테이블이 만들어졌다.
+
+
+
 
 
