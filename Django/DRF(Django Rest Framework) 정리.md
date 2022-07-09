@@ -17,6 +17,7 @@
   - [View에서 permission_classes로 인증과 권한 설정하기](#view에서-permission_classes로-인증과-권한-설정하기)
   - [쿼리스트링을 받을 수 있는 URL 만들기](#쿼리스트링을-받을-수-있는-url-만들기)
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
+  - [View에서 partial 설정](#view에서-partial-설정)
   - [DRF 관련 읽어봐야 할 블로그](#drf-관련-읽어봐야-할-블로그)
 
 
@@ -569,6 +570,25 @@ sewer_pipe_data = serializers.SerializerMethodField()
 - datetime.timedelta(minutes=10)는 10분을 의미하는 코드이다.
 - **filter() 라는 함수에서 조건을 여러 개 두고 싶으면, filter(A조건, B조건) 이렇게 해주면 된다.**
   - [관련 블로그](https://django-orm-cookbook-ko.readthedocs.io/en/latest/and_query.html)
+
+<br>
+
+### View에서 partial 설정
+- **View에서 Serializer로 객체를 보낼 때, 정의한 전체 필드가 아닌 부분에 해당하는 필드 값만 업데이트를 하고 싶다면 partial이란 argument를 사용하면 된다.**
+
+```python
+class AccountBooksRecordDetailAPIView(APIView):
+  ...
+  def put(self, request, record_id):
+      record = self.get_object_and_check_permission(record_id)
+      ...
+       serializer = AccountBooksRecordModelSerializer(record, data=request.data, partial=True)
+       serializer.is_valid(raise_exception=True)
+       serializer.save()
+```
+
+- PUT 메소드를 사용하기 위해 put 메서드를 구성할 때, 인자값인 id로 조회한 record 변수를 AccountBooksRecordModelSerializer로 보내는 경우 입력된 데이터로 수정하는 경우이다.
+  - 입력된 데이터를 request.data로 표현하고 모든 필드값이 수정되는 게 아니기에 partial=True라는 옵션을 추가.
 
 * * *
 
