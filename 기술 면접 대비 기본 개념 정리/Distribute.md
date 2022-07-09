@@ -146,6 +146,7 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 
 ## 디펜던시란
 - **Dependency란, 의존성을 의미하는데 이는 "두 개의 컴포넌트 사이의 의존성이란 하나의 컴포넌트의 변경 사항이 다른 컴포넌트에도 영향을 미칠 가능성" 을 의미한다.**
+  - 프로젝트를 진행할 때, 사용되는 패키지나 라이브러리의 version을 명시해두는 것을 의미한다. 이렇게 함으로써 패키지를 각자 설치할 때 달라지는 version를 일치시킬 수 있다.
   - ex) 어떤 웹 프레임워크를 설치할 때, 해당 프레임워크에 디펜던시가 걸려있는 라이브러리들이 같이 설치
 
 - [python 애플리케이션 의존성 주입](https://www.humphreyahn.dev/blog/dependency-injector#a4763f1a-5544-4dc6-88fe-bd3eebe28c54)
