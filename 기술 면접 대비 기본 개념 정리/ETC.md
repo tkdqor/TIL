@@ -962,6 +962,12 @@ pip install pre-commit
 
 pre-commit install
 
+# 만약, github hook를 사용한다면,
+pre-commit install           # 해당 명령어 입력 시, 스크립트에 짜여진대로 hook이 .git/hooks/pre-commit에 생성
+
+pre-commit installedat .git/hooks/pre-commit    # 생성한 훅을 사용한다는 명령어 입력 
+
+
 # 설치 후 실행 예시
 git add .
 
@@ -972,6 +978,7 @@ git commit
 ```
 - **위와 같이 pre-commit 라이브러리를 설치할 수 있다. 그리고 설치 후에는 git add . 이렇게 staging 영역에 올린 후, pre-commit run 명령어로 실행시킬 수 있다.**
   - pre-commit run 명령어 입력 전에, 루트 디렉터리 내부에 .pre-commit-config.yaml라는 파일을 생성해서 설정해놓아야 한다.
+  - 또한, pre-commit 라이브러리로 git hook를 사용할 수 있다. [해당 블로그](https://www.daleseo.com/pre-commit/)를 참고하자.
 
 ```yaml
 repos:
