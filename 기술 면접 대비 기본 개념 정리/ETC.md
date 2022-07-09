@@ -33,6 +33,7 @@
   - [Homebrew란](#homebrew란)
   - [Formatter란](#formatter란)
   - [linter란](#linter란)
+  - [Jira란](#jira란)
   - [책 '비전공자를 위한 이해할 수 있는 IT지식' 요약](#책-요약-내용)
 
 * * *
@@ -961,6 +962,15 @@ pipenv install
 ## linter란
 - **linter란, 문법 오류들을 잡아주고 더 나은 코드를 제안해주는 검사기 툴을 의미한다.**
 - 위의 설명된 Formatter와 같이, 이상적으로는 Formatter로 코드 컨벤션을 통일하고 -> linter를 활용해서 발생할 수 있는 에러를 수정하거나 더 나은 코드로 수정하는 방향이다.
+
+* * *
+
+## Jira란
+- **개발 협업 툴로써, 칸반 형식으로 되어있고 외부에 빠져있지만 github과 연동이 된다.**
+  - [연동 방법 블로그](https://sujinnaljin.medium.com/jira-jira%EC%99%80-github-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0-6e649180dfae)
+
+- 시각적으로 개발자뿐만이 아니라, 다른 직무의 사람들과 함께 Assignee를 설정해줘서 이슈들을 관리할 수 있다.
+- 또한, 이슈 티켓 번호로 git commit할 때 연동이 가능하다.
 
 
 * * *
