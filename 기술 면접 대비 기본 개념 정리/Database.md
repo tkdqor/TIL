@@ -167,6 +167,7 @@
 <img width="811" alt="image" src="https://user-images.githubusercontent.com/95380638/178094090-ba39e5fe-842b-46f3-aea1-b61a9408bafb.png">
 - 다음과 같이 내부 조인을 진행할 수 있다.
 
+
 <br>
 
 - **자연 조인(NATURAL JOIN)**
