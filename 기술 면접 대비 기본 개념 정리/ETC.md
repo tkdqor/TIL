@@ -31,6 +31,7 @@
   - [코드 컨벤션](#코드-컨벤션)
   - [pipenv란](#pipenv란)
   - [Homebrew란](#homebrew란)
+  - [pre-commit 라이브러리](#pre-commit-라이브러리)
   - [Formatter란](#formatter란)
   - [linter란](#linter란)
   - [Jira란](#jira란)
@@ -951,17 +952,69 @@ pipenv install
 
 * * *
 
+## pre-commit 라이브러리
+- **pre-commit 라이브러리란, 해당 라이브러리를 설치하면 commit 메세지를 작성하기 전에 호출을 해서 문법 오류나 코드 컨벤션 등을 체크할 때 사용한다.**
+```terminal
+# 설치 예시
+git init .
+
+pip install pre-commit
+
+pre-commit install
+
+# 설치 후 실행 예시
+git add .
+
+pre-commit run
+```
+- **위와 같이 pre-commit 라이브러리를 설치할 수 있다. 그리고 설치 후에는 git add . 이렇게 staging 영역에 올린 후, pre-commit run 명령어로 실행시킬 수 있다.**
+  - pre-commit run 명령어 입력 전에, 루트 디렉터리 내부에 .pre-commit-config.yaml라는 파일을 생성해서 설정해놓아야 한다.
+
+```yaml
+repos:
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        exclude: ^.*\b(migrations)\b.*$
+
+  - repo: https://github.com/ambv/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+        exclude: ^.*\b(migrations)\b.*$
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        exclude: ^.*\b(migrations)\b.*$
+```
+
+- 위의 코드는 isort, black, flake8 적용 예시이다. rev에서 원하는 버전을 선택할 수 있다.
+
+* * *
+
 ## Formatter란
 - **Formatter란, 코드 스타일, 코드 컨벤션을 바로 잡아주는 툴을 의미한다.**
 - 이러한 Formatter나 밑에 설명되어있는 linter를 **shell 스크립트 파일**로 만들어서 commit이 되기전에 실행시킬 수도 있다.
   - **Shell Script(쉘 스크립트)란 Shell(쉘)에서 사용할 수 있는 명령어들의 조합을 모아서 만든 배치(batch)파일이다.  즉, 운영체제의 Shell을 이용하여 한줄씩 순차적으로 읽으면서 명령어들을 실행시켜주는 인터프리터 방식의 프로그램이다. Shell Script를 활용하여 묶어진 명령어 조합을 수행하거나 반복적인 명령어를 단일 명령으로 쉽게 사용할 수 있다.** 
   - [관련 블로그](https://minkwon4.tistory.com/159)
 
+- **black**
+  - black은 대표적인 코드 포멧터이다. 코드 스타일을 통일시켜 준다.
+
+- **isort**
+  - sdfa
+
 * * *
 
 ## linter란
 - **linter란, 문법 오류들을 잡아주고 더 나은 코드를 제안해주는 검사기 툴을 의미한다.**
 - 위의 설명된 Formatter와 같이, 이상적으로는 Formatter로 코드 컨벤션을 통일하고 -> linter를 활용해서 발생할 수 있는 에러를 수정하거나 더 나은 코드로 수정하는 방향이다.
+
+- **flake8**
+  - flake8은 코드 linter로 PEP8 규약을 지켰는지 검사해준다.
 
 * * *
 
