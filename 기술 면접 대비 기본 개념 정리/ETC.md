@@ -31,6 +31,8 @@
   - [코드 컨벤션](#코드-컨벤션)
   - [pipenv란](#pipenv란)
   - [Homebrew란](#homebrew란)
+  - [Formatter란](#formatter란)
+  - [linter란](#linter란)
   - [책 '비전공자를 위한 이해할 수 있는 IT지식' 요약](#책-요약-내용)
 
 * * *
@@ -945,6 +947,21 @@ pipenv install
   - Homebrew로 설치하는 경우 항상 최신 버전이 설치된다. 편리하지만, 커뮤니티 기반으로 운영되기 때문에 패키지의 안정성이 보장되지 않는다.
 
 - [관련 블로그](https://www.44bits.io/ko/keyword/homebrew)
+
+* * *
+
+## Formatter란
+- **Formatter란, 코드 스타일, 코드 컨벤션을 바로 잡아주는 툴을 의미한다.**
+- 이러한 Formatter나 밑에 설명되어있는 linter를 **shell 스크립트 파일**로 만들어서 commit이 되기전에 실행시킬 수도 있다.
+  - **Shell Script(쉘 스크립트)란 Shell(쉘)에서 사용할 수 있는 명령어들의 조합을 모아서 만든 배치(batch)파일이다.  즉, 운영체제의 Shell을 이용하여 한줄씩 순차적으로 읽으면서 명령어들을 실행시켜주는 인터프리터 방식의 프로그램이다. Shell Script를 활용하여 묶어진 명령어 조합을 수행하거나 반복적인 명령어를 단일 명령으로 쉽게 사용할 수 있다.** 
+  - [관련 블로그](https://minkwon4.tistory.com/159)
+
+* * *
+
+## linter란
+- **linter란, 문법 오류들을 잡아주고 더 나은 코드를 제안해주는 검사기 툴을 의미한다.**
+- 위의 설명된 Formatter와 같이, 이상적으로는 Formatter로 코드 컨벤션을 통일하고 -> linter를 활용해서 발생할 수 있는 에러를 수정하거나 더 나은 코드로 수정하는 방향이다.
+
 
 * * *
 
