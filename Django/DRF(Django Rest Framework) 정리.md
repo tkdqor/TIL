@@ -9,6 +9,7 @@
   - [serializers.ModelSerializer](#serializers의-modelserializer)
   - [View 작성하기](#view-작성하기)
   - [APIView](#apiview)
+  - [is_valid 인자에 raise_exception 속성 추가](#is_valid-인자에-raise_exception-속성-추가)
   - [URL 연결하기](#url-연결하기)
   - [DRF mixins](#drf-mixins)
   - [DRF generics](#drf-generics)
@@ -143,6 +144,7 @@ class BookSerializer(serializers.Serializer):
 
 - **시리얼라이저는 python 모델 데이터를 JSON으로 바꿔주는 변환기이기 때문에 모델 데이터의 어떤 속성을 JSON에 넣어줄지 선언을 해줘야 한다. 그래서 시리얼라이저에서 필드를 선언해주는 것이다.**
 - **그리고 create나 update와 같은 함수는 나중에 POST 요청으로 들어온 데이터를 다시 python 모델 형태로 역직렬화하여 데이터베이스에 접어넣을 때 사용되는 함수이다. 이렇게 선언하고 나중에 serializer.save() 이렇게 데이터를 저장할 수 있다.**
+  - instance.save() 처럼 .save()는 해당 인스턴스가 데이터베이스에 존재하는 경우, update 메서드를 이용하여 인스턴스를 업데이트 한다.
 
 <br>
 
@@ -324,6 +326,12 @@ class DoneTodoAPIView(APIView):
 ```
 
 - **위에는 Todo라는 모델 CRUD API를 APIView로 작성한 예시이다.**
+
+
+<br>
+
+### is_valid 인자에 raise_exception 속성 추가
+- 잘못된 요청이 들어왔을 때, 사용자에게 적절한 응답을 보내기 위해서는 .is_valid() 의 인자에 raise_exception=True 속성을 추가할 수 있다.
 
 
 <br>
