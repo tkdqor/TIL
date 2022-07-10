@@ -753,6 +753,13 @@ class SignInView(APIView):
     - user라는 이름의 app에 있는 models.py에 User 모델을 의미
   - [관련 블로그](https://han-py.tistory.com/353)
 
+- **SignInView에서 authenticate 함수**
+  - user = authenticate(request, email=request.data.get("email"), password=request.data.get("password"),) 이렇게 authenticate 함수를 사용해서 JSON 데이터로 입력된 이메일과 패스워드로 인증과정 진행
+
+- **token = MyTokenObtainPairSerializer.get_token(user)**
+  - login 후 위의 코드로 refresh_token를 발행해주는 절차
+  - Response에서 str(token) 이렇게 refresh_token이 되고, str(token.access_token) 이렇게 access_token이 된다.
+
 
 
 * * *
