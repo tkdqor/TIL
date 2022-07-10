@@ -803,7 +803,16 @@ class SignInSerializer(serializers.Serializer):
     email = serializers.EmailField(max_length=100, write_only=True)
     password = serializers.CharField(max_length=128)
 ```    
-    
+
+- **simplejwt의 TokenObtainPairSerializer 상속받아 사용하기**
+  - from rest_framework_simplejwt.serializers import TokenObtainPairSerializer 이렇게 import를 한 뒤, **TokenObtainPairSerializer를 상속받아 토큰을 발행할 수 있는 serializer를 새롭게 생성**
+  - **TokenObtainPairSerializer는 또한 TokenObtainSerializer를 상속받고 있다. TokenObtainSerializer 내부에는 get_token 이라는 메서드가 정의되어 있다.**
+
+- **@classmethod get_token 메서드**
+  - TokenObtainSerializer 내부에 정의된 get_token 메서드를 사용해서 토큰을 발행하기
+  - [@classmethod 관련 내용](https://wikidocs.net/16074)
+  - get_token 메서드의 return 값인 token이 refresh_token이 되고, token.access_token이 access_token이 된다.
+
 
 
 * * *
