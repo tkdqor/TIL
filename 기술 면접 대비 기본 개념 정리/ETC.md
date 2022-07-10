@@ -418,6 +418,17 @@ git push origin 브랜치명
 **merge가 충돌하는 경우**
 - 예시를 들어보면, master branch와 다른 branch에서 모두 같은 파일에 동일한 내용을 수정하는 경우에는 merge를 했을 때 충돌하는 경우가 발생할 수 있다.
 - 따라서, 최대한 다른 branch에서는 같은 파일을 수정하는 일을 피해서 작업할 수 있도록 조심해야한다.
+- [git pull 오류 해결방법](https://goddaehee.tistory.com/253)
+
+```terminal
+git add .
+
+git stash
+
+git pull origin master
+
+git stash pop 
+```
 
 <br>
 
