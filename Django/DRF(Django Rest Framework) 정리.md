@@ -20,7 +20,7 @@
   - [View에서 permission_classes로 인증과 권한 설정하기](#view에서-permission_classes로-인증과-권한-설정하기)
   - [쿼리스트링을 받을 수 있는 URL 만들기](#쿼리스트링을-받을-수-있는-url-만들기)
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
-  - [Serializer 필드 설정](#serializer-필드-설정)
+  - [Serializer 필드 설정(read_only_fields 사용하기, Serializer 필드에 required=False 설정)](#serializer-필드-설정)
   - [View에서 partial 설정](#view에서-partial-설정)
   - [DRF 관련 읽어봐야 할 블로그](#drf-관련-읽어봐야-할-블로그)
 
@@ -651,6 +651,17 @@ class CommentSerializer(serializers.ModelSerializer):
         read_only_fields = ('article',)  # article 필드는 데이터 전송 시 제외
 ```
 
+- **Serializer 필드에 required=False 설정**
+  - **Serializer에 생성한 필드에 required=False라는 설정을 추가하면, 해당 필드가 비어있는 None 상태라고 하더라도 error가 발생하지 않게 된다.**
+```python
+class CommentSerializer(serializers.Serializer):
+    user = UserSerializer(required=False)  # May be an anonymous user.
+    edits = EditItemSerializer(many=True)  # A nested list of 'edit' items.
+    content = serializers.CharField(max_length=200)
+    created = serializers.DateTimeField()
+```
+
+- 위의 경우, user라는 필드가 required=False라는 속성이 있기 때문에 User가 로그인하지 않아도, 비어있어도 error가 발생하지 않게 된다.
 
 <br>
 
