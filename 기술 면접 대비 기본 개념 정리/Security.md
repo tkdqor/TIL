@@ -28,12 +28,15 @@
 
 * * *
 
-## JWT 토큰이란
+## JWT 토큰이란(JSON 데이터를 암호화)
 - **전반적인 개념**
   - 초기엔 하나의 토큰 access_token(또는 id_token)만 존재하여, 사용자 인증을 진행했다. 다만, access_token은 저장되는 값이 아니기에 유출되었을 때, 서버에서 이를 잘못된 사용자인지 판단할 수 없었다.
   - 그렇기에 Lifespan(토큰 생존주기) 를 짧게 설정하여 이를 최대한 방어하려고 했다. 그 결과, 유저가 로그인을 자주해야하는 상황이 발생했다.
   - **이를 해결하기 위해 OAuth 2.0 (최근 Overall 하게 사용하는 인증체계, 2012~) 부터 access_token / refresh_token 구조를 채택하게 되었다.**
-  - access_token / refresh_token에서 access_token 은 (1시간 ~ 1일, 금융 등 중요 기관에선 30초) 등 짧은 Lifespan을 갖고, refresh_token 은 (2주, 1달, 영구) 등 긴 Lifespan을 가지게 된다. 이로인해 앞서 유저가 토큰 만료로 로그인해야하는 시점에 refresh_token으로 access_token을 재 발급 받게 된다. 여기서 물음이 드는것은, 그러면 refresh_token이 유출되면 똑같이 문제 아닌가라고 생각할 수 있다.
+  - 회원가입 시, access_token / refresh_token을 클라이언트에게 발행해준다. access_token 은 (1시간 ~ 1일, 금융 등 중요 기관에선 30초) 등 짧은 Lifespan을 갖고, refresh_token 은 (2주, 1달, 영구) 등 긴 Lifespan을 가지게 된다. 
+  - **그 다음, 로그인 시 클라이언트 header에 토큰을 담아서 요청하게 되고 server의 미들웨어를 거치게 된다.** request가 미들웨어로 들어가면, request.headers.Authorization 여기에 담겨있다. (미들웨어에서 거치고 담아 때문에 우리가 request.user를 사용할 수 있게 된다) (settings.py에 있는 미들웨어를 다 거치게 된다)
+  - 그래서 이 토큰을 파싱한다. payload = parsing(token) 그리고 payload를 print해보면, payload = { ‘email’: ‘...’, ‘expired_at’:’...’, ... } 이런식으로 암호화되었던 JSON 데이터가 나온다.
+  - 그리고 앞서 유저가 토큰 만료로 로그인해야하는 시점에 refresh_token으로 access_token을 재 발급 받게 된다. 여기서 물음이 드는것은, 그러면 refresh_token이 유출되면 똑같이 문제 아닌가라고 생각할 수 있다.
   - **aceess_token은 DB에 저장되지않고(프론트에는 저장되겠지만) 서버에서 토큰 자체를 해석해서 인증을 하는것과 달리, refresh_token은 토큰 자체에 유저정보도 있지만, DB(database, file, redis 등)에 저장되는 값이기 때문에 서버측의 의도로 만료시킬 수 있다. (기술적으로, refresh_token을 저장하지 않고 유저 로그와 refresh_token을 대조 하는 등 다른 방법도 있다)**
   - 그렇기에 특수한 상황(다른 디바이스 접속, 다른 아이피 접속, 다른 지역 접속 등)이 발생했을 때, 서버가 임의로 refresh_token를 만료시켜 로그인을 방지할 수 있다.
   - **또한, 중요한 점은 access_token은 우리가 개발한 API 서버(Resource Server)로 전달되겠지만, refresh_token은 우리 API 서버가 아닌 별도의 인증 서버에서 처리해주는 것이다.**
