@@ -745,6 +745,15 @@ class SignInView(APIView):
         )
         return res
 ```
+- **get_user_model() 클래스**
+  - 위에서는 User = get_user_model()로 사용되었다.
+  - from django.contrib.auth import get_user_model 이렇게 import를 진행하고 사용하면, **get_user_model()은 django.contrib.auth.models.User를 가리킨다. 즉, User 모델을 의미한다.**
+  - 그리고 custom으로 User를 따로 만들어도 get_user_model()은 새롭게 만든 User를 잡는다. 
+  - 또한, 해당 클래스를 사용하려면 **settings.py에서 AUTH_USER_MODEL = "user.User"** 이렇게 설정해준다.
+    - user라는 이름의 app에 있는 models.py에 User 모델을 의미
+  - [관련 블로그](https://han-py.tistory.com/353)
+
+
 
 * * *
 
