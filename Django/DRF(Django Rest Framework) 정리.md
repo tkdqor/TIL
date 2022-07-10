@@ -22,6 +22,7 @@
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
   - [Serializer 필드 설정(read_only_fields 사용하기, Serializer 필드에 required=False 설정)](#serializer-필드-설정)
   - [View에서 partial 설정](#view에서-partial-설정)
+  - [회원가입과 로그인 및 로그아웃 APIView 예시](#회원가입과-로그인-및-로그아웃-apiview-예시)
   - [DRF 관련 읽어봐야 할 블로그](#drf-관련-읽어봐야-할-블로그)
 
 
@@ -681,6 +682,69 @@ class AccountBooksRecordDetailAPIView(APIView):
 
 - PUT 메소드를 사용하기 위해 put 메서드를 구성할 때, 인자값인 id로 조회한 record 변수를 AccountBooksRecordModelSerializer로 보내는 경우 입력된 데이터로 수정하는 경우이다.
   - 입력된 데이터를 request.data로 표현하고 모든 필드값이 수정되는 게 아니기에 partial=True라는 옵션을 추가.
+
+* * *
+
+### 회원가입과 로그인 및 로그아웃 APIView 예시
+- 회원가입 및 로그인 APIView
+```python
+from django.contrib.auth import authenticate, get_user_model, login
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from config.permissions import IsOwner
+from user.serializers import MyTokenObtainPairSerializer, SignInSerializer, SignUpSerializer, UserSerializer
+
+User = get_user_model()
+
+class SignUpView(APIView):
+    permission_classes = [AllowAny]
+    serializer = SignUpSerializer
+
+    @swagger_auto_schema(request_body=SignUpSerializer)
+    def post(self, request):
+        serializer = self.serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            res = Response(
+                {
+                    "message": "회원가입에 성공했습니다.",
+                },
+                status=status.HTTP_201_CREATED,
+            )
+            return res
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SignInView(APIView):
+    permission_classes = [AllowAny]
+    serializer = SignInSerializer
+
+    @swagger_auto_schema(request_body=SignInSerializer)
+    def post(self, request):
+        user = authenticate(
+            request,
+            email=request.data.get("email"),
+            password=request.data.get("password"),
+        )
+        if not user:
+            return Response({"error": "이메일 또는 비밀번호를 잘못 입력했습니다."}, status=status.HTTP_404_NOT_FOUND)
+        login(request, user)
+        token = MyTokenObtainPairSerializer.get_token(user)
+        res = Response(
+            {
+                "message": f"{user.username}님 반갑습니다!",
+                "token": {
+                    "access": str(token.access_token),
+                    "refresh": str(token),
+                },
+            },
+            status=status.HTTP_200_OK,
+        )
+        return res
+```
 
 * * *
 
