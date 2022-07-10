@@ -19,6 +19,7 @@
   - [View에서 permission_classes로 인증과 권한 설정하기](#view에서-permission_classes로-인증과-권한-설정하기)
   - [쿼리스트링을 받을 수 있는 URL 만들기](#쿼리스트링을-받을-수-있는-url-만들기)
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
+  - [Serializer 필드 설정](#serializer-필드-설정)
   - [View에서 partial 설정](#view에서-partial-설정)
   - [DRF 관련 읽어봐야 할 블로그](#drf-관련-읽어봐야-할-블로그)
 
@@ -616,6 +617,21 @@ sewer_pipe_data = serializers.SerializerMethodField()
 - datetime.timedelta(minutes=10)는 10분을 의미하는 코드이다.
 - **filter() 라는 함수에서 조건을 여러 개 두고 싶으면, filter(A조건, B조건) 이렇게 해주면 된다.**
   - [관련 블로그](https://django-orm-cookbook-ko.readthedocs.io/en/latest/and_query.html)
+
+<br>
+
+### Serializer 필드 설정
+- **read_only_fields 사용하기**
+  - Serializer의 class Meta에 read_only_fields를 설정하면, 해당 필드는 데이터를 전송하는 시점에 포함시키지 않도록 설정할 수 있다.
+```python
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = '__all__'
+        read_only_fields = ('article',)  # article 필드는 데이터 전송 시 제외
+```
+
 
 <br>
 
