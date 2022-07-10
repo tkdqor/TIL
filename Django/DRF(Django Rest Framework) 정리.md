@@ -331,7 +331,20 @@ class DoneTodoAPIView(APIView):
 <br>
 
 ### is_valid 인자에 raise_exception 속성 추가
-- 잘못된 요청이 들어왔을 때, 사용자에게 적절한 응답을 보내기 위해서는 .is_valid() 의 인자에 raise_exception=True 속성을 추가할 수 있다.
+- View에서 잘못된 요청이 들어왔을 때, 사용자에게 적절한 응답을 보내기 위해서는 .is_valid() 의 인자에 raise_exception=True 속성을 추가할 수 있다.
+
+```python
+...
+class AccountBooksRecordDetailAPIView(APIView):
+    ...
+    def put(self, request, record_id):
+        ...
+        serializer = AccountBooksRecordModelSerializer(record, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "기록 수정 성공!!"}, status=status.HTTP_200_OK)
+```
+- **위와 같이 serializer.is_valid(raise_exception=True) 라고 raise_exception=True 속성을 추가하면, 해당 데이터가 유효성 검사를 통과하지 못할 때 REST framework가 제공하는 기본 exception handler에서 400 에러를 반환해준다.**
 
 
 <br>
