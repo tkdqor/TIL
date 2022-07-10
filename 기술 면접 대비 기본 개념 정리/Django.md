@@ -10,6 +10,7 @@
   - [render와 redirect 관련](#render와-redirect-관련)
   - [DRF란](#drf란)
   - [djangorestframework-simplejwt란](#djangorestframework-simplejwt란)
+  - [swagger](#swagger)
 
 * * *
 
@@ -107,6 +108,50 @@ recommendations = Recommendation.objects.filter(visible=True).order_by('sort').s
 
 ## djangorestframework-simplejwt란
 - https://ganzicoder.tistory.com/34
+
+
+* * *
+
+## swagger
+- **drf-yasg란, drf-yasg는 장고로 정의된 API를 문서화할 수 있는 패키지로, (django rest framework- Yet another Swagger generator)의 약자**
+- **swagger는 프로젝트 내 많은 API를 한꺼번에 문서화하여 볼 수 있게 하는 패키지로, API 관리에 매우 용이**
+
+```terminal
+pip install drf-yasg 또는 
+pipenv install drf-yasg 명령어로 설치
+```
+
+- **settings.py의 INSTALLED_APPS에 drf_yasg 추가하기**
+```python
+INSTALLED_APPS = [
+    'drf_yasg', #drf_yasg
+]
+```
+
+- **그리고 urls.py 설정**
+```python
+...
+# swagger 화면 Info 설정
+schema_view_v1 = get_schema_view(
+    openapi.Info(
+        title="PAYHERE API",
+        default_version="v1",
+        description="PAYHERE API",
+        terms_of_service="https://www.google.com/policies/terms/",
+    ),
+    public=True,
+    permission_classes=(AllowAny,),
+)
+
+# swagger 관련 url
+urlpatterns += [
+    re_path(r"^swagger(?P<format>\.json|\.yaml)$", schema_view_v1.without_ui(cache_timeout=0), name="schema-json"),
+    re_path(r"^swagger/$", schema_view_v1.with_ui("swagger", cache_timeout=0), name="schema-swagger-ui"),
+    re_path(r"^redoc/$", schema_view_v1.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+]
+```
+
+
 
 
 
