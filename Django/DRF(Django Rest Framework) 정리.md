@@ -11,6 +11,7 @@
   - [APIView](#apiview)
   - [APIView 클래스에 정의된 check_object_permissions](#apiview-클래스에-정의된-check_object_permissions)
   - [is_valid 인자에 raise_exception 속성 추가](#is_valid-인자에-raise_exception-속성-추가)
+  - [View에서 파라미터 받기](#view에서-파라미터-받기)
   - [URL 연결하기](#url-연결하기)
   - [DRF mixins](#drf-mixins)
   - [DRF generics](#drf-generics)
@@ -372,6 +373,24 @@ class AccountBooksRecordDetailAPIView(APIView):
 ```
 - **위와 같이 serializer.is_valid(raise_exception=True) 라고 raise_exception=True 속성을 추가하면, 해당 데이터가 유효성 검사를 통과하지 못할 때 REST framework가 제공하는 기본 exception handler에서 400 에러를 반환해준다.**
 
+<br>
+
+### View에서 파라미터 받기
+- **URL에 ?status=delete와 같이 파라미터를 받기 위해서는, View에서 request.GET.get("status", None) 이러한 코드로 받을 수 있다.**
+
+```python
+class AccountBooksAPIView(APIView):
+    ...
+    def get(self, request):
+        data_status = request.GET.get("status", None)
+        if data_status == "delete":
+            account_books = AccountBook.objects.filter(user=request.user, is_deleted=True)
+
+        else:
+            account_books = AccountBook.objects.filter(user=request.user, is_deleted=False)
+        serializer = AccountBooksModelSerializer(account_books, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+```
 
 <br>
 
