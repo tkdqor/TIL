@@ -22,7 +22,8 @@
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
   - [Serializer 필드 설정(read_only_fields 사용하기, Serializer 필드에 required=False 설정)](#serializer-필드-설정)
   - [View에서 partial 설정](#view에서-partial-설정)
-  - [회원가입과 로그인 및 로그아웃 APIView 예시](#회원가입과-로그인-및-로그아웃-apiview-예시)
+  - [회원가입과 로그인 APIView 예시](#회원가입과-로그인-apiview-예시)
+  - [회원가입과 로그인 Serializer 예시](#회원가입과-로그인-serializer-예시)
   - [DRF 관련 읽어봐야 할 블로그](#drf-관련-읽어봐야-할-블로그)
 
 
@@ -685,7 +686,7 @@ class AccountBooksRecordDetailAPIView(APIView):
 
 * * *
 
-### 회원가입과 로그인 및 로그아웃 APIView 예시
+### 회원가입과 로그인 APIView 예시
 - 회원가입 및 로그인 APIView
 ```python
 from django.contrib.auth import authenticate, get_user_model, login
@@ -760,6 +761,49 @@ class SignInView(APIView):
   - login 후 위의 코드로 refresh_token를 발행해주는 절차
   - Response에서 str(token) 이렇게 refresh_token이 되고, str(token.access_token) 이렇게 access_token이 된다.
 
+* * *
+
+### 회원가입과 로그인 Serializer 예시
+- 회원가입과 로그인 Serializer 예시(위의 APIView와 연결)
+
+```python
+from django.contrib.auth import get_user_model
+from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+User = get_user_model()
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+     @classmethod
+     def get_token(cls, user):
+        token = super().get_token(user)
+        return token
+
+class SignUpSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = User
+        fields = (
+            "email",
+            "username",
+            "password",
+            "mobile",
+        )
+     
+     def create(self, validated_data):
+        email = validated_data.get("email")
+        password = validated_data.get("password")
+        username = validated_data.get("username")
+        mobile = validated_data.get("mobile")
+        user = User(email=email, password=password, username=username, mobile=mobile)
+        user.set_password(password)
+        user.save()
+        return user
+
+class SignInSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=100, write_only=True)
+    password = serializers.CharField(max_length=128)
+```    
+    
 
 
 * * *
