@@ -156,8 +156,9 @@ urlpatterns += [
 
 ## User 모델 커스텀하기
 - **커스텀 유저 모델을 사용하기 위해서는, models.py에서 BaseUserManager와 AbstractBaseUser 2개의 클래스를 상속받아 새로운 클래스를 생성해야 한다.**
-  - BaseUserManager 클래스 : User를 생성할때 사용하는 클래스
-  - AbstractBaseUser 클래스 : 상속받아 User 모델을 생성하는 클래스
+  - **BaseUserManager 클래스 : User를 생성할때 사용하는 클래스**
+    - BaseUserManager 클래스 내부에는 create_user() 함수와 create_superuser() 함수가 있다. 각각 일반 유저를 생성하는 함수, 관리자 유저를 생성하는 함수이다.
+  - **AbstractBaseUser 클래스 : 상속받아 User 모델을 생성하는 클래스**
 
 - **models.py 예시**
 
@@ -246,5 +247,17 @@ class User(AbstractBaseUser):
         return self.is_admin
 ```
 
+- **CustomUserManager의 경우에는,** 일반 유저를 생성할 때 create_user 함수가 호출되고 email과 password를 받게끔 설정한 예시이다. user.set_password(password)로 암호화를 하고, user.save(using=self._db) 코드로 DB에 저장한다.
+  - 관리자 유저를 생성할 때는 create_superuser 함수가 호출되고 user.is_admin = True 이렇게 어드민 여부를 True로 설정해준다.
 
+
+- **User 모델의 경우, AbstractBaseUser를 상속받아서 정의한다.**
+  - id = models.BigAutoField(primary_key=True) 이런식으로 User 모델의 primary_key를 id 필드로 정해준다.
+  - is_active 필드로 계정 활성화 여부를 변경할 수 있다. 
+  - is_admin 필드로 관리자 계정으로 변경할 수 있다.
+  - USERNAME_FIELD = "email" => 이렇게 설정하면, 로그인 시 email 정보를 받게된다.
+  - custom user 생성 시, objects = CustomUserManager() 이러한 코드를 설정해준다.
+
+
+- [관련 블로그](https://hckcksrl.medium.com/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9C%A0%EC%A0%80-%EB%AA%A8%EB%8D%B8-custom-user-model-b8487c0d150)
 
