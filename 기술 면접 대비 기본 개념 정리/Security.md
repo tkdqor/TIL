@@ -34,7 +34,7 @@
   - 그렇기에 Lifespan(토큰 생존주기) 를 짧게 설정하여 이를 최대한 방어하려고 했다. 그 결과, 유저가 로그인을 자주해야하는 상황이 발생했다.
   - **이를 해결하기 위해 OAuth 2.0 (최근 Overall 하게 사용하는 인증체계, 2012~) 부터 access_token / refresh_token 구조를 채택하게 되었다.**
   - access_token / refresh_token에서 access_token 은 (1시간 ~ 1일, 금융 등 중요 기관에선 30초) 등 짧은 Lifespan을 갖고, refresh_token 은 (2주, 1달, 영구) 등 긴 Lifespan을 가지게 된다. 이로인해 앞서 유저가 토큰 만료로 로그인해야하는 시점에 refresh_token으로 access_token을 재 발급 받게 된다. 여기서 물음이 드는것은, 그러면 refresh_token이 유출되면 똑같이 문제 아닌가라고 생각할 수 있다.
-  - **aceess_token은 어딘가 저장되지않고(프론트에는 저장되겠지만) 서버에서 토큰 자체를 해석해서 인증을 하는것과 달리, refresh_token은 토큰 자체에 유저정보도 있지만, DB(database, file, redis 등)에 저장되는 값이기 때문에 서버측의 의도로 만료시킬 수 있다. (기술적으로, refresh_token을 저장하지 않고 유저 로그와 refresh_token을 대조 하는 등 다른 방법도 있다)**
+  - **aceess_token은 DB에 저장되지않고(프론트에는 저장되겠지만) 서버에서 토큰 자체를 해석해서 인증을 하는것과 달리, refresh_token은 토큰 자체에 유저정보도 있지만, DB(database, file, redis 등)에 저장되는 값이기 때문에 서버측의 의도로 만료시킬 수 있다. (기술적으로, refresh_token을 저장하지 않고 유저 로그와 refresh_token을 대조 하는 등 다른 방법도 있다)**
   - 그렇기에 특수한 상황(다른 디바이스 접속, 다른 아이피 접속, 다른 지역 접속 등)이 발생했을 때, 서버가 임의로 refresh_token를 만료시켜 로그인을 방지할 수 있다.
   - **또한, 중요한 점은 access_token은 우리가 개발한 API 서버(Resource Server)로 전달되겠지만, refresh_token은 우리 API 서버가 아닌 별도의 인증 서버에서 처리해주는 것이다.**
   - **인증서버(Authorization Server)란, 소규모 프로젝트(과제같은)에선 하나의 서버에서 관리하겠지만, 대규모 서비스의 경우 별도로 인증서버를 관리하는 것이 일반적이다. (Authorization 서버와 Resource 서버를 분리하는게 더 일반적인 아키텍쳐)**
@@ -44,7 +44,7 @@
   - 즉, access_token을 탈취하기엔 생명주기가 짧아 이를 방지하고, 공격자가 refresh_token을 탈취하더라도, Authorization 서버의 인증, 보안 절차로 인해 공격이 어렵게 된다.
   - **JWT Logout 관련, JWT 토큰은 서버에서 제거할 수 없기에 다음과 같은 절차로 logout을 구현한다.**
   - **첫번째로 브라우저에서 토큰을 삭제(프론트에서 삭제)하는 방법이다. 가장 일반적이다. -> 로그아웃 시, 브라우저에서 토큰을 삭제한다. 또는 서버가 내려주는 비어있는 값(access_token:"") 으로 업데이트 한다.**
-  - **두번째로 DB BlackList를 관리하는 것이다. 로그아웃한 access_token을 blacklist라는 DB를 만들어 저장하여, 판단한다. Redis 또는 Database table을 이용해 구현(이경우에도 만료시간되면 DB에서 삭제)**
+  - **두번째로 DB BlackList를 관리하는 것이다. 로그아웃한 access_token을 blacklist라는 DB를 만들어 저장하여, 판단한다. Redis 또는 Database table을 이용해 구현(이경우에도 만료시간되면 DB에서 삭제) 아니면, 로그아웃 시 바로 우리의 DB에 저장한 refresh_token를 삭제시킬 수도 있다.**
   - **세번째로 토큰 만료기간을 짧게 초, 분단위로 설정하여 토큰이 빠르게 만료되도록 설정하는 방법이다.** -> 유저 로그아웃 즉시 만료되지는 않지만, 추후 해당 토큰 유출을 통한 공격을 방지할 수 있다. -> 이 경우, 유저가 로그인 말고 다른 API 요청 시, 자동으로 access_token을 새로 발급하거나 -> API 요청 후, 토큰 만료로 인한 에러 발생 시, 클라이언트가 자동으로 refresh_token으로 재발급 해서 새로운 access_token으로 다시 API 요청하게 된다.
 
 - **토큰 방식**
