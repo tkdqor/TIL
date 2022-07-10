@@ -813,6 +813,10 @@ class SignInSerializer(serializers.Serializer):
   - [@classmethod 관련 내용](https://wikidocs.net/16074)
   - get_token 메서드의 return 값인 token이 refresh_token이 되고, token.access_token이 access_token이 된다.
 
+- **SignUpSerializer의 create 메서드 override해서 회원가입**
+  - create 메서드를 override해서 email = validated_data.get("email") 이렇게 유효성 검사가 완료된 값들을 받아 User 모델의 객체를 생성한다.
+  - set_password 메소드는 해시값으로 암호화해서 비밀번호를 넣어주는 역할을 한다.
+  - 이렇게 해서 회원가입이 완료된다. 
 
 
 * * *
