@@ -201,7 +201,7 @@ class SampleTests(unittest.TestCase):         # TestClass 만들고 unittest.Tes
 # Testcast에 대한 Texture 함수인 setUp(self)와 tearDown(self)를 구현  
 # setUp(self)와 tearDown(self) 함수는 객체의 값을 self로 통해서 접근 가능 / 각 TestCase 함수가 실행할 때마다 앞뒤로 호출
 
-# 여기서 우리가 정한 모델의 객체들을 샘플로 몇 개 create 하기
+# 여기서 우리가 정한 모델의 객체들을 샘플로 몇 개 create 하기 -> setUp에서 필요하고 실험할 변수들을 미리 생성해놓는 더미데이터 작업 진행
 def setUp(self):
   self.client = Client()
   ...
