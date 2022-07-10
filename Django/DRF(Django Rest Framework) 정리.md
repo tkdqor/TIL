@@ -9,6 +9,7 @@
   - [serializers.ModelSerializer](#serializers의-modelserializer)
   - [View 작성하기](#view-작성하기)
   - [APIView](#apiview)
+  - [APIView 클래스에 정의된 check_object_permissions](#apiview-클래스에-정의된-check_object_permissions)
   - [is_valid 인자에 raise_exception 속성 추가](#is_valid-인자에-raise_exception-속성-추가)
   - [URL 연결하기](#url-연결하기)
   - [DRF mixins](#drf-mixins)
@@ -326,6 +327,30 @@ class DoneTodoAPIView(APIView):
 ```
 
 - **위에는 Todo라는 모델 CRUD API를 APIView로 작성한 예시이다.**
+
+
+<br>
+
+### APIView 클래스에 정의된 check_object_permissions
+- Custom Permission를 적용할 때, APIView 클래스에 정의된 check_object_permissions 메서드를 override해서 검사를 진행할 수 있다.
+- **Custom Permission를 사용하고 있을 때, APIView에서 인스턴스 레벨의 검사가 작동하려면 View의 코드가 명시적으로 .check_object_permissions 메서드를 호출해야 한다.**
+  - 해당 메서드는 APIView의 내장 메서드이기 때문에, 함수 기반 뷰에서는 호출할 수가 없다.
+
+```python
+class AccountBooksRecordAPIView(APIView):
+    # Custom Permission
+    permission_classes = [IsOwner]   
+    def get_object_and_check_permission(self, obj_id):
+    try:
+            object = AccountBook.objects.get(id=obj_id)
+    except AccountBook.DoesNotExist:
+            return
+
+    self.check_object_permissions(self.request, object)
+    return object
+```
+
+- IsOwner라는 커스텀된 Permission를 사용하고 있기 때문에 self.check_object_permissions(self.request, object) 이렇게 APIView의 내장 메서드를 호출하여 검사를 진행해야 한다.
 
 
 <br>
