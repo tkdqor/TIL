@@ -199,8 +199,63 @@ def test_tweet(api):
 - 4번 ⇒ TRUNCATE SQL 구문을 실행할 때 해당 테이블에 외부 키가 걸려 있으면 테이블의 데이터들을 삭제할 수 없다. 그래서 임의로 SET_FOREIGN_KEY_CHECKS=0 SQL 구문을 실행하여 외부 키를 잠시 비활성화시킨다. 실제 서비스 중인 데이터베이스에서는 실행하면 안된다!
 - 5번 ⇒ 4에서 비활성화시켰던 외부 키를 다시 활성화시킨다.
 
+* * *
 
+## pytest 전체 코드 예시
 
+```python
+import pytest
+import bcrypt
+import json
+import config
 
+from app import create_app
+from sqlalchemy import create_engine, text
 
+database = create_engine(config.test_config['DB_URL'], encoding='utf-8', max_overflow=0)
+
+@pytest.fixture
+def api():
+    app = create_app(config.test_config)
+    app.config['TEST'] = True
+    api = app.test_client()
+    return api
+
+def setup_function():
+    ## test user 생성하기
+    hashed_password = bcrypt.hashpw(
+       b"test password",
+       bcrypt.gensalt()
+    )
+    new_users = [
+       { 
+            'id' : 1,
+            'name' : '상백',
+            'email' : 'aumsbk@naver.com',
+            'profile' : 'test profile',
+            'hashed_password' : hashed_password
+       }, {
+            'id' : 2,
+            'name' : '김상백',
+            'email' : 'aumsbbk@naver.com',
+            'profile' : 'test profile',
+            'hashed_password' : hashed_password
+       } 
+    ]
+    database.execute(text(“””
+               INSERT INTO users(
+                        id,
+                        name,
+                        email,
+                        profile,
+                        hashed_password
+               ) VALUES (
+                        :id, 
+                        :name,
+                        :email,
+                        :profile,
+                        :hashed_password
+               ) 
+          “””), new_users)
+```   
 
