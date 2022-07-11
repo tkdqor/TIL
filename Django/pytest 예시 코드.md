@@ -395,5 +395,60 @@ def test_follow(api):
              }
         ]
     }
+    
+    
+def test_unfollow(api):
+    # 로그인
+    resp = api.post(
+            ‘/login’,
+            data = json.dumps({‘email’ : ‘aumsbk@naver.com’,
+            ‘password’ : ‘test_password’}),
+            content_type = ‘application/json’
+    )
+    resp_json = json.loads(resp.data.decode(‘utf-8’))
+    access_token = resp_json[‘access_token’]
+    
+    # follow 사용자 아이디 = 2
+    resp = api.post(
+            ‘/follow’,
+            data = json.dumps({‘follow’ : 2}),
+            content_type = ‘application/json’,
+            headers = {‘Authorization’ : access_token}
+    )
+    assert resp.status_code == 200
+    
+    ## 이제 사용자 1의 tweet 확인해서 사용자 2의 tweet이 리턴되는 것을 확인
+    resp = api.get(f’/timeline/1’)
+    tweets = json.loads(resp.data.decode(‘utf-8’))
+    
+    assert resp.status_code == 200
+    assert tweets == {
+        'user_id' : 1,
+        'timeline' : [
+            {
+               'user_id' : 2,
+               'tweet' : "Hello World"
+             }
+        ]
+    }
+    
+    # unfollow 사용자 아이디 = 2
+    resp = api.post(
+            ‘/unfollow’,
+            data = json.dumps({‘unfollow’ : 2}),
+            content_type = ‘application/json’,
+            headers = {‘Authorization’ : access_token}
+    )
+    assert resp.status_code == 200
+    
+    ## 이제 사용자 1의 tweet 확인해서 유저 2의 tweet이 더이상 리턴되지 않는 것을 확인
+    resp = api.get(f’/timeline/1’)
+    tweets = json.loads(resp.data.decode(‘utf-8’))
+    
+    assert resp.status_code == 200
+    assert tweets = {
+         'user_id' : 1,
+         'timeline' : []
+    }
 ```   
 
