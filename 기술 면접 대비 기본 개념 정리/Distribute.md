@@ -14,6 +14,7 @@
   - [디펜던시란](#디펜던시란)
   - [MSA란](#msa란)
   - [unittest 예시](#unittest-예시)
+  - [pytest 예시](#pytest-예시)
   - [Github Action이란](#github-action이란)
 
 * * *
@@ -321,9 +322,23 @@ class UserTest(TestCase):
 ```
 
 
-
-
 * * * 
+
+## pytest 예시
+- 외부 라이브러리인 pytest를 이용해서 unittest를 구현해보기
+- 굳이 pytest를 사용하는 이유는, python3에서 unittest보다 사용하기가 훨씬 직관적이기 때문. 또한, unittest 코드도 더 간결하게 만들기 쉽다.
+
+```python
+# 처음 설치는 
+pip install pytest (pipenv install pytest)
+```
+
+- pytest는 파일 이름 앞부분에 test_ 라고 되어있는 파일들만 테스트 파일이라고 인식하고 실행한다. ex) test_example.py
+  - 함수도 마찬가지이다. 함수 이름 앞부분에 test_ 라고 되어있는 함수들만 실제 unittest 함수로 인식하고 실행시킨다.
+
+
+
+* * *
 
 ## Github Action이란
 - Github Action이란 Github 저장소를 기반으로 소프트웨어 개발 Workflow를 자동화 할 수 있는 도구이다. 
