@@ -39,5 +39,168 @@ pytest -p no:warnings -vv
 - 다음과 같이 터미널에 입력해서 테스트를 진행한다. 
 - /ping 엔드포인트가 가장 간단한 엔드포인트이긴 하지만, 다른 엔드포인트들을 테스트 하는 것도 방식은 동일하다. test client를 통해 가상의 HTTP 요청을 전송해 해당 엔드포인트를 호출한 후 결과값을 테스트하는 것이다. 
 
+* * *
+
+- **이번에는 좀 더 복잡한 POST 요청인 /tweet 엔드포인트를 테스트해보자.**
+- /tweet 엔드포인트를 통해 tweet를 생성하기 위해서는 먼저 사용자가 있어야 한다. 또한, 해당 사용자로 인증 절차를 거친 후 access token를 받은 후, tweet 엔드포인트를 호출해야 한다. 
+
+```python
+def test_tweet(api):
+    ## 테스트 사용자 생성                                        1번
+    new_user = {
+               ‘email’ : ‘aumsbk@naver.com’,
+               ‘password’ : ‘test_password’,
+               ‘name’ : ‘상백',
+               ‘profile’ : ‘test profile’
+    }
+
+    resp = api.post(
+               ‘/sign-up’,
+               data = json.dumps(new_user),
+               content_type = ‘application/json’
+    )
+    assert resp.status_code == 200
+
+
+    ## new user의 id를 가져오기                                              2번
+    resp_json = json.loads(resp.data.decode(‘utf-8’))
+    new_user_id = resp_json[‘id’]
+    
+    ## 로그인 하기                                                                     3번
+    resp = api.post(
+            ‘/login’,
+            data = json.dumps({‘email’ : ‘aumsbk@naver.com’,
+            ‘password’ : ‘test_password’}),
+            content_type = ‘application/json’
+    )
+    resp_json = json.loads(resp.data.decode(‘utf-8’))
+    access_token = resp_json[‘access_token’]
+
+
+    ## /tweet를 POST로 날리기                                                 4번
+    resp = api.post(
+            ‘/tweet’,
+            data = json.dumps({‘tweet’ : “Hello World!”}),
+            content_type = ‘application/json’,
+            headers = {‘Authorization’ : access_token}
+    )
+    assert resp.status_code == 200
+
+
+    ## /timeline/{new_user_id}를 GET으로 날려서 생성한 트윗 내역 확인하기     5번
+    resp = api.get(f’/timeline/{new_user_id}’)
+    tweets = json.loads(resp.data.decode(‘utf-8’))
+
+    assert resp.status_code == 200
+    assert tweets == {
+            ‘user_id’ : 1,
+            ‘timeline’ : [
+                  {
+                         ‘user_id’ : 1,
+                         ‘tweet’ : “Hello World!”
+                  }
+            ]
+    }
+```
+
+- 1번 ⇒ tweet를 보낼 테스트 사용자를 먼저 생성한다. /sign-up 엔드포인트를 호출하고 생성하며 호출 후 응답의 status code가 OK 200인지 확인
+- 2번 ⇒ 1에서 새로 생성한 사용자의 아이디를 1에서 받은 JSON 응답에서 읽어 들인다. 밑에 /timeline 엔드포인트를 호출할 때 사용자 아이디가 필요하다.
+- 3번 ⇒ /tweet 엔드포인트에 HTTP 요청을 전송하려면 access token이 필요하므로 /login 엔드포인트를 먼저 호출해서 access token를 읽어들인다.
+- 4번 ⇒ /tweet 엔드포인트를 호출해 tweet를 생성한다. 3에서 생성한 access token를 “Authorization” 헤더에 첨부해서 request를 보낸다.
+- 5번 ⇒ 4에서 생성한 tweet이 정상적으로 생성되었는지를 확인하기 위해 timeline 엔드포인트를 호출해서 응답을 확인한다. timeline 엔드포인트를 호출할 때 2에서 읽어들인 사용자 아이디를 사용한다.
+
+* * *
+
+- **또 한 가지 반복적으로 필요한 것은 각 테스트에서 생성된 데이터를 지우는 일이다.**
+  - 각 테스트는 독립적이어야 하며 서로 영향을 주면 안 된다. 
+  - ex) tweet 엔드포인트 테스트 코드에서 생성된 사용자를 지우지 않으면 그 다음에 동일한 사용자를 생성할 때 이메일 주소가 같기 때문에 오류가 날 것이다. 그러므로 각각의 테스트마다 생성했던 데이터를 각 테스트가 종료된 후 삭제해 주어야 다른 테스트에 영향을 끼치지 않는다.
+
+
+- **다행히도 pytest에서는 각 테스트 실행 바로 전 / 그리고 실행 바로 후에 실행할 코드를 지정해 놓아 자동으로 적용시킬 수 있게 해준다. setup_function과 teardown_function을 사용하면 된다. setup_function은 각 테스트가 실행되기 전에 실행이 되고, teardown_function은 각 테스트가 종료된 후 실행이 된다.**
+  - 그러므로, 사용자를 생성하는 코드는 setup_function 함수에서 구현하고, test 데이터를 삭제하는 코드는 teardown_function에서 구현하도록 하자.
+
+```python
+import bcrypt
+
+def setup_function():                                            1번
+      ## 테스트 유저 생성하기
+      hashed_password = bcrypt.hashpw(
+            b”test password”,
+            bcrypt.gensalt()
+      )
+      new_user = {                                                     2번
+               ‘id’ : 1,
+               ‘name’ : ‘김상백',
+               ‘email’ : ‘aumsbk@naver.com’,
+               ‘profile’ : ‘test profile’,
+               ‘hashed_password’ : hashed_password
+      }
+      database.execute(text(“””
+               INSERT INTO users(
+                        id,
+                        name,
+                        email,
+                        profile,
+                        hashed_password
+               ) VALUES (
+                        :id, 
+                        :name,
+                        :email,
+                        :profile,
+                        :hashed_password
+               ) 
+          “””), new_user)
+
+def teardown_function():                                          3번
+      database.execute(text(“SET FOREIGN_KEY_CHECKS=0”))        4번
+      database.execute(text(“TRUNCATE users”))
+      database.execute(text(“TRUNCATE tweets”))	
+      database.execute(text(“TRUNCATE users_follow_list”))
+      database.execute(text(“SET FOREIGN_KEY_CHECKS=1”))        5번
+
+def test_tweet(api):
+    ## 로그인
+    resp = api.post(
+            ‘/login’,
+            data = json.dumps({‘email’ : ‘aumsbk@naver.com’,
+            ‘password’ : ‘test_password’}),
+            content_type = ‘application/json’
+    )
+    resp_json = json.loads(resp.data.decode(‘utf-8’))
+    access_token = resp_json[‘access_token’]
+    ## tweet
+    resp = api.post(
+            ‘/tweet’,
+            data = json.dumps({‘tweet’ : “Hello World!”}),
+            content_type = ‘application/json’,
+            headers = {‘Authorization’ : access_token}
+    )
+    assert resp.status_code == 200
+    
+    ## tweet 확인
+    resp = api.get(f’/timeline/1’)
+    tweets = json.loads(resp.data.decode(‘utf-8’))
+
+    assert resp.status_code == 200
+    assert tweets == {
+            ‘user_id’ : 1,
+            ‘timeline’ : [
+                  {
+                         ‘user_id’ : 1,
+                         ‘tweet’ : “Hello World!”
+                  }
+            ]
+    }
+```
+
+- 1번 ⇒ 또 setup_function을 통하여 각 test 함수가 실행되기 전에 필요한 사용자를 생성하도록 한다. 데이터베이스에 직접 생성한다.
+- 2번 ⇒ 여기서 중요한 건 사용자 아이디를 자동으로 생성하게 하지 말고, 고정 값을 정해주는 것이다. 그래야 실제 unit test 함수에서 해당 사용자 아이디를 알 수 있다.
+- 3번 ⇒ teardown_function를 통해 test 데이터를 전부 삭제해준다. TRUNCATE SQL 구문은 해당 테이블의 데이터를 모두 삭제해준다.
+- 4번 ⇒ TRUNCATE SQL 구문을 실행할 때 해당 테이블에 외부 키가 걸려 있으면 테이블의 데이터들을 삭제할 수 없다. 그래서 임의로 SET_FOREIGN_KEY_CHECKS=0 SQL 구문을 실행하여 외부 키를 잠시 비활성화시킨다. 실제 서비스 중인 데이터베이스에서는 실행하면 안된다!
+- 5번 ⇒ 4에서 비활성화시켰던 외부 키를 다시 활성화시킨다.
+
+
+
+
 
 
