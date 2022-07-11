@@ -325,7 +325,7 @@ class UserTest(TestCase):
 * * * 
 
 ## pytest 예시
-- 외부 라이브러리인 pytest를 이용해서 unittest를 구현해보기
+- **외부 라이브러리인 pytest를 이용해서 unittest를 구현해보기**
 - 굳이 pytest를 사용하는 이유는, python3에서 unittest보다 사용하기가 훨씬 직관적이기 때문. 또한, unittest 코드도 더 간결하게 만들기 쉽다.
 
 ```python
@@ -335,7 +335,28 @@ pip install pytest (pipenv install pytest)
 
 - pytest는 파일 이름 앞부분에 test_ 라고 되어있는 파일들만 테스트 파일이라고 인식하고 실행한다. ex) test_example.py
   - 함수도 마찬가지이다. 함수 이름 앞부분에 test_ 라고 되어있는 함수들만 실제 unittest 함수로 인식하고 실행시킨다.
+  - multiply_by_two 함수를 예로 들어보자. 해당 함수를 테스트하는 unit test 파일의 예시는 다음과 같다.
 
+```python
+# test_multiply_by_two.py 
+def multiply_by_two(x):
+    return x * 2
+
+def test_multiply_by_two():
+    assert multiply_by_two(4) == 7
+
+
+# 파일 저장 후, pytest 실행하기
+pytest
+```
+
+- **def test_multiply_by_two():** 
+  - 이 부분이 multiply_by_two 함수를 테스트하는 unit test 함수이다. 함수 이름 앞 부분이 test_ 로 시작되어야 pytest가 unit test로 인식하고 실행한다.
+
+- **assert multiply_by_two(4) == 7**
+  - multiply_by_two(4)가 7을 리턴하는지 테스트한다. 8을 리턴하는 게 정상이므로 이 부분은 실행하게 되면 AssertionError가 발생할 것이다.
+
+- 이렇게 구성했다면, 마지막으로 터미널에 pytest을 입력해서 unit test를 실행시켜 문제가 없는지 확인할 수 있다.
 
 
 * * *
