@@ -452,3 +452,26 @@ def test_unfollow(api):
     }
 ```   
 
+* * *
+
+## pytest.ini 파일
+- api들을 테스트 하기 위해선 pytest와 django를 연결해줘야 한다.
+- 해당 연결 작업은 pytest 실행시 파라미터로 할수 있으나, pytest.ini파일을 생성하여 설정해 주면 pytest 실행시 자동으로 파라미터를 읽고 설정해 준다.
+
+```ini
+pytest.ini
+
+[pytest]
+DJANGO_SETTINGS_MODULE=django_best_practice_example.settings
+norecursedirs=.git locale/*
+addopts=--nomigrations --cov-report=xml:coverage.xml --junitxml=./pytest-report.xml --cov=./
+env_files=.env
+junit_family=xunit1
+```
+
+- DJANGO_SETTINGS_MODULE : pytest가 django를 실행하기 위한 설정값. 프로젝트의 settings파일의 경로를 설정하기
+- norecursedirs ; pytest에서 제외할 파일/폴더를 지정
+- addopts : pytest의 기타 설정값들로, --nomigrations의 경우 pytest가 실행시 자동으로 migration을 실행하게 되는데, 이를 막기 위한 키워드. cov / junit의 경우 커버리지 관련 파라미터로 pytest실행시 해당 파일들로 커버리지의 파일이 생성
+- env_files : 만일 django 실행시 env파일을 사용한다면 해당 파라미터로 지정해주면 된다.
+
+
