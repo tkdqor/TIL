@@ -470,7 +470,65 @@ jobs:
   - 만약, Django + Nginx + Gunicorn을 한꺼번에 사용하는 서비스를 만든다고 한다면, docker를 사용하지 않는다면 하나의 가상 환경을 구축하여 저 패키지들을 각각 설치해서 쓸테고, docker를 쓴다 하더라도 하나의 컨테이너에 모두 모아서 할수도 있을 것이다.
   - **그러나, 도커에서는 이러한 방법보다는 여러개의 컨테이너로 프로세스들을 분산하여 이를 묶어서 쓰는것을 권장하고 있고, Docker-compose를 이용하면 이 작업을 훨씬 간편하게 처리할 수 있다.**
 
+```python
+version: '3.4'
 
+services:
+  backend:
+    build: .
+    container_name: backend
+    entrypoint: sh -c "pipenv run python manage.py collectstatic --no-input && pipenv run uwsgi --ini uwsgi.ini"
+    ports:
+      - 8000:8000
+    volumes:
+      - ./:/app/
+
+    depends_on:
+      - mysql
+      - redis
+
+    restart: always
+
+  mysql:
+    image: 'bitnami/mysql:5.7.38-debian-11-r9'
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - ../mysql:/bitnami/mysql/data
+    environment:
+      #- ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=game_duo
+      - MYSQL_USER=teamH
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+    restart: always
+
+  nginx:
+    image: nginx
+    container_name: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./static/:/static/
+
+    depends_on:
+      - backend
+
+    restart: always
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    command: redis-server --port 6379
+    ports:
+      - 6379:6379
+    restart: always
+```
+
+- 위의 코드들은 docker-compose.yml의 예시이다. services: 하위에 순서대로 backend, mysql, nginx, redis 컨테이너가 구분되어있다.
 
 
 
