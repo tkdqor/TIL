@@ -16,6 +16,7 @@
   - [unittest 예시](#unittest-예시)
   - [pytest 예시](#pytest-예시)
   - [Github Action이란](#github-action이란)
+  - [Docker란](#docker란)
 
 * * *
 
@@ -449,6 +450,13 @@ jobs:
   - pytest 적용 내용도 포함
 
 
+* * *
+
+## Docker란
+- [강의 내용 참고하기](https://github.com/tkdqor/TIL/blob/main/Django/taling/operation%20and%20management/8)%20%EB%B0%B0%ED%8F%AC.md)
+- **기본적으로 루트 디렉터리 내부에 Dockerfile를 생성해서 docker가 실행할 명령어들을 입력해놓고, 한 컨테이너를 만들어 Mysql같은 db나 redis, uwsgi를 구성해서 이미지를 생성해서 EC2에 빌드할 수 있게 해주는 것이 바로 Docker이다.**
+  - 이렇게 Docker를 이용하면, 컨테이너를 병렬적으로 관리해서 compose로 개발을 하게되면 패키지, 라이브러리 디펜던시, DB 등을 동일한 환경에서 개발할 수 있게 된다.
+  - Docker 컨테이너 안에 있는 DB나 Redis는 django를 대입해보면, settings.py에서 모두 도커를 바라보게끔 설정해야 한다...?
 
 
 
