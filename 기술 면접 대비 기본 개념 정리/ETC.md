@@ -495,6 +495,13 @@ git remote set-url origin 변경할url주소
 ## 버전관리에서 commit이란
 - **commit은, 파일 및 폴더의 추가/변경 사항을 저장소에 기록하기 위해 commit이라는 버튼을 눌러서 변화에 대해 기록하는 것이다.** commit은 특정 소스가 변경된 이유를 메시지로 입력해 버전을 관리해 나갈 수 있다. 이러한 commit 기록을 관리하면 과거의 변경이력과 내용을 파악할 수 있다.
 
+- **ex) 한 브랜치에다가 계속 git add . -> git commit -> git push origin 브랜치명 / 이러한 과정을 거친다면, 한 브랜치에 버전이나 코드 변경에 따른 commit 내역을 github에서 확인할 수 있게 된다. 계속 commit를 진행하다가 main 브랜치에 merge를 하고 싶다면, 그 때 git push origin 브랜치명 / 해당 명령어를 입력한 다음 PR 버튼을 누르면 된다.**
+
+- **rebase**
+  - rebase의 경우, 여러 commit를 하나로 합쳐서 commit 될 수 있게끔 해준다.
+  - push를 한 이후에 린트 등의 이유로 block이나 conflict나 발생하는 경우, 수정하고 add, commit를 진행하게 되면 2개의 commit이 되는데 이 때 rebase를 통해서 하나의 commit으로 만들 수 있다. 
+  - [관련 블로그](https://madplay.github.io/post/squash-git-commits-with-rebase)
+
 - [관련 블로그](https://steady-coding.tistory.com/277)
   - [2](https://backlog.com/git-tutorial/kr/intro/intro1_3.html)
   - [3](https://sabarada.tistory.com/71)
