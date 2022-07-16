@@ -16,6 +16,7 @@
   - [pip란](#pip란)
   - [resolve 함수](#resolve-함수)
   - [\_\_name\__ 변수](#던더name던더-변수)
+  - [datetime 모듈](#datetime-모듈)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
 
@@ -249,6 +250,39 @@ if __name__ == "__main__":
 - **다른 파일에서 function1.py를 import 해서 \_\_name\__ 값을 확인해보면, function1이 된다.**
 
 - [관련 블로그](https://lovelydiary.tistory.com/297)
+
+* * *
+
+## datetime 모듈
+
+- **datetime.timedelta**
+  - python 내장 모듈인 datetime 모듈의 timedelta 클래스를 이용해서 기간을 표현할 수 있다. timedelta 클래스의 생성자는 주, 일, 시, 분, 초, 밀리 초, 마이크로 초를 인자로 받는다.
+
+```python
+from datetime import timedelta
+
+timedelta(days=5, hours=17, minutes=30)
+
+# 또는 이렇게도 표현 가능
+import datetime
+
+time_limit = 180
+datetime.timedelta(seconds=time_limit))
+```
+
+```python
+import datetime
+
+data = datetime.timedelta(seconds=180)
+print(data)
+
+>>> 0:03:00
+```
+
+- 위와 같이 코드에서 사용해볼 수 있다.
+
+- [관련 블로그](https://www.daleseo.com/python-datetime/)
+
 
 * * *
 
