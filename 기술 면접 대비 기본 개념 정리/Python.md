@@ -17,6 +17,7 @@
   - [resolve 함수](#resolve-함수)
   - [\_\_name\__ 변수](#던더name던더-변수)
   - [datetime 모듈](#datetime-모듈)
+  - [gettext_lazy](#gettext_lazy)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
 
@@ -282,6 +283,18 @@ print(data)
 - 위와 같이 코드에서 사용해볼 수 있다.
 
 - [관련 블로그](https://www.daleseo.com/python-datetime/)
+
+* * *
+
+## gettext_lazy
+-  \_("Token is invalid or expired")와 같이 문자열에 묶어서 사용하기 위해 설정해주는 코드이다. gettext_lazy는 장고의 번역기능을 지원해줄 수 있는 함수이다.
+```python
+from django.utils.text import gettext_lazy as _
+
+default_error_messages = {"bad_token": _("Token is invalid or expired")}
+```
+
+- 텍스트를 바로 번역하는 것이 아니고 해당값이 번역되어야할때 함수가 동작한다.
 
 
 * * *
