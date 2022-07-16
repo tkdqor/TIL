@@ -143,6 +143,8 @@ keys *
 - [관련 블로그](https://ojava.tistory.com/70)
 - [관련 블로그 2](https://mangkyu.tistory.com/69)
 - [관련 블로그 3](https://hyuntaeknote.tistory.com/7)
+- [Redis를 활용한 데이터 캐싱](https://nachwon.github.io/redis/)
+- [캐싱을 이용한 django 성능 최적화](https://velog.io/@heka1024/Django-Caching-1)
 
 
 * * *
