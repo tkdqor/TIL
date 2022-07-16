@@ -125,6 +125,20 @@
     - DB보다 레디스 캐시를 이용하는 것이 빠르고 재활용성이 좋다.
     - **원티드 프리온보딩에서는, DB에 바로 저장하는 것이 아니라 외부 데이터를 요청해서 레디스 캐시에 cache.set(key, value, option) 명령어로 저장하는 방식으로 진행되었다.**
 
+- **Redis 명령어**
+```terminal
+# 레디스 설치
+brew install redis
+
+# 레디스 서버 작동시키기
+redis-server
+
+# 터미널에서 레디스 접근하기
+redis-cli
+
+# 레디스에 저장된 키 - 밸류값 보기
+keys *
+```
 
 - [관련 블로그](https://ojava.tistory.com/70)
 - [관련 블로그 2](https://mangkyu.tistory.com/69)
