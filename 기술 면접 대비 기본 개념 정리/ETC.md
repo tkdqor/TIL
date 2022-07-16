@@ -496,6 +496,8 @@ git remote set-url origin 변경할url주소
 - **commit은, 파일 및 폴더의 추가/변경 사항을 저장소에 기록하기 위해 commit이라는 버튼을 눌러서 변화에 대해 기록하는 것이다.** commit은 특정 소스가 변경된 이유를 메시지로 입력해 버전을 관리해 나갈 수 있다. 이러한 commit 기록을 관리하면 과거의 변경이력과 내용을 파악할 수 있다.
 
 - **ex) 한 브랜치에다가 계속 git add . -> git commit -> git push origin 브랜치명 / 이러한 과정을 거친다면, 한 브랜치에 버전이나 코드 변경에 따른 commit 내역을 github에서 확인할 수 있게 된다. 계속 commit를 진행하다가 main 브랜치에 merge를 하고 싶다면, 그 때 git push origin 브랜치명 / 해당 명령어를 입력한 다음 PR 버튼을 누르면 된다.**
+  - **git log** 명령어로 commit 내역을 확인할 수 있다. 그러면 현재 commit된 내용을 확인할 수 있다.
+  - 또한, **git add hello.py** 이렇게 하나의 변경된 파일만 staging area에 올려서 commit를 진행할 수도 있다.
 
 - **rebase**
   - rebase의 경우, 여러 commit를 하나로 합쳐서 commit 될 수 있게끔 해준다.
