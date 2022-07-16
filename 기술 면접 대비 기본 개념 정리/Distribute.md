@@ -530,6 +530,9 @@ services:
 
 - 위의 코드들은 docker-compose.yml의 예시이다. services: 하위에 순서대로 backend, mysql, nginx, redis 컨테이너가 구분되어있다.
 - [관련 블로그](https://my-repo.tistory.com/31)
+- [docker-compose 설정](https://www.daleseo.com/docker-compose-file/)
+- [Docker 설치](https://www.daleseo.com/docker/)
+
 
 
 
