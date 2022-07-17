@@ -534,6 +534,7 @@ services:
 - [docker-compose 설정](https://www.daleseo.com/docker-compose-file/)
 - [Docker 설치](https://www.daleseo.com/docker/)
 - [Docker compose 파일 내용](https://www.44bits.io/ko/post/almost-perfect-development-environment-with-docker-and-docker-compose#volumes-1)
+- [EC2에 Docker, Docker compose 설치하기](https://megazonedsg.github.io/1-Make-Docker/#1-docker-compose-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0)
 
 
 
