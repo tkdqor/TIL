@@ -824,5 +824,6 @@ class SignInSerializer(serializers.Serializer):
 ### DRF 관련 읽어봐야 할 블로그
 - https://whatisthenext.tistory.com/126
 - https://donis-note.medium.com/django-rest-framework-rest-api-%EC%84%9C%EB%B2%84%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90-7d28b0cf730e
+- [페이히어 DRF 관련 블로그](https://blog.payhere.in/django-rest-framework-serializers/)
 
 
