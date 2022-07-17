@@ -533,6 +533,7 @@ services:
 - [관련 블로그2](https://leffept.tistory.com/330?category=950490)
 - [docker-compose 설정](https://www.daleseo.com/docker-compose-file/)
 - [Docker 설치](https://www.daleseo.com/docker/)
+- [Docker compose 파일 내용](https://www.44bits.io/ko/post/almost-perfect-development-environment-with-docker-and-docker-compose#volumes-1)
 
 
 
