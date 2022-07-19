@@ -385,13 +385,59 @@ services:
 <hr>
 
 ### Docker-compose 실행하기
+- 실행하기 전에, docker ps 명령어로 남아있는 컨테이너가 있는지 확인하고, docker image ls 명령어로 이미지가 남아있다면 -> docker image rm --force 이미지id 이미지id 이런식으로 이미지를 삭제해준다.
+- docker-compose를 사용해서 도커 이미지들이 생성되는지 확인하기 위해 해당 과정을 진행하는 것이다. 
+
+```terminal
+docker-compose up -d --build 
+```
+
+- **해당 명령어로 데몬 형태로 docker-compose를 실행시킬 수 있다.(docker-server 디렉터리 안에 있는 상태에서 입력)**
+  - --build로 이미지를 만드는 것이다. 
+  - 이걸 입력하면 docker-compose.yml에 정의되어있는 순서대로 진행이 된다.
+  - 이렇게 ec2에서 docker-server라는 디렉터리가 있고 / 그 안에 docker-compose.yml 파일이 있고 / 그리고 nginx라는 폴더가 있고 / docker-server안에 바로 django 앱과 관련된 파일들이 있게 된다.
+  - **그래서 docker-compose.yml을 실행시키면 → nginx를 실행시키고(즉 도커 이미지를 만듬) → django 앱도 실행시킨다.**
+
+```terminal
+docker-compose ps
+```
+
+- 해당 명령어로 잘 수행되고 있는지 확인할 수 있다.
+<img width="620" alt="image" src="https://user-images.githubusercontent.com/95380638/179752601-776f9f8c-fe4e-4cb9-9f95-19b936b137ed.png">
+
+- 위와 같이 State가 Up이 아니라 Restarting이라면 문제가 있다는 뜻이다.
+- **docker image ls 이 명령어를 입력하면, 다시 이미지들이 생성되었기 때문에 ==> docker-compose로 실행하면 → 도커 이미지를 각각 만들고나서 → 같이 띄워주는 게 docker compose의 역할이라는 것을 알 수 있다.**
 
 
+```terminal
+docker-compose down
 
+docker-compose up -d –build 
 
+docker-compose ps
+```
 
+- **무엇인가 오류를 수정하고 파일을 수정했다면 compose를 down 시키고 다시 build를 진행해야 한다.**
+  - 그리고 docker-compose ps로 
 
+<img width="616" alt="image" src="https://user-images.githubusercontent.com/95380638/179753221-3a8f97df-6642-40d2-8ad4-750d79d4a5be.png">
 
+- 다음과 같이 올려진 이미지가 전부 Up 상태여야 정상인 상태이다.
+
+- **지금까지의 폴더 구성**
+  - aws ec2 우분투가 있고 그 안에 nginx 컨테이너랑 django 컨테이너를 생성
+  - 이 2개를 같이 실행해주기 위해서 docker-compose를 사용
+  - 그래서 여기에 80번 포트로 접속하게 되면 → docker nginx로 연결되어 있어서 nginx로 보내준다
+  - 그럼 nginx 안의 docker가 django에 있는 uwsgi socket과 연결을 해줘서
+  - django에서 앱이 실행되고 → 다시 nginx한테 응답을 주고 → nginx도 응답을 클라이언트한테 줘서 웹서버가 실행
+
+- **여기까지 진행하고 ip주소로 입력하면 정상적으로 브라우저 화면이 뜨게 된다.**
+
+```terminal
+docker-compose up 
+```
+
+- 해당 명령어는 빌드를 안 해도 기존의 컨테이너로 구동시키는 명령어이다.
 
 
 
