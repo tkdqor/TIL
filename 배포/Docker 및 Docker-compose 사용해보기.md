@@ -325,6 +325,73 @@ docker run -d -p 80:80 이미지이름
 
 - **다음과 같이 nginx라고 뜨는 것을 확인할 수 있다. 여기까지 nginx가 도커로 뜨는 것을 확인된 것이다.**
 
+<br>
+
+<hr>
+
+### Docker-compose 설정하기
+- 로컬에서 docker-compose.yml 이라는 파일을 생성하기
+- 이 파일로 전체 환경을 관리할 수 있고, django 컨테이너 및 이미지와 nginx 컨테이너 및 이미지를 관리할 수 있다.
+
+```yml
+version: '3'
+services:
+
+    django:
+        container_name: django
+        build: .
+        image: docker-server/django
+        restart: always
+        command: >
+          sh -c "pipenv run python manage.py collectstatic --no-input
+          && pipenv run uwsgi --ini uwsgi.ini"
+        volumes:
+          - ./:/srv/docker-server
+          - ./log:/var/log/uwsgi
+
+    nginx:
+        container_name: nginx
+        build: ./nginx
+        image: docker-server/nginx
+        restart: always
+        ports:
+          - "80:80"
+        volumes:
+          - ./:/srv/docker-server
+          - ./log:/var/log/nginx
+        depends_on:
+          - django
+```
+
+- services ⇒ 이 부분에다가 우리의 도커 이미지들을 적어주면 된다.
+- build ⇒ Dockerfile이 있는 경로를 적어주면 된다.
+- **ports ⇒ 이건 우리가 docker run할 때 -p 옵션으로 준 것 처럼, 외부에서 어떤 포트로 접근했을 때 도커 컨테이너의 어떤 포트로 응답할 것인지 설정해주는 것이다.**
+- **volumes ⇒ 도커가 실행했다가 멈추면 기존의 우리가 세팅한 파일들 말고는 다 날아간다. 그걸 계속 가지고 싶다할 때 이 volumes 옵션을 주면 도커 이미지가 생성될 때 그 안에 있는 폴더랑 , 우분투에 있는 폴더랑 연결시켜서, 도커 이미지가 죽어도 파일이 계속 유지가 되게끔 설정하는 것이다.**
+  - **:콜론을 기준으로 왼쪽이 우분투 ec2 디렉터리를 의미하고 오른쪽이 도커 컨테이너 내부 디렉터리를 의미한다.** 
+  - **해당 volumes가 올바르게 설정되어있지 않으면, 게속해서 502 Bad Gateway 에러가 발생하면서 socket를 찾지 못하게 된다.**
+
+- depends_on ⇒ 도커 컨테이너 2개를 동시에 띄운다고 했을 때, django 앱이랑 nginx랑 동시에 뜰 때, 순서상으로는 django앱이 먼저 뜨는 게 맞다. 왜냐면 nginx가 뜨기 위해서는, django 앱이 뜨고나서 wsgi 소켓을 물고 nginx가 떠야 되기 때문이다. 근데, nginx가 먼저 떠버리면 아직 django 앱이 실행 전 이기 때문에 소켓을 찾지 못한다. 그래서 자동적으로 nginx가 죽는다. 따라서 안정적으로 봤을 때 django 앱이 먼저 뜨고 nginx가 뜨는 것이 맞다. 이러한 설정을 해주는 부분이다.
+  - DB 뜰때도 마찬가지이다. django 앱이랑 DB가 있을 때, DB가 먼저 뜨고 django 앱이 떠야지 연동이 된다. 만약 django 앱이 먼저 뜨고 DB가 뜨면 이 django가 죽게 된다. 오작동을 하게 된다. 그래서 이 depends_on 이라는 옵션으로 어떤 컨테이너를 먼저 띄울지 정할 수 있다.
+  - 지금은 nginx보다 django가 먼저 떠야 한다고 설정해주자.
+
+- image ⇒ 이 image라는 것은, docker-compose를 쓴다고 해서 2개의 이미지가 하나의 이미지로 만들어지는 것은 아니다. 도커 이미지는 따로따로인데, 동시에 실행시켜주고 관리할 뿐이다. 그래서 nginx의 이미지 이름을 뭘로할지, django앱의 이미지 이름을 뭘로할지 그냥 정하는 것이다.
+
+- command ⇒ uwsgi는 django앱에서 이렇게 커맨드로 실행시켜줘야 한다. 그리고 django 배포 설정을 위해 pipenv run python manage.py collectstatic 명령어도 함께 적어준다. 2개의 명령어를 함께 입력하기 위해 > sh -c를 붙여주고 명령어 사이에 --no-input && 를 붙여준다.
+
+- 여기까지 로컬에서 docker-compose.yml를 작성한 다음, ec2에서 git pull를 진행한다.
+
+<br>
+
+<hr>
+
+### Docker-compose 실행하기
+
+
+
+
+
+
+
 
 
 
