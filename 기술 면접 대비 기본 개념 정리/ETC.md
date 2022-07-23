@@ -471,6 +471,15 @@ git branch -D 브랜치이름
     - .git 폴더 -> logs 폴더 -> HEAD 파일을 보면, 지금까지의 commit 내역을 확인할 수 있다.   
   - 반드시 **git push** 명령어를 입력해줘야 그동안의 코드 변경 이력이 **remote repository**에 반영된다.
 
+<br>
+
+**git의 모든 브랜치를 출력하고 싶을 때**
+```terminal
+git log --graph --all --oneline
+```
+
+- 해당 명령어를 입력하면 git의 모든 브랜치들을 출력할 수 있다.
+- [관련 블로그](https://youngwonhan-family.tistory.com/entry/Git-log-%EA%B7%B8%EB%9E%98%ED%94%84-%EB%AA%A8%EB%93%A0-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0)
 
 * * * 
 
