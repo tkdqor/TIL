@@ -3,6 +3,7 @@
 📖 **Contents**
 
 - Django
+  - [django의 장점](#django의-장점)
   - [values 메서드](#values-메서드)
   - [annotate와 aggregate 메서드](#annotate와-aggregate-메서드)
   - [Lazy-loading이란](#lazy-loading이란)
@@ -12,6 +13,16 @@
   - [djangorestframework-simplejwt란](#djangorestframework-simplejwt란)
   - [swagger](#swagger)
   - [User 모델 커스텀하기](#user-모델-커스텀하기)
+
+* * *
+
+## django의 장점
+- 이미 구현된 기능들이 많아 개발시간이 단축된다.
+- 기본적으로 제공되는 어드민 페이지를 이용해서 개발을 수월하게 진행할 수 있다.
+- ORM이 있어 쿼리를 알지 못해도 데이터베이스에 데이터를 생성, 수정 및 삭제가 가능하다.
+- 모델링도 쉽게 구현이 가능하다.
+- django를 이용해서 프론트엔드 구현이 가능해 풀스텍 경험을 할 수 있다.
+
 
 * * *
 
