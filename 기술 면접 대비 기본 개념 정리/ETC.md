@@ -480,6 +480,8 @@ git log --graph --all --oneline
 
 - 해당 명령어를 입력하면 git의 모든 브랜치들을 출력할 수 있다.
 - [관련 블로그](https://youngwonhan-family.tistory.com/entry/Git-log-%EA%B7%B8%EB%9E%98%ED%94%84-%EB%AA%A8%EB%93%A0-%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0)
+- **그래서 확인해보면, main 브랜치에서 브랜치를 생성하는 것과 이미 만들어진 브랜치에서 또 다른 브랜치를 만드는 것은 다른 것이다.**
+  - **github으로 작업할 때, git pull origin main 명령어를 브랜치에서 진행하고 다시 로컬의 main 브랜치로 checkout에서 한 번더 해주면 된다.**
 
 * * * 
 
