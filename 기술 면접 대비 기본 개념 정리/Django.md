@@ -4,6 +4,7 @@
 
 - Django
   - [django의 장점](#django의-장점)
+  - [QuerySet이란](#queryset이란)
   - [values 메서드](#values-메서드)
   - [annotate와 aggregate 메서드](#annotate와-aggregate-메서드)
   - [Lazy-loading이란](#lazy-loading이란)
@@ -22,6 +23,14 @@
 - ORM이 있어 쿼리를 알지 못해도 데이터베이스에 데이터를 생성, 수정 및 삭제가 가능하다.
 - 모델링도 쉽게 구현이 가능하다.
 - django를 이용해서 프론트엔드 구현이 가능해 풀스텍 경험을 할 수 있다.
+
+
+* * *
+
+## QuerySet이란
+- **QuerySet이란, 데이터베이스에서 전달 받은 모델의 객체 목록을 의미한다.**
+- 데이터베이스로부터 데이터를 읽고, 필터를 걸거나 정렬을 할 수 있다.
+- 리스트와 구조는 같지만 파이썬 기본 자료구조가 아니기 때문에 파이썬에서 읽고 쓰기 위해서는 자료형 변환(Casting)을 해줘야 한다.
 
 
 * * *
