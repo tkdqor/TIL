@@ -4,6 +4,7 @@
 📖 **Contents**
 
 - Python
+  - [assert란](#assert란)
   - [append와 extend 차이](#append와-extend-차이)
   - [리스트에서 [-1]이란](#리스트에서--1이란)
   - [Python은 인터프리터 언어](#python은-인터프리터-언어)
@@ -20,6 +21,48 @@
   - [gettext_lazy](#gettext_lazy)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
+
+* * *
+
+## assert란
+- **python에서 assert란, 어떤 조건이 참이라는 것을 보장하고, 만약 거짓이라면 AssertionError와 함께 오류 메시지를 띄울 수 있는 것을 의미한다.**
+
+- **assert [조건], [오류 메시지]**
+  - assert 키워드 뒤에 [조건]을 입력하고 그 뒤에 콤마(,) [오류메시지]를 입력한다. 이 조건이 True이면 그대로 코드가 진행되고, False라면 AssertionError가 발생한다. 앞에 조건이 False인 경우, AssertionError와 함께 남길 메시지가 바로 오류 메시지를 의미한다.
+
+```python
+a = 10
+
+print("2. assert False 인 경우")
+assert a == 999, "a is not 999"
+
+print("끝2")
+
+>>> AssertionError : a is not 999
+```
+
+- **이렇게 assert 다음의 조건이 False인 경우, AssertionError와 함께 입력한 오류 메시지가 출력된다.**
+
+- **DRF class BaseSerializer 내부 메서드 코드 예시**
+```python
+class BaseSerializer(Field):
+    ...
+    validated_data = {**self.validated_data, **kwargs}
+
+    if self.instance is not None:
+         self.instance = self.update(self.instance, validated_data)
+         assert self.instance is not None, (
+             '`update()` did not return an object instance.'
+         )
+    else:
+         self.instance = self.create(validated_data)
+         assert self.instance is not None, (
+             '`create()` did not return an object instance.'
+         )
+
+    return self.instance
+```
+
 
 * * *
 
