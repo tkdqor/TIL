@@ -54,6 +54,21 @@
 - **annotate** : 엑셀에 column를 하나 추가하는 것과 같이 필드 하나를 만들고 거기에 다른 필드의 값을 그대로 복사하거나, 다른 필드의 값들을 조합한 값을 넣을 수 있게 해주는 메서드이다.
   - annotate의 사전적 의미는 '주석을 달다'라는 것으로 django에서는 주석 대신 필드를 추가한다고 생각하면 된다.
 
+```python
+from django.db.models import Count
+
+if sort == "like":
+    posts = (
+                Post.objects.all()
+                .annotate(like=Count("likes__user_like"))
+                .filter(is_deleted=False)
+                .order_by("-like", "-id")
+            )
+```
+- **위와 같이 Post 모델에 like라는 필드를 추가해서 1개의 post 당 좋아요 개수 순서대로 정렬할 수 있다. Count라는 숫자를 세는 메서드도 사용했다.**
+  - Count("likes__user_like") : 여기서 likes는 Post 모델의 M:N관계 설정 필드명이고 user_like는 Post 모델의 M:N관계 설정 필드명의 related_name이다.
+
+
 <br>
 
 - **aggregate** : django에서 한 필드 전체의 합이나 평균, 개수 등을 계산할 때 사용할 수 있는 메서드이다.
