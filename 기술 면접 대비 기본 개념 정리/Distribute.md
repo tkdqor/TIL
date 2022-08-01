@@ -19,6 +19,7 @@
   - [Github Action이란](#github-action이란)
   - [Docker란](#docker란)
   - [Docker 및 Docker-compose 예시](#docker-및-docker-compose-예시)
+  - [Docker 이미지와 컨테이너 차이](#docker-이미지와-컨테이너-차이)
 
 * * *
 
@@ -558,4 +559,20 @@ services:
 ## Docker 및 Docker-compose 예시
 - [Docker 및 Docker-compose 예시](https://github.com/tkdqor/TIL/blob/main/%EB%B0%B0%ED%8F%AC/Docker%20%EB%B0%8F%20Docker-compose%20%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.md)
 
+* * *
 
+## Docker 이미지와 컨테이너 차이
+- **Docker 이미지**란, 특정 프로세스를 실행하기 위한(즉, 컨테이너 생성(실행)에 필요한) 모든 파일과 설정값(환경)을 지닌 것으로 더 이상의 의존성 파일을 컴파일하거나 이것저것 설치할 필요 없는 상태의 파일을 의미
+  - ex) Ubuntu이미지는 Ubuntu를 실행하기 위한 모든 파일을 가지고 있으며, Oracle 이미지는 Oracle을 실행하는데 필요한 파일과 실행명령어, port 정보 등을 모두 가지고 있음을 의미
+  - 그래서 이미지는 상태 값을 가지지 않고 변하지 않는다.
+  - 하나의 이미지는 여러 컨테이너를 생성할 수 있고, 컨테이너가 삭제되더라도 이미지는 변하지 않고 그대로 남아 있게 된다.
+  - 도커 이미지들은 github과 유사한 서비스인 DockerHub를 통해 버전 관리 및 배포(push&pull)가 가능하다.
+  - 도커는 Dockerfile이라는 파일로 이미지를 만든다. Dockerfile에는 소스와 함께 의존성 패키지 등 사용했던 설정 파일을 버전 관리하기 쉽도록 명시한다.
+
+- **Docker 컨테이너**란, 이미지(Image)를 실행한 상태에서 응용프로그램의 종속성과 함께 응용프로그램 자체를 패키징 or 캡슐화하여 격리된 공간에서 프로세스를 동작시키는 기술을 의미
+  - 컨테이너를 삭제했다는 것은 컨테이너에서 생성한 파일이 사라진다는 의미
+  - 한 서버는 여러 개의 컨테이너를 가져도 당연히 상관없으며, 컨테이너는 각각 독립적으로 실행된다.
+  - 컨테이너는 커널 공간과 호스트OS 자원(시스템 콜)을 공유한다.
+  - 컨테이너는 종료되었다고 해도 메모리에서 삭제되지않고 남아있다. 삭제하려면 명시적으로 삭제해야한다.
+
+- [참고 블로그](https://velog.io/@ragnarok_code/%EB%8F%84%EC%BB%A4-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88Container%EC%99%80-%EC%9D%B4%EB%AF%B8%EC%A7%80Image%EB%9E%80)
