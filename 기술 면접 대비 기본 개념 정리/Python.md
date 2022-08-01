@@ -8,7 +8,7 @@
   - [append와 extend 차이](#append와-extend-차이)
   - [리스트에서 [-1]이란](#리스트에서--1이란)
   - [Python은 인터프리터 언어](#python은-인터프리터-언어)
-  - [Flask와 Django](#flask와-django)
+  - [Flask와 Django 그리고 FastAPI](#flask와-django-그리고-fastapi)
   - [리스트와 튜플 그리고 딕셔너리의 차이](#리스트와-튜플-그리고-딕셔너리의-차이)
   - [리스트에서 중복 제거](#리스트에서-중복-제거)
   - [call by assignment란](#call-by-assignment란)
@@ -130,13 +130,14 @@ print(a[-1])
 
 * * *
 
-## Flask와 Django
-- python framework 중 Django는 웹 서비스 호스팅용으로 사용하기 적합하며 CRUD를 수행하기 위한 최적의 프레임워크이다. 다만 빠른 웹 프레임워크는 아니어서 무겁다는 단점이 있다.
+## Flask와 Django 그리고 FastAPI
+- python framework 중 **Django**는 웹 서비스 호스팅용으로 사용하기 적합하며 CRUD를 수행하기 위한 최적의 프레임워크이다. 다만 빠른 웹 프레임워크는 아니어서 무겁다는 단점이 있다.
   - Django는 한 프로젝트 내에 다양한 어플리케이션이 존재 할 수 있다. 그리고 Django는 ORM이 있어 DB에 접근하기에 편리하다. 또한, 이미 많은 것이 개발되어 있어 내가 원하는 기능을 유연하게 추가할 수 없다.
-- python framework 중 Flask는 micro framework이기에 Django보다 가볍고, 개발 속도가 매우 빠르다는 장점이 있다. 다만 개발자가 많은 것을 설정하고 세팅해야 한다.
+- python framework 중 **Flask**는 micro framework이기에 Django보다 가볍고, 개발 속도가 매우 빠르다는 장점이 있다. 다만 개발자가 많은 것을 설정하고 세팅해야 한다.
   - Flask는 프로젝트마다 1개의 어플리케이션을 개발하도록 되어있다. 그리고 따로 ORM이 없기 때문에 DB에 접근할 때 SQLAlchemy 등을 사용해야 한다. 또한, 확장과 커스터마이징이 편리하다.
-- 최근에는 fast API 가 이 둘의 장점을 결합해 놓은 framework라고 들었다.
-
+ 
+- 최근에는 **fast API**라는 framework도 존재한다. 
+  - django와 다르게 비동기 통신을 지원하고 빠르다는 장점이 있다. 그리고 django의 경우 프로젝트 및 앱을 생성하면 알아서 디렉터리가 생성되고 디자인 패턴이 적용되지만, FastAPI의 경우에는 main.py에서 시작해서 아무런 구성이 되어있지 않아서 개발자가 많은 것을 커스텀해야 한다.
 
 * * *
 
