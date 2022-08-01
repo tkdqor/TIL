@@ -75,6 +75,8 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 - 결론적으로 gunicorn의 성능이 대체적으로 좋으나 uwsgi보다는 리소스가 크고, uwsgi는 리소스가 적고 가볍게 사용하기 위한 소프트웨어라고 판단할 수 있다.
   - **지금까지는 팀 및 개인 프로젝트의 규모가 그렇게 크지 않았기 때문에 조금 더 가볍게 사용할 수 있는 uwsgi를 선택해서 진행해봤다.**
 
+- [관련 내용](https://ivan-site.com/2012/09/benchmark-uwsgi-vs-gunicorn-for-async-workers/)
+- [관련 내용 2](https://www.appdynamics.com/blog/engineering/a-performance-analysis-of-python-wsgi-servers-part-2/)
 
 * * *
 
