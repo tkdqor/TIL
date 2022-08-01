@@ -6,6 +6,7 @@
   - [django 배포 관련](#django-배포-관련)
   - [AWS EC2 ssh 연결하기](#aws-ec2-ssh-연결하기)
   - [uWSGI란](#uwsgi란)
+  - [uWSGI와 Gunicorn비교](#uwsgi와-gunicorn비교)
   - [DNS, DNS 서버란](#dns-그리고-dns-서버란)
   - [Collectstatic 명령어](#collectstatic-명령어)
   - [CI란](#ci란)
@@ -62,6 +63,18 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
   - https://jhnyang.tistory.com/395
   - https://itholic.github.io/linux-jobs-bg-fg/
   - https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%B0%B1%EA%B7%B8%EB%9D%BC%EC%9A%B4%EB%93%9C_%EC%8B%A4%ED%96%89
+
+* * *
+
+## uWSGI와 Gunicorn비교
+- **Gunicorn**은 uwsgi에 비해 Latency라고 하는 요청과 응답 사이에 경과된 시간인 대기 시간이 더 짧다. 더 빠르게 요청을 처리한다.
+  - 그리고 서버의 메모리 요구사항을 의미하는 RAM Usage라고 하는 램 사용량 부분에서도 gunicorn이 uwsgi에 비해 더 낮다.
+
+- 반면에 **uWSGI**는 CPU Usage라고 하는 CPU 사용량에서는 gunicorn보다는 낮게 사용된다. 그리고 초당 처리할 수 있는 요청 수를 비교하면 uwsgi가 gunicorn보다 높게 나온다.
+
+- 결론적으로 gunicorn의 성능이 대체적으로 좋으나 uwsgi보다는 리소스가 크고, uwsgi는 리소스가 적고 가볍게 사용하기 위한 소프트웨어라고 판단할 수 있다.
+  - **지금까지는 팀 및 개인 프로젝트의 규모가 그렇게 크지 않았기 때문에 조금 더 가볍게 사용할 수 있는 uwsgi를 선택해서 진행해봤다.**
+
 
 * * *
 
