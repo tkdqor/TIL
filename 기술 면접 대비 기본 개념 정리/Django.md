@@ -4,6 +4,7 @@
 
 - Django
   - [django의 장점](#django의-장점)
+  - [ORM의 장점과 단점](#orm의-장점과-단점)
   - [QuerySet이란](#queryset이란)
   - [values 메서드](#values-메서드)
   - [annotate와 aggregate 메서드](#annotate와-aggregate-메서드)
@@ -14,6 +15,7 @@
   - [djangorestframework-simplejwt란](#djangorestframework-simplejwt란)
   - [swagger](#swagger)
   - [User 모델 커스텀하기](#user-모델-커스텀하기)
+  - [path 파라미터와 쿼리 파라미터](#path-파라미터와-쿼리-파라미터)
 
 * * *
 
@@ -24,6 +26,20 @@
 - 모델링도 쉽게 구현이 가능하다.
 - django를 이용해서 프론트엔드 구현이 가능해 풀스텍 경험을 할 수 있다.
 
+* * *
+
+## ORM의 장점과 단점
+- **ORM이란, Object Relational Mapping의 약자로 객체와 관계형 데이터베이스의 데이터를 자동으로 매핑(연결)해주는 역할을 한다.**
+
+- **장점** : 
+  - 데이터베이스를 관리할 수 있는 SQL문을 모르더라도 ORM을 이용해서 편리하게 python 코드로 SQL문으로 변환해서 DB의 데이터를 관리할 수 있다는 장점이 있다. 
+  - ORM을 통해 작성한 객체를 재활용할 수 있다는 측면에서 재사용 및 유지보수의 편리성이 증가한다.
+- **단점** : 
+  - ORM를 하나의 프레임워크라고 생각해본다면, ORM의 형식이 정해져 있다보니 복잡한 요청을 해야하는 경우에는 오히려 ORM이 비효율적일 수 있다. 그리고 객체랑 데이터베이스를 연결한다는 개념이 ORM이기 때문에 불필요한 쿼리가 발생할 수 있다.
+  - 프로젝트의 복잡성이 커질수록 난이도도 올라가고 부족한 설계로 잘못 구현되었을 경우 속도 저하 및 일관성을 무너뜨리는 문제점이 되기도 한다.
+
+- **lazy-loading** : lazy-loading의 경우는 느리다는 단점이 될 수 있지만, 최소한의 행동으로 데이터를 가져올 수 있다는 점에서 django ORM의 장점으로 볼 수도 있다.
+  - ORM에서 pk를 int로 하든 string으로 하든 조회가 되는것으로 봐서 int와 str 정도는 변환을 해주는 것 같다.
 
 * * *
 
@@ -295,4 +311,13 @@ class User(AbstractBaseUser):
 
 
 - [관련 블로그](https://hckcksrl.medium.com/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9C%A0%EC%A0%80-%EB%AA%A8%EB%8D%B8-custom-user-model-b8487c0d150)
+
+* * *
+
+## path 파라미터와 쿼리 파라미터
+
+- **path 파라미터** : 엔드포인트에서 변수가 되는 부분을 <> 꺽쇠로 표현해서 사용하는 파라미터. 
+- **쿼리 파라미터** : 엔드포인트에서 Optional하게 사용되는 것으로 url 마지막에 ? 다음으로 쿼리 파라미터의 이름을 작성하고 = 다음에 값을 입력해서 사용하게 된다.
+
+
 
