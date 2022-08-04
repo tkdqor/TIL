@@ -152,6 +152,9 @@ recommendations = Recommendation.objects.filter(visible=True).order_by('sort').s
 ## DRF란
 - **Django REST Framework는 Django를 기반으로 REST API 서버를 만들기 위한 라이브러리이다.**
   - DRF는 어디까지나 Django를 기반으로 한 라이브러리이기 때문에 전반적으로 Django의 개발 흐름을 따라가게 된다.
+
+- **DRF 흐름** : URL로 클라이언트가 API 요청을 하게 되면, View에서 해당 요청을 받고 어떤 데이터들을 직렬화할지 로직을 구성한다. -> 그리고 serializer 파일에서 DB에 저장된 데이터들을 가공해서 JSON 데이터로 변환해준다. -> 그렇게 가공된 데이터들을 다시 View로 보내주게 되고 -> View에서 요청에 대한 최종 Response를 하게 된다.
+
 - API는 웹뿐만 아니라 앱과 같은 다양한 플랫폼의 백엔드 서비스를 위해 JSON과 같은 규격화된 데이터를 제공한다. 따라서 DRF를 사용하면 기존에는 자체적인 웹 템플릿에게 바로 데이터를 전달해주는 Django 프로젝트에 국한되었던 것을 -> JSON과 같은 양식으로 다양한 플랫폼의 클라이언트에게 데이터를 제공해줄 수 있는 API 서버를 만들 수 있게 된다. 
 
 - [DRF관련 내용](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework)%20%EC%A0%95%EB%A6%AC.md)
