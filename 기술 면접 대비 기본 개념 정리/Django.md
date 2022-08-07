@@ -114,7 +114,17 @@ if sort == "like":
 
 ## Lazy-loading이란
 - Django의 ORM은 다른 ORM과 마찬가지로 Lazy-loading방식을 사용한다. **Lazy-loading이란 python 코드로 ORM에서 명령을 실행할 때마다 데이터베이스에 접근하여 데이터를 가져오는 것이 아닌 모든 명령처리가 끝나고 실제 데이터를 불러와야할 때 데이터베이스 Query문을 실행하는 방식을 말한다.**
-  - 반대로 **Eager-loading(즉시 로딩)은 Lazy-loading의 반대 개념이다. Lazy-loading은 Query문을 하나, 하나 실행하여 데이터를 가져온다면 Eager-loading은 지금 당장 사용하지 않을 데이터도 포함하여 Query문을 실행**하기 때문에 밑에 설명할 Lazy-loading의 N+1문제의 해결책으로 많이 사용하게 된다. Django에서 Eager-loading을 실행하는 방법은 select_related 메소드와 prefetch_related 메소드를 사용한다. 
+  - **Query문을 실행하는 시점**
+    - Iteration
+    - Slicing
+    - Pickling/Caching
+    - repr()
+    - len()
+    - list()
+    - bool()
+    - [공식 문서](https://docs.djangoproject.com/en/3.2/ref/models/querysets/#when-querysets-are-evaluated)
+
+- 반대로 **Eager-loading(즉시 로딩)은 Lazy-loading의 반대 개념이다. Lazy-loading은 Query문을 하나, 하나 실행하여 데이터를 가져온다면 Eager-loading은 지금 당장 사용하지 않을 데이터도 포함하여 Query문을 실행**하기 때문에 밑에 설명할 Lazy-loading의 N+1문제의 해결책으로 많이 사용하게 된다. Django에서 Eager-loading을 실행하는 방법은 select_related 메소드와 prefetch_related 메소드를 사용한다.
 
 - 우리가 ORM으로 쿼리문을 만들면 바로 데이터베이스에 Hit가 되는 것이 아니라, template에서 {% for item in recommendations %}  또는 {{ item.restaurant.category.name }} 이러한 코드가 실행될 때 마다 데이터베이스에 Hit를 치게 된다. 이게 바로 “lazy-loading 방식”이다. 그 다음 바로 이어서 {{ item.restaurant.main_image.image }} 해당 코드가 실행될 때는, 이미 메모리에 불러온 restaurant이 있기 때문에 Hit 하지는 않는다. 
   - **Lazy-loading의 성능이슈인 N+1 Query 문제는 외래키(Foreign Key)를 참조해서 데이터를 가져올 때 발생한다.** {% for item in recommendations %} 이러한 코드가 있고 그 밑에 {{ item.restaurant.category.name }} 이렇게 코드가 있을 때, 데이터 개수인 N번 Hit 하는 게 아니라 처음 for문에서 한 번더 Hit가 발생하게 된다.
