@@ -9,6 +9,7 @@
   - [values 메서드](#values-메서드)
   - [annotate와 aggregate 메서드](#annotate와-aggregate-메서드)
   - [Lazy-loading이란](#lazy-loading이란)
+  - [select_related 와 prefetch_related](#select_related-와-prefetch_related)
   - [django signal이란](#django-signal이란)
   - [render와 redirect 관련](#render와-redirect-관련)
   - [DRF란](#drf란)
@@ -124,7 +125,6 @@ if sort == "like":
     - bool()
     - [공식 문서](https://docs.djangoproject.com/en/3.2/ref/models/querysets/#when-querysets-are-evaluated)
 
-- 반대로 **Eager-loading(즉시 로딩)은 Lazy-loading의 반대 개념이다. Lazy-loading은 Query문을 하나, 하나 실행하여 데이터를 가져온다면 Eager-loading은 지금 당장 사용하지 않을 데이터도 포함하여 Query문을 실행**하기 때문에 밑에 설명할 Lazy-loading의 N+1문제의 해결책으로 많이 사용하게 된다. Django에서 Eager-loading을 실행하는 방법은 select_related 메소드와 prefetch_related 메소드를 사용한다.
 
 - 우리가 ORM으로 쿼리문을 만들면 바로 데이터베이스에 Hit가 되는 것이 아니라, template에서 {% for item in recommendations %}  또는 {{ item.restaurant.category.name }} 이러한 코드가 실행될 때 마다 데이터베이스에 Hit를 치게 된다. 이게 바로 “lazy-loading 방식”이다. 그 다음 바로 이어서 {{ item.restaurant.main_image.image }} 해당 코드가 실행될 때는, 이미 메모리에 불러온 restaurant이 있기 때문에 Hit 하지는 않는다. 
   - **Lazy-loading의 성능이슈인 N+1 Query 문제는 외래키(Foreign Key)를 참조해서 데이터를 가져올 때 발생한다.** {% for item in recommendations %} 이러한 코드가 있고 그 밑에 {{ item.restaurant.category.name }} 이렇게 코드가 있을 때, 데이터 개수인 N번 Hit 하는 게 아니라 처음 for문에서 한 번더 Hit가 발생하게 된다.
@@ -146,10 +146,59 @@ recommendations = Recommendation.objects.filter(visible=True).order_by('sort').s
 
 * * *
 
+## select_related 와 prefetch_related
+- lazy-loading과 반대로 **Eager-loading(즉시 로딩)은 Lazy-loading의 반대되는 개념이다. Lazy-loading은 Query문을 하나, 하나 실행하여 데이터를 가져온다면 Eager-loading은 지금 당장 사용하지 않을 데이터도 포함하여 Query문을 실행**하기 때문에 Lazy-loading의 N+1문제의 해결책으로 많이 사용하게 된다. Django에서 Eager-loading을 실행하는 방법은 select_related 메소드와 prefetch_related 메소드를 사용한다.
+
+- **select_related(정방향 참조)**
+  - **보통 1:1관계 또는 1:N관계의 N쪽에서 사용한다.**
+
+```python
+restaurant = Restaurant.objects.get(id=1)
+owner = restaurant.owner
+city = owner.city
+```
+
+- City와 Owner 모델이 1:N관계이고, Owner와 Restaurant 모델도 1:N관계일 때, 위와 같이 코드를 작성하면 총 3번의 쿼리가 발생한다.
+
+```python
+restaurant = Restaurant.objects.select_related('owner__city').get(id=1)
+owner = restaurant.owner
+city = owner.city
+```
+
+- 반면에 위와 같이 select_related 메소드를 사용하면 1개의 쿼리만 발생한다.
+- **즉, select_related 메소드는 관련된 객체(related objects) 데이터들을 가져와서 cache에 저장하게 되고 cache에 저장된 데이터를 사용하기 때문에 query를 다시 날릴 필요가 없어진다.**
+
+<br>
+
+- **prefetch_related(역방향 참조)**
+  - **보통 M:N관계 또는 1:N관계의 1쪽에서 사용한다.**
+
+```python
+restaurants = Restaurant.objects.all()
+for restaurant in restaurants:
+    for pizza in restaurant.pizzas.all():
+        print(restaurant.name+": "+pizza.name)
+```
+
+- Restaurant과 Pizza 모델이 서로 M:N 혹은 1:N관계일 때, 위와 같이 코드를 작성하면 총 6개의 쿼리가 발생한다.(Restaurant 모델에 5개의 데이터가 있다고 가정)
+
+```python
+restaurants = Restaurant.objects.all().prefetch_related('pizzas')
+for restaurant in restaurants:
+    for pizza in restaurant.pizzas.all():
+        print(restaurant.name+": "+pizza.name)
+```
+
+- 반면에 위와 같이 prefetch_related 메소드를 사용하면 2개의 쿼리만 발생하게 된다.
+- **즉, prefetch_related 메소드는 restaurant를 모두 가져오는 query는 동일하지만 그 뒤 pizza데이터를 가져와 result_cache에 caching하게 되고 데이터베이스에 접근하지 않고도 cache에서 찾아 사용하게 된다.**
+
+- [참고 블로그](https://velog.io/@anjaekk/Django-Query%EC%A4%84%EC%9D%B4%EA%B8%B0selectrelated-%EC%99%80-prefetchrelated)
+
+* * *
+
 ## django signal이란
 - **django에는 어떤 DB 이벤트나 아니면 django에서 정의하는 여러가지 시스템 이벤트라고 할 만한 것들이 있는데, 그래서 이런 이벤트가 발생했을 때 -> 우리가 중간에 캐치를 해서 그 이벤트가 발생한 시점에 '뭔가 처리를 하고 싶다' 라는 코드를 작성해두면, django가 그걸 기억해두었다가 그 이벤트가 발생하는 전이나 후에 처리를 해주는 것을 signal이라고 한다.**
-
-
 
 * * *
 
