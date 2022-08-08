@@ -149,7 +149,7 @@ recommendations = Recommendation.objects.filter(visible=True).order_by('sort').s
 ## select_related 와 prefetch_related
 - lazy-loading과 반대로 **Eager-loading(즉시 로딩)은 Lazy-loading의 반대되는 개념이다. Lazy-loading은 Query문을 하나, 하나 실행하여 데이터를 가져온다면 Eager-loading은 지금 당장 사용하지 않을 데이터도 포함하여 Query문을 실행**하기 때문에 Lazy-loading의 N+1문제의 해결책으로 많이 사용하게 된다. Django에서 Eager-loading을 실행하는 방법은 select_related 메소드와 prefetch_related 메소드를 사용한다.
 
-- **select_related(정방향 참조)**
+- **select_related**
   - **보통 1:1관계 또는 1:N관계의 N쪽에서 사용한다.**
 
 ```python
@@ -171,7 +171,7 @@ city = owner.city
 
 <br>
 
-- **prefetch_related(역방향 참조)**
+- **prefetch_related**
   - **보통 M:N관계 또는 1:N관계의 1쪽에서 사용한다.**
 
 ```python
@@ -193,7 +193,13 @@ for restaurant in restaurants:
 - 반면에 위와 같이 prefetch_related 메소드를 사용하면 2개의 쿼리만 발생하게 된다.
 - **즉, prefetch_related 메소드는 restaurant를 모두 가져오는 query는 동일하지만 그 뒤 pizza데이터를 가져와 result_cache에 caching하게 되고 데이터베이스에 접근하지 않고도 cache에서 찾아 사용하게 된다.**
 
-- [참고 블로그](https://velog.io/@anjaekk/Django-Query%EC%A4%84%EC%9D%B4%EA%B8%B0selectrelated-%EC%99%80-prefetchrelated)
+- [관련 블로그](https://velog.io/@anjaekk/Django-Query%EC%A4%84%EC%9D%B4%EA%B8%B0selectrelated-%EC%99%80-prefetchrelated)
+
+<br>
+
+- **select_related와 prefetch_related 차이점**
+  - Select는 DB에서 join 기능을 수행한 후 가져오므로 1 Query가 실행된다면 / prefetch는 python에서 join 기능을 수행하므로 불러올때 1 Query를 실행하고 불러온 후 1 Query를 한번 더 실행한다는 차이점이 있다.
+  - [관련 블로그](https://codermun-log.tistory.com/179)
 
 * * *
 
