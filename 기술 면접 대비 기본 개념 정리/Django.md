@@ -13,6 +13,7 @@
   - [django signal이란](#django-signal이란)
   - [render와 redirect 관련](#render와-redirect-관련)
   - [DRF란](#drf란)
+  - [DRF에서 APIView와 generic View의 차이점](#drf에서-apiview와-generic-view의-차이점)
   - [djangorestframework-simplejwt란](#djangorestframework-simplejwt란)
   - [swagger](#swagger)
   - [User 모델 커스텀하기](#user-모델-커스텀하기)
@@ -230,6 +231,18 @@ for restaurant in restaurants:
 - API는 웹뿐만 아니라 앱과 같은 다양한 플랫폼의 백엔드 서비스를 위해 JSON과 같은 규격화된 데이터를 제공한다. 따라서 DRF를 사용하면 기존에는 자체적인 웹 템플릿에게 바로 데이터를 전달해주는 Django 프로젝트에 국한되었던 것을 -> JSON과 같은 양식으로 다양한 플랫폼의 클라이언트에게 데이터를 제공해줄 수 있는 API 서버를 만들 수 있게 된다. 
 
 - [DRF관련 내용](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework)%20%EC%A0%95%EB%A6%AC.md)
+
+* * *
+
+## DRF에서 APIView와 generic View의 차이점
+- **APIView**와 같이 저수준일수록 작성하는 코드가 많고 중복, 반복을 포함하고 있지만 상대적으로 로직이 이해하기 쉽다.
+- 반면에 **Generic View**와 같이 고수준으로 갈수록 코드가 짧아지고 중복, 반복 코드가 거의 없지만 동작 코드가 추상화되어 있다.
+
+<br>
+
+- **프로젝트에서 왜 APIView를 선택했는지 물어본다면**
+  - DRF를 원티드 프리온보딩 코스에서 처음으로 사용해봤기 때문에 로직을 이해하기 쉬운 APIView로 비록 중복되는 코드들이 있었으나 get, post 등 메소드마다 함수로 로직을 구현해보려고 했다. 나중에는 학습을 해서 Generic View를 사용하여 반복되는 코드를 줄이고 생산성을 높여보고 싶다.
+
 
 * * *
 
