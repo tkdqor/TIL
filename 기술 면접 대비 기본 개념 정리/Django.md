@@ -140,6 +140,13 @@ recommendations = Recommendation.objects.filter(visible=True).order_by('sort').s
 - **이런식으로 views.py에서 Recommendation를 읽어올 때 select_related 메소드를 사용하면, lazy-loading를 쓰지 않고 아예 연결된 restaurant도 같이 가져오겠다는 의미가 된다.** 
   - 이 때 ‘restaurant’은 related_name이라고 생각하면 되서 modes.py에도 같은 이름으로 되어있는지 확인하자.
 
+<br>
+
+- **lazy-loading의 장단점**
+  - 장점 : 직접적으로 데이터가 요청될 때 쿼리문을 실행하므로, 필요로 하는 경우에만 실행되어 리소스 비용이 낮아질 수 있다.
+  - 단점 : N+1 Query 문제가 발생하여 비효율적으로 쿼리 횟수가 증가해서 속도가 느려지고 성능에 문제가 되는 경우가 존재한다.
+
+
 - [관련 내용](https://han.gl/WYHSi)
 - [관련 블로그](https://velog.io/@anjaekk/Django-Django-ORM%EC%9D%98-Lazy-loading%EA%B3%BC-N1-Query-%EB%AC%B8%EC%A0%9C)
 
