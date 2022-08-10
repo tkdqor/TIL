@@ -321,6 +321,7 @@ GET, PUT, DELETE  /users/1
 - 즉, WSGI는 별도의 프레임워크 같은 게 아니라, 동적인 데이터에 대응하기 위해서 웹 서버와 파이썬 웹 앱이 어떻게 서로 동작해야 하는지에 대한 내용을 담고 있는 specification이다.
 
 - **Nginx가 필요한 이유** -> 정적인 파일 요청을 처리하고 reverse proxy server, load balancer 등의 역할을 수행하기 위해서
+  - reverse 프록시는 nginx 웹서버의 기능 중 하나로 클라이언트로부터 서버가 어떤 프로그램 , 어떤 포트로 돌고 있는지 서버의 정보를 감추는 것을 의미한다. 그래서 보안적인 측면을 강화해준다.
 - **Gunicorn이 필요한 이유** -> 웹 앱에 HTTP 요청을 전달하고 응답을 되돌려주는 일을 할 WSGI server의 역할을 하기 위해서
 - **Gunicorn만 써도 된다** -> Gunicorn이 WSGI middleware로서 웹 서버의 역할을 수행하기 때문에 Gunicorn만 써도 된다. 다만, Nginx가 제공하는 추가적인 혜택을 받지 못할 뿐이다. 
 - **Nginx만 써도 된다** -> Flask나 Django 같은 프레임워크는 WSGI interface를 이미 어느 정도 구현해놓았기 때문에 프레임워크를 사용한다면 Nginx만 써도 된다. 다만 session, cookie, routing, authentication 등의 기능을 수행해주는 middleware의 역할이 사라지기 때문에 이 부분은 자기가 하드 코딩해야 한다.
