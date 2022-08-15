@@ -786,7 +786,14 @@ git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
 
 => 1비트가 0과 1 2가지를 표현할 수 있으므로 8비트, 즉 1바이트는 -> 2의 8승으로 총 256종류의 정보를 나타낸다.
 
+<img width="824" alt="image" src="https://user-images.githubusercontent.com/95380638/184567881-bcd7ccc9-3292-41ae-b2ec-361f3e1c6c6e.png">
 
+<br>
+
+- **데이터 단위**
+<img width="752" alt="image" src="https://user-images.githubusercontent.com/95380638/184567971-fbb7075b-80b6-4514-b4b5-4759c570bcea.png">
+
+- [관련 블로그](https://www.samsungsemiconstory.com/kr/%EC%95%84%EB%A6%AC%EC%86%A1%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%9D%98-%EB%8B%A8%EC%9C%84-%EB%B0%94%EC%9D%B4%ED%8A%B8byte/)
 * * *
 
 ## 1픽셀은 3byte
