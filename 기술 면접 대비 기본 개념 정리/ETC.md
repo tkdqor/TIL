@@ -409,6 +409,10 @@ git commit
 
 ```terminal
 git push origin 브랜치명
+
+# 만약 처음 레포지토리 생성 시 main 브랜치가 없어 오류가 난다면 아래 커맨드 입력하기
+git branch -M main
+
 ```
 
 - 마지막으로 위의 명령어를 입력하면 Pull Request가 된다. 저장소에서 해당 버튼을 누르면 PR이 날라간다. 
