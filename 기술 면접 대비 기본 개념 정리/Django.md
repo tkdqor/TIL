@@ -411,6 +411,10 @@ class User(AbstractBaseUser):
   - USERNAME_FIELD = "email" => 이렇게 설정하면, 로그인 시 email 정보를 받게된다.
   - custom user 생성 시, objects = CustomUserManager() 이러한 코드를 설정해준다.
 
+- **그리고 마지막으로 settings.py에 아래와 같은 코드를 추가한다.**
+```python
+AUTH_USER_MODEL = "accounts.User"
+```
 
 - [관련 블로그](https://hckcksrl.medium.com/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9C%A0%EC%A0%80-%EB%AA%A8%EB%8D%B8-custom-user-model-b8487c0d150)
 
