@@ -14,7 +14,7 @@
 - 일단 docker-server 디렉터리 내부에서
 ```terminal
 git init . 
-git remote origin 레포지토리 주소
+git remote add origin 레포지토리 주소
 git pull origin 브랜치 이름
 ```
 
