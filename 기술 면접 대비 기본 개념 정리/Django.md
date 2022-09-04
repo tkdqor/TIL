@@ -20,6 +20,7 @@
   - [User 모델 커스텀하기](#user-모델-커스텀하기)
   - [path 파라미터와 쿼리 파라미터](#path-파라미터와-쿼리-파라미터)
   - [객체지향 프로그래밍 방식의 5원칙과 4개 특성](#객체지향-프로그래밍-방식의-5원칙과-4개-특성)
+  - [django ORM distinct 메서드](#django-orm-distinct-메서드)
 
 * * *
 
@@ -457,3 +458,19 @@ AUTH_USER_MODEL = "accounts.User"
 
 - [참고 블로그](https://velog.io/@ygh7687/OOP%EC%9D%98-5%EC%9B%90%EC%B9%99%EA%B3%BC-4%EA%B0%80%EC%A7%80-%ED%8A%B9%EC%84%B1)
 - [참고 블로그2](https://youngjinmo.github.io/2021/04/features-of-oop/)
+
+* * * 
+
+## django ORM distinct 메서드
+- distinct 메서드는 쿼리셋 결과에서 중복 레코드를 제거할 수 있게 해준다.
+- distinct()에서 특정 필드를 조건으로 지정하고 싶은 경우 values_list()와 조합할 수 있다.
+```python
+# Person 모델의 name 필드를 distinct 조건으로 설정해서 중복 제거
+Person.objects.distinct().values_list('name')
+```
+
+-distinct()와 order_by()를 조합할 때는, order_by()에 지정한 필드가 DISTINCT에 추가된다.
+```python
+# Person 모델의 name 필드를 기준으로 정렬하고 distinct 조건으로 설정해서 중복 제거
+Person.objects.distinct().order_by('name')
+```
