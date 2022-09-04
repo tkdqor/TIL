@@ -21,6 +21,7 @@
   - [path 파라미터와 쿼리 파라미터](#path-파라미터와-쿼리-파라미터)
   - [객체지향 프로그래밍 방식의 5원칙과 4개 특성](#객체지향-프로그래밍-방식의-5원칙과-4개-특성)
   - [django ORM distinct 메서드](#django-orm-distinct-메서드)
+  - [CORS란](#cors란)
 
 * * *
 
@@ -474,3 +475,18 @@ Person.objects.distinct().values_list('name')
 # Person 모델의 name 필드를 기준으로 정렬하고 distinct 조건으로 설정해서 중복 제거
 Person.objects.distinct().order_by('name')
 ```
+
+* * *
+
+## CORS란
+- CORS란, **Cross Origin Resource Sharing**의 약자로 도메인 또는 포트가 다른 서버의 자원을 요청하는 매커니즘을 의미한다.
+- 즉, 다른 도메인을 가진 서버의 URL을 호출해 데이터를 가져오려고 하는 경우 보안 문제인 Cross Domain 이슈를 발생시킨다.
+  - 이렇게 이슈를 발생시키는 이유는, 외부 서버가 요청한 데이터를 함부로 유출시킬 수 없기 때문에 보안적인 문제로 통제를 하고 있는 것이다.
+  - ex) 백엔드는 django의 DRF로 개발하고 프론트는 리액트로 개발하는 경우, 두 프레임워크의 포트가 달라서 문제가 발생할 수 있다.
+
+- **CORS 문제 해결 방법**
+  - 먼저 pip install로 django-cors-headers를 설치해준다. django-cors-headers는 CORS에 필요한 서버의 헤더를 조작하기 위한 Django 앱이다. 
+  - 이렇게 설치하게 되면 외부 서버에서 보내는 요청의 헤더에 접근을 허락하는 내용이 추가된다.
+  - settings.py의 installed_apps와 MIDDLEWARE에 관련 내용을 추가해주고 CORS_ORIGIN_WHITELIST에 cross-site 요청을 허용하는 호스트들을 입력해주면 된다.
+
+- [관련 블로그](https://oen-blog.tistory.com/46)
