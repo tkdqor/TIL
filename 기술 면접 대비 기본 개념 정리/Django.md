@@ -271,6 +271,11 @@ for restaurant in restaurants:
   - 그 다음, 클라이언트가 HTTP 헤더에 JWT인 access token을 첨부해서 서버에 데이터를 요구하게 되고, 서버에서는 클라이언트로부터 온 JWT 검증해서 응답해준다.
   - access token이 만료되면 refresh token을 통해 새로운 access token을 요청할 수 있다.
 
+- **JWT token의 경우, header에 관련 내용 넣고 payload에 유저 id 넣고 마지막으로 django 서버의 secret key를 넣어서 알고리즘을 통해 암호화를 진행한다.**
+  - 이렇게 토큰을 만들면, 이 secret key로만 복호화가 가능하기 때문에 django 서버에서만 복호화를 할 수 있다.
+  - 우리한테 토큰이 날라오면 Auth : baerer “...” 이러한 형태가 된다. 그러면 서버는 data = JWT.detoken(‘sdfsdf’) 이런식으로 복호화를 진행한다.
+  - JWT토큰은 결과적으로 복호화를 하면 header와 payload로 이루어져 있는 JSON 데이터가 나오게 된다.
+
 - [관련 블로그](https://medium.com/chanjongs-programming-diary/django-rest-framework-drf-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-jwt-%EA%B8%B0%EB%B0%98-authentication-%EC%84%B8%ED%8C%85%ED%95%98%EA%B8%B0-with-simplejwt-%EC%B4%88%EA%B8%B0-%ED%99%98%EA%B2%BD-%EC%84%B8%ED%8C%85-1-e54c3ed2420c)
 - [관련 블로그2](https://velog.io/@kjyeon1101/JWT-%EC%9D%B8%EC%A6%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85%EB%A1%9C%EA%B7%B8%EC%9D%B8)
 
