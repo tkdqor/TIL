@@ -10,6 +10,9 @@
   - [DNS, DNS 서버란](#dns-그리고-dns-서버란)
   - [Collectstatic 명령어](#collectstatic-명령어)
   - [CI란](#ci란)
+  - [pre-commit이란](#pre-commit이란)
+  - [Formatter란](#formatter란)
+  - [linter란](#linter란)
   - [컴파일이란](#컴파일이란)
   - [빌드란](#빌드란)
   - [디펜던시란](#디펜던시란)
@@ -145,6 +148,96 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 
 - 터미널에 테스트 커맨드를 CI에 입력해두면 → 푸쉬를 바탕으로 디펜던시 설치 후 커맨드 자체를 입력하게 되어 test.py 실행시키는 명령어가 실행된다.
 - Github 자체 로컬 공간에 환경을 구성해서 우리의 코드를 실행하게 된다.
+
+* * *
+
+## pre-commit이란
+- **pre-commit 라이브러리란, 해당 라이브러리를 설치하면 commit 메세지를 작성하기 전에 호출을 해서 문법 오류나 코드 컨벤션 등을 체크할 때 사용한다.**
+```terminal
+# 설치 예시
+git init .
+
+pip install pre-commit
+
+pre-commit install
+
+# 만약, github hook를 사용한다면,
+pre-commit install           # 해당 명령어 입력 시, 스크립트에 짜여진대로 hook이 .git/hooks/pre-commit에 생성
+
+pre-commit installedat .git/hooks/pre-commit    # 생성한 훅을 사용한다는 명령어 입력 
+
+
+# 설치 후 실행 예시
+git add .
+
+pre-commit run
+
+# 이상이 없으면
+git commit
+```
+- **위와 같이 pre-commit 라이브러리를 설치할 수 있다. 그리고 설치 후에는 git add . 이렇게 staging 영역에 올린 후, pre-commit run 명령어로 실행시킬 수 있다.**
+  - pre-commit run 명령어 입력 전에, 루트 디렉터리 내부에 .pre-commit-config.yaml라는 파일을 생성해서 설정해놓아야 한다.
+  - 또한, pre-commit 라이브러리로 git hook를 사용할 수 있다. [해당 블로그](https://www.daleseo.com/pre-commit/)를 참고하자.
+
+```yaml
+repos:
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        exclude: ^.*\b(migrations)\b.*$
+
+  - repo: https://github.com/ambv/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+        exclude: ^.*\b(migrations)\b.*$
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 4.0.1
+    hooks:
+      - id: flake8
+        exclude: ^.*\b(migrations)\b.*$
+```
+
+- 위의 코드는 isort, black, flake8 적용 예시이다. rev에서 원하는 버전을 선택할 수 있다.
+
+- [관련 블로그](https://daco2020.tistory.com/291?category=996085)
+
+* * *
+
+## Formatter란
+- **Formatter란, 코드 스타일, 코드 컨벤션을 바로 잡아주는 툴을 의미한다.**
+- 이러한 Formatter나 밑에 설명되어있는 linter를 **shell 스크립트 파일**로 만들어서 commit이 되기전에 실행시킬 수도 있다.
+  - **Shell Script(쉘 스크립트)란 Shell(쉘)에서 사용할 수 있는 명령어들의 조합을 모아서 만든 배치(batch)파일이다. 즉, 운영체제의 Shell을 이용하여 한줄씩 순차적으로 읽으면서 명령어들을 실행시켜주는 인터프리터 방식의 프로그램이다. Shell Script를 활용하여 묶어진 명령어 조합을 수행하거나 반복적인 명령어를 단일 명령으로 쉽게 사용할 수 있다.** 
+  - [관련 블로그](https://minkwon4.tistory.com/159)
+
+- **black**
+  - black은 대표적인 코드 포멧터이다. 코드 스타일을 통일시켜 준다. PEP8을 기반으로 가독성이 더 좋은 코드스타일로 자동으로 변환해주는 포맷터이다.
+  - [사용 예시](https://velog.io/@gyuseok-dev/Python.-Black-the-Code-Formatter)
+
+- **isort**
+  - isort란, python에서 import하는 라이브러리들을 자동으로 정렬해주는 라이브러리이다. import를 알파벳순, 유형별, 섹션별로 자동으로 정렬해준다.
+  - [isort 설치](https://pypi.org/project/isort/)
+
+- **black과 isort는 pyproject.toml 하나의 파일로 설정을 동시에 할 수 있기에 프로젝트 진행 시 해당 파일에 설정했다.**
+  - migrations와 gitignore등은 skip 처리 진행
+
+* * *
+
+## linter란
+- **linter란, 문법 오류들을 잡아주고 더 나은 코드를 제안해주는 검사기 툴을 의미한다.**
+- 위의 설명된 Formatter와 같이, 이상적으로는 Formatter로 코드 컨벤션을 통일하고 -> linter를 활용해서 발생할 수 있는 에러를 수정하거나 더 나은 코드로 수정하는 방향이다.
+
+- **flake8**
+  - flake8은 코드 linter로 PEP8 규약을 지켰는지 검사해준다. black과 유사하나, 자동변환 기능은 없고 체크만 할 수 있습니다.
+  - flake8은 자동으로 코드를 수정해주지는 않으니 직접 수정을 해야한다.
+  - [flake8 설치](https://dev-yakuza.posstree.com/ko/django/flake8/)
+
+- **위의 Formatter와 linter라는 두가지의 툴이 한쪽에서 체크가 불가능한 것이 다른쪽에서 체크가 가능하듯 상호보완적 관계가 있기에 같이 사용할 수 있다.**
+
+- **flake는 .flake8파일에 설정할 수 있기에 프로젝트 진행 시 해당 파일에 설정했다.**
+  - exclude설정으로 깃 관련, 마이그레이션, 캐시는 체크를 하지 않게 설정
 
 * * *
 
