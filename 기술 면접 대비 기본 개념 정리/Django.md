@@ -263,7 +263,16 @@ for restaurant in restaurants:
 * * *
 
 ## djangorestframework-simplejwt란
-- https://ganzicoder.tistory.com/34
+- **DRF로 API를 구현하는 과정에서 JWT(Json Web Token) 기반 인증을 구현하기 위해서는, django의 JWT 패키지를 설치해줘야 한다.**
+  - django의 JWT 패키지에는 **djangorestframework-jwt와 djangorestframework-simplejwt**가 있지만, 전자는 더이상 업데이트가 진행되지 않기 때문에 djangorestframework-simplejwt를 설치해서 사용하면 된다.
+
+- **이러한 djangorestframework-simplejwt를 설치해서 DRF기반의 API 서버 구축 시, JWT 기반 인증을 구현할 수 있다.**
+  - 클라이언트가 아이디와 패스워드를 통해 웹서비스에 인증이 되면, 서버에서 JWT를 생성하여 클라이언트에게 access token, refresh token을 응답으로 돌려준다.
+  - 그 다음, 클라이언트가 HTTP 헤더에 JWT인 access token을 첨부해서 서버에 데이터를 요구하게 되고, 서버에서는 클라이언트로부터 온 JWT 검증해서 응답해준다.
+  - access token이 만료되면 refresh token을 통해 새로운 access token을 요청할 수 있다.
+
+- [관련 블로그](https://medium.com/chanjongs-programming-diary/django-rest-framework-drf-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-jwt-%EA%B8%B0%EB%B0%98-authentication-%EC%84%B8%ED%8C%85%ED%95%98%EA%B8%B0-with-simplejwt-%EC%B4%88%EA%B8%B0-%ED%99%98%EA%B2%BD-%EC%84%B8%ED%8C%85-1-e54c3ed2420c)
+- [관련 블로그2](https://velog.io/@kjyeon1101/JWT-%EC%9D%B8%EC%A6%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85%EB%A1%9C%EA%B7%B8%EC%9D%B8)
 
 
 * * *
