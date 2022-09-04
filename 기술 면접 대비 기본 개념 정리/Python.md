@@ -4,6 +4,7 @@
 📖 **Contents**
 
 - Python
+  - [문법 관련 내용](#문법-관련-내용)
   - [Python으로 개발공부를 시작한 이유](#python으로-개발공부를-시작한-이유)
   - [Python의 장점과 단점](#python의-장점과-단점)
   - [assert란](#assert란)
@@ -23,6 +24,11 @@
   - [gettext_lazy](#gettext_lazy)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
+
+* * *
+
+## 문법 관련 내용
+- [문법 관련 레포지토리](https://github.com/tkdqor/coding_test_practice/blob/master/Collection%20of%20ideas.md)
 
 * * *
 
