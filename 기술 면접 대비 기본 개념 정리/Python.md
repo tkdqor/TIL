@@ -22,6 +22,7 @@
   - [\_\_name\__ 변수](#던더name던더-변수)
   - [datetime 모듈](#datetime-모듈)
   - [gettext_lazy](#gettext_lazy)
+  - [클래스 메서드와 static 메서드](#클래스-메서드와-static-메서드)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
 
@@ -363,6 +364,12 @@ default_error_messages = {"bad_token": _("Token is invalid or expired")}
 ```
 
 - 텍스트를 바로 번역하는 것이 아니고 해당값이 번역되어야할때 함수가 동작한다.
+
+* * *
+
+## 클래스 메서드와 static 메서드
+- **클래스 메서드**는 매개변수로 self가 있는 경우이다. 그래서 클래스에 접근할 수 있게 된다.
+- 반면 **static 메서드**는 매개변수로 self를 두지 않는다. 그리고 클래스가 접근하지 못하게 되어 개체의 속성을 바꾸지 못하게 하고 싶을 때 사용할 수 있다.
 
 
 * * *
