@@ -92,7 +92,11 @@
 * * *
 
 ## 웹에서 매핑이란
-- https://threeidiotscoding.tistory.com/26
+- 매핑이란, 해당 값이 다른 값을 가리키도록 하는 것을 의미한다.
+  - ex) http://localhost:8080/action.do 라는 페이지를 만들었다고 했을 때, 이 url이 그대로 노출된다면 보안상 매우 취약 할 수 있다. 그래서 action.do가 아닌 ac.do가 action.do랑 똑같다는 식으로 설정하여 ac.do로 갔을 때 action.do로 가게 함으로서 보안성을 높일 수 있다.
+  - 또한, 이렇게 매핑을 하게되면 주소가 간결해질 수 있다.
+
+- [관련 블로그](https://threeidiotscoding.tistory.com/26)
 
 
 * * *
