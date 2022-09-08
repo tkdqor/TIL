@@ -25,6 +25,7 @@
   - [클래스 메서드와 static 메서드](#클래스-메서드와-static-메서드)
   - [python 관련 블로그](#python-관련-블로그)
   - [python 관련 블로그2](#python-관련-블로그2)
+  - [python으로 파일 읽고 쓰기](#python으로-파일-읽고-쓰기) 
 
 * * *
 
@@ -383,6 +384,62 @@ default_error_messages = {"bad_token": _("Token is invalid or expired")}
 ## python 관련 블로그2
 - https://uiandwe.tistory.com/1272?category=923644
 
+
+* * *
+
+## python으로 파일 읽고 쓰기
+- **파일 생성 open, close 함수**
+  - 파일 객체를 열기 위해서는 open() 함수를 사용하고 이렇게 열었으면 반드시 close()라고 하는 함수를 사용해서 파일 객체를 닫아줘야 한다.
+  - open 함수는 첫번째 인자로 파일 경로를 넣어주고, 두번째 인자로 파일의 옵션 모드를 선택해준다.
+
+```python
+# 파일 열기
+f = open('C:/Test/t1.txt', 'w') 
+
+# 파일에 텍스트 쓰기
+f.write('blockdmask blog')
+f.write('\npython open func') 
+
+# 파일 닫기
+f.close()
+
+>>> blockdmask blog
+>>> python open func
+```
+
+- **파일 쓰기 write, writeline, writelines 함수**
+  - 파일을 open() 함수로 연 이후에 위와 같은 함수들로 텍스트를 작성할 수 있다.
+  - write 함수는 매개변수로 파일에 넣을 문자열을 받는다.
+  - writelines 함수는 매개변수로 파일에 넣을 문자열 리스트를 받는다.
+
+```python
+# 파일 a 모드로 열기 (이미 있는 파일에 이어서 쓰기)
+f = open('C:/Test/t2.txt', 'a') 
+
+# writelines 함수를 이용해서 파일에 문자열들 쓰기
+f.writelines(['a', 'b', '123', '456', 'abcdefg', '\n']) 
+
+# writelines 함수에 join 을 이용해서 문자열들에 자동 개행 넣기
+f.writelines('\n'.join(['BlockDMask', 'python', 'blog'])) 
+
+# 파일 닫기f.close()
+
+>>> ab123456abcdefg
+>>> BlockDMask 
+>>> python
+>>> blog
+```
+
+- **파일 읽기 관련, read, readline, readlines, seek, tell 함수**
+  - read(n) 함수는 해당 파일의 문자 n개를 가져온다.
+  - readline() 함수는 파일로부터 해당 위치에서 한 줄의 문자열을 가져온다. 즉, '\n' 개행이 있을때까지 문자열을 읽어온다.
+  - readlines() 함수는 해당 위치에서부터 파일의 모든 문자열을 읽어온다. 개행을 포함해서 가져온다.
+  - seek(위치) 함수는 해당 위치로 파일의 커서를 옮기는 함수이다. 파일의 맨 처음 위치는 0이다.
+  - tell() 함수는 현재 커서의 위치를 반환하는 함수이다. 
+
+- **관련 예제는 아래 블로그 참고하기**
+
+- [관련 블로그](https://blockdmask.tistory.com/454)
 
 
 
