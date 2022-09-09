@@ -539,4 +539,4 @@ GRAVITY = 9.8
 - **다만, python에서 무조건 멀티스레드가 싱글스레드보다 느린 건 아니다.**
   - ex) sleep 함수를 사용하게 되면, 싱글스레드에서는 아무런 동작을 하지 못하고 동작을 대기하게 되지만, 멀티스레드에서는 sleep으로 멈춘 경우 다른 스레드로 context switching하여 효율이 개선된다.
 
-
+- [관련 블로그](https://ssungkang.tistory.com/entry/python-GIL-Global-interpreter-Lock%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C)
