@@ -32,6 +32,7 @@
   - [변수가 있는지 확인하는 hasattr](#변수가-있는지-확인하는-hasattr)
   - [python에서 상수 처리 하기](#python에서-상수-처리-하기)
   - [GIL이란](#gil이란)
+  - [MRO란](#mro란)
 
 * * *
 
@@ -540,3 +541,72 @@ GRAVITY = 9.8
   - ex) sleep 함수를 사용하게 되면, 싱글스레드에서는 아무런 동작을 하지 못하고 동작을 대기하게 되지만, 멀티스레드에서는 sleep으로 멈춘 경우 다른 스레드로 context switching하여 효율이 개선된다.
 
 - [관련 블로그](https://ssungkang.tistory.com/entry/python-GIL-Global-interpreter-Lock%EC%9D%80-%EB%AC%B4%EC%97%87%EC%9D%BC%EA%B9%8C)
+
+* * *
+
+## MRO란
+- **MRO는 Method Resolution Order의 약자로, python에서 상속 시 메소드 결정 순서를 의미.**
+  - **python은 기본적으로 다중 상속을 지원**하는데, 상속받은 부모 클래스가 서로 겹치지 않는 메소드 이름을 가지고 있다면 문제될 것이 없다.
+  - 하지만, 부모 클래스들이 똑같은 이름의 메소드를 가지고 있다면 죽음의 다이아몬드 문제가 발생하게 된다.
+    - 죽음의 다이아몬드 문제는, 다중 상속을 받을 때 부모 클래스에 동일한 이름의 메소드를 호출하려 할 때 어떤 부모의 메소드를 호출해야 할지 모르기 때문에 발생하는 문제.
+  - 그래서 python은 이 문제를 MRO를 통해 해결한다. **MRO는 자식과 부모 클래스를 전부 포함해서 메소드의 실행 순서를 지정하는 것이다. 따라서 동일한 이름의 메소드가 등장하더라도 지정된 순서대로 실행하면 되니까 문제가 되지 않는다.**
+
+- **MRO 예시**
+```python
+class Human:
+    def say(self):
+        print("안녕")
+
+class Mother(Human):
+    def say(self):
+        print("엄마")
+
+class Father(Human):
+    def say(self):
+        print("아빠")
+
+class Son(Mother, Father):
+    def say(self):
+        print("응애")
+        
+print(Son.__mro__)
+>>> (<class '__main__.Son'>, <class '__main__.Mother'>, <class '__main__.Father'>, <class '__main__.Human'>, <class 'object'>)
+
+baby = Son()
+baby.say()
+>>> 응애
+```
+
+- 위의 예시에서는, 최상위 클래스로 Human을 선언하고 Human를 상속받은 Mother, Father 클래스를 선언했다. 그리고 Mother, Father 클래스를 상속받은 Son 클래스를 선언하고 모든 클래스는 say라는 이름의 메소드를 가지고 있다.
+- 여기서 모든 것을 상속받은 Son 클래스의 MRO를 확인해보자. **MRO는 \_\_mro\__라는 속성을 통해 확인할 수 있다. 이 속성은 튜플로 되어있다.**
+  - 먼저 출력된 값일수록 우선순위가 높다고 볼 수 있다. 즉, Son 클래스 -> Mother 클래스 -> Father 클래스 -> Human 클래스 -> object 클래스 순서로 우선순위를 가지고 있는 것을 확인할 수 있다.
+  - **즉, 위의 클래스 순서대로 메소드가 호출된다. Mother와 Father 클래스에서는 먼저 상속받은 순서대로 우선순위가 결정된다. 그리고 최상위 클래스는 object 클래스라는 것을 알 수 있다.**
+
+- 실제로 baby = Son() 이렇게 인스턴스를 만들어서 say 메소드를 실행하면 Son 클래스의 say 메소드가 실행되는 것을 확인할 수 있다.
+
+<br>
+
+- **super 클래스와 MRO**
+```python
+class Human:
+    def say(self):
+        print("안녕")
+
+class Mother(Human):
+    def say(self):
+        super().say() # super 클래스 사용
+
+class Father(Human):
+    def say(self):
+        print("아빠")
+
+class Son(Mother, Father):
+    pass
+
+baby = Son()
+baby.say()
+>>> 아빠
+```
+
+- **위의 예제에서는 Mother 클래스의 메소드가 super 클래스의 say 메소드를 호출하게 되어있다.** 그렇다면 이 때는 Mother 클래스의 부모 클래스인 Human 클래스의 say 메소드가 실행되어 안녕이 출력될 것 같지만 그렇지 않다.
+- print(Son.\_\_mro\__) 에서 확인했듯이, Mother 클래스의 다음 우선순위는 Father 클래스이다. **그래서 Mother 클래스의 실제 부모는 Human 클래스가 맞지만, MRO에 의해 Mother 클래스의 super 클래스가 다음 우선순위를 가지는 Father 클래스를 가리키게 된다.**
