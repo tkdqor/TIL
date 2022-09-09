@@ -29,6 +29,7 @@
   - [매직 메소드](#매직-메소드)
   - [\_\_class\__ 변수](#던더class던더-변수)
   - [\_\_new\__ 변수와 \_\_init\__ 함수의 차이](#던더new던더-변수와-던더init던더-함수의-차이)
+  - [변수가 있는지 확인하는 hasattr](#변수가-있는지-확인하는-hasattr)
 
 * * *
 
@@ -474,3 +475,31 @@ if obj.__class__ == get_user_model():
 - \_\_init\__ 함수는 클래스 생성자로 초기 셋팅을 진행한다. 생성자는 어떤 클래스의 인스턴스(객체)가 생성될 때 파이썬 인터프리터에 의해 자동으로 호출되는 메소드이다.
 
 - [관련 블로그](https://www.delftstack.com/ko/howto/python/python-new-keyword/)
+
+* * *
+
+## 변수가 있는지 확인하는 hasattr
+- hasattr는 특정 클래스가 해당 변수 및 메소드가 있는지 확인하는 함수이다.
+  - 이외에도 클래스의 변수 값을 가져오는 getattr 함수와 클래스의 변수에 값을 설정할 수 있는 setattr 함수가 있다.
+
+```python
+class cls:
+    a = 1
+    def b(self):
+        pass
+
+# cls에 b라는 멤버가 있는지 확인
+>>> hasattr(cls, 'b')
+True
+
+# cls에서 a변수의 값 가져오기
+>>> getattr(cls, 'a')
+1
+
+# cls의 a라는 변수에 값 9 설정하기
+>>> setattr(cls, 'a', 9)
+```
+
+- [관련 내용](https://wikidocs.net/13945)
+
+
