@@ -207,7 +207,7 @@ print(list(b))
   - **Python은 2가지로 객체를 구분할 수 있다.**
 
 
-- **immnutable object**
+- **immnutable object(불변객체)**
   - 변경 불가능한 객체라는 뜻으로 일반적인 자료형인 int, float, str과 tuple이 있다.
   - immutable 객체는 값이 변경되면 객체 자체가 변경되며, 여기에 속한 객체는 **call-by-value** 이다.
   - **따라서 변수를 복사 할 때 새로운 객체가 생성되며 변경이 일어날 때 기본 객체는 변하지 않는다.**
@@ -228,7 +228,7 @@ local : 12
 ```
 
 
-- **mutable object**
+- **mutable object(가변객체)**
 
   - 변경 가능한 객체라는 뜻으로 list, dictionary, set이 있다.
   - mutable 객체는 값이 변경되면 주소가 참조하는 값이 모두 변경되며, 여기에 속한 객체는 **call-by-reference** 이다.
