@@ -15,6 +15,7 @@
   - [render와 redirect 관련](#render와-redirect-관련)
   - [DRF란](#drf란)
   - [DRF를 사용하는 이유](#drf를-사용하는-이유)
+  - [DRF의 장단점](#drf의-장단점)
   - [DRF에서 APIView와 generic View의 차이점](#drf에서-apiview와-generic-view의-차이점)
   - [djangorestframework-simplejwt란](#djangorestframework-simplejwt란)
   - [swagger](#swagger)
@@ -260,6 +261,24 @@ for restaurant in restaurants:
   - 이미 구현된 **인증/인가 기능**을 사용하거나, DRF simple-jwt와 함께 사용함으로서 JWT 기반 인증 및 인가 기능을 유용하게 사용할 수 있다.
 
 - [관련 블로그](https://valuefactory.tistory.com/741)
+
+<br>
+
+## DRF의 장단점
+- **장점**
+  - API 지원
+  - 다양한 authentication 지원
+  - class 기반의 구현 방식을 지원
+  - 다양한 return 타입 제공 ex) json, csv, excel
+  - custom을 통해 확장 가능
+  - [관련 블로그](https://velog.io/@nameunzz/DRF)
+
+- **단점**
+  - DRF의 단점은 REST API의 단점과 유사하다고 판단했다.
+  - 메소드의 한계 / REST는 HTTP 메소드를 이용하여 URI를 표현한다. 이러한 표현은 쉬운 사용이 가능하다는 장점이 있지만 반대로 메소드 형태가 제한적인 단점이 있다.
+  - 표준이 없음 / REST는 설계 가이드 일 뿐이지 표준이 아니다. 명확한 표준이 없다.
+  - DRF의 Serializer가 느리다는 의견이 있다. 그래서 django-ninja라는 프레임워크에 대한 얘기가 나오고 있는 중이다.
+  - [관련 블로그](https://khs9628.github.io/2020/10/22/201023-DRF/)
 
 <br>
 
