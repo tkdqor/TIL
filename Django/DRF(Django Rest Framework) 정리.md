@@ -216,6 +216,23 @@ def HelloAPI(request):
 <br>
 
 ### APIView
+- **DRF에서 APIView 클래스는 Django의 View 클래스를 상속하는 클래스이다.**
+- **그리고, DRF에서 사용하는 GenericAPIView, Viewset과 같이 편리하게 사용할 수 있는 api 라이브러리들의 기반이 되는 클래스이다.**
+  - Django의 View클래스와 다른 점은, request와 response가 Django의 HttpRequest 인스턴스가 아닌 REST framework의 Request 인스턴스이고 / Django의 HttpResponse 인스턴스가 아닌 REST framework의 Response를 리턴한다는 점이다. 
+  - 그래서, Request에 대한 인증과 허가, 검사를 진행한다는 점이 다르다.
+- **django settings.py에 authentication_classes(기본 인증 클래스)와 permission_classes(기본 인가 클래스)를 설정해서 APIView에 적용할 수 있다.**
+- **APIView에서 get 메서드가 실행되는 순서**
+  - 클라이언트에서 urls.py에 설정한 엔드포인트로 GET 요청
+  - APIView클래스를 상속받은 클래스의 as_view() 메서드가 호출되고, 클래스의 인스턴스가 생성
+  - 생성된 객체의 dispatch() 메서드를 호출 
+    - dispatch()에서는 HTTP 메서드가 어느것 인지 판단
+    - GET 요청이라면 get으로 연결된 메서드가 호출됨 / 더 자세하게는 handler라는 변수가 GET을 가지게 되고, self.response가 반환되면 get 메서드가 실행된다.
+    - 만약 메서드가 없다면 exceptions.MethodNotAllowed 에러가 호출된다.
+- [관련 블로그](https://hyeonsook95.github.io/drf/2020/03/07/drf-200307/)
+- [관련 블로그2](https://hyeo-noo.tistory.com/m/314)
+
+<br>
+
 - django에서든 DRF에서든 View를 개발하는 것은 크게 함수 기반 View인 FBV와 / 클래스 기반 View인 CBV로 나눌 수 있다.
 - **DRF에서는 2가지를 모두 도와주는 APIView라는 것이 있다.**
 
