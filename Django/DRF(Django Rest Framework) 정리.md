@@ -161,9 +161,19 @@ class BookSerializer(serializers.ModelSerializer):
         fields = ['bid', 'title', 'author', 'category', 'pages', 'price', 'published_date', 'description',]
 ```
 
-- 위에서 보듯이 serializers.Serializer를 사용하게 되면 일일이 필드들을 정해주고 작성해야할 코드들이 많아진다. 그래서 개발자들은 더 나은 대안인 serializers.ModelSerializer를 사용한다.
+- **위에서 보듯이 serializers.Serializer를 사용하게 되면 일일이 필드들을 정해주고 작성해야할 코드들이 많아진다. 그래서 개발자들은 더 나은 대안인 serializers.ModelSerializer를 사용한다. 즉, 기존에 BaseSerializer로 Serializer를 만들 때는, 모델의 각 필드를 하나하나 정의해줘야 했지만 ModelSerializer를 사용하면 그럴 필요가 없어진다.**
 - **ModelSerializer는 모델의 내용을 기반으로 동작하는 시리얼라이저이다.** 이를 통해 코드의 중복을 줄일 수 있고 필드 선언을 모델에서 이미 했기 때문에 ModelSerializer에서는 간단하게 작업할 수 있다.
   - **즉, ModelSerializer는 serializer내의 클래스로, 이미 models.py에 작성해둔 필드에 맞는 serializer를 만들 수 있도록 해준다. 그래서, 각 모델 인스턴스를 model_to_dict 과정이 없이 쉽게 직렬화할 수 있게 해준다.**
+
+<br>
+
+- **ModelSerializer의 3가지 기능**
+  - 설정한 모델에 기반해서 Serializer 필드를 자동으로 만들어 준다
+  - Serializer를 위한 validator(유효성 검사) 기능을 제공한다
+  - .create(), .update()와 같은 함수를 기본으로 제공해줘서 커스텀을 하지 않는 이상 다시 정의해줄 필요가 없다
+
+- [관련 블로그](https://renine94.tistory.com/30)
+- [관련 블로그2](https://velog.io/@joje/Serializer%EB%A5%BC-%ED%86%B5%ED%95%9C-%EC%9C%A0%ED%9A%A8%EC%84%B1-%EA%B2%80%EC%82%AC-%EB%B0%8F-%EC%A0%80%EC%9E%A5)
 
 
 ```python
