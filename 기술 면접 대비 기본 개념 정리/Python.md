@@ -36,6 +36,7 @@
   - [변수의 메모리 주소를 확인하는 id 함수](#변수의-메모리-주소를-확인하는-id-함수)
   - [flag 변수](#flag-변수)
   - [python PEP 8이란](#python-pep-8이란)
+  - [args와 kwargs란](#args와-kwargs란)
 
 * * *
 
@@ -668,3 +669,98 @@ True
 
 - [공식 페이지](https://peps.python.org/pep-0008/)
 - [관련 블로그](https://kimjingo.tistory.com/177)
+
+* * *
+
+## args와 kwargs란
+- python 함수에 인자를 넣는 방법에는 단순한 방법도 있지만, *args와 **kwargs를 활용할 수도 있다. 
+- **매개변수(parameter)는 함수를 정의할 때 변수를 부르는 말이고 인자(argument)는 함수를 호출할 때 매개변수 자리에 넘기는 변수를 의미하는데, args와 kwargs는 함수를 정의할 때 있지 않던 매개변수가 인자로 넘어올 때 어떻게 처리할 것인지 정해주는 역할을 한다.**
+
+- ***args**
+  - *args는 arguments의 약자로 동시에 여러 입력값을 주고 싶을 때 사용한다. 사실 * 다음에 꼭 args가 아니어도 elements, argument, ggggg, ksdfkjasdlfkja 등 원하는 변수를 사용하면 된다.
+```python
+def say_hello(*args):
+    for friend in args:
+        print('{}야 안녕!'.format(friend))
+    print(type(args), args)
+
+say_hello('철수', '영희', '오징어')
+
+철수야 안녕!
+영희야 안녕!
+오징어야 안녕!
+<class 'tuple'> ('철수', '영희', '오징어')
+```
+- 이렇게 *args를 사용하면 함수 내에서 tuple처럼 사용이 가능하다. 입력값을 굳이 list나 tuple로 주지 않아도 된다.
+
+<br>
+
+- 더 정확하게 말하자면, *args는 함수를 정의할 때 있지 않던 매개변수가 인자로 넘어오게 될 때 tuple로 사용할 수 있도록 해주는 것이다.
+```python
+def func2(arg1, arg2, *args):
+  print(arg1, arg2)
+  print(type(args))
+  print(len(args))
+  print(args)
+
+func2('hello', 123, 'a', 'b', 'c', 1, 2, 3)
+
+
+hello 123
+<class 'tuple'>
+6
+('a', 'b', 'c', 1, 2, 3)
+```
+
+<br>
+
+- ****kwargs**
+  - **kwargs는 keyword arguments의 약자로 *args에서 더 나아가 입력값의 키워드를 함께 줄 때 사용한다. 마찬가지로 ** 다음에 꼭 kwargs가 아니어도 원하는 변수를 사용할 수 있다.
+```python
+def say_hello2(**kwargs):
+    for key, friend in kwargs.items():
+        if key == 'moon':
+            print('내가 좋아하는', end=' ')
+        print('{}야 안녕!'.format(friend))
+    print(type(kwargs), kwargs)
+
+say_hello2(chul='철수', moon='문어')
+
+
+철수야 안녕!
+내가 좋아하는 문어야 안녕!
+<class 'dict'> {'chul': '철수', 'moon': '문어'}
+```
+- 이렇게 **kwargs를 사용하면 함수 내에서 딕셔너리처럼 사용 가능하다.
+
+<br>
+
+- 더 정확하게 말하자면, **kwargs는 함수를 정의할 때 있지 않던 매개변수가 키워드가 돼서 인자로 넘어오게 될 때 딕셔너리로 사용할 수 있도록 해주는 것이다.
+```python
+def func4(arg, *args, **kwargs):
+  print('arg: {}'.format(arg))
+  print( len(args) )
+  print(args)
+  print( type(kwargs) )
+  print(kwargs)
+
+func4(1, 2, 3, some='value', kim='sooran')
+
+
+arg: 1
+2
+(2, 3)
+<class 'dict'>
+{'some': 'value', 'kim': 'sooran'}
+```
+
+- 중요한 점은 만약 *args와 **kwargs를 사용할 때는 반드시 순서를 지켜서 넘겨줘야 한다.
+  - func4('first', arg='apple', 3, 4, b='bee') 이런 식으로 호출하면 순서에 대한 에러가 나게 된다.
+
+- [관련 블로그](https://lovedh.tistory.com/entry/python-args-kwargs-%EC%B0%A8%EC%9D%B4)
+- [관련 블로그2](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=taeil34&logNo=221318004422)
+- [관련 블로그3](https://brunch.co.kr/@princox/180#comment)
+
+
+
+
