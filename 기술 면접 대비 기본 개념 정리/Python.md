@@ -34,6 +34,7 @@
   - [GIL이란](#gil이란)
   - [MRO란](#mro란)
   - [변수의 메모리 주소를 확인하는 id 함수](#변수의-메모리-주소를-확인하는-id-함수)
+  - [flag 변수](#flag-변수)
 
 * * *
 
@@ -628,3 +629,27 @@ print(id(a))
 ```
 
 - [관련 블로그](https://technote.kr/289)
+
+* * *
+
+## flag 변수
+- flag 변수는 대표성을 가지고 사용하는 변수 이름으로, boolean 타입의 변수로 사용된다.
+  - 참, 거짓을 나타내는 것으로 True, False로 표현한다.
+- **깃발을 올리고 내리듯이 참과 거짓으로 무언가를 판단할 때 전역변수로 주로 사용한다.**
+
+```python
+flag = True
+print(flag)
+print(type(flag))
+
+if flag:
+    print('참 실행')
+else:
+	print('거짓 실행')
+  
+  
+True
+<class 'bool'>
+참 실행
+```
+
