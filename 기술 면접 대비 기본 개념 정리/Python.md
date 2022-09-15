@@ -35,6 +35,7 @@
   - [MRO란](#mro란)
   - [변수의 메모리 주소를 확인하는 id 함수](#변수의-메모리-주소를-확인하는-id-함수)
   - [flag 변수](#flag-변수)
+  - [python PEP 8이란](#python-pep-8이란)
 
 * * *
 
@@ -653,3 +654,17 @@ True
 참 실행
 ```
 
+* * *
+
+## python PEP 8이란
+- **PEP 8은 "Style Guide for Python Code"로 파이썬 코드를 어떻게 구상해야할지 알려주는 스타일 가이드이다.**
+  - PEP 8은 파이썬 구문의 많은 특수성(다른 어머에서 일반적으로 적용되지 않는)을 고려하여 작성되었으며, PEP-8은 파이썬 구문을 실제로 만든 파이썬 개발자가 만들었으므로 가장 좋은 표준이라고 할 수 있다.
+  - 이러한 PEP 8를 따를 수 있게끔 [포매터](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Distribute.md#formatter%EB%9E%80)나 [린터](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Distribute.md#linter%EB%9E%80)를 사용할 수 있다.
+
+- **PEP 8을 따라야하는 이유**
+  - 검색 효율성 : PEP 8에서는 함수의 키워드 인자에 값을 할당할 때는 띄어쓰기를 사용하지 않지만, 변수에 처음 값을 할당할 때는 띄어쓰기를 사용하도록 권고하고 있다. 이를 활용해서 검색 조건을 변경할 수 있다.
+  - 일관성 : 코드가 일정한 포맷을 가지면 훨씬 쉽게 읽을 수 있다.
+  - 코드 품질 : 코드를 구조화하여 살펴보면 한 눈에 코드를 이해하고 버그와 실수를 쉽게 찾을 수 있다. 좋은 python 코드는 PEP 8과 같은 코드 표준을 준수한다.
+
+- [공식 페이지](https://peps.python.org/pep-0008/)
+- [관련 블로그](https://kimjingo.tistory.com/177)
