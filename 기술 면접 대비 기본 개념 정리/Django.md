@@ -24,6 +24,7 @@
   - [객체지향 프로그래밍 방식의 5원칙과 4개 특성](#객체지향-프로그래밍-방식의-5원칙과-4개-특성)
   - [django ORM distinct 메서드](#django-orm-distinct-메서드)
   - [CORS란](#cors란)
+  - [Django Crontab이란](#django-crontab이란)
 
 * * *
 
@@ -537,3 +538,10 @@ Person.objects.distinct().order_by('name')
   - settings.py의 installed_apps와 MIDDLEWARE에 관련 내용을 추가해주고 CORS_ORIGIN_WHITELIST에 cross-site 요청을 허용하는 호스트들을 입력해주면 된다.
 
 - [관련 블로그](https://oen-blog.tistory.com/46)
+
+* * *
+
+## Django Crontab이란
+- 크론탭이란, 시간을 정해서 특정 프로그램을 자동으로 동작하게 하는 기능인데 django Crontab을 이용해서 장고에서 크론탭을 활용할 수 있다. 이걸 설치해서 django 파일 내에서 설정할 수 있도록 모듈을 제공하는 것이다.
+- [관련 블로그](https://moondol-ai.tistory.com/220), [관련 블로그2](https://zetawiki.com/wiki/%EB%A6%AC%EB%88%85%EC%8A%A4_%EB%B0%98%EB%B3%B5_%EC%98%88%EC%95%BD%EC%9E%91%EC%97%85_cron,_crond,_crontab)
+
