@@ -204,6 +204,7 @@ print(list(b))
 ## call by assignment란
 - Call-by-value는 값에 의한 호출을 의미하고, Call-by-reference는 참조(주소)에 의한 호출을 의미한다.
   - **Call-by-reference**는 함수 호출시 인자로 전달되는 변수의 레퍼런스를 전달한다. 인자로 전달된 레퍼런스는 함수 내부에서 실제 값이 반영되며 C언어의 포인터가 대표적인 예시다. 따라서 실제 값이 바뀌면 인자로 전달된 값도 바뀐다.
+    - [Call by reference 내용](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/ETC.md#call-by-reference%EB%9E%80)
   - **Call-by-value**는 함수 호출시 전달되는 변수의 값을 복사해서 함수의 인자로 전달된다. 따라서 함수 안에서 인자 값이 변경되도 전달한 외부 변수에는 영향이 가지 않는다.
 
 - **Python에서는 call-by-assignment 방식으로 인자를 전달한다.**
