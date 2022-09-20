@@ -35,6 +35,8 @@
 - API는 웹뿐만 아니라 앱과 같은 다양한 플랫폼의 백엔드 서비스를 위해 JSON과 같은 규격화된 데이터를 제공한다. 따라서 DRF를 사용하면 기존에는 자체적인 웹 템플릿에게 바로 데이터를 전달해주는 Django 프로젝트에 국한되었던 것을 -> JSON과 같은 양식으로 다양한 플랫폼의 클라이언트에게 데이터를 제공해줄 수 있는 API 서버를 만들 수 있게 된다.
 
 - **기본적으로 View에서 method(GET,POST,PUT,DELETE 등)에 따른 응답 로직을 구성하고, 파라미터 값을 받아 status 코드를 설정하고, DB 객체를 조회해서 -> 시리얼라이저로 보내주면, 시리얼라이저에서 설정한 객체의 필드만 JSON 데이터로 직렬화를 해주는 과정이다.**
+  - ex) GET 요청 시, View에서 serializer.data로 JSON 형태의 데이터를 return Response로 응답한다. 그리고 serializer 파일에서는 필드만 정해준다.
+  - ex) POST, PUT, PATCH 요청 시, View에서 return Response를 할 때 응답 메시지를 전달해준다. 또한, View에서 로직으로 save를 해준다. 그리고 serializer 파일에서는 POST일 경우 create 메서드로 생성된 값을 return 해준다.
 
 
 <br>
