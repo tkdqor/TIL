@@ -307,7 +307,7 @@ GET, PUT, DELETE  /users/1
 * * *
 
 ## wsgi란
-- **WSGI는 Web Server Gateway Interface의 약자로, nginx와 같은 web server와 django라는 프로그램이 서로 소통할 수 있게끔 해주는 인터페이스이다.** 대표적으로 **gunicorn**이라는 프로그램이 있다. 
+- **WSGI는 Web Server Gateway Interface의 약자로, nginx와 같은 web server와 django와 같은 WAS 서버가 서로 소통할 수 있게끔 해주는 인터페이스이다.** 대표적으로 **gunicorn**이라는 프로그램이 있다. 
 - django의 runserver는 공식문서에서도 개발 및 테스트가 목적이기 때문에, 배포 환경에서는 보안에 대한 문제가 있어 사용하지 말라고 나와있다. 그래서 배포 환경에서는 wsgi를 통해서 서비스하도록 권장하고 있다.
 - **wsgi를 쓴다면 django 등의 웹 프레임워크 기능을 할 수 있게 되는데, 여기에 nginx를 앞에 붙이면 더 좋은 성능을 낼 수 있다.** 
   - 가장 큰 이유로, nginx는 한 번에 들어오는 많은 요청들을 처리하여 로드 밸런싱 및 캐싱 기능을 해줄 수 있다는 점이다.
