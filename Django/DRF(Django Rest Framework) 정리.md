@@ -381,13 +381,13 @@ class AccountBooksRecordAPIView(APIView):
     # Custom Permission
     permission_classes = [IsOwner]   
     def get_object_and_check_permission(self, obj_id):
-    try:
-            object = AccountBook.objects.get(id=obj_id)
-    except AccountBook.DoesNotExist:
-            return
+      try:
+          object = AccountBook.objects.get(id=obj_id)
+      except AccountBook.DoesNotExist:
+              return
 
-    self.check_object_permissions(self.request, object)
-    return object
+      self.check_object_permissions(self.request, object)
+      return object
 ```
 
 - IsOwner라는 커스텀된 Permission를 사용하고 있기 때문에 self.check_object_permissions(self.request, object) 이렇게 APIView의 내장 메서드를 호출하여 검사를 진행해야 한다.
