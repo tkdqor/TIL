@@ -39,6 +39,7 @@
   - [args와 kwargs란](#args와-kwargs란)
   - [Pandas란](#pandas란)
   - [Numpy란](#numpy란)
+  - [가비지 콜렉터란](#가비지-콜렉터란)
 
 * * *
 
@@ -786,4 +787,7 @@ arg: 1
 
 - [관련 블로그](https://brownbears.tistory.com/480)
 
+* * *
+
+## 가비지 콜렉터란
 
