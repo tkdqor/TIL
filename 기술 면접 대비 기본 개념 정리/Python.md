@@ -40,6 +40,7 @@
   - [Pandas란](#pandas란)
   - [Numpy란](#numpy란)
   - [가비지 컬렉터란](#가비지-컬렉터란)
+  - [딕셔너리와 리스트에서 순차적으로 요소를 조회할 때 시간복잡도 비교](#딕셔너리와-리스트에서-순차적으로-요소를-조회할-때-시간복잡도-비교)
 
 * * *
 
@@ -928,4 +929,28 @@ arg: 1
 
 - [관련 유튜브](https://www.youtube.com/watch?v=24f2-eJAeII)
 - [관련 블로그](https://otugi.tistory.com/338), [관련 블로그2](https://medium.com/dmsfordsm/garbage-collection-in-python-777916fd3189)
+
+* * *
+
+## 딕셔너리와 리스트에서 순차적으로 요소를 조회할 때 시간복잡도 비교
+<img width="769" alt="image" src="https://user-images.githubusercontent.com/95380638/192290620-7f056f3e-39ff-4c91-932d-4761abe0f923.png">
+
+### 리스트의 경우
+- 특정 값에 인덱스로 접근할 경우에는 O(1)
+- 순차적으로 요소를 조회하는 for i in arr: 의 경우에는 O(N)
+- 특정 인덱스에 값을 삽입하는 arr.insert(i, v) 의 경우에도 O(N)
+
+<br>
+
+<img width="769" alt="image" src="https://user-images.githubusercontent.com/95380638/192291575-e29bf809-c46c-4801-a1b5-40fcfa34cbe7.png">
+
+### 딕셔너리의 경우
+- d[k]와 같이 특정 값에 key로 접근하는 경우 O(1)
+- d.keys() / d.values()와 같이 key따로 value따로 조회하는 경우에도 O(1) 
+- 딕셔너리는 해쉬를 이용해서 고유 인덱스 번호를 저장하기 때문에 key를 알면 바로 번호를 알 수 있어 모든 연산이 O(1)이다. 
+
+<br>
+
+- [관련 블로그](https://infinitt.tistory.com/376)
+
 
