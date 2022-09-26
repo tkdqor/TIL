@@ -190,6 +190,19 @@ print(a[-1])
 - 인터프리터(interpreter)란 소스 코드를 처음부터 한 라인씩 차례대로 해석하며 실행하는 프로그램을 의미한다.
   - 인터프리터는 실행할 때마다 코드를 한 라인씩 바로 기계어로 변환하기 때문에 실행 속도가 컴파일러 언어에 비해 다소 느리지만, 코드가 완전히 작성되지 않아도 작성된 부분까지만을 테스트할 수 있다.
 
+### Python은 컴파일 과정이 있는 인터프리터 언어
+- 파이썬은 대표적인 인터프리터 방식 언어이다. 하지만 실제로는 인터프리터 안에서는 컴파일이 이루어진다. 
+- **파이썬으로 코드를 작성하면 내부적으로 CPython이라는 컴파일러가 코드를 바이트코드로 컴파일하고, 이것을 CPython 인터프리터가 실행하는 순서로 작동한다.**
+  - Python을 C언어로 구현한 구현체인 CPython이 Python의 인터프리터이면서 컴파일러이다. 우리가 작성하는 Python 코드를 bytecode로 컴파일하고 실행한다. 그 다음에 interpreter(virtual machine)를 실행해서 0과 1로 이루어져있는 기계어로 번역하는 과정을 진행해서 컴퓨터에게 전달하는 것이다.
+
+- .py 파일을 실행하면 .pyc 라는 파일이 생성되는데 이것이 CPython이 컴파일한 bytecode가 들어있는 것이다. 그 다음 .pyc를 interpreter 하는 것도 CPyton이다.
+  - Ex) 진행했던 프로젝트 디렉터리 구조를 보면, 생성한 앱 디렉터리별로 \_\_pycache\__ 라는 이름의 디렉터리가 있다. 그리고 그 디렉터리 내부에는 urls.cpython-39.pyc와 같은 이름의 파일들이 여러 개가 있는데, 이 파일들이 바로 CPython이 컴파일한 bytecode가 들어있는 파일들이 생성된 것이다.
+
+- CPython 인터프리터 실행 중에 단점이 있는데 GIL(global interpreter lock)을 사용한다는 것이다. bytecode를 실행할 때에 여러 thread를 사용할 경우, 전체에 lock 을 걸어서 한번에 단 하나의 thread 만이 python object에 접근하도록 제한한 것이다. 하지만 single thread일 때는 문제가 없고 GIL의 단점을 보안하기 위한 방법들이 존재하고 있어서 GIL로 인한 불편함을 느낄 가능성은 거의 없다고 한다.
+
+- [관련 블로그](https://yomangstartup.tistory.com/108), [관련 블로그2](https://cjh5414.github.io/about-python-and-how-python-works/)
+
+
 * * *
 
 ## Flask와 Django 그리고 FastAPI
