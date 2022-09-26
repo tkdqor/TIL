@@ -40,6 +40,7 @@
   - [Pandas란](#pandas란)
   - [Numpy란](#numpy란)
   - [가비지 컬렉터란](#가비지-컬렉터란)
+  - [링크드 리스트란](#링크드-리스트란)
 
 * * *
 
@@ -929,3 +930,11 @@ arg: 1
 - [관련 유튜브](https://www.youtube.com/watch?v=24f2-eJAeII)
 - [관련 블로그](https://otugi.tistory.com/338), [관련 블로그2](https://medium.com/dmsfordsm/garbage-collection-in-python-777916fd3189)
 
+* * *
+
+## 링크드 리스트란
+- 링크드 리스트란, 각 노드가 데이터와 포인터를 가지고 한 줄로 연결되어 있는 방식으로 데이터를 저장하는 자료 구조이다. 데이터를 담고 있는 노드들이 연결되어 있는데, 노드의 포인터가 다음이나 이전의 노드와의 연결을 담당하게 된다.
+
+- [python으로 링크드 리스트 구현하기](https://velog.io/@woga1999/%ED%8C%8C%EC%9D%B4%EC%8D%AC%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EB%8A%94-%EB%A7%81%ED%81%AC%EB%93%9C-%EB%A6%AC%EC%8A%A4%ED%8A%B8)
+  - 링크드 리스트를 python으로 구현하면, 헤더부터 탐색해서 뒤에 노드가 추가된다. 그래서 조회를 하면 제일 첫번째 값만 나오게 된다.
+  - 하나의 노드를 클래스로 구현하면 self.data = data로 데이터가 있고, self.next = None라는 코드로 다음 데이터를 연결하기 위해 작성한다.
