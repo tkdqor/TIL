@@ -18,6 +18,7 @@
   - [DRF Viewset & Router](#drf-viewset과-router)
   - [SerializerMethodField](#serializermethodfield)
   - [DRF에서 인증과 권한 설정하기](#drf에서-인증과-권한-설정하기)
+  - [APIView에서 커스텀 Permission 사용하기](#apiview에서-커스텀-permission-사용하기)
   - [쿼리스트링을 받을 수 있는 URL 만들기](#쿼리스트링을-받을-수-있는-url-만들기)
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
   - [Serializer 필드 설정(read_only_fields 사용하기, Serializer 필드에 required=False 설정)](#serializer-필드-설정)
@@ -731,6 +732,102 @@ class IsAuthorOrReadOnly(permissions.BasePermission):
 - **지금까지 진행한 프로젝트에서는, DRF simpleJWT를 사용해서 JWT 인증을 진행 & permission은 DRF의 permission과 커스텀 permission을 둘 다 사용**
 
 - [참고 블로그](https://donis-note.medium.com/django-rest-framework-authentication-permission-%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EA%B6%8C%ED%95%9C-cc9b183fd901)
+
+<br>
+
+### APIView에서 커스텀 Permission 사용하기
+- permissions.py를 config나 프로젝트 이름과 동일한 디렉터리 내부에 만드는 이유는, 여러 app의 view에서 사용할 것이기 때문이다.
+- 기본적으로 Custom Permission은 BasePermission을 상속받아 작성하게 된다.
+- **SAFE_METHODS는 db를 수정하지 않는 GET, HEAD, OPTIONS 등이 있다.**
+  - HTTP HEAD 메서드는 특정 리소스를 GET 메서드로 요청했을 때 돌아올 헤더를 요청한다. 응답 본문을 포함하지 않으며 포함 되더라도 이를 무시해야한다.
+  - HTTP OPTIONS 메서드는 목표 리소스와의 통신 옵션을 설명하기 위해 사용된다. CORS 문제와 관련해서, 클라이언트에서 요청하려는 URL이 외부 도메인일 경우 웹 브라우저에서는 실제로 요청하려는 경로와 같은 URL에 대해 서버에 OPTIONS 메서드로 사전 요청을 보내고 요청을 할 수 있는 권한이 있는지 확인한다. [관련 블로그](https://hanamon.kr/%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC-http-options-%EB%A9%94%EC%86%8C%EB%93%9C%EB%A5%BC-%EC%93%B0%EB%8A%94-%EC%9D%B4%EC%9C%A0%EC%99%80-cors%EB%9E%80/)
+  - SAFE_METHODS에 해당하는 요청의 경우에는 작성자가 아니더라도 요청을 허락해주는 permission을 작성하는 경우가 많다.
+
+<br>
+
+### 커스텀 Permission APIView에 적용하는 예시
+
+- **먼저 permissions.py 작성하기**
+```python
+class IsOwner(BasePermission):
+    """
+    Assignee : 상백
+    has_permission : 로그인 한 유저는 모두 접근 가능
+    has_object_permission(오브젝트 접근 권한)
+    - 작성자가 본인일 경우에만 접근 가능하도록 설정
+    - 관리자는 모든 접근 가능
+    """
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_authenticated:
+            if request.user.is_admin:
+                return True
+            elif obj.__class__ == get_user_model():
+                return obj.id == request.user.id
+            elif hasattr(obj, "user"):
+                return obj.user.id == request.user.id
+            elif hasattr(obj, "restaurant"):
+                return obj.restaurant.user.id == request.user.id
+            return False
+        return 
+```
+
+- 해당 코드와 관련된 프로젝트의 모델링은 User와 Restaurant모델이 1:N이고, Restaurant과 RestaurantRecord모델이 1:N관계였다.
+- **따라서, has_object_permission 메서드는 특정 object에 접근하는 순간 권한을 확인해준다.**
+  - 관리자면 접근이 가능
+  - 만약 요청된 특정 객체의 클래스가 User일 때는 객체의 id와 로그인된 유저의 id를 비교해서 접근 가능하게 설정
+  - 만약 요청된 특정 객체가 user라는 필드를 갖고 있다면, 여기서는 restaurant객체가 들어온 것이고 restaurant객체와 연결된 user의 id와 지금 로그인된 유저의 id를 비교해서 접근 가능하게 설정
+  - 만약 요청된 특정 객체가 restaurant이라는 필드를 갖고 있다면, 여기서는 restaurantrecord 객체가 들어온 것이고 restaurantrecord객체와 연결된 restaurant객체와 연결된 user의 id와 지금 로그인된 유저의 id를 비교해서 접근 가능하게 설정
+
+- **APIView에서 커스텀 Permission 적용하기**
+```python
+class RestaurantDetailAPIView(APIView):
+    """
+    Assignee : 상백
+    permission = 작성자 본인만 가능
+    Http method = GET
+    """
+
+    permission_classes = [IsOwner]
+
+    def get_object_and_check_permission(self, obj_id):
+        """
+        Assignee : 상백
+        restaurant_id로 들어온 id에 해당하는 객체가 있는지 검토하는 메서드입니다.
+        존재하지 않아 DoesNotExist 에러가 발생할 경우 None을 리턴합니다.
+        """
+
+        try:
+            object = Restaurant.objects.get(id=obj_id, is_deleted=False)
+        except Restaurant.DoesNotExist:
+            return None
+
+        self.check_object_permissions(self.request, object)
+        return object
+
+    def get(self, request, restaurant_id):
+        """
+        Assignee : 상백
+        특정 가계부 조회를 하기 위한 메서드입니다. 가계부 목록 조회에서 볼 수 있는 가계부 고유번호가 필요합니다.
+        restaurant_id로 존재하는 객체가 없다면 에러 메시지를 응답합니다.
+        """
+
+        restaurant = self.get_object_and_check_permission(restaurant_id)
+        ...
+```
+
+- permission에 has_object_permission 메서드가 아닌 has_permission 메서드는 해당 요청이 들어올 때 항상 실행이 된다.
+- has_object_permission 메서드가 들어오기 전에도 has_permission 메서드를 우선 거친 후 실행이 되고 APIView에서 역시 자동으로 실행이 된다.
+- **하지만 has_object_permission 메서드의 경우, 별도의 호출 과정이 필요하다.**
+  - 위의 코드에서와 같이 get_object_and_check_permission과 같은 메서드를 만들어서 그 안에 self.check_object_permissions(self.request, object) 이렇게 `check_object_permissions` 함수를 실행해줘야 커스텀 permission의 has_object_permission을 호출할 수 있다. 
+  - Custom Permission를 사용하고 있을 때, APIView에서 인스턴스 레벨의 검사가 작동하려면 View의 코드가 명시적으로 .check_object_permissions 메서드를 호출해야 한다. 즉, APIView 클래스에 정의된 check_object_permissions 메서드를 override하는 것이다. 해당 메서드는 APIView의 내장 메서드이기 때문에, 함수 기반 뷰에서는 호출할 수가 없고 제네릭 뷰에서는 자동으로 작동한다고 한다.
+  - 첫번째 인자로는 request가 들어가고 두번째 인자로는 obj가 들어가게 된다.
+
+- [관련 블로그](https://ssungkang.tistory.com/entry/Django-APIView%EC%97%90-permission-%EC%A7%80%EC%A0%95%ED%95%98%EA%B8%B0), [관련 블로그2](https://velog.io/@ready2start/DRF-Custom-Permission-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0)
+
 
 <br>
 
