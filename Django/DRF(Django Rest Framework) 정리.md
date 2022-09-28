@@ -890,23 +890,29 @@ class AccountBooksRecordDetailAPIView(APIView):
 ### 회원가입과 로그인 APIView 예시
 - 회원가입 및 로그인 APIView
 ```python
-from django.contrib.auth import authenticate, get_user_model, login
-from drf_yasg.utils import swagger_auto_schema
+from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from config.permissions import IsOwner
-from user.serializers import MyTokenObtainPairSerializer, SignInSerializer, SignUpSerializer, UserSerializer
+from .serializers import SignInSerializer, SignUpSerializer, UserTokenObtainPairSerializer
 
 User = get_user_model()
 
+# url : POST api/v1/users/signup
 class SignUpView(APIView):
+    """
+    Assignee : 상백
+
+    회원가입을 진행하는 APIView입니다.
+    권한은 누구나 접근할 수 있게 설정하고 회원가입 성공 시, 201 code를 응답합니다.
+    is_master 필드를 false로 설정 후 JSON 형태로 요청하면 수강생으로 가입이 진행되고, true로 설정 후 요청하면 강사로 가입이 진행됩니다.
+    """
+
     permission_classes = [AllowAny]
     serializer = SignUpSerializer
 
-    @swagger_auto_schema(request_body=SignUpSerializer)
     def post(self, request):
         serializer = self.serializer(data=request.data)
         if serializer.is_valid():
@@ -920,24 +926,32 @@ class SignUpView(APIView):
             return res
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+# url : POST api/v1/users/signin
 class SignInView(APIView):
+    """
+    Assignee : 상백
+
+    로그인을 진행하는 APIView입니다.
+    로그인 성공 시, 클라이언트에게 access token과 refresh token을 리턴합니다.
+    로그인에 실패할 경우, 404 code를 응답합니다.
+    """
+
     permission_classes = [AllowAny]
     serializer = SignInSerializer
 
-    @swagger_auto_schema(request_body=SignInSerializer)
     def post(self, request):
-        user = authenticate(
-            request,
-            email=request.data.get("email"),
-            password=request.data.get("password"),
-        )
+        user = authenticate(request, email=request.data.get("email"), password=request.data.get("password"))
         if not user:
             return Response({"error": "이메일 또는 비밀번호를 잘못 입력했습니다."}, status=status.HTTP_404_NOT_FOUND)
+
         login(request, user)
-        token = MyTokenObtainPairSerializer.get_token(user)
+
+        token = UserTokenObtainPairSerializer.get_token(user)
+
         res = Response(
             {
-                "message": f"{user.username}님 반갑습니다!",
+                "message": f"{user.email}님, 로그인이 완료되었습니다!",
                 "token": {
                     "access": str(token.access_token),
                     "refresh": str(token),
@@ -946,6 +960,7 @@ class SignInView(APIView):
             status=status.HTTP_200_OK,
         )
         return res
+
 ```
 - **get_user_model() 클래스**
   - 위에서는 User = get_user_model()로 사용되었다.
@@ -958,8 +973,9 @@ class SignInView(APIView):
 - **SignInView에서 authenticate 함수**
   - user = authenticate(request, email=request.data.get("email"), password=request.data.get("password"),) 이렇게 authenticate 함수를 사용해서 JSON 데이터로 입력된 이메일과 패스워드로 인증과정 진행
 
-- **token = MyTokenObtainPairSerializer.get_token(user)**
+- **token = UserTokenObtainPairSerializer.get_token(user)**
   - login 후 위의 코드로 refresh_token를 발행해주는 절차
+  - get_token 메서드를 사용해서 refresh token과 access token을 생성하고 클라이언트에게 응답해준다.
   - Response에서 str(token) 이렇게 refresh_token이 되고, str(token.access_token) 이렇게 access_token이 된다.
 
 * * *
@@ -1007,12 +1023,16 @@ class SignInSerializer(serializers.Serializer):
 
 - **simplejwt의 TokenObtainPairSerializer 상속받아 사용하기**
   - from rest_framework_simplejwt.serializers import TokenObtainPairSerializer 이렇게 import를 한 뒤, **TokenObtainPairSerializer를 상속받아 토큰을 발행할 수 있는 serializer를 새롭게 생성**
-  - **TokenObtainPairSerializer는 또한 TokenObtainSerializer를 상속받고 있다. TokenObtainSerializer 내부에는 get_token 이라는 메서드가 정의되어 있다.**
+  - **TokenObtainPairSerializer는 또한 TokenObtainSerializer를 상속받고 있다. TokenObtainPairSerializer란, 정의된 소스코드를 보면 get_token 메서드를 사용해서 refresh token을 생성하고 그 refresh token으로부터 access_token 메서드를 사용해서 access token도 생성한다.**
+  - [관련 블로그](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/customizing_token_claims.html?highlight=TokenObtainPairSerializer#customizing-token-claims)
 
 - **@classmethod get_token 메서드**
   - TokenObtainSerializer 내부에 정의된 get_token 메서드를 사용해서 토큰을 발행하기
-  - [@classmethod 관련 내용](https://wikidocs.net/16074)
   - get_token 메서드의 return 값인 token이 refresh_token이 되고, token.access_token이 access_token이 된다.
+  - **super()는 자식 클래스에서 상속받은 부모 클래스의 메서드를 오버라이드하고, 그 부모 메서드를 호출하고 싶을 때 사용한다. ex) super().부모클래스 메서드이름()**
+    - 그래서 상속받은 TokenObtainPairSerializer 클래스의 get_token 메서드를 오버라이드하고, 부모 클래스의 get_token 메서드를 호출하기 위해 super()를 사용했다.
+  - **@classmethod란, 인스턴스를 만들지 않아도 class의 메서드를 바로 실행할 수 있게끔 해준다.**
+    - 그래서 SignInView에서 token = UserTokenObtainPairSerializer.get_token(user) 이렇게 인스턴스를 만들지 않아도 바로 get_token 메서드를 사용할 수 있게 해준다.
 
 - **SignUpSerializer의 create 메서드 override해서 회원가입**
   - create 메서드를 override해서 email = validated_data.get("email") 이렇게 유효성 검사가 완료된 값들을 받아 User 모델의 객체를 생성한다.
