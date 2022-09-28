@@ -1031,8 +1031,10 @@ class SignInSerializer(serializers.Serializer):
   - get_token 메서드의 return 값인 token이 refresh_token이 되고, token.access_token이 access_token이 된다.
   - **super()는 자식 클래스에서 상속받은 부모 클래스의 메서드를 오버라이드하고, 그 부모 메서드를 호출하고 싶을 때 사용한다. ex) super().부모클래스 메서드이름()**
     - 그래서 상속받은 TokenObtainPairSerializer 클래스의 get_token 메서드를 오버라이드하고, 부모 클래스의 get_token 메서드를 호출하기 위해 super()를 사용했다.
+    - [super 메서드 관련 내용](https://github.com/tkdqor/coding_test_practice/blob/master/Collection%20of%20ideas.md#super-%ED%95%A8%EC%88%98)
   - **@classmethod란, 인스턴스를 만들지 않아도 class의 메서드를 바로 실행할 수 있게끔 해준다.**
     - 그래서 SignInView에서 token = UserTokenObtainPairSerializer.get_token(user) 이렇게 인스턴스를 만들지 않아도 바로 get_token 메서드를 사용할 수 있게 해준다.
+    - [@classmethod 관련 내용](https://github.com/tkdqor/coding_test_practice/blob/master/Collection%20of%20ideas.md#classmethod%EC%99%80-staticmethod)
 
 - **SignUpSerializer의 create 메서드 override해서 회원가입**
   - create 메서드를 override해서 email = validated_data.get("email") 이렇게 유효성 검사가 완료된 값들을 받아 User 모델의 객체를 생성한다.
