@@ -310,6 +310,8 @@ for restaurant in restaurants:
   - 우리한테 토큰이 날라오면 Auth : baerer “...” 이러한 형태가 된다. 그러면 서버는 data = JWT.detoken(‘sdfsdf’) 이런식으로 복호화를 진행한다.
   - JWT토큰은 결과적으로 복호화를 하면 header와 payload로 이루어져 있는 JSON 데이터가 나오게 된다.
 
+- [DRF simpleJWT를 사용해서 진행한 로그인 구현 코드 예시](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework)%20%EC%A0%95%EB%A6%AC.md#%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85%EA%B3%BC-%EB%A1%9C%EA%B7%B8%EC%9D%B8-apiview-%EC%98%88%EC%8B%9C)
+
 - [관련 블로그](https://medium.com/chanjongs-programming-diary/django-rest-framework-drf-%ED%99%98%EA%B2%BD%EC%97%90%EC%84%9C-jwt-%EA%B8%B0%EB%B0%98-authentication-%EC%84%B8%ED%8C%85%ED%95%98%EA%B8%B0-with-simplejwt-%EC%B4%88%EA%B8%B0-%ED%99%98%EA%B2%BD-%EC%84%B8%ED%8C%85-1-e54c3ed2420c)
 - [관련 블로그2](https://velog.io/@kjyeon1101/JWT-%EC%9D%B8%EC%A6%9D%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85%EB%A1%9C%EA%B7%B8%EC%9D%B8)
 
