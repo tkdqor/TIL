@@ -17,7 +17,7 @@
   - [DRF generics](#drf-generics)
   - [DRF Viewset & Router](#drf-viewset과-router)
   - [SerializerMethodField](#serializermethodfield)
-  - [View에서 permission_classes로 인증과 권한 설정하기](#view에서-permission_classes로-인증과-권한-설정하기)
+  - [DRF에서 인증과 권한 설정하기](#drf에서-인증과-권한-설정하기)
   - [쿼리스트링을 받을 수 있는 URL 만들기](#쿼리스트링을-받을-수-있는-url-만들기)
   - [Serializer에서 filter 함수 사용하기](#serializer에서-filter-함수-사용하기)
   - [Serializer 필드 설정(read_only_fields 사용하기, Serializer 필드에 required=False 설정)](#serializer-필드-설정)
@@ -625,7 +625,38 @@ urlpatterns = router.urls
 
 <br>
 
-### View에서 permission_classes로 인증과 권한 설정하기
+### DRF에서 인증과 권한 설정하기
+- **인증이란, 유입되는 요청을 허용/거부하는 것을 결정하는 것이 아닌 단순히 인증정보로 유저를 식별하는 것을 의미**
+- **Permissions은 “권한”으로 각 요청에 대한 허용/거부를 의미**
+  - 추가로, Throttling은 일정 기간 동안에 허용할 최대 요청 횟수를 의미
+
+- **인증 처리 순서**
+  - 매 요청 시, APIView의 dispatch(request) 메서드 호출 
+  - 그리고 APIView의 initial(request) 메서드 호출
+  - APIView의 perform_authentication(request) 메서드 호출
+  - request의 user 속성 호출 (rest_framework.request.Request 타입)
+  - request의 authenticate() 메서드 호출
+
+- **지원하는 인증의 종류**
+  - SessionAuthentication : 세션을 통한 인증, APIView에서 디폴트로 지정되어있음
+  - BasicAuthentication : Basic 인증 헤더를 통한 인증 (예>Authorization : Basic YWxsaWV1…….)
+  - TokenAuthentication : Token 헤더를 통한 인증 (예>Authorization: Token 401f7ac837da……..)
+  - RemoteUserAuthentication : User가 다른 서비스에서 관리될 때, Remote 인증을 진행
+  - **DRF SimpleJWT를 사용하면 JWTAuthentication도 가능**
+
+- **인증 이후 허가**
+  - 개체(정보/코드 등)에 대한 접근을 허용하기 위해서, 인증/식별만으로는 충분하지 않다. 추가로 각 개체에 대한 허가가 필요하다.
+  - **DRF의 Permission System : 현재 요청에 대한 허용/거부를 결정, APIView 단위로 지정이 가능**
+    - AllowAny (디폴트 전역 설정) : 인증 여부에 상관없이 뷰 호출을 허용
+    - IsAuthenticated : 인증된 요청에 한해서 뷰 호출 허용 (로그인이 되어있어야만 접근 허용)
+    - IsAdminUser : Staff 인증 요청에 한해서 뷰 호출 허용
+    - IsAuthenticatedOrReadOnly : 비인증 요청에게는 읽기 권한만 허용 (로그인이 되어 있지않아도 조회는 가능)
+    - DjangoModelPermissons : 인증된 요청에 한하여 뷰 호출 허용, 추가로 장고 모델단위 Permissions 체크
+    - DjangoModelPermissionsOrAnonReadOnly : DjangoModelPermissions와 유사, 비인증 요청에게는 읽기만 허용
+    - DjangoObjectPermissons : 비인증 요청은 거부, 인증된 요청은 Object에 대한 권한 체크 수행
+
+- **APIView에서 permission_classes로 권한 지정 예시**
+
 ```python
 from rest_framework.permissions import IsAuthenticated
 class ExampleView(APIView):
@@ -633,10 +664,73 @@ class ExampleView(APIView):
    
    def get(self, request, format=None):
        content = {'status' : 'request was permitted'}
+       ...
        return Response(content)
 ```
 
-- [관련해서 좋은 내용의 블로그](https://donis-note.medium.com/django-rest-framework-authentication-permission-%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EA%B6%8C%ED%95%9C-cc9b183fd901)
+- **Default 전역 설정**
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : [
+         'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+```
+
+- 위와같이 settings.py에 위의 코드를 작성하면 Permission 값이 전역으로 설정됨
+
+<br>
+
+### Permission 클래스 코드 구조
+- 우선, 커스텀이 아니라 위에서 설명한 DRF의 모든 Permission 클래스는 아래의 2가지 함수를 선택적으로 구현하고 있다. 소스코드를 확인하면 다 그렇게 정의되어 있다.
+
+- **has_permission(request, view)**
+  - APIView 접근시 체크하게 되는 메서드이다.
+  - 거의 모든 Permission 클래스에서 구현되며 로직에 따라 True/False 반환한다.
+
+- **has_object_permission(request, view, obj)**
+  - APIView의 get_object 함수를 통해 object 획득 시에 체크하게 되는 메서드이다.
+  - ex) 브라우저를 통한 API 접근에서 CREATE/UPDATE Form 노출 시 체크 
+  - DjangoObjectPermissions 등에서 구현하며 로직에 따라 True/False 반환한다.
+
+- **실제 DRF에 구현되어있는 소스코드**
+```python
+SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS')
+
+class AllowAny(BasePermission):
+   def has_permission(self, request, view):
+       return True
+       
+class IsAuthenticated(BasePermission):
+   def has_permission(self, request, view):
+       return request.user and request.user.is_authenticated
+       
+class IsAdminUser(BasePermission):
+   def has_permission(self, request, view):
+       return request.user and request.user.is_staff
+```
+
+- **커스텀 Permission의 예시**
+  - 커스텀으로 특정 게시글의 작성자가 아니라면 읽기 권한만 부여해보기
+
+```python
+class IsAuthorOrReadOnly(permissions.BasePermission):
+   # 인증된 유저에 한해, 목록조회/포스팅등록 허용
+   def has_permission(self, request, view):
+       return request.user.is_authenticated
+   
+   # 작성자에 한해 레코드에 대한 수정/삭제 허용
+   def has_object_permission(self, request, view, obj):
+       # 조회 요청(GET, HEAD, OPTIONS) 에 대해 인증여부 상관없이 허용
+       if request.method in permissions.SAFE_METHODS:
+          return True
+       # PUT, DELETE 요청에 대해 작성자일 경우 요청 허용
+       return obj.author == request.user
+```
+
+- **지금까지 진행한 프로젝트에서는, DRF simpleJWT를 사용해서 JWT 인증을 진행 & permission은 DRF의 permission과 커스텀 permission을 둘 다 사용**
+
+- [참고 블로그](https://donis-note.medium.com/django-rest-framework-authentication-permission-%EC%9D%B8%EC%A6%9D%EA%B3%BC-%EA%B6%8C%ED%95%9C-cc9b183fd901)
 
 <br>
 
