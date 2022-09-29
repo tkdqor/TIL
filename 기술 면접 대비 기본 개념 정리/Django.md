@@ -233,6 +233,33 @@ for restaurant in restaurants:
 ## django signal이란
 - **django에는 어떤 DB 이벤트나 아니면 django에서 정의하는 여러가지 시스템 이벤트라고 할 만한 것들이 있는데, 그래서 이런 이벤트가 발생했을 때 -> 우리가 중간에 캐치를 해서 그 이벤트가 발생한 시점에 '뭔가 처리를 하고 싶다' 라는 코드를 작성해두면, django가 그걸 기억해두었다가 그 이벤트가 발생하는 전이나 후에 처리를 해주는 것을 signal이라고 한다.**
 
+- **post_save signal 활용 예시**
+
+```python
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
+...
+
+@receiver(post_save, sender=User)
+def on_save_user(sender, instance, **kwargs):
+    """
+    Assignee : 상백
+
+    django Signal을 이용하여 User 모델 생성 시, is_master 필드값이 True라면 Master 모델 객체 생성
+    """
+
+    master = Master.objects.filter(user=instance).first()
+    if master is None and instance.is_master == True:
+        username = instance.username
+        email = instance.email
+        Master.objects.create(user=instance, username=username, email=email)
+```
+
+- **from django.db.models.signals import post_save 이렇게 import 진행**
+  - django db에 있는 정의된 시그널 중 하나인 post_save라는 걸 import
+
+
 * * *
 
 ## render와 redirect 관련
