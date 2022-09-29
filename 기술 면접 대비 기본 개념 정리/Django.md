@@ -258,6 +258,27 @@ def on_save_user(sender, instance, **kwargs):
 
 - **from django.db.models.signals import post_save 이렇게 import 진행**
   - django db에 있는 정의된 시그널 중 하나인 post_save라는 걸 import
+  - signals 패키지를 command로 들어가보면, 시그널이 여러개가 있다는 것을 확인할 수 있음
+    - 들어가보면, ModelSignal이라는 이름의 클래스가 정의되어있고 pre_init, post_init, pre_save, post_save, pre_delete, post_delete와 같은 시그널들이 있다.
+    - pre_init, post_init은 DB가 세팅되기전과 된 후를 의미
+    - pre_save, post_save는 특정 데이터가 저장되기 직전과 직후를 의미
+    - pre_delete, post_delete는 특정 데이터가 삭제되기 직전과 직후를 의미
+
+- **from django.dispatch import receiver 진행**
+  - 이건 우리가 receiver 데코레이터 패턴을 사용할 수 있기 위해 import 하는 것
+  - @receiver(post_save, sender=User) 이렇게 하면 'User 모델에서 post_save가 발생하면' 이라는 의미가 되고 실제로 발생하면 이 함수가 실행된다는 의미
+  - receiver 데코레이터를 사용해서 post_save를 사용할 것이고 보내는 쪽은 User 모델이라고 설정한 것이다. 즉, post_save라는 signal를 받아 그 다음 함수로 진행할 로직을 구성하는 것이다. 
+
+- **def on_save_user와 같이 @receiver 밑에 선언하는 함수를 receiver function이라고 부른다.**
+  - 이 receiver function이 필수로 받는 인자는 첫번째로 sender, 두번째로 **kwargs이다.
+  - sender는 신호를 보내고자 하는 주체의 클래스를 넣으면 되고 kwargs는 signal 종류마다 다르다.
+  - post_save의 경우에는 instance라는 키워드 인자를 가지는데, 이는 현재 저장된 객체, 여기서는 User 객체를 의미한다.
+
+- **개선할 점**
+  - 만약 Receiver 함수가 많아진다면, App 하위에 별도로 signals.py라는 이름으로 관리하는 것이 좋다.
+
+- [참고 블로그](https://dgkim5360.tistory.com/entry/django-signal-example)
+- [공식 문서](https://docs.djangoproject.com/en/4.0/ref/signals/)
 
 
 * * *
