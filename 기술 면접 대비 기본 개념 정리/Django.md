@@ -387,11 +387,42 @@ urlpatterns += [
 * * *
 
 ## User 모델 커스텀하기
+  
+### User 모델을 커스텀하는 이유
+- 원래 django에는 기본적으로 정의되어있는 User 모델이 있는데, 그 모델에서는 로그인할 때 username으로 로그인을 하게 되어있다. 그래서 다른 필드로 로그인을 하고 싶거나, 기본적으로 정의되어 있는 User 모델보다 다양한 정보를 정의하고 싶을 수 있다. 이렇게 정해져있는 필드가 아닌 다양하게 User 모델을 사용하기 위해서는 커스텀 User 모델을 적용하는 것이 좋다.
+  
+<br>  
+  
+### User 모델 커스텀 진행 과정
 - **커스텀 유저 모델을 사용하기 위해서는, models.py에서 BaseUserManager와 AbstractBaseUser 2개의 클래스를 상속받아 새로운 클래스를 생성해야 한다.**
-  - **BaseUserManager 클래스 : User를 생성할때 사용하는 클래스**
-    - BaseUserManager 클래스 내부에는 create_user() 함수와 create_superuser() 함수가 있다. 각각 일반 유저를 생성하는 함수, 관리자 유저를 생성하는 함수이다.
-  - **AbstractBaseUser 클래스 : 상속받아 User 모델을 생성하는 클래스**
 
+- **BaseUserManager 클래스 : User를 생성할때 사용하는 클래스**
+  - 해당 클래스의 소스코드에는, email 부분을 @ 기준으로 email_name과 domain_part로 나누고 이 둘을 합친 email을 return 해준다. 그리고, 랜덤으로 password를 만들어준다.
+  - User를 생성할 때 사용하는 헬퍼 클래스이다. User를 생성할 때의 행위를 지정할 수 있다.
+    - 모든 django model들은 Manager를 통해서 QuerySet을 받는다. DB에서 query를 처리할 때,  Manager를 무조건 거쳐야 한다고 한다.
+  - BaseUserManager 클래스 내부에는 create_user() 함수와 create_superuser() 함수가 있다. 각각 일반 유저를 생성하는 함수, 관리자 유저를 생성하는 함수이다.
+    - create_user 메서드는 email를 필수 입력 필드로 지정할 수 있고, 최종적으로 user 객체를 생성할 수 있게 해주는 메서드이다.
+    - create_superuser 메서드는 admin 계정을 생성할 수 있게 해주는 메서드이다.
+
+<br>  
+  
+- **AbstractBaseUser 클래스 : 상속받아 User 모델을 생성하는 클래스**
+  - 해당 클래스의 소스코드에는, password를 CharField로 저장하고 save 메서드를 오버라이딩 해서 Model 클래스의 save 메서드를 super()로 실행해서 저장한다. 그리고 get_username이라는 메서드로는 생성된 user의 username를 리턴한다. clean이라는 메서드로는 유니코드 문자열 username를 정규화 형식으로 반환한다. 
+  - 소스코드에 있는 [@property 관련 내용](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md#property-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
+    - @property 설정이 된 is_anonymous 메서드로는 항상 False가 리턴된다. User 객체가 익명이 아니기 때문에 항상 False가 리턴된다.
+    - @property 설정이 된 is_authenticated 메서드로는 항상 True가 리턴된다. User 객체가 인증이 되었는지 여부를 알려준다.
+    - check_password 메서드로 password가 적합한지 체크해준다.
+    - get_session_auth_hash 메서드는 암호 필드의 HMAC를 반환한다. / key_salt에서 생성된 키와 비밀(기본값은 settings.SECRET_KEY)을 사용하여 '값'의 HMAC를 반환한다. 기본 알고리즘은 SHA1이지만 hashlib.new()에서 지원하는 모든 알고리즘 이름을 전달할 수 있다.
+    - @classmethod 설정이 된 get_email_field_name 메서드는 email 필드를 가져온다.
+    - @classmethod 설정이 된 normalize_username 메서드는 유니코드 문자열 username를 정규화 형식으로 반환한다.
+  - User 모델의 필드를 설정해준다. id필드를 primary_key로 설정해서 인덱스를 설정 / 다른 추가적인 필드를 설정할 수 있다.
+  - USERNAME_FIELD 설정값으로 email를 설정하면 로그인 시 ID를 email로 설정할 수 있다.
+  - 그리고 objects 변수값을 통해 헬퍼 클래스를 지정해야한다. 위에서 BaseUserManager를 상속해서 설정한 클래스를 설정해주면 된다.
+  - has_perm 메서드로 로그인 사용자의 특정 테이블 CRUD 권한 설정을 할 수 있다.
+  - has_module_perms 메서드로 로그인 사용자의 특정 app에 접근 가능 여부를 설정할 수 있다.
+
+<br>  
+  
 - **models.py 예시**
 
 ```python
@@ -490,12 +521,12 @@ class User(AbstractBaseUser):
   - USERNAME_FIELD = "email" => 이렇게 설정하면, 로그인 시 email 정보를 받게된다.
   - custom user 생성 시, objects = CustomUserManager() 이러한 코드를 설정해준다.
 
-- **그리고 마지막으로 settings.py에 아래와 같은 코드를 추가한다.**
+- **그리고 마지막으로 settings.py에 아래와 같은 코드를 추가한다. user model이 AbstractUser를 상속할 때는 반드시 settings.py 에서 AUTH_USER_MODEL = '폴더명.클래스명' 값을 추가해야 migrate가 제대로 진행된다.**
 ```python
 AUTH_USER_MODEL = "accounts.User"
 ```
 
-- [관련 블로그](https://hckcksrl.medium.com/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9C%A0%EC%A0%80-%EB%AA%A8%EB%8D%B8-custom-user-model-b8487c0d150)
+- [참고 블로그](https://hckcksrl.medium.com/django-%EC%BB%A4%EC%8A%A4%ED%85%80-%EC%9C%A0%EC%A0%80-%EB%AA%A8%EB%8D%B8-custom-user-model-b8487c0d150)
 
 * * *
 
