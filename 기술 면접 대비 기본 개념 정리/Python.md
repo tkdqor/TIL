@@ -42,6 +42,9 @@
   - [Numpy란](#numpy란)
   - [가비지 컬렉터란](#가비지-컬렉터란)
   - [딕셔너리와 리스트에서 순차적으로 요소를 조회할 때 시간복잡도 비교](#딕셔너리와-리스트에서-순차적으로-요소를-조회할-때-시간복잡도-비교)
+  - [property 사용하기](#property-사용하기)
+  - [super 함수](#super-함수)
+  - [classmethod와 staticmethod](#classmethod와-staticmethod)
 
 * * *
 
@@ -1003,4 +1006,364 @@ arg: 1
 
 - [관련 블로그](https://infinitt.tistory.com/376)
 
+* * *
+
+## property 사용하기
+```python
+class Person:
+    def __init__(self, first_name, last_name, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+>>> person = Person("John", "Doe", 20)
+>>> person.age
+20
+>>> person.age = person.age + 1
+>>> person.age
+21
+```
+
+- 위와같이 Person 클래스를 정의하고, Person 클래스의 인스턴스를 생성 후에, 현재 필드 값을 읽거나 새로운 필드 값 쓰는 것은 매우 자유롭다.
+  - **이렇게 필드명을 사용해서 객체의 내부 데이터에 접근하는 것은 편리하지만, 해당 데이터는 외부로부터 무방비 상태에 놓이게 된다.**
+
+<br>
+
+### Getter/Setter
+- 클래스 인스턴스의 내부 데이터를 보호하기 위해서 데이터의 접근용 메서드를 작성하는 것은 객체 지향 프로그래밍에서 흔히 볼 수 있는 패턴이다.
+- **일반적으로 데이터를 읽어주는 메서드를 getter(게터), 데이터를 변경해주는 메서드를 setter(세터)라고 한다.**
+
+- Person 클래스에 age 필드에 대한 **get_age()와 set_age() 메서드를 추가해보자. 각각 getter, setter 메서드가 된다.** 나이는 음수가 될 수 없으므로 set_age() 메서드에 음수가 인자로 넘어오면 예외가 발생하도록 한다.
+
+```python
+class Person:
+    def __init__(self, first_name, last_name, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.set_age(age)
+
+    def get_age(self):
+        return self._age
+
+    def set_age(self, age):
+        if age < 0:
+            raise ValueError("Invalid age")
+        self._age = age
+```
+
+- **여기서 놓치기 쉬운 부분은 \_로 시작하는 이름을 가진 변수는 외부에서 직접 접근하지 않는 파이썬의 관행에 따라, 인스턴스 변수명을 age 대신에 \_age로 변경했다는 점이다. ex) self.\_age = age**
+
+```python
+>>> person = Person("John", "Doe", 20)
+>>> person.get_age()
+20
+>>> person.set_age(-1)
+ValueError: Invalid age
+>>> person.set_age(person.get_age() + 1)
+>>> person.get_age()
+21
+```
+
+- 그리고 이제 위와같이 Person 클래스의 인스턴스에 저장되어 있는 나이 데이터에 접근하거나 변경하려면 메서드를 이용해야 한다.
+  - **이렇게 getter/setter 메서드를 통해서 객체의 내부 데이터에 대한 접근을 좀 더 통제**할 수 있게 되었지만 기존에 필드명을 바로 사용할 때 보다는 코드가 조금 지저분해졌다. 뿐만 아니라, Person 클래스의 프로그래밍 인터페이스가 변경됨에 따라 하위 호환성도 깨지게 된다는 큰 단점이 있다.
+
+<br>
+
+### property() 함수와 @property
+
+- **property() 함수**
+  - **파이썬의 내장 함수인 property()를 사용하면 마치 필드명을 사용하는 것처럼 깔끔하게 getter/setter 메서드가 호출되게 할 수 있다.**
+
+```python
+class Person:
+    def __init__(self, first_name, last_name, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    def get_age(self):
+        return self._age
+
+    def set_age(self, age):
+        if age < 0:
+            raise ValueError("Invalid age")
+        self._age = age
+
+    age = property(get_age, set_age)
+```
+
+- 이렇게 property() 함수의 첫 번째 인자로 getter 메서드를, 두 번째 인자로 setter 메서드를 넘겨주면 age라는 필드명을 이용해서 다시 나이 데이터에 접근할 수 있게 된다.
+
+```python
+>>> person = Person("John", "Doe", 20)
+>>> person.age
+20
+>>> person.age = -1
+ValueError: Invalid age
+>>> person.age = person.age + 1
+>>> person.age
+21
+```
+
+- 클래스를 사용하는 측면에서는 일반 필드에 접근하는 것처럼 보이지만 내부적으로 getter와 setter 메서드가 호출이 된다. 따라서 나이를 음수로 변경하려고 하면 set_age() 메서드를 직접 호출하는 것과 동일하게 예외가 발생한다.
+
+<br>
+
+- **@property 데코레이터**
+  - **파이썬의 내장 데코레이터인 @property를 사용하면 위와 동일하게 작동하는 코드를 좀 더 간결하고 읽기 편하게 작성할 수 있다.**
+
+```python
+class Person:
+    def __init__(self, first_name, last_name, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    @property
+    def age(self):
+        return self._age
+
+    @age.setter
+    def age(self, age):
+        if age < 0:
+            raise ValueError("Invalid age")
+        self._age = age
+```
+
+- **기존의 getter 메서드 위에 @property 데코레이터를 선언하고, 메서드 이름으로부터 get_을 삭제한다. setter 메서드의 경우에는 @<필드명>.setter 데코레이터를 선언하고, 메서드 이름으로부터 set_을 삭제한다.**
+
+```python
+>>> person = Person("John", "Doe", 20)
+>>> person.age
+20
+>>> person.age = -1
+ValueError: Invalid age
+>>> person.age = person.age + 1
+>>> person.age
+21
+```
+
+- **property 함수나 @property 데코레이터를 사용했을 때 가장 큰 이점은 외부에 티 내지 않고 내부적으로 클래스의 필드 접근 방법을 바꿀 수 있다는 것이다.** Person 클래스를 사용하는 관점에서 봤을 때 나이 데이터는 항상 age라는 필드명으로 접근하고 변경할 수 있다는 사실은 변하지 않기 때문이다.
+
+<br>
+
+- **@property 데코레이터 활용**
+  - 클래스를 작성하다보면 다른 필드로부터 값이 유추되는 읽기 전용 필드가 필요할 때가 있다. 예를 들어, Person 클래스에서 전체 이름을 얻고 싶다면 다음과 같이 @property 데코레이터를 이용해서 full_name 필드를 추가해줄 수 있다.
+
+```python
+class Person:
+    def __init__(self, first_name, last_name, age):
+        self.first_name = first_name
+        self.last_name = last_name
+        self.age = age
+
+    @property
+    def full_name(self):
+        return self.first_name + " " + self.last_name
+
+>>> person = Person("John", "Doe", 20)
+>>> person.full_name
+'John Doe'
+```
+
+- [참고 블로그](https://www.daleseo.com/python-property/)
+
+* * *
+
+### super 함수
+- super() 메서드란, 부모의 동작을 불러오는 방법이다.
+- 오버라이드 만으로는 충분하지 않고, 부모의 동작은 그대로 하면서 그냥 동작을 끼워넣고 싶을때가 있을 수 있다.
+- **self.wave()와 같이 사용하는 건, 객체로 접근해서 정의한 클래스 내부의 메소드나 변수를 사용할 때는 self를 붙인다.**
+
+```python
+class Animal():
+	def greet(self):
+		print(“인사한다”)
+
+class Human(Animal):
+	def wave(self):
+		print(“손을 흔든다”)	
+
+	def greet(self):
+		self.wave()
+```
+
+- 이러한 클래스들이 있다고 가정하자. 그러면 Animal의 greet은 “인사한다”인데, Human의 greet은 “손을 흔든다” 이다. 만약에, “인사한다”는 그대로두고 “손을 흔들면서”를 라고만 추가하고 싶다면 어떻게 할까?
+
+```python
+class Animal():
+	def greet(self):
+		print(“인사한다”)
+
+class Human(Animal):
+	def wave(self):
+		print(“손을 흔들면서”)	
+
+	def greet(self):
+		self.wave()
+		super().greet()
+```
+
+- 그래서 일단 Human 클래스의 wave 메서드를 “손을 흔들면서”라고 수정했다. 
+- **그리고 위의 Human 클래스에서 부모 클래스의 greet 메서드를 실행해주고 싶다면, super().greet() 이렇게 해주면 된다.**
+  - **즉, super()는 자식 클래스에서 상속받은 부모 클래스의 메서드를 오버라이드하고, 그 부모 메서드를 호출하고 싶을 때 사용한다. ex). super().부모클래스 메서드이름()**
+
+<br>
+
+- **이 동작이 널리 쓰이는 건, 클래스 내부의 특수한 메서드인 \_\_init\__ 메서드일 것이다.**
+
+```python
+class Animal():
+	def __init__(self, name):
+		self.name = name
+
+	def greet(self):
+		print(“{}이/가 인사한다”.format(self.name))
+
+class Human(Animal):
+	def wave(self):
+		print(“손을 흔들면서”)	
+
+	def greet(self):
+		self.wave()
+		super().greet()
+
+>>> person = Human(“사람”)
+>>> person.greet()
+
+손을 흔들면서
+사람이/가 인사한다
+```
+
+- 이렇게 Animal 클래스에 \_\_init\__ 메서드를 설정하고, name을 입력받아서 자기의 이름으로 저장한다. 그리고 greet 메서드를 format으로 수정해준다.
+- 이 상태에서 person = Human(“사람”) 이렇게 Human 인스턴스를 만들때도 init에 name이 들어가 있기 때문에 “사람”이라고 name을 넣어줘야 한다.
+  - **즉, 자식 클래스가 부모 클래스를 상속받으면, 부모 클래스의 init 메서드 설정을 그대로 따른다.**
+
+<br>
+
+- **이 상태에서 자식 클래스에도 \_\_init\__ 메서드를 오버라이드해서 사용할 수 있다.**
+```python
+class Animal():
+	def __init__(self, name):
+		self.name = name
+
+	def greet(self):
+		print(“{}이/가 인사한다”.format(self.name))
+
+class Human(Animal):
+	def __init__(self, name, hand):
+		super().__init__(name)
+		self.hand = hand
+
+	def wave(self):
+		print(“{}을 흔들면서”.format(self.hand))	
+
+	def greet(self):
+		self.wave()
+		super().greet()
+
+>>> person = Human(“사람”, “오른손”)
+>>> person.greet()
+
+오른손을 흔들면서
+사람이/가 인사한다
+```
+
+- 이렇게 Human 클래스에도 \_\_init\__ 메서드를 오버라이드해서 name은 부모 클래스의 \_\_init\__ 메서드를 호출해서 넘겨주고, hand는 Human 클래스에서 정의할 수 있다.
+- 이렇게 한 다음, person = Human(“사람”, “오른손”) 이런식으로 인자를 2개 넣어주면 “사람”과 “오른손”이 각각 name과 hand에 들어가고 name은 부모의 \_\_init\__ 메서드가 처리해주고, hand는 Human 클래스에서 처리하게 된다.
+
+<br>
+
+* * *
+
+### classmethod와 staticmethod
+- 정적메서드를 지원하는 두 가지 방법이 있다. 바로 **@staticmethod와 @classmethod**이다.
+- **먼저 같은 점은 둘 다 인스턴스를 만들지 않아도 class의 메서드를 바로 실행할 수 있게끔 해준다.**
+```python
+#staticmethod
+class hello:
+    num = 10
+
+    @staticmethod
+    def calc(x):
+        return x + 10
+
+print(hello.calc(10))
+#결과
+20
+
+#classmethod
+class hello:
+    num = 10
+
+    @classmethod
+    def calc(cls, x):
+        return x + 10
+
+print(hello.calc(10))
+#결과
+20
+```
+
+- **둘 다 객체를 만들지 않고 바로 해당 메서드를 사용했다. 차이점은 calc메서드를 만들 때 cls라는 인자가 더 추가되었다.**
+
+<br>
+
+- **이제 개념적인 차이점을 살펴보자. 만약 hello 클래스의 num 속성에 접근하려면 어떻게 해야할까? 우선 객체로 접근하는 것이 아니기 때문에 self.num를 사용할 순 없다.** 
+- **즉, 클래스 내부에 self.num = 10 이렇게 정의되어 있지 않기 때문이다. 클래스 내부에 num = 10과 같은 num 변수는 클래스 변수로 객체가 생성되고나서 접근이 가능하다. 따라서 self 이런식으로 사용이 불가능하다. 또한, 클래스 변수는 클래스로 만든 모든 객체에 공유된다.**
+- 억지로 사용하고 싶다면 @staticmethod는 다음과 같이 해야 한다.
+
+```python
+#staticmethod
+class hello:
+    num = 10
+
+    @staticmethod
+    def calc(x):
+        return x + 10 + hello.num
+
+print(hello.calc(10))
+#결과
+30
+```
+
+- 위와같이 정적 변수로 접근했다. 반면에 @classmethod는 다르게 접근한다.
+
+```python
+#classmethod
+class hello:
+    num = 10
+
+    @classmethod
+    def calc(cls, x):
+        return x + 10 + cls.num
+
+print(hello.calc(10))
+#결과
+30
+```
+
+- **classmethod는 cls가 있는데 이것은 '클래스'를 가리킨다. 이것으로 클래스의 어떤 속성에도 접근할 수 있다. 위 예시 경우 또한 cls.num을 통해 hello 클래스의 num 속성에 접근했다.**
+
+<br>
+
+- 만약 상속 관계가 있는 클래스들에선 cls가 가리키는 클래스는 어떤 클래스일까?
+
+```python
+class hello:
+    t = '내가 상속해 줬어'
+
+    @classmethod
+    def calc(cls):
+        return cls.t
+
+class hello_2(hello):
+    t = '나는 상속 받았어'
+
+print(hello_2.calc())
+#결과
+나는 상속 받았어
+```
+
+- **상속받은 hello_2 클래스가 t 속성을 업데이트 했다. cls.t이 상속시켜준 클래스에 있더라도 이것이 가리키는 것은 상속받은 클래스의 t 속성이다. cls는 상속 받은 클래스에서 먼저 찾는다.**
 
