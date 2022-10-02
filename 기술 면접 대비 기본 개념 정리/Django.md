@@ -335,6 +335,7 @@ def on_save_user(sender, instance, **kwargs):
 ## DRF에서 APIView와 generic View의 차이점
 - **APIView**와 같이 저수준일수록 작성하는 코드가 많고 중복, 반복을 포함하고 있지만 상대적으로 로직이 이해하기 쉽다.
 - 반면에 **Generic View**와 같이 고수준으로 갈수록 코드가 짧아지고 중복, 반복 코드가 거의 없지만 동작 코드가 추상화되어 있다.
+  - **DRF Mixins이나 Generic View, Viewset까지 전부 APIView와 다르게 클래스 레벨에서 queryset과 serializer_class를 설정해서 사용한다는 점이 다르다.**
 
 <br>
 
