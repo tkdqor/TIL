@@ -45,6 +45,7 @@
   - [property 사용하기](#property-사용하기)
   - [super 함수](#super-함수)
   - [classmethod와 staticmethod](#classmethod와-staticmethod)
+  - [python에서 비동기 코드 작성하기](#python에서-비동기-코드-작성하기)
 
 * * *
 
@@ -1069,7 +1070,7 @@ ValueError: Invalid age
 
 <br>
 
-### property() 함수와 @property
+## property() 함수와 @property
 
 - **property() 함수**
   - **파이썬의 내장 함수인 property()를 사용하면 마치 필드명을 사용하는 것처럼 깔끔하게 getter/setter 메서드가 호출되게 할 수 있다.**
@@ -1170,7 +1171,7 @@ class Person:
 
 * * *
 
-### super 함수
+## super 함수
 - super() 메서드란, 부모의 동작을 불러오는 방법이다.
 - 오버라이드 만으로는 충분하지 않고, 부모의 동작은 그대로 하면서 그냥 동작을 끼워넣고 싶을때가 있을 수 있다.
 - **self.wave()와 같이 사용하는 건, 객체로 접근해서 정의한 클래스 내부의 메소드나 변수를 사용할 때는 self를 붙인다.**
@@ -1276,7 +1277,7 @@ class Human(Animal):
 
 * * *
 
-### classmethod와 staticmethod
+## classmethod와 staticmethod
 - 정적메서드를 지원하는 두 가지 방법이 있다. 바로 **@staticmethod와 @classmethod**이다.
 - **먼저 같은 점은 둘 다 인스턴스를 만들지 않아도 class의 메서드를 바로 실행할 수 있게끔 해준다.**
 ```python
@@ -1366,4 +1367,65 @@ print(hello_2.calc())
 ```
 
 - **상속받은 hello_2 클래스가 t 속성을 업데이트 했다. cls.t이 상속시켜준 클래스에 있더라도 이것이 가리키는 것은 상속받은 클래스의 t 속성이다. cls는 상속 받은 클래스에서 먼저 찾는다.**
+
+* * *
+
+## python에서 비동기 코드 작성하기
+- 파이썬 3.4에서 **asyncio**가 표준 라이브러리로 추가되고, 파이썬 3.5에서 **async/await** 키워드가 문법으로 채택이 되면서, **파이썬도 이제 언어 자체적으로 비동기 프로그래밍이 가능해졌다.**
+- def 키워드로 선언하는 모든 함수는 파이썬에서 기본적으로 동기 방식으로 동작한다. **그런데, 기존 def 키워드 앞에 async 키워드까지 붙이면 이 함수는 비동기 처리되며, 이러한 비동기 함수를 파이썬에서는 코루틴(coroutine)이라고도 부른다.**
+
+```python
+async def do_async():
+    pass
+
+do_async() # <coroutine object do_async at 0x1038de710>
+```
+
+- 이러한 비동기 함수는 일반 동기 함수가 호출하듯이 호출하면 coroutine 객체가 리턴된다.
+
+```python
+async def main_async():
+    await do_async()
+```
+
+- **따라서 비동기 함수는 일반적으로 async로 선언된 다른 비동기 함수 내에서 await 키워드를 붙여서 호출해야 한다.** 이러한 방법으로 전통적인 동기 방식으로 처리하는 과정을 비동기 방식으로 바꿀 수 있다.
+  - await키워드가 붙은 함수는 그 함수가 실행이 끝나기 전까지 그 아래의 코드를 실행시키지 않는다. 즉, 동기적으로 사용하는 것처럼 작동하며, await는 async 키워드가 붙은 함수 안에서만 사용이 가능하다.
+
+<br>
+
+- **python 비동기 코드 예시**
+
+```python
+import time
+import asyncio
+
+async def find_users_async(n):
+    for i in range(1, n + 1):
+        print(f'{n}명 중 {i}번 째 사용자 조회 중 ...')
+        await asyncio.sleep(1)
+    print(f'> 총 {n} 명 사용자 비동기 조회 완료!')
+
+
+async def process_async():
+    start = time.time()
+    await asyncio.wait([
+        find_users_async(3),
+        find_users_async(2),
+        find_users_async(1),
+    ])
+    end = time.time()
+    print(f'>>> 비동기 처리 총 소요 시간: {end - start}')
+
+if __name__ == '__main__':
+    asyncio.run(process_async())
+```
+
+- 기존의 함수 선언에 async 키워드를 붙여서 일반 동기 함수가 아닌 비동기 함수(coroutine)로 변경하였으며, time.sleep 함수 대신에 asyncio.sleep 함수를 사용하여 1초의 지연을 발생시킨다. time.sleep 함수는 기다리는 동안 CPU를 그냥 놀리는 반면에, asyncio.sleep 함수는 CPU가 놀지 않고 다른 처리를 할 수 있도록 해준다.
+- 주의할 점은 asyncio.sleep 자체도 비동기 함수이기 때문에 호출할 때 반드시 await 키워드를 붙여야 한다는 것이다.
+
+- [참고 블로그](https://www.daleseo.com/python-asyncio/)
+
+
+
+
 
