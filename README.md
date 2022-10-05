@@ -10,6 +10,21 @@
 
 ## 분류
 
+### 기술 면접 대비 기본 개념 정리
+- 📖 **contents**
+  - [Data Structure](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Data%20Structure.md)
+  - [Database](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Database.md)
+  - [Network](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Network.md)
+  - [Operating System](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Operating%20System.md)
+  - [Security](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Security.md)
+  - [Design Pattern](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Design%20Pattern.md)
+  - [Distribute](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Distribute.md)
+  - [Python](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md)
+  - [Django](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Django.md)
+  - [ETC](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/ETC.md)
+
+
+
 ### HTML
 
 - [HTML 기초](https://github.com/tkdqor/TIL/blob/main/HTML/HTML%20%EA%B8%B0%EC%B4%88.md)
@@ -32,8 +47,7 @@
 
 
 
-
-### Python
+### Python 관련 내용
 
 - [Python Preview](https://github.com/tkdqor/TIL/blob/main/Python/Python%20Preview.md)
 - [변수입력과 연산자](https://github.com/tkdqor/TIL/blob/main/Python/%EB%B3%80%EC%88%98%EC%9E%85%EB%A0%A5%EA%B3%BC%20%EC%97%B0%EC%82%B0%EC%9E%90.md)
@@ -58,7 +72,7 @@
 
 
 
-### Django
+### Django 관련 내용
 
 - [Django Preview](https://github.com/tkdqor/TIL/blob/main/Django/Django%20Preview.md)
 - [render와 redirect](https://github.com/tkdqor/TIL/blob/main/Django/render%EC%99%80%20redirect.md)
@@ -80,21 +94,6 @@
 
 
 
-### 기술 면접 대비 기본 개념 정리
-- 📖 **contents**
-  - [Data Structure](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Data%20Structure.md)
-  - [Database](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Database.md)
-  - [Network](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Network.md)
-  - [Operating System](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Operating%20System.md)
-  - [Security](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Security.md)
-  - [Design Pattern](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Design%20Pattern.md)
-  - [Distribute](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Distribute.md)
-  - [Python](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md)
-  - [Django](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Django.md)
-  - [ETC](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/ETC.md)
-
-
-
 ### 오류모음집
 
 - [github push 오류](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
@@ -105,6 +104,7 @@
 - [DBeaver connect timed out 에러](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/DBeaver%20connect%20timed%20out%20%EC%97%90%EB%9F%AC.md)
 - [Reverse for '...' with arguments '('',)' not found. 1 pattern(s) tried](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/Reverse%20for%20'~~~'%20with%20arguments%20'(''%2C)'%20not%20found.%201%20pattern(s)%20tried.md)
 - [UnboundLocalError 오류](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/UnboundLocalError%20%EC%98%A4%EB%A5%98.md)
+
 
 
 ### 코딩테스트 준비
