@@ -6,7 +6,6 @@
 - Data Structure
   - [Stack과 Queue의 차이](#stack과-queue의-차이)
   - [시간복잡도란](#시간복잡도란)
-  - [Binary Tree의 시간 복잡도](#binary-tree의-시간-복잡도)
   - [자료구조 heap](#자료구조-heap)
   - [링크드 리스트란](#링크드-리스트란)
   - [어레이 리스트와 링크드 리스트의 차이](#어레이-리스트와-링크드-리스트의-차이)
@@ -47,13 +46,6 @@ for i in range(100):
 ```
 
 - **시간복잡도를 고려한다면, for문과 while문은 최대한 사용하지 않는 것이 좋다.**
-
-* * *
-
-## Binary Tree의 시간 복잡도
-- Binary Tree의 시간 복잡도는 **O(log_2(N))** 이다.
-  - 해설 : https://neos518.tistory.com/145
-  - 이진 트리 설명 : https://ratsgo.github.io/data%20structure&algorithm/2017/10/21/tree/
 
 
 * * *
