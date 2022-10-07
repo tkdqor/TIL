@@ -205,7 +205,9 @@ for restaurant in restaurants:
         print(restaurant.name+": "+pizza.name)
 ```
 
-- Restaurant과 Pizza 모델이 서로 M:N 혹은 1:N관계일 때, 위와 같이 코드를 작성하면 총 6개의 쿼리가 발생한다.(Restaurant 모델에 5개의 데이터가 있다고 가정)
+- Restaurant과 Pizza 모델이 서로 M:N 관계일 때, 위와 같이 코드를 작성하면 총 6개의 쿼리가 발생한다.(Restaurant 모델에 5개의 데이터가 있다고 가정)
+  - for restaurant in restaurants: 여기서 1번, for pizza in restaurant.pizzas.all(): 여기서 5번이 발생
+
 
 ```python
 restaurants = Restaurant.objects.all().prefetch_related('pizzas')
@@ -215,6 +217,7 @@ for restaurant in restaurants:
 ```
 
 - 반면에 위와 같이 prefetch_related 메소드를 사용하면 2개의 쿼리만 발생하게 된다.
+  - for restaurant in restaurants: 1번, for pizza in restaurant.pizzas.all(): 1번 발생
 - **즉, prefetch_related 메소드는 restaurant를 모두 가져오는 query는 동일하지만 그 뒤 pizza데이터를 가져와 result_cache에 caching하게 되고 데이터베이스에 접근하지 않고도 cache에서 찾아 사용하게 된다.**
 
 - [관련 블로그](https://velog.io/@anjaekk/Django-Query%EC%A4%84%EC%9D%B4%EA%B8%B0selectrelated-%EC%99%80-prefetchrelated)
