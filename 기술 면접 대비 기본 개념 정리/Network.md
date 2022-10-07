@@ -15,6 +15,7 @@
   - [Web 서버 동작 과정](#web-서버-동작-과정)
   - [Celery 관련 내용](#celery-관련-내용)
   - [wsgi란](#wsgi란)
+  - [uWSGI와 Gunicorn비교](#uwsgi와-gunicorn비교)
   - [Nginx와 Gunicorn 둘 중 하나만 사용해도 될까](#nginx와-gunicorn-둘-중-하나만-사용해도-될까)
   - [인바운드와 아웃바운드 규칙](#인바운드와-아웃바운드-규칙)
   - [SSH란](#ssh란)
@@ -315,6 +316,20 @@ GET, PUT, DELETE  /users/1
 
 - [관련 블로그](https://uiandwe.tistory.com/1268)
 
+
+* * * 
+
+## uWSGI와 Gunicorn비교
+- **Gunicorn**은 uwsgi에 비해 Latency라고 하는 요청과 응답 사이에 경과된 시간인 대기 시간이 더 짧다. 더 빠르게 요청을 처리한다.
+  - 그리고 서버의 메모리 요구사항을 의미하는 RAM Usage라고 하는 램 사용량 부분에서도 gunicorn이 uwsgi에 비해 더 낮다.
+
+- 반면에 **uWSGI**는 CPU Usage라고 하는 CPU 사용량에서는 gunicorn보다는 낮게 사용된다. 그리고 초당 처리할 수 있는 요청 수를 비교하면 uwsgi가 gunicorn보다 높게 나온다.
+
+- 결론적으로 gunicorn의 성능이 대체적으로 좋으나 uwsgi보다는 리소스가 크고, uwsgi는 리소스가 적고 가볍게 사용하기 위한 소프트웨어라고 판단할 수 있다.
+  - **지금까지는 팀 및 개인 프로젝트의 규모가 그렇게 크지 않았기 때문에 조금 더 가볍게 사용할 수 있는 uwsgi를 선택해서 진행해봤다.**
+
+- [관련 내용](https://ivan-site.com/2012/09/benchmark-uwsgi-vs-gunicorn-for-async-workers/)
+- [관련 내용 2](https://www.appdynamics.com/blog/engineering/a-performance-analysis-of-python-wsgi-servers-part-2/)
 
 * * *
 
