@@ -394,7 +394,6 @@ pytest
 
 ## Github Action이란
 - Github Action이란 Github 저장소를 기반으로 소프트웨어 개발 Workflow를 자동화 할 수 있는 도구이다. 
-- **즉, Github Action 역시 인스턴스(컴퓨터)에서 가상환경을 구축하게 된다. 여기에 자동화 프로세스도 돌아갈 수 있고 자동화 할 때마다 OS(예를 들어 우분투), python, pipenv 설치를 진행**
 - Github 내부에서 프로젝트를 빌드, 테스트, 릴리즈 또는 배포를 지원하는 기능으로서, Github에서 제공하는 CI/CD 도구라고 생각하면 된다.
 
 ### GitHub Action 주요 개념
