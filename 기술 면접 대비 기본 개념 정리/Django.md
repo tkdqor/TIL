@@ -12,7 +12,6 @@
   - [Lazy-loading이란](#lazy-loading이란)
   - [select_related 와 prefetch_related](#select_related-와-prefetch_related)
   - [django signal이란](#django-signal이란)
-  - [render와 redirect 관련](#render와-redirect-관련)
   - [DRF란](#drf란)
   - [DRF를 사용하는 이유](#drf를-사용하는-이유)
   - [DRF의 장단점](#drf의-장단점)
@@ -279,13 +278,6 @@ def on_save_user(sender, instance, **kwargs):
 
 - [참고 블로그](https://dgkim5360.tistory.com/entry/django-signal-example)
 - [공식 문서](https://docs.djangoproject.com/en/4.0/ref/signals/)
-
-
-* * *
-
-## render와 redirect 관련
-- https://milooy.wordpress.com/2016/03/03/pass-data-through-redirect-in-django/
-
 
 * * * 
 
