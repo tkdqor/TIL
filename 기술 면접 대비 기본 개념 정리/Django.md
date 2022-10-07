@@ -348,29 +348,10 @@ def on_save_user(sender, instance, **kwargs):
 - [DRF simpleJWT를 사용해서 진행한 로그인 구현 코드 예시](https://github.com/tkdqor/TIL/blob/main/Django/DRF(Django%20Rest%20Framework)%20%EC%A0%95%EB%A6%AC.md#%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85%EA%B3%BC-%EB%A1%9C%EA%B7%B8%EC%9D%B8-apiview-%EC%98%88%EC%8B%9C)
 
 - **DRF simpleJWT를 사용하기 위한 settings 설정**
-  - DRF simpleJWT를 사용하기 위해 settings.py에 SIMPLE_JWT라는 값들을 정의해준다. 간략하게 각각 어떤 의미인지 알아보자
+  - DRF simpleJWT를 사용하기 위해 settings.py에 SIMPLE_JWT라는 값들을 정의해준다. 
   - ROTATE_REFRESH_TOKENS : True로 설정 시, access token이 만료되서 TokenRefreshView에 다시 요청할 때, refresh token도 같이 새롭게 갱신해준다
   - BLACKLIST_AFTER_ROTATION : True로 설정 시, 블랙리스트 앱이 사용 중이고 ROTATE_REFRESH_TOKENS 설정이 True로 설정된 경우 TokenRefreshView에 제출된 새로 고침 토큰이 블랙리스트에 추가된다.
   - UPDATE_LAST_LOGIN : True로 설정하면 로그인 시 auth_user 테이블의 last_login 필드가 업데이트된다
-  - ALGORITHM : 토큰에 대한 서명/확인 작업을 수행하는 데 사용되는 PyJWT 라이브러리의 알고리즘이다. 대칭 HMAC 서명 및 확인을 사용하려면 'HS256', 'HS384', 'HS512' 알고리즘을 사용할 수 있고 HMAC 알고리즘을 선택하면 SIGNING_KEY 설정이 서명 키와 확인 키로 사용되고 이 경우 VERIFYING_KEY 설정은 무시된다.
-  - SIGNING_KEY : 생성된 토큰의 콘텐츠에 서명하는 데 사용되는 서명 키이다. HMAC 서명의 경우 서명 프로토콜에 필요한 데이터 비트 수 이상을 포함하는 임의 문자열이어야 한다. RSA 서명의 경우 2048비트 이상의 RSA 개인 키가 포함된 문자열이어야 한다. Simple JWT는 기본적으로 256비트 HMAC 서명을 사용하므로 SIGNING_KEY 설정은 기본적으로 django 프로젝트의 SECRET_KEY 설정 값으로 설정된다.
-  - VERIFYING_KEY : 생성된 토큰의 내용을 확인하는 데 사용되는 확인 키이다. 
-  - AUDIENCE : 청중은 생성된 토큰에 포함되거나 디코딩된 토큰에서 유효성이 확인된다고 주장한다. 없음으로 설정하면 이 필드가 토큰에서 제외되고 유효성이 검사되지 않는다.
-  - ISSUER : 발행자는 생성된 토큰에 포함되고/또는 디코딩된 토큰에서 검증된다고 주장한다. 없음으로 설정하면 이 필드가 토큰에서 제외되고 유효성이 검사되지 않는다.
-  - JWK_URL : JWK_URL은 토큰 서명을 확인하는 데 필요한 공개 키를 동적으로 확인하는 데 사용한다.
-  - LEEWAY : Leeway는 만료 시간에 약간의 여유를 주기 위해 사용된다. 초 또는 datetime.timedelta의 정수일 수 있다.
-  - AUTH_HEADER_TYPES : 인증이 필요한 보기에 대해 승인될 인증 헤더 유형이다. 예를 들어, 'Bearer' 값은 인증이 필요한 보기가 다음 형식의 헤더를 검색함을 의미한다. Authorization: Bearer <token>
-  - AUTH_HEADER_NAME : 인증에 사용할 인증 헤더이름이다. 본값은 요청의 Authorization 헤더를 수락하는 HTTP_AUTHORIZATION이다.
-  - USER_ID_FIELD : 사용자를 식별하기 위해 생성된 토큰에 포함될 사용자 모델의 데이터베이스 필드이다. 이 설정의 값은 초기 값이 선택되면 일반적으로 변경되지 않는 필드를 지정하는 것이 좋다.
-  - USER_ID_CLAIM : 사용자 식별자를 저장하는 데 사용되는 생성된 토큰의 클레임이다. 예를 들어 'user_id' 설정 값은 생성된 토큰에 사용자의 식별자가 포함된 "user_id" 클레임이 포함됨을 의미한다.
-  - USER_AUTHENTICATION_RULE : 사용자가 인증할 수 있는지 여부를 결정하기 위해 호출 가능하다.
-  - AUTH_TOKEN_CLASSES : 인증을 증명할 수 있는 토큰 유형을 지정하는 클래스에 대한 점 경로 목록이다.
-  - TOKEN_TYPE_CLAIM : 토큰 유형을 저장하는 데 사용되는 클레임 이름이다.
-  - TOKEN_USER_CLASS : 검증된 토큰으로 뒷받침되는 상태 비저장 사용자 객체
-  - JTI_CLAIM : 토큰의 고유 식별자를 저장하는 데 사용되는 클레임 이름
-  - SLIDING_TOKEN_REFRESH_EXP_CLAIM : 슬라이딩 토큰의 새로 고침 기간 만료 시간을 저장하는 데 사용되는 클레임 이름
-  - SLIDING_TOKEN_LIFETIME : 슬라이딩 토큰이 인증을 증명하는 데 유효한 기간을 지정하는 datetime.timedelta 개체
-  - SLIDING_TOKEN_REFRESH_LIFETIME : 슬라이딩 토큰이 새로 고침되는 데 유효한 기간을 지정하는 datetime.timedelta 개체
   - [공식 문서](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html#access-token-lifetime)
 
 
