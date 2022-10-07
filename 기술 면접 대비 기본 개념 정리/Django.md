@@ -413,7 +413,6 @@ urlpatterns += [
 - **커스텀 유저 모델을 사용하기 위해서는, models.py에서 BaseUserManager와 AbstractBaseUser 2개의 클래스를 상속받아 새로운 클래스를 생성해야 한다.**
 
 - **BaseUserManager 클래스 : User를 생성할때 사용하는 클래스**
-  - 해당 클래스의 소스코드에는, email 부분을 @ 기준으로 email_name과 domain_part로 나누고 이 둘을 합친 email을 return 해준다. 그리고, 랜덤으로 password를 만들어준다.
   - User를 생성할 때 사용하는 헬퍼 클래스이다. User를 생성할 때의 행위를 지정할 수 있다.
     - 모든 django model들은 Manager를 통해서 QuerySet을 받는다. DB에서 query를 처리할 때,  Manager를 무조건 거쳐야 한다고 한다.
   - BaseUserManager 클래스 내부에는 create_user() 함수와 create_superuser() 함수가 있다. 각각 일반 유저를 생성하는 함수, 관리자 유저를 생성하는 함수이다.
@@ -423,14 +422,6 @@ urlpatterns += [
 <br>  
   
 - **AbstractBaseUser 클래스 : 상속받아 User 모델을 생성하는 클래스**
-  - 해당 클래스의 소스코드에는, password를 CharField로 저장하고 save 메서드를 오버라이딩 해서 Model 클래스의 save 메서드를 super()로 실행해서 저장한다. 그리고 get_username이라는 메서드로는 생성된 user의 username를 리턴한다. clean이라는 메서드로는 유니코드 문자열 username를 정규화 형식으로 반환한다. 
-  - 소스코드에 있는 [@property 관련 내용](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md#property-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0)
-    - @property 설정이 된 is_anonymous 메서드로는 항상 False가 리턴된다. User 객체가 익명이 아니기 때문에 항상 False가 리턴된다.
-    - @property 설정이 된 is_authenticated 메서드로는 항상 True가 리턴된다. User 객체가 인증이 되었는지 여부를 알려준다.
-    - check_password 메서드로 password가 적합한지 체크해준다.
-    - get_session_auth_hash 메서드는 암호 필드의 HMAC를 반환한다. / key_salt에서 생성된 키와 비밀(기본값은 settings.SECRET_KEY)을 사용하여 '값'의 HMAC를 반환한다. 기본 알고리즘은 SHA1이지만 hashlib.new()에서 지원하는 모든 알고리즘 이름을 전달할 수 있다.
-    - @classmethod 설정이 된 get_email_field_name 메서드는 email 필드를 가져온다.
-    - @classmethod 설정이 된 normalize_username 메서드는 유니코드 문자열 username를 정규화 형식으로 반환한다.
   - User 모델의 필드를 설정해준다. id필드를 primary_key로 설정해서 인덱스를 설정 / 다른 추가적인 필드를 설정할 수 있다.
   - USERNAME_FIELD 설정값으로 email를 설정하면 로그인 시 ID를 email로 설정할 수 있다.
   - 그리고 objects 변수값을 통해 헬퍼 클래스를 지정해야한다. 위에서 BaseUserManager를 상속해서 설정한 클래스를 설정해주면 된다.
@@ -527,11 +518,14 @@ class User(AbstractBaseUser):
 ```
 
 - **CustomUserManager의 경우에는,** 일반 유저를 생성할 때 create_user 함수가 호출되고 email과 password를 받게끔 설정한 예시이다. user.set_password(password)로 암호화를 하고, user.save(using=self._db) 코드로 DB에 저장한다.
+  - **user.save(using=self._db)** 라는 코드는, using 매개변수를 사용해서 manager가 작업에 사용하는 데이터베이스를 정의한다. 이렇게 사용하는 이유는, 만약 서버에 여러개의 데이터베이스가
+있다면 어떤 데이터베이스를 사용할지 정의를 해줘야 하기 때문이다. 그래서 일반적으로 user.save(using=self._db) 이렇게 사용하면 settings.py의 DATABASES에 여러가지 데이터베이스가 있을 때 'default’로 설정한 데이터베이스를 사용하게 된다. [stackoverflow 내용](https://stackoverflow.com/questions/57667334/what-is-the-value-of-self-db-by-default-in-django)
   - 관리자 유저를 생성할 때는 create_superuser 함수가 호출되고 user.is_admin = True 이렇게 어드민 여부를 True로 설정해준다.
 
 
 - **User 모델의 경우, AbstractBaseUser를 상속받아서 정의한다.**
   - id = models.BigAutoField(primary_key=True) 이런식으로 User 모델의 primary_key를 id 필드로 정해준다.
+    - 기본적으로 id 필드값은 AutoField로 설정되어 있으나, BigAutoField를 설정해서 숫자 범위를 64bit까지 늘려서 사용자가 급격히 늘어나는 것을 대비할 수 있다.
   - is_active 필드로 계정 활성화 여부를 변경할 수 있다. 
   - is_admin 필드로 관리자 계정으로 변경할 수 있다.
   - USERNAME_FIELD = "email" => 이렇게 설정하면, 로그인 시 email 정보를 받게된다.
