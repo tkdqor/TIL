@@ -298,7 +298,7 @@ def on_save_user(sender, instance, **kwargs):
 - flask와 같은 프레임워크로도 api를 반환할 수 있다고 한다. 그럼에도 불구하고 DRF를 사용하는 이유를 알아보자.
   - django 기반의 **웹브라우저 API 서버**를 만들수 있도록 해준다.
   - **serializer**로 매우 편리하게 DB 즉, model에서 꺼낸 데이터를 Queryset의 형태가 아니라 **json 형태로 데이터를 전환하는 직렬화**를 할 수 있다. / 이렇게 함으로써 python으로 만든 백엔드를 다른 프론트엔드에서도 사용할 수 있게 된다.
-  - 여러가지 중요한 기능들이 DRF로 이미 구현이 되어있어 사용하기 편리하다. **데이터의 유효성을 검사하는 validation이나 security**와 같은 기능들이 DRF에는 구현되어 있지만, flask는 단순히 http request를 패싱해주는 기능만 한다. 여기에 validation이나 security와 같은 기능들을 개발자가 따로 개발해야 한다면 부담이 늘어나게 될 것이다.
+  - 여러가지 중요한 기능들이 DRF로 이미 구현이 되어있어 사용하기 편리하다. **데이터의 유효성을 검사하는 validation**과 같은 기능들이 DRF에는 구현되어 있지만, flask는 단순히 http request를 패싱해주는 기능만 한다. 여기에 validation과 같은 기능들을 개발자가 따로 개발해야 한다면 부담이 늘어나게 될 것이다.
   - rest api를 개발 하는데 있어서, rest api 규약을 지킬수 있도록 **HTTP method 별로 로직을 구성**할 수 있게 제공해준다. / 그래서 API 에러를 더 쉽게 디버깅 할 수 있다.
   - 이미 구현된 **인증/인가 기능**을 사용하거나, DRF simple-jwt와 함께 사용함으로서 JWT 기반 인증 및 인가 기능을 유용하게 사용할 수 있다.
 
