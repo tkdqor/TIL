@@ -175,7 +175,7 @@ repos:
 
 ## 컴파일이란
 - 컴퓨터가 이해할 수 있는 기계어로 변환해주는 과정
-- [파이썬의 컴파일 과정 참고](https://velog.io/@chldppwls12/python-%EB%8F%99%EC%9E%91-%EB%B0%A9%EC%8B%9D)
+- [파이썬의 동작 과정 참고](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md#python%EC%9D%98-%EB%8F%99%EC%9E%91%EC%9B%90%EB%A6%AC)
 
 
 * * *
