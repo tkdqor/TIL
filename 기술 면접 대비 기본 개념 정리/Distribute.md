@@ -194,10 +194,6 @@ repos:
     - pipenv에서는 git pull 이후에 pipenv install로 version 일치시키기
     - pip에서는 requirements.txt를 생성해서 dependency 충돌을 피할 수 있음
 
-- [python 애플리케이션 의존성 주입](https://www.humphreyahn.dev/blog/dependency-injector#a4763f1a-5544-4dc6-88fe-bd3eebe28c54)
-
-
-
 
 * * *
 
