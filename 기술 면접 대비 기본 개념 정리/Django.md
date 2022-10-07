@@ -329,12 +329,6 @@ def on_save_user(sender, instance, **kwargs):
 - 반면에 **Generic View**와 같이 고수준으로 갈수록 코드가 짧아지고 중복, 반복 코드가 거의 없지만 동작 코드가 추상화되어 있다.
   - **DRF Mixins이나 Generic View, Viewset까지 전부 APIView와 다르게 클래스 레벨에서 queryset과 serializer_class를 설정해서 사용한다는 점이 다르다.**
 
-<br>
-
-- **프로젝트에서 왜 APIView를 선택했는지 물어본다면**
-  - DRF를 원티드 프리온보딩 코스에서 처음으로 사용해봤기 때문에 로직을 이해하기 쉬운 APIView로 비록 중복되는 코드들이 있었으나 get, post 등 메소드마다 함수로 로직을 구현해보려고 했다. 나중에는 학습을 해서 Generic View를 사용하여 반복되는 코드를 줄이고 생산성을 높여보고 싶다.
-
-
 * * *
 
 ## djangorestframework-simplejwt란
