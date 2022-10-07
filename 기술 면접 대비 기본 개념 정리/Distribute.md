@@ -3,7 +3,6 @@
 📖 **Contents**
 
 - Distribute
-  - [django 배포 관련](#django-배포-관련)
   - [AWS EC2 ssh 연결하기](#aws-ec2-ssh-연결하기)
   - [Collectstatic 명령어](#collectstatic-명령어)
   - [CI란](#ci란)
@@ -22,11 +21,6 @@
   - [Docker 및 Docker-compose 예시](#docker-및-docker-compose-예시)
   - [Docker 이미지와 컨테이너 차이](#docker-이미지와-컨테이너-차이)
   - [컨테이너와 가상머신의 차이](#컨테이너와-가상머신의-차이)
-
-* * *
-
-## django 배포 관련
-- https://dailyheumsi.tistory.com/19
 
 
 * * *
@@ -50,7 +44,12 @@ ssh -i "impact-redis.pem" ubuntu@ec2-13-209-43-88.ap-northeast-2.compute.amazona
 * * *
 
 ## Collectstatic 명령어
-- https://crynut84.github.io/2016/11/14/django-static-file/
+- `python manage.py collectstatic` 명령어는 Django 프로젝트의 여러 app에서 사용하는 static 파일을 한 곳(경로)으로 모아주는 역할을 한다.
+
+- **이렇게 static 파일들을 한 곳으로 모으는 이유는, CSS, Javascript, image 파일들로 이루어진 static 파일을 웹어플리케이션인 Django가 처리하기에는 너무 비효율적이기 때문이다.** 웹서버에서 웹 애플리케이션으로 요청을 전달하는 데는 WSGI라는 변환과정을 거치며 이것은 자원을 소모하는 일이고, 굳이 웹서버도 할 수 있는 일을 웹 애플리케이션에서 할 필요가 없는 것이다. 그래서 Django에서는 Production에서의 static 파일을 처리하는 기능을 담고있지 않다.
+  - 물론 Django 개발할 때는 static 파일이 잘 전송되는 것을 볼 수 있다. 하지만 이것은 INSTALLED_APPS의 django.contrib.staticfiles이라는 모듈이 담당했던 것이고 settings.py의 DEBUG 속성을 False로 바꾸면 동작하지 않게된다. 이때부터는 static 파일의 처리는 웹서버가 담당하게 된다.
+
+- [참고 블로그](https://crynut84.github.io/2016/11/14/django-static-file/)
 
 * * *
 
@@ -494,7 +493,7 @@ jobs:
 
 
 ### Python에 Github Action 적용 예시
-- https://zzsza.github.io/development/2020/06/06/github-action/
+- [관련 블로그](https://zzsza.github.io/development/2020/06/06/github-action/)
   - pytest 적용 내용도 포함
 
 
@@ -583,7 +582,6 @@ services:
 - [Docker 설치](https://www.daleseo.com/docker/)
 - [Docker compose 파일 내용](https://www.44bits.io/ko/post/almost-perfect-development-environment-with-docker-and-docker-compose#volumes-1)
 - [EC2에 Docker, Docker compose 설치하기](https://megazonedsg.github.io/1-Make-Docker/#1-docker-compose-%EC%84%A4%EC%B9%98%ED%95%98%EA%B8%B0)
-- https://velog.io/@lechuck/AWS-kqgviffq / https://giron.tistory.com/68 / https://qwlake.github.io/django/aws/docker/2020/03/17/django-deploy-at-aws-with-docker/
 
 * * *
 
