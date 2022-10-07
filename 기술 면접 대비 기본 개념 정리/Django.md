@@ -340,7 +340,7 @@ def on_save_user(sender, instance, **kwargs):
   - 그 다음, 클라이언트가 HTTP 헤더에 JWT인 access token을 첨부해서 서버에 데이터를 요구하게 되고, 서버에서는 클라이언트로부터 온 JWT 검증해서 응답해준다.
   - access token이 만료되면 refresh token을 통해 새로운 access token을 요청할 수 있다.
 
-- **JWT token의 경우, header에 관련 내용 넣고 payload에 유저 id 넣고 마지막으로 django 서버의 secret key를 넣어서 알고리즘을 통해 암호화를 진행한다.**
+- **JWT token의 경우, payload에 유저 id 넣고 마지막으로 django 서버의 secret key를 넣어서 알고리즘을 통해 암호화를 진행한다.**
   - 이렇게 토큰을 만들면, 이 secret key로만 복호화가 가능하기 때문에 django 서버에서만 복호화를 할 수 있다.
   - 우리한테 토큰이 날라오면 Auth : baerer “...” 이러한 형태가 된다. 그러면 서버는 data = JWT.detoken(‘sdfsdf’) 이런식으로 복호화를 진행한다.
   - JWT토큰은 결과적으로 복호화를 하면 header와 payload로 이루어져 있는 JSON 데이터가 나오게 된다.
