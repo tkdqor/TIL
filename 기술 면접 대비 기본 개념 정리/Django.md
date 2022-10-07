@@ -143,10 +143,10 @@ if sort == "like":
     - [공식 문서](https://docs.djangoproject.com/en/3.2/ref/models/querysets/#when-querysets-are-evaluated)
 
 
-- 우리가 ORM으로 쿼리문을 만들면 바로 데이터베이스에 Hit가 되는 것이 아니라, template에서 {% for item in recommendations %}  또는 {{ item.restaurant.category.name }} 이러한 코드가 실행될 때 마다 데이터베이스에 Hit를 치게 된다. 이게 바로 “lazy-loading 방식”이다. 그 다음 바로 이어서 {{ item.restaurant.main_image.image }} 해당 코드가 실행될 때는, 이미 메모리에 불러온 restaurant이 있기 때문에 Hit 하지는 않는다. 
-  - **Lazy-loading의 성능이슈인 N+1 Query 문제는 외래키(Foreign Key)를 참조해서 데이터를 가져올 때 발생한다.** {% for item in recommendations %} 이러한 코드가 있고 그 밑에 {{ item.restaurant.category.name }} 이렇게 코드가 있을 때, 데이터 개수인 N번 Hit 하는 게 아니라 처음 for문에서 한 번더 Hit가 발생하게 된다.
+- 우리가 ORM으로 쿼리문을 만들면 바로 데이터베이스에 Hit가 되는 것이 아니라, 로직에서 for item in recommendations 그리고 item.restaurant.category.name 이러한 코드가 실행될 때 마다 데이터베이스에 Hit를 치게 된다. 이게 바로 lazy-loading 방식이다. 그 다음 바로 이어서 item.restaurant.main_image.image 해당 코드가 실행될 때는, 이미 메모리에 불러온 restaurant이 있기 때문에 Hit 하지는 않는다.
+  - **Lazy-loading의 성능이슈인 N+1 Query 문제는 외래키(Foreign Key)를 참조해서 데이터를 가져올 때 발생한다.** for item in recommendations 이러한 코드가 있고 그 밑에 item.restaurant.category.name 이렇게 코드가 있을 때, 데이터 개수인 N번 Hit 하는 게 아니라 처음 for문에서 한 번더 Hit가 발생하게 된다.
 
-- 근데, 너무 많이 데이터베이스에 Hit를 치게 되면 —> 데이터베이스에 부하가 많이 걸리게 된다. 그래서 이렇게 lazy-loading 를 방지하는 방법으로 django에서는 select_related 메소드를 사용할 수 있다.
+- 근데, 너무 많이 데이터베이스에 Hit를 하게 되면, 데이터베이스에 부하가 많이 걸리게 된다. 그래서 이렇게 lazy-loading 를 방지하는 방법으로 django에서는 select_related나 prefetch_related  메소드를 사용할 수 있다.
 
 ```python
 ...
@@ -155,7 +155,7 @@ recommendations = Recommendation.objects.filter(visible=True).order_by('sort').s
 ```
 
 - **이런식으로 views.py에서 Recommendation를 읽어올 때 select_related 메소드를 사용하면, lazy-loading를 쓰지 않고 아예 연결된 restaurant도 같이 가져오겠다는 의미가 된다.** 
-  - 이 때 ‘restaurant’은 related_name이라고 생각하면 되서 modes.py에도 같은 이름으로 되어있는지 확인하자.
+  - 이 때 ‘restaurant’은 related_name으로 modes.py에도 같은 이름으로 되어있는지 확인하자.
 
 <br>
 
