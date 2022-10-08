@@ -74,10 +74,10 @@ GET, PUT, DELETE  /users/1
   - ex) 우리가 카카오 책 검색 open API 서버 주소로 어떤 책에 대한 정보를 요청하면 -> API 서버에서는 자체 DB를 뒤져서 우리가 원하는 정보를 다시 전달해준다.
 - 이러한 요청과 응답은 정해진 API 형식에 맞춰서 전달해야 한다. 이러한 형식이 작성된 문서를 **API 가이드**라고 한다. 요즘에는 거의 모든 API에서 JSON형태로 정보가 전달된다.
 
-### open API를 통해 받은 JSON
-- open API를 통해 받은 JSON 데이터를 실제 HTML 파일에 출력하려면 -> JSON 데이터를 JavaScript로 접근해야 한다.
+### API를 통해 받은 JSON
+- API를 통해 받은 JSON 데이터를 실제 HTML 파일에 출력하려면 -> JSON 데이터를 JavaScript로 접근해야 한다.
 - 해당 JSON 데이터를 JavaScript로 console에 표시할 수 있다.
-  - 그리고나서, Jquery를 이용해 -> html의 특정 element에 어떤 요소를 넣어줄 수 있다.
+  - 그리고 Jquery를 이용해 -> html의 특정 element에 어떤 요소를 넣어줄 수 있다.
   - <script></script> 이렇게 JavaScript 코드 사이에 HTML 특정 element를 설정하고 해당 데이터를 보여줄 수 있다.
 
 - [참고 자료](https://enjoyinjoanne.tistory.com/56)
