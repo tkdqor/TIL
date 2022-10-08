@@ -25,7 +25,6 @@
   - [OOP에서 상속이란](#oop에서-상속이란)
   - [try와catch 코드](#try와catch-코드)
   - [breakpoint](#breakpoint)
-  - [SSD가 HDD보다 빠른 이유](#ssd가-hdd보다-빠른-이유)
   - [코드 컨벤션](#코드-컨벤션)
   - [pipenv란](#pipenv란)
   - [Homebrew란](#homebrew란)
@@ -856,16 +855,6 @@ git branch
 - 프로세스가 멈추면 멈춘 시점의 변수나 스택 파라미터, 혹은 특정 메모리 지점의 값 등을 조사할 수 있다.
 
 - [관련 블로그](https://to-paz.tistory.com/106)
-
-* * *
-
-## SSD가 HDD보다 빠른 이유
-- **HDD는 데이터를 읽거나 쓸 때 스핀들 모터로 원판을 돌리고 헤드가 그 위를 헤집어야 하는 물리적 작동이 필요하지만, SSD는 그러한 과정이 생략되어 움직이는 부품이 없어 속도가 빠르고 전력 소모량이 적고 내구성과 신뢰성도 높다.**
-- HDD는 하드디스크드라이브(Hard Disk Drive), SSD는 솔리드스테이트드라이브(Solid State Drive)를 의미.
-- SSD는 컨트롤러가 낸드플래시 셀에서 정보를 바로 조회하기 때문에 속도가 빠름. 
-
-- [관련 블로그](http://m.ddaily.co.kr/m/m_article/?no=125956)
-  - [2](https://active12.tistory.com/15)
 
 * * *
 
