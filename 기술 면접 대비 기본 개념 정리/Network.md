@@ -108,14 +108,6 @@ GET, PUT, DELETE  /users/1
 
 - 이 인터넷 내에서 데이터를 주고받는 방법 중 하나가 바로 '웹 서비스' 이다. 따라서 엄밀히 말하면 인터넷과 웹은 같은 의미로 볼 수 없다.
 
-### HTTP
-
-- 웹 서비스에서 데이터를 주고받을 때 반드시 지켜야 할 통신 규약
-- HTTP는 Hyper Text Transfer Protocol의 약자로 Hyper Text가 웹사이트에서 볼 수 있는 링크, 하이퍼 링크를 의미. 그리고 Protocol은 규칙, 규약에 해당.
-- 웹 서비스 등 해당 서비스에 맞게 정확한 프로토콜을 따라야 데이터를 원하는대로 주고받을 수 있다.
-> - [HTTP 관련 MDN 내용](https://developer.mozilla.org/ko/docs/Web/HTTP/Overview)
-
-
 * * *
 
 ## 웹사이트에서 url 요청 시 Headers
