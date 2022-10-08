@@ -892,7 +892,7 @@ pipenv shell
 exit
 
 # 패키지 설치
-pipenv install requests
+pipenv install 패키지이름
 
 # Git 저장소 clone 이후 Pipfile 파일과 Pipfile.lock 파일 확인하고 패키지 설치 하기
 pipenv install
