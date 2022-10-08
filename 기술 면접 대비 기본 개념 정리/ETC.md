@@ -515,11 +515,6 @@ git remote set-url origin 변경할url주소
   - **git log** 명령어로 commit 내역을 확인할 수 있다. 그러면 현재 commit된 내용을 확인할 수 있다.
   - 또한, **git add hello.py** 이렇게 하나의 변경된 파일만 staging area에 올려서 commit를 진행할 수도 있다.
 
-- **rebase**
-  - rebase의 경우, 여러 commit를 하나로 합쳐서 commit 될 수 있게끔 해준다.
-  - push를 한 이후에 린트 등의 이유로 block이나 conflict나 발생하는 경우, 수정하고 add, commit를 진행하게 되면 2개의 commit이 되는데 이 때 rebase를 통해서 하나의 commit으로 만들 수 있다. 
-  - [관련 블로그](https://madplay.github.io/post/squash-git-commits-with-rebase)
-
 - **git status**
   - git status는 파일들의 상태를 확인할 때 사용하는 명령어이다.
   - 커밋할 변경 사항 / 커밋하도록 정하지 않은 변경 사항 / 추적하지 않는 파일 이렇게 나뉘는데, 각각 Staged 상태(git add 이후) / Modified 상태(git commit 이후) / Untracked 상태(git add 전)를 의미한다.
