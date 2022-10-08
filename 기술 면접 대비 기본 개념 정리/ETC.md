@@ -427,11 +427,11 @@ git branch -M main
 ```terminal
 git add .
 
-git stash
+git stash # 해당 명령어를 통해 현재 Staging 영역에 있는 파일의 변경사항을 스택에 임시 저장
 
 git pull origin master
 
-git stash pop 
+git stash pop # # 스택에 저장한 내용 제거
 ```
 
 - [git merge 충돌 해결방법 블로그](https://booiljung.github.io/technical_articles/git/practice_git_merge_conflict.html)
