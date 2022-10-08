@@ -36,8 +36,7 @@
   - 랜더링 방식에서 JSON 형태의 응답으로 바뀐 이유는, 다양한 처리가 가능하기 때문. 데이터만 보내면 효율적이고 웹이나 앱, OPEN api 등 다양하게 활용될 수 있다.
 
 - **REST API**
-  - REST는 Representational State Transfer의 약자로, 응용프로그램(클라이언트)들이 시스템에 있는 자원(데이터)을 쉽게 사용하기 위해 시스템이 각 자원에 이름을 붙여 정리해놓은 것이라고 볼 수 있다. 
-  - **즉, URL로 자원을 정의하고, Method로 행위를 정의하는 것이라고 볼 수 있다.**
+  - REST는 Representational State Transfer의 약자로, 응용프로그램(클라이언트)들이 시스템에 있는 자원(데이터)을 쉽게 사용하기 위해 시스템이 **URL로 자원을 정의하고, Method로 행위를 정의하는 것이라고 볼 수 있다.**
   - **RESTful한 API가 되려면, Request에는 URL, Method가 있어야 하고 / Response에는 Data type, Status code가 있어야 한다.**
 
 ```python
