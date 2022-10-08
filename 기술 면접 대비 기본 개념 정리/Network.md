@@ -258,7 +258,18 @@ GET, PUT, DELETE  /users/1
 * * *
 
 ## Celery 관련 내용
-- Celery란, python으로 작성된 비동기 작업 큐로, 비동기로 작업을 처리해서 응답시간을 줄일 수 있다. 무거운 작업들을 Celery Task로 정의해서 Message Broker(요청한 작업들을 담아두는 큐)에서 Task를 받고 여러 Celery Worker에게 적절히 분배하여 일을 수행하게 된다.
+- Celery란, python으로 작성된 비동기 작업 큐로, 비동기로 작업을 처리해서 응답시간을 줄일 수 있다. 
+- **Celery는 task(작업)를 Broker에게 전달하면 하나 이상의 Worker가 이를 처리하는 구조이다.**
+  - 때문에 celery를 사용하기 위해서는 작업 요청을 받을 Broker가 필요하다.
+  - 여기서 Broker란, 요청한 작업을 담아두는 큐이고 담아둔 요청을 여러개의 worker에게 적절히 분배한다. 대표적인 Message Broker로 Redis나 RabbitMQ등이 사용된다.
+
+- **비동기 방식 예시**
+  - 이러한 비동기 작업의 사례로는, 바로 **은행 전산 시스템**이 있다. 
+    - 전국의 은행 지점에서 동시다발적으로 거래가 일어날텐데, 충돌되는 문제를 해결하기 위해 Message Broker를 이용한 비동기 작업 큐를 구축할 수 있다.
+    - 모든 은행 지점에서 거래에 대한 전산 입력을 할 때마다 중앙 시스템의 메시지 큐에 순차적으로 작업을 등록시키고, 중앙 시스템은 큐에 등록된 작업을 차례대로 수행하면 충돌의 위험을 많이 줄일 수 있다.
+  - 또한, 어떤 서비스에 유저가 회원가입을 할 때마다 **안내 이메일을 발송**하는 경우에도 비동기 방식으로 진행되는 것으로 Celery가 사용될 수 있다.
+
+
 - [Celery 동작 구조](https://velog.io/@sms8377/Celery-Python-Celery%EB%9E%80)
 - [Celery 예시](https://velog.io/@nameunzz/Celery-Redis)
 
