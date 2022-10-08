@@ -567,58 +567,7 @@ git remote set-url origin 변경할url주소
 
 <br>
 
-**2-1. Github에 소스 올리기**
-- 이제 자신의 프로젝트를 새로 생성한 레파지토리에 올려보자.
-```
-git status
-```
-해당 명령어로 현재까지의 사항들이 모두 commit 되어있는지 확인하기. 여기서 빠진 게 있다면 전부 add해서 commit을 먼저 진행하자.
-```
-git remote
-```
-이 상태에서 위의 명령어를 입력하면 현 폴더의 원격 레파지토리를 확인할 수 있는데, 아직 설정한 게 없다면 아무것도 뜨지 않을 것이다.  
-이제 github에서 만든 새로운 레파지토리를 원격 저장소로 추가해보자.
-- https://www.yalco.kr/_02_github_token/  
-
-해당 내용을 통해 먼저 Personal access token를 생성해주자. 그 이후에는
-```
-git remote add origin 새로만든github주소
-```
-이 명령어는 새로 만든 github 레파지토리를 본인의 local 프로젝트의 'origin'이란 이름의 원격 저장소로 설정하겠다는 의미이다.  
-이 'origin'은 원하는 다른 이름으로 수정해도 되나 Git 초기화 시 기본 브랜치명이 master인 것처럼 흔히 기본값으로 사용되는 이름이라고 생각하면 된다.
-```
-git push -u origin master
-```
-이 push 명령어는 프로젝트 폴더의 현 브랜치에 commit된 내용들을 origin이라는 이름의 원격 레파지토리에 진행하고 원격 레파지토리의 master라는 이름의 브랜치를 올리겠다는 의미이다.  
-해당 명령어를 다 입력하고 나면
-```
-Branch 'master' set up to track remote branch 'master' from 'origin'.
-```
-다음과 같은 내용이 뜨면서 local 컴퓨터의 master branch가 origin이라는 원격 저장소의 master branch를 추적한다고 나온다.  
-그리고나서 github에 가보면 -> local로부터 push한 파일들이 올라와 있고 / 각 파일들이 어떤 commit에서 마지막으로 생성되었거나 변경되었는지 나와있다.  
-파일명을 클릭하면, 파일의 내용을 볼 수 있고 / commit 메시지를 클릭하면, 해당 commit에서 어떤 변화들이 있었던건지 확인할 수도 있다.
-```
-git remote
-```
-다시 입력해보면, 이제는 origin이라는 추가한 원격 레파지토리의 이름이 나오게 된다.
-
-<br>
-
-**2-2. 변화된 내용을 다시 push하기**
-- 자신의 프로젝트에서 작업을 하고 변경된 내용을 github에 push해보자.
-```
-git add -A
-git commit -m "새로운 파일 추가"
-```
-이렇게 변경된 파일을 local에서 추가하고 다시 commit한 다음
-```
-git push origin master
-```
-라고 입력해주면 github에 추가된 내용을 확인할 수 있다. 
-
-<br>
-
-**3. 다루지 않을 파일 설정하기 - .gitignore**
+**2. 다루지 않을 파일 설정하기 - .gitignore**
 - 프로젝트를 진행할 때, Git으로 관리하고 Github에 올릴 필요가 없거나 오히려 그래서는 안 되는 파일들이 있을 수 있다.
 - 코드를 실행하면 패키지가 다운받아지거나 코드대로 빌드되어서 자동으로 생성되는 파일들은, 어차피 코드만 있으면 그 때마다 실행해서 만들 수 있기 때문에 굳이 Git에 무리를 주거나 Github 용량을 차지할 필요가 없다.
 - 또한, 보안적으로 중요한 내용 / 예를 들어 데이터베이스 계정 등이 담긴 파일은 오픈소스 프로젝트라도 대중에게 공개되면 안 된다.
@@ -643,13 +592,13 @@ git commit -m "gitignore사용"
 ```
 이렇게 입력하고 
 ```
-git push origin master
+git push origin main
 ```
 github에 push까지 해주면 우리가 .gitignore파일에 적어두었던 python 파일은 github에 push가 되지 않는다는 것을 확인할 수 있다.  
 안드로이드나 스프링 등 처음부터 골격이 세팅된 프로그래밍 프로젝트를 생성하면, 이 .gitignore파일을 확인해볼 수 있다. 그래서 해당 내용은 github에 올릴 필요가 없는 내용들이고 빌드하면 만들어지는 것이거나 컴퓨터 IDE 세팅이라는 것 등을 파악할 수 있다.
 
 
-**4. Github 소스 내려받기**
+**3. Github 소스 내려받기**
 - 이제 Github에 올린 소스들을 내 컴퓨터에 다운받아보자.
 - 레파지토리가 Public이라면 누구나 가능하고, 집에 있는 Mac으로 작업해서 Github에 올린 소스들을 회사의 컴퓨터에서 다운받는다고 가정해보자.
 
@@ -660,9 +609,8 @@ git clone 복사한주소     ex.) git clone https://github.com/tkdqor/likelion.
 터미널에 입력해보자. 그러면 **해당 레파지토리명의 폴더**가 생긴 것을 볼 수 있다. 
 
 
-**5. 작업 주고받기**
+**4. 작업 주고받기**
 - commit 메시지는 팀원들과 협업할 때, 이번 커밋에서 어떤 변화들이 주어졌는지 간략히 알려주는 역할도 수행한다.  
-  구글에 "commit 메시지 작성법"도 찾아보자.
 
 - 만약, 다른 팀원이 우리가 같이 작업하고 있는 레파지토리에 push를 진행했을 때 -> 우리가 확인하는 방법이 있다.
 ```
@@ -674,27 +622,28 @@ git status
 ```
 을 입력해보면
 ```
-... Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
+... Your branch is behind 'origin/main' by 1 commit, and can be fast-forwarded.
 ```
-이렇게 이 브랜치가 원격 origin의 master 브랜치에 커밋 하나가 뒤쳐져 있다고 나오게 된다. 즉, Github에서 다운받아야 할 사항이 있다는 얘기이다. 그러면 받아보자.
+이렇게 이 브랜치가 원격 origin의 main 브랜치에 커밋 하나가 뒤쳐져 있다고 나오게 된다. 즉, Github에서 다운받아야 할 사항이 있다는 얘기이다. 그러면 받아보자.
 ```
-git pull 원격명 브랜치명        ex.) git pull origin master
+git pull 원격명 브랜치명        ex.) git pull origin main
 ```
 이 명령어를 입력한 이후에는 변경사항이 새롭게 다운된다.
 
 - 이렇게, Git과 Github을 사용해서 원격으로 협업할 때는 뭔가 작업하거나 push하기 이전에 먼저 해당 과정을 거쳐서 다운받아야 할 사항이 있는지 확인하고 있으면 pull를 해주고 작업을 하는 게 좋다.  
   - 팀원이 작업한 내용들을 꾸준히 업데이트 받아야 괜한 작업을 하거나 conflict가 나는 일을 방지할 수 있다.
-  - **그리고 Github에 다른 누군가가 올린 내역을 pull로 다 업데이트 받기 전까지는 내쪽에서 push를 할 수 없다. / 관련 [오류 링크]**(https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
+  - **그리고 Github에 다른 누군가가 올린 내역을 pull로 다 업데이트 받기 전까지는 내쪽에서 push를 할 수 없다.**
+  - [관련 내용](https://github.com/tkdqor/TIL/blob/main/%EC%98%A4%EB%A5%98%EB%AA%A8%EC%9D%8C%EC%A7%91/github%20push%20%EC%98%A4%EB%A5%98.md)
 
 
-**6. branch 주고받기**
+**5. branch 주고받기**
 - local 환경에서 다른 branch로 checkout된 상태에서, 작업을 한 뒤 해당 branch에서 github으로 push하는 경우
 ```
 git push origin 새로운branch명     ex.) git push origin my-idea
 ```
 이렇게 입력하고 난 뒤, Github페이지에서 branch를 눌러보면 my-idea라는 새로운 branch가 새로 생겨나게 되고 선택하게 되면, local의 새로운 branch상태가 새롭게 반영이 된다.
 
-- 내가 공동으로 작업하고 있는 하나의 레파지토리의 master가 아닌 다른 branch를 다운받아보자.
+- 내가 공동으로 작업하고 있는 하나의 레파지토리의 main이 아닌 다른 branch를 다운받아보자.
 - 먼저
 ```
 git fetch
@@ -719,18 +668,10 @@ git branch
 이 명령어로 local에서도 my-idea라는 branch가 생성된 걸 확인할 수 있다.
 
 
-**7. 충돌 해결하기**
+**6. 충돌 해결하기**
 - Gitf를 사용하면서 익혀나갈 때, 많은 사람들이 어려워하고 부딪치기 싫어하는 이유가 충돌이 발생하는 경우 때문이다.
 - branch간에도 발생할 수 있지만, 같은 branch에서 같은 파일의 같은 부분을 원격의 두 컴퓨터가 같이 건드린 상황에서도 발생할 수 있다. 
   - push 하기 전에 먼저 github의 내용을 pull 하려고 하는데 내가 똑같은 파일을 수정했다면, 해당 파일을 충돌하지 않도록 수정한 다음 저장해주고 다시 진행하면 된다.
-
-
-**8. 원격의 branch를 지우는 경우**
-```
-git push -d 원격명 브랜치명       ex.) git push -d origin my-idea
-```
-이렇게 입력해주면 삭제가 된다.
-
 
 * * *
 
