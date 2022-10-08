@@ -362,6 +362,7 @@ git remote -v
 
 **2. 브랜치 생성하기**
 ```terminal
+git branch <branchname> # 해당 이름으로 브랜치 생성
 git checkout -b feature/#1 # branch 이름이 feature/#1 이라고 가정할 때, 해당 브랜치를 생성하고 바로 전환
 git switch -c feature/#1   # 같이 의미로 사용할 수 있는 명령어
 ```
