@@ -23,7 +23,6 @@
   - [\_\_name\__ 변수](#던더name던더-변수)
   - [datetime 모듈](#datetime-모듈)
   - [gettext_lazy](#gettext_lazy)
-  - [클래스 메서드와 static 메서드](#클래스-메서드와-static-메서드)
   - [python으로 파일 읽고 쓰기](#python으로-파일-읽고-쓰기) 
   - [매직 메소드](#매직-메소드)
   - [\_\_class\__ 변수](#던더class던더-변수)
@@ -432,13 +431,8 @@ from django.utils.text import gettext_lazy as _
 default_error_messages = {"bad_token": _("Token is invalid or expired")}
 ```
 
-- 텍스트를 바로 번역하는 것이 아니고 해당값이 번역되어야할때 함수가 동작한다.
-
-* * *
-
-## 클래스 메서드와 static 메서드
-- **클래스 메서드**는 매개변수로 self가 있는 경우이다. 그래서 클래스에 접근할 수 있게 된다.
-- 반면 **static 메서드**는 매개변수로 self를 두지 않는다. 그리고 클래스가 접근하지 못하게 되어 개체의 속성을 바꾸지 못하게 하고 싶을 때 사용할 수 있다.
+- 위와 같이 보통 as로 언더바를 설정해서 gettext_laxy를 사용하게 된다.
+- 이 함수를 사용해서 문자열을 정의하면, 이후에 django의 다국어 처리 기능과 연동할 수 있게 된다. 사용자가 한국, 미국 등 접속한 위치에 따라서 다른 언어가 return 되게 할 수 있다. 그래서 다국어를 지원하는 서비스를 만들 때 유용하게 사용할 수 있다.
 
 * * *
 
