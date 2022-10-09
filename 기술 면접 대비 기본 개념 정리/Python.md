@@ -580,7 +580,6 @@ def greeting(name: str) -> str:
 ## GIL이란
 - **GIL이란, Global Interpreter Lock의 약자로 파이썬 인터프리터(ex. CPython)가 한 스레드만 하나의 바이트코드를 실행시킬 수 있도록 해주는 Lock을 의미한다. 하나의 스레드에 모든 자원을 허락하고 그 후에는 Lock을 걸어 다른 스레드는 실행할 수 없게 막아버리는 것이다.**
   - 그래서 python에서 여러개의 스레드를 통해 작업하는 경우, 병렬적으로 작업을 하는 것이 아니라 각각의 스레드는 GIL를 얻고 동작하게 되고 이 때 다른 스레드는 모두 동작을 멈추게 된다. 
-  - 그리고 멀티스레드의 경우, thread context switch에 따른 비용도 발생하기 때문에 오히려 싱글스레드보다 시간이 오래 걸리는 문제가 발생한다.
 
 - **python에서 GIL를 사용하는 이유**
   - python에서 [가비지 컬렉터](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Python.md#%EA%B0%80%EB%B9%84%EC%A7%80-%EC%BB%AC%EB%A0%89%ED%84%B0%EB%9E%80) 방식이 Reference Counting이기 때문에 python의 모든 객체는 해당 객체가 참조된 수를 저장하고 있다. 
