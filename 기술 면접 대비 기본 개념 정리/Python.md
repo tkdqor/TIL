@@ -456,7 +456,7 @@ f.close()
 >>> python open func
 ```
 
-- **파일 쓰기 write, writeline, writelines 함수**
+- **파일 쓰기 write, writelines 함수**
   - 파일을 open() 함수로 연 이후에 위와 같은 함수들로 텍스트를 작성할 수 있다.
   - write 함수는 매개변수로 파일에 넣을 문자열을 받는다.
   - writelines 함수는 매개변수로 파일에 넣을 문자열 리스트를 받는다.
