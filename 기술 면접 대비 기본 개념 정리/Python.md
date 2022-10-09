@@ -24,8 +24,6 @@
   - [datetime 모듈](#datetime-모듈)
   - [gettext_lazy](#gettext_lazy)
   - [클래스 메서드와 static 메서드](#클래스-메서드와-static-메서드)
-  - [python 관련 블로그](#python-관련-블로그)
-  - [python 관련 블로그2](#python-관련-블로그2)
   - [python으로 파일 읽고 쓰기](#python으로-파일-읽고-쓰기) 
   - [매직 메소드](#매직-메소드)
   - [\_\_class\__ 변수](#던더class던더-변수)
@@ -441,19 +439,6 @@ default_error_messages = {"bad_token": _("Token is invalid or expired")}
 ## 클래스 메서드와 static 메서드
 - **클래스 메서드**는 매개변수로 self가 있는 경우이다. 그래서 클래스에 접근할 수 있게 된다.
 - 반면 **static 메서드**는 매개변수로 self를 두지 않는다. 그리고 클래스가 접근하지 못하게 되어 개체의 속성을 바꾸지 못하게 하고 싶을 때 사용할 수 있다.
-
-
-* * *
-
-## python 관련 블로그
-- https://han.gl/JaNWX
-
-
-* * *
-
-## python 관련 블로그2
-- https://uiandwe.tistory.com/1272?category=923644
-
 
 * * *
 
