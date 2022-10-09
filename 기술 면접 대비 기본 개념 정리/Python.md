@@ -768,7 +768,7 @@ True
 
 ## python PEP 8이란
 - **PEP 8은 "Style Guide for Python Code"로 파이썬 코드를 어떻게 구상해야할지 알려주는 스타일 가이드이다.**
-  - PEP 8은 파이썬 구문의 많은 특수성(다른 어머에서 일반적으로 적용되지 않는)을 고려하여 작성되었으며, PEP-8은 파이썬 구문을 실제로 만든 파이썬 개발자가 만들었으므로 가장 좋은 표준이라고 할 수 있다.
+  - PEP 8은 파이썬 구문의 많은 특수성을 고려하여 작성되었으며, PEP-8은 파이썬 구문을 실제로 만든 파이썬 개발자가 만들었으므로 가장 좋은 표준이라고 할 수 있다.
   - 이러한 PEP 8를 따를 수 있게끔 [포매터](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Distribute.md#formatter%EB%9E%80)나 [린터](https://github.com/tkdqor/TIL/blob/main/%EA%B8%B0%EC%88%A0%20%EB%A9%B4%EC%A0%91%20%EB%8C%80%EB%B9%84%20%EA%B8%B0%EB%B3%B8%20%EA%B0%9C%EB%85%90%20%EC%A0%95%EB%A6%AC/Distribute.md#linter%EB%9E%80)를 사용할 수 있다.
 
 - **PEP 8을 따라야하는 이유**
