@@ -568,6 +568,13 @@ GRAVITY = 9.8
   - 상수를 정의할 클래스를 만들어서 정의하기
   - 클래스와 데코레이터로 상수 정의하기
 
+- Type.hint 예시(python 3.5버전 이상에서 사용 가능)
+```python
+def greeting(name: str) -> str:
+    s: str = 'Hello ' + name
+    return s
+```
+
 * * *
 
 ## GIL이란
