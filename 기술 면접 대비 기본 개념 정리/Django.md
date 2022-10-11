@@ -348,9 +348,10 @@ def on_save_user(sender, instance, **kwargs):
 
 - **DRF simpleJWT를 사용하기 위한 settings 설정**
   - DRF simpleJWT를 사용하기 위해 settings.py에 SIMPLE_JWT라는 값들을 정의해준다. 
-  - ROTATE_REFRESH_TOKENS : True로 설정 시, access token이 만료되서 TokenRefreshView에 다시 요청할 때, refresh token도 같이 새롭게 갱신해준다
+  - "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60), "REFRESH_TOKEN_LIFETIME": timedelta(days=7) : 이렇게 access token과 refresh token의 만료기간을 설정할 수 있다.
+  - ROTATE_REFRESH_TOKENS : True로 설정 시, access token이 만료되서 TokenRefreshView에 다시 요청할 때, refresh token도 같이 새롭게 갱신해준다.
   - BLACKLIST_AFTER_ROTATION : True로 설정 시, 블랙리스트 앱이 사용 중이고 ROTATE_REFRESH_TOKENS 설정이 True로 설정된 경우 TokenRefreshView에 제출된 refresh token이 블랙리스트에 추가된다.
-  - UPDATE_LAST_LOGIN : True로 설정하면 로그인 시 auth_user 테이블의 last_login 필드가 업데이트된다
+  - UPDATE_LAST_LOGIN : True로 설정하면 로그인 시 auth_user 테이블의 last_login 필드가 업데이트된다.
   - [공식 문서](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/settings.html#access-token-lifetime)
 
 
