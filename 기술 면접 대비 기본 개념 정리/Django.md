@@ -23,6 +23,7 @@
   - [객체지향 프로그래밍 방식의 5원칙과 4개 특성](#객체지향-프로그래밍-방식의-5원칙과-4개-특성)
   - [django ORM distinct 메서드](#django-orm-distinct-메서드)
   - [CORS란](#cors란)
+  - [Queryset을 만들어주는 manager인 objects](#queryset을-만들어주는-manager인-objects)
 
 * * *
 
@@ -611,4 +612,18 @@ Person.objects.distinct().order_by('name')
 
 - [관련 블로그](https://oen-blog.tistory.com/46)
 
+* * *
+
+## Queryset을 만들어주는 manager인 objects
+
+```python
+>>> Person.objects.all()
+<QuerySet [<Person: 홍길동>]>
+```
+
+- 위와같이 objects는 매니저의 초기 이름으로, 해당 매니저는 데이터베이스 쿼리를 실행하는 인터페이스로 각 모델(클래스)은 최소 하나씩 갖고 있다.
+- **objects란 이름의 manager가 Person 데이터베이스를 QuerySet의 형태로 만들게 되며 그 QuerySet에서 데이터를 검색할 수 있다.** 
+  - 위와 같이 Queryset이 만들어지면 Queryset를 활용해 all(), filter() 등 다양한 메소드를 사용해서 django ORM를 사용할 수 있게 된다.
+
+- [관련 블로그](https://velog.io/@swhybein/django-queryset)
 
