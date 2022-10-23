@@ -1805,5 +1805,19 @@ charref = re.compile(r"""
 
 <br>
 
+### 정규표현식 앞에 r의 의미
+```python
+p = re.compile(r'\section')
+```
+
+- **python의 경우, 위와같이 정규패턴식 앞에 r이 붙어 있는 경우가 많다. 파이썬 정규식에는 Raw string이라고 해서, 컴파일 해야 하는 정규식이 Raw String(순수한 문자)임을 알려줄 수 있도록 문법이 있다.**
+- 만약 p = re.compile('\section') 이라고 쓴다면 \s는 공백문자를 의미하는 [\t\n\r\f\v]이 되어버려서 원하는 결과를 찾지 못한다. 그래서 \\section이라고 해주면 되지만, 파이썬은 특수하게 r을 사용하면 백슬래쉬를 1개만 써도 두개를 쓴 것과 같은 효과를 갖는다.
+
+
+
+<br>
+
 - [관련 영상](https://www.youtube.com/watch?v=dTDoTR0MXjU&t=925s)
+- [관련 블로그](https://whatisthenext.tistory.com/116)
+
 
