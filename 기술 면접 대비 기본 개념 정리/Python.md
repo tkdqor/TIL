@@ -1807,7 +1807,7 @@ charref = re.compile(r"""
 
 ### 정규표현식 앞에 r의 의미
 ```python
-p = re.compile(r'\section')
+p = re.compile(r'\\section')
 ```
 
 - **python의 경우, 위와같이 정규패턴식 앞에 r이 붙어 있는 경우가 많다. 파이썬 정규식에는 Raw string이라고 해서, 컴파일 해야 하는 정규식이 Raw String(순수한 문자)임을 알려줄 수 있도록 문법이 있다.**
