@@ -44,6 +44,7 @@
   - [super 함수](#super-함수)
   - [classmethod와 staticmethod](#classmethod와-staticmethod)
   - [python에서 비동기 코드 작성하기](#python에서-비동기-코드-작성하기)
+  - [정규표현식](#정규표현식)
 
 * * *
 
@@ -1473,7 +1474,336 @@ if __name__ == '__main__':
 
 - [참고 블로그](https://www.daleseo.com/python-asyncio/)
 
+* * *
+
+## 정규표현식
+- **정규표현식이란, 복잡한 문자열을 처리할 때 사용하는 기법으로 모든 언어 공통이다.**
+  - ex) 주민등록번호가 쭉 있는데 뒷 번호가 그대로 나오면 안된다. 그래서 다 별표로 바꿔주고 싶다. 이걸 프로그래밍으로 하게 되면 굉장히 복잡하게 처리해야 한다. 근데 이걸 정규표현식을 사용하게 되면,
+
+```python
+import re
+
+data = """
+park 800905-1049118
+"""
+
+pat = re.compile("(\d{6})[-]\d{7}")
+```
+
+- 이렇게 간단하게 표현할 수 있다.
+- **그래서 즉, 이렇게 문자열과 관련된 복잡한 문제를 해결해야될 때, 정규 표현식을 사용하게 되면 짧고 간결하게 문제를 해결할 수 있다.**
+  - 어떤 문자열의 규칙을 찾아서 어떤것과 일치하는 것을 뭐로 바꿔라.. 이런 문제를 처리할 때 주로 사용하게 된다.
+
+<br>
+
+### 문자클래스
+- [abc] 이렇게 [] 사이에 문자들과 매치하는지 검사하는 수식이다.
+  - ex) 예를들어 [abc]와 “a”가 일치하는지 검사해보면, 정규식과 일치하는 문자인 “a”가 있으므로 매치가 된다. 
+  - ex) [abc]와 “before”는 여기도 “b”가 있으므로 매치가 된다.
+  - ex) [abc]와 “dude”는 정규식과 일치하는 문자인 a,b,c 중 어느 하나도 포함하고 있지 않으므로 매치되지 않는다.
+
+- **그리고 하이픈을 사용해서 From-To도 표현이 가능하다.**
+  - [a-c]는 [abc]를, [0-5]는 [012345]를 의미한다.
 
 
+<br>
 
+### Dot(.)
+- 다음으로는 Dot이라는 점(.) 표현이 있다.
+- a.b 라는 표현이 있으면, 점은 줄바꿈(₩n)을 제외한 모든 문자와 매치되는 문자이다.
+  - ex) “aab”와 a.b를 일치하는지 검사해보면, 가운데 문자 “a”가 모든 문자를 의미하는 ‘.’과 일치하므로 정규식과 매치된다고 볼 수 있다.
+  - ex) “a0b”와 a.b를 일치하는지 검사해보면, 가운데 문자 “0”과 모든 문자를 의미하는 ‘.’과 일치하므로 정규식과 매치된다고 볼 수 있다.
+  - ex) “abc”와 a.b를 일치하는지 검사해보면, a와b사이에 하나의 문자가 있어야 하는데, 지금은 a와b사이에 아무것도 없으므로 정규식과 일치하지 않기 때문에 매치되지 않는다.
+
+<br>
+
+### 반복을 의미하는 (*)
+- 다음으로는 반복을 의미하는 별(*)표시가 있다. 
+- ca*t 이렇게 별표시가 들어가 있게 되면, 바로 앞 문자가 여러번 반복되는 그런 표현이다.
+  - **ex) “ct”는 “a”가 0번 반복되었기 때문에 매치가 된다.**
+  - ex) “cat”는 “a”가 1번 반복되었기 때문에 매치가 된다.
+  - ex) “caaat”는 “a”가 3번 반복되었기 때문에 매치가 된다.
+
+<br>
+
+### 반복을 나타내는 (+)
+- 마찬가지로 반복을 나타내는 플러스(+) 기호가 있다.
+- ca+t라고 하면, a가 몇번 반복된다는 의미이다.
+- **별표와의 차이점은, “ct”와 같이 사이에 아무것도 없이 a가 0번 반복될 때는 매치가 되지 않는다.**
+  - ex) “cat”는 “a”가 1번 반복되었기 때문에 매치가 된다.
+  - ex) “caaat”는 “a”가 3번 반복되었기 때문에 매치가 된다.
+
+<br>
+
+### 반복을 나타내는 중괄호 {m,n}가 있다. ({m,n}, ?)
+- ca{2}t 이렇게 a가 {2} 라고 되어있으면, a가 딱 2번이라는 의미이다. 즉, caat만 이것과 일치하게 되는 것이다.
+  - ex) “cat”는 “a”가 1번만 반복되기 때문에 매치되지 않는다.
+  - ex) “caat”는 “a”가 2번 반복되기 때문에 매치가 된다.
+
+- ca{2,5}t 이렇게 중간에 콤마가 들어간 경우는, a가 2이상 5이하로 나올 때 매칭이 된다는 것을 의미한다.
+  - ex) “cat”는 “a”가 1번만 반복되기 때문에 매치되지 않는다.
+  - ex) “caat”는 “a”가 2번 반복되기 때문에 매치가 된다.
+  - ex) “caaaaat”는 “a”가 5번 반복되기 때문에 매치가 된다.
+
+- ab?c 이렇게 물음표라는 표현도 있다. 이건 b가 0회 혹은 1회를 나타내는 표현이다. 즉, 물음표는 {0,1}과 같은 표현이다.
+  - ex) “abc”는 “b”가 1번 사용되기 때문에 매치가 된다.
+  - ex) “ac”는 “b”가 0번 사용되기 때문에 매치가 된다. 
+
+<br>
+
+### python에서 정규표현식을 지원하는 re모듈
+- 파이썬에서 정규표현식을 지원하는 re모듈이 있다.
+
+```python
+import re
+p = re.compile('ab*')
+```
+
+- 이렇게 re.compile한 다음 괄호안에 우리가 배운 정규표현식을 넣어주면 된다.
+- **p는 패턴 객체라고 해서 p라는 객체가 생긴다. 이걸 이용해서 우리가 원하는 문자열과 비교를 해볼 수 있다.**
+  - **이렇게 만든 패턴 객체를 이용하는 방법이 크게 4가지가 있다.**
+
+<br>
+
+### Match
+```python
+import re
+p = re.compile('[a-z]+')
+m = p.match('python')
+print(m)
+
+<re.Match object; span=(0, 6), match='python'>
+
+p = re.compile('[a-z]+')
+m = p.match('3 python')
+print(m)
+
+None
+```
+
+- **위의 예시에서 compile로 a부터 z까지 1번 이상 반복되는 경우인지 확인한다. 그리고 match 안에 검사하고자 하는 문자열을 넣어준다.**
+  - 그래서 이렇게 ‘python’이 매치가 되는지 검사해보면, **매치 객체**를 출력하면서 매치가 되는 것을 확인할 수 있다.
+
+- 그 아래의 경우, 3은 A부터 z까지가 아니기 때문에 매치가 되지 않는다.
+
+<br>
+
+### Search
+```python
+import re
+p = re.compile('[a-z]+')
+m = p.search('python')
+print(m)
+
+<re.Match object; span=(0, 6), match='python'>
+```
+
+- 이렇게 매치가 되는 경우에는 똑같이 매치 객체를 출력해준다.
+
+```python
+import re
+p = re.compile('[a-z]+')
+m = p.search('3 python')
+print(m)
+
+<re.Match object; span=(2, 8), match='python'>
+```
+
+- **다만 이렇게 search의 경우에는 “검색하다”이기 때문에 꼭 첫번째가 일치하지 않아도 python처럼 실행해봤을 때 일치하는 구문이 있다면, 일치하는 걸 찾아서 match 객체를 return 해준 걸 확인할 수 있다.**
+
+<br>
+
+### findall과 finditer
+```python
+import re
+p = re.compile('[a-z]+')
+m = p.findall('life is too short')
+print(m)
+
+['life', 'is', 'too', 'short']
+```
+
+- findall은 이런식으로 일치하는 string을 리스트에 담아서 return 해준다.
+
+```python
+import re
+p = re.compile('[a-z]+')
+m = p.finditer('life is too short')
+print(m)
+
+<callable_iterator object at 0x10465c940>
+```
+
+- **finditer의 경우에는, iterator object가 return 된다.** 즉, finditer를 통해 담긴 결과 m를 for문을 통해서 하나씩 출력해보면,
+
+```python
+import re
+p = re.compile('[a-z]+')
+m = p.finditer('life is too short')
+# print(m)
+for r in m:
+    print(r)
+
+<re.Match object; span=(0, 4), match='life'>
+<re.Match object; span=(5, 7), match='is'>
+<re.Match object; span=(8, 11), match='too'>
+<re.Match object; span=(12, 17), match='short'>
+```
+
+- 이렇게 match 객체가 들어있는 걸 확인할 수 있다. 즉, 매치되는 문자열을 다 match 객체 형태로 반복 가능한 객체 하나로 return 하는 걸 확인할 수 있다.
+
+<br>
+
+### 매치객체란(match 객체)
+- match 객체의 메서드는 크게 4가지가 있다.
+  - group() : 매치된 문자열을 리턴한다.
+  - start() : 매치된 문자열의 시작 위치를 리턴한다.
+  - end() : 매치된 문자열의 끝 위치를 리턴한다.
+  - span() : 매치된 문자열의 (시작, 끝)에 해당되는 튜플을 리턴한다.
+
+```python
+import re
+p = re.compile('[a-z]+')
+m = p.match('python')
+print(m.group())
+print(m.start())
+print(m.end())
+print(m.span())
+
+python
+0
+6
+(0, 6)
+```
+
+- 이렇게 메소드를 사용해볼 수 있다.
+
+<br>
+
+### 컴파일 옵션이란
+- re.complie 할 때 옵션을 같이 줄 수 있다.
+
+<br>
+
+### DOTALL이라는 옵션
+```python
+import re
+p = re.compile('a.b')
+m = p.match('a\nb')
+print(m)
+
+None
+```
+
+- 기존에는 줄바꿈이 있어서 None이 출력된다.
+
+```python
+import re
+p = re.compile('a.b', re.DOTALL)
+m = p.match('a\nb')
+print(m)
+
+<re.Match object; span=(0, 3), match='a\nb'>
+```
+
+- 그런데 이렇게 DOTALL 옵션을 줘서 컴파일을 하게 되면, 실행했을 때 이제는 줄바꿈 문자가 있어도 객체가 매칭되서 나온걸 확인할 수 있다.
+  - **즉, 이 Dot(.) 문자가 줄바꿈 문자도 포함하도록 만드는 옵션이다.**
+
+<br>
+
+### ignorecase 옵션
+```python
+import re
+p = re.compile('[a-z]')
+print(p.match('python'))
+print(p.match('Python'))
+print(p.match('PYTHON'))
+
+<re.Match object; span=(0, 1), match='p'>
+None
+None
+```
+
+- 이렇게 [a-z]는 딱 1개의 소문자 문자열 알파벳이 있는지 검토하게 된다. 그래서 대문자로 시작할 경우 매치가 안되서 None으로 나오게 된다.
+
+```python
+import re
+p = re.compile('[a-z]', re.I)
+print(p.match('python'))
+print(p.match('Python'))
+print(p.match('PYTHON'))
+
+<re.Match object; span=(0, 1), match='p'>
+<re.Match object; span=(0, 1), match='P'>
+<re.Match object; span=(0, 1), match='P'>
+```
+
+- **그런데 re.I 이렇게 ignore case 옵션을 주게 되면, 대소문자를 무시하고 모두 다 매치가 된 걸 확인할 수 있다. 즉, 대소문자를 다 무시하고 matching 할 수 있도록 해주는 옵션이다.**
+
+<br>
+
+### multiline 옵션
+```python
+import re
+p = re.compile("^python\s\w+")
+
+data = """python one
+life is too short
+python two
+you need python
+python three"""
+
+print(p.findall(data))
+
+['python one']
+```
+
+- **정규표현식에서 위와같이 ^ 꺽쇄 표현은, “맨 처음” 이라는 뜻이다. 즉, 여기서는 맨 처음에 python이라는 글자가 나와야 한다는 것이다.**
+  - **그리고 \s는 (역슬래쉬 s) 공백을 나타내는 문자이다.**
+  - **그리고 \w는 (역슬래쉬 w) 알파벳, 숫자, _ 중의 한 문자를 의미한다. 여기서는 \w+ 이니까 여러 번 반복되는 경우이다.**
+  - 즉, p = re.compile("^python\s\w+") 는, python이라는 글자가 나오고 공백 뒤에 단어가 반복되는, 근데 python은 맨 처음 시작에 있어야 한다는 것을 의미한다.
+  - 그래서 python one만 리스트에 담겨서 나오게 된다.
+
+```python
+import re
+p = re.compile("^python\s\w+", re.MULTILINE)
+
+data = """python one
+life is too short
+python two
+you need python
+python three"""
+
+print(p.findall(data))
+
+['python one', 'python two', 'python three']
+```
+
+- 근데 여기에 multiline 옵션을 주게 되면, 이렇게 3개가 잡히게 된다. 즉, python one도 맨 처음으로 인식하지만, 멀티라인 옵션이 있기 때문에 python two나 python three도 새로운 줄의 처음으로 인식을 하게 된다.
+  - **즉, multiline은 이런 꺽쇄를 맨 처음만이 아닌, 각 라인의 처음으로 인식시키는 옵션이다.**
+
+<br>
+
+### verbose 옵션
+```python
+import re
+charref = re.compile(r'&[#](0[0-7]+|[0-9]+|x[0-9a-fA-F]+);')
+
+charref = re.compile(r"""
+&[#]              # Start of a numeric entity reference
+(
+    0[0-7]+       # Octal form
+  | [0-9]+        # Decimal form
+  | x[0-9a-fA-F]+ # Hexadecimal form
+)
+;                 # Trailing semicolon
+""", re.VERBOSE)
+```
+
+- **verbose 옵션의 경우, 위와같이 charref = re.compile(r'&[#](0[0-7]+|[0-9]+|x[0-9a-fA-F]+);') 이렇게 긴 정규 표현식이 있을 때, 이거를 나눠서 쓸 수 있게 만들어주는 옵션이다.**
+  - 원래는 정규표현식을 줄바꿈으로 나누게 되면 컴파일이 안된다. 근데 그렇게 할 수 있게 만들어주는 옵션이 verbose 옵션이다.
+
+<br>
+
+- [관련 영상](https://www.youtube.com/watch?v=dTDoTR0MXjU&t=925s)
 
