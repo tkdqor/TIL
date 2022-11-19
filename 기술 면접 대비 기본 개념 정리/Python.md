@@ -45,6 +45,7 @@
   - [classmethod와 staticmethod](#classmethod와-staticmethod)
   - [python에서 비동기 코드 작성하기](#python에서-비동기-코드-작성하기)
   - [정규표현식](#정규표현식)
+  - [bound와 unbound method](#bound와-unbound-method)
 
 * * *
 
@@ -1819,5 +1820,10 @@ p = re.compile(r'\\section')
 
 - [관련 영상](https://www.youtube.com/watch?v=dTDoTR0MXjU&t=925s)
 - [관련 블로그](https://whatisthenext.tistory.com/116)
+
+* * *
+
+## bound와 unbound method
+- [관련 블로그](https://gmnam.tistory.com/226)
 
 
